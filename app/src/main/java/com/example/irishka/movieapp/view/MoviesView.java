@@ -11,4 +11,6 @@ public interface MoviesView extends MvpView {
 
     void showMovies(List<ConcreteMovie> movie);
 
+    void initDatabase();
+
 }

@@ -1,29 +1,24 @@
 package com.example.irishka.movieapp.view;
 
-import android.arch.lifecycle.ViewModel;
-import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.Gravity;
-import android.widget.LinearLayout;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.irishka.movieapp.R;
+import com.example.irishka.movieapp.model.DatabaseManager;
 import com.example.irishka.movieapp.model.Pojo.ConcreteMovie;
 import com.example.irishka.movieapp.presenter.MoviesPresenter;
-import com.google.android.flexbox.FlexboxLayoutManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.internal.Utils;
 
 public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
 
@@ -35,28 +30,55 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
 
     MoviesAdapter moviesAdapter;
 
+    private boolean isLoading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies);
         ButterKnife.bind(this);
 
-        float scalefactor = getResources().getDisplayMetrics().density * 150;
-        int number = getWindowManager().getDefaultDisplay().getWidth();
-        int columns = (int) ((float) number / (float) scalefactor);
-
         //moviesRecyclerView.setLayoutManager(new GridLayoutManager(this, columns));
 
-        //moviesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        int orientation;
+        int number;
+        float scalefactor;
 
-     //   moviesRecyclerView.setLayoutManager(new FlexboxLayoutManager(this));
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            orientation = StaggeredGridLayoutManager.VERTICAL;
+            number = getWindowManager().getDefaultDisplay().getWidth();
+            scalefactor = getResources().getDisplayMetrics().density * 150;
+        }
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL);
+        else {
+            orientation = StaggeredGridLayoutManager.HORIZONTAL;
+            number = getWindowManager().getDefaultDisplay().getHeight();
+            scalefactor = getResources().getDisplayMetrics().density * 200;
+        }
+
+        int columns = (int) ((float) number / (float) scalefactor);
+
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(columns, orientation);
         staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
 
         moviesRecyclerView.setLayoutManager(staggeredGridLayoutManager);
 
-        //   moviesRecyclerView.setItemAnimator(null);
+        moviesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                int visibleItemCount = recyclerView.getLayoutManager().getChildCount();
+                int totalItemCount = recyclerView.getLayoutManager().getItemCount();
+                int lastVisibleItemPosition = getLastVisibleItemPosition();
+
+                if (isLoading) return;
+// всего 70 эл. видимых 5.  65.
+                if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
+                        && lastVisibleItemPosition >= 0) {
+                    isLoading = true;
+                    moviesPresenter.onDownloadMovies();
+                }
+            }
+        });
 
         moviesAdapter = new MoviesAdapter();
         moviesRecyclerView.setAdapter(moviesAdapter);
@@ -65,6 +87,7 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
 
     @Override
     public void showMovies(List<ConcreteMovie> movies) {
+        isLoading = false;
         moviesAdapter.setMoviesList(movies);
     }
 
@@ -72,5 +95,20 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
     protected void onStop() {
         super.onStop();
         moviesPresenter.onStop();
+    }
+
+    @Override
+    public void initDatabase() {
+        DatabaseManager.getInstance().init(this);
+    }
+
+    private int getLastVisibleItemPosition(){
+        StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) moviesRecyclerView.getLayoutManager();
+        int[] into = staggeredGridLayoutManager.findLastVisibleItemPositions(null);
+        List<Integer> intoList = new ArrayList<>();
+        for (int i : into) {
+            intoList.add(i);
+        }
+        return Collections.max(intoList);
     }
 }

@@ -1,6 +1,9 @@
 
 package com.example.irishka.movieapp.model.Pojo;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.util.List;
 
 import com.google.gson.annotations.Expose;
@@ -19,7 +22,7 @@ public class MoviePage {
     private Integer totalPages;
     @SerializedName("results")
     @Expose
-    private List<ConcreteMovie> results = null;
+    private List<ConcreteMovie> results;
 
     public Integer getPage() {
         return page;
