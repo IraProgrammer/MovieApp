@@ -11,7 +11,7 @@ public class DatabaseManager {
 
     private AppDatabase appDatabase;
 
-    private DatabaseManager(){
+    private DatabaseManager() {
     }
 
     /* public MovieDao getMoviesDao() {
@@ -23,7 +23,6 @@ public class DatabaseManager {
     }
 
     public static DatabaseManager getInstance() {
-
         if (databaseManager == null) {
             databaseManager = new DatabaseManager();
         }
@@ -32,9 +31,7 @@ public class DatabaseManager {
     }
 
     public void init(Context context) {
-
         appDatabase = Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME).build();
-
     }
 }
 
