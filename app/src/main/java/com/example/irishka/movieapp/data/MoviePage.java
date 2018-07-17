@@ -1,8 +1,5 @@
 
-package com.example.irishka.movieapp.model.Pojo;
-
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+package com.example.irishka.movieapp.data;
 
 import java.util.List;
 
@@ -22,7 +19,7 @@ public class MoviePage {
     private Integer totalPages;
     @SerializedName("results")
     @Expose
-    private List<ConcreteMovie> results;
+    private List<MovieModel> results;
 
     public Integer getPage() {
         return page;
@@ -48,11 +45,11 @@ public class MoviePage {
         this.totalPages = totalPages;
     }
 
-    public List<ConcreteMovie> getResults() {
+    public List<MovieModel> getResults() {
         return results;
     }
 
-    public void setResults(List<ConcreteMovie> results) {
+    public void setResults(List<MovieModel> results) {
         this.results = results;
     }
 

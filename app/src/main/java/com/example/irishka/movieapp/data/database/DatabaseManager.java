@@ -1,21 +1,11 @@
-package com.example.irishka.movieapp.model;
+package com.example.irishka.movieapp.data.database;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
 
-import com.example.irishka.movieapp.BuildConfig;
-import com.example.irishka.movieapp.database.AppDatabase;
-
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 public class DatabaseManager {
 
-    private static final String DATABASE_NAME = "com.example.irishka.movieapp.database.movies";
+    private static final String DATABASE_NAME = "com.example.irishka.movieapp.data.database.movies";
 
     private static DatabaseManager databaseManager;
 

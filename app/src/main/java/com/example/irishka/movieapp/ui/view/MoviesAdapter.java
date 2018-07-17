@@ -1,6 +1,5 @@
-package com.example.irishka.movieapp.view;
+package com.example.irishka.movieapp.ui.view;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,7 +13,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
-import com.example.irishka.movieapp.model.Pojo.ConcreteMovie;
+import com.example.irishka.movieapp.domain.entity.Movie;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,25 +25,25 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
 
     private static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w500//";
 
-    private List<ConcreteMovie> movies = new ArrayList<>();
+    private List<Movie> movies = new ArrayList<>();
 
-    public void setMoviesList(List<ConcreteMovie> movie) {
-        this.movies.addAll(movie);
-        notifyDataSetChanged();
+    public void setMoviesList(List<Movie> movies) {
+        int idStart = this.movies.size();
+        int idEnd = movies.size();
+        this.movies.addAll(movies);
+        notifyItemRangeInserted(idStart, idEnd);
     }
 
     @NonNull
     @Override
     public MoviesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false);
-        return new MoviesViewHolder(v);
+        return new MoviesViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull MoviesViewHolder holder, int position) {
-        ConcreteMovie movie = movies.get(position);
 
-        holder.bind(movie);
+        holder.bind(movies.get(position));
 
     }
 
@@ -55,10 +54,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
 
     class MoviesViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.movie_textView)
+        @BindView(R.id.movie_text)
         TextView title;
 
-        @BindView(R.id.movie_imageView)
+        @BindView(R.id.movie_image)
         ImageView image;
 
         MoviesViewHolder(View itemView) {
@@ -66,13 +65,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
             ButterKnife.bind(this, itemView);
         }
 
-        void bind(ConcreteMovie movie) {
+        void bind(Movie movie) {
 
              title.setText(movie.getTitle());
 
             Glide.with(itemView.getContext())
 
-                    .load(Uri.parse(BASE_IMAGE_URL + movie.getPosterPath()))
+                    .load(BASE_IMAGE_URL + movie.getPosterPath())
                     .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                             .placeholder(R.drawable.no_image)
                             .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)

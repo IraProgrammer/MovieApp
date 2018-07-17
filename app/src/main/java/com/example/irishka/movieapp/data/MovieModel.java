@@ -1,15 +1,14 @@
 
-package com.example.irishka.movieapp.model.Pojo;
+package com.example.irishka.movieapp.data;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Entity
-public class ConcreteMovie {
+public class MovieModel {
 
     @PrimaryKey
     @SerializedName("id")

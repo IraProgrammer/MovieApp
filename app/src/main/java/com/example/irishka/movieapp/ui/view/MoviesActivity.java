@@ -1,6 +1,6 @@
-package com.example.irishka.movieapp.view;
+package com.example.irishka.movieapp.ui.view;
 
-import android.content.res.Configuration;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,9 +9,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.irishka.movieapp.R;
-import com.example.irishka.movieapp.model.DatabaseManager;
-import com.example.irishka.movieapp.model.Pojo.ConcreteMovie;
-import com.example.irishka.movieapp.presenter.MoviesPresenter;
+import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.ui.presenter.MoviesPresenter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,38 +29,13 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
 
     MoviesAdapter moviesAdapter;
 
-    private boolean isLoading;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies);
         ButterKnife.bind(this);
 
-        //moviesRecyclerView.setLayoutManager(new GridLayoutManager(this, columns));
-
-        int orientation;
-        int number;
-        float scalefactor;
-
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            orientation = StaggeredGridLayoutManager.VERTICAL;
-            number = getWindowManager().getDefaultDisplay().getWidth();
-            scalefactor = getResources().getDisplayMetrics().density * 150;
-        }
-
-        else {
-            orientation = StaggeredGridLayoutManager.HORIZONTAL;
-            number = getWindowManager().getDefaultDisplay().getHeight();
-            scalefactor = getResources().getDisplayMetrics().density * 200;
-        }
-
-        int columns = (int) ((float) number / (float) scalefactor);
-
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(columns, orientation);
-        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-
-        moviesRecyclerView.setLayoutManager(staggeredGridLayoutManager);
+        moviesRecyclerView.setLayoutManager(getLayoutManager());
 
         moviesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -70,12 +44,11 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
                 int totalItemCount = recyclerView.getLayoutManager().getItemCount();
                 int lastVisibleItemPosition = getLastVisibleItemPosition();
 
-                if (isLoading) return;
-// всего 70 эл. видимых 5.  65.
+                if (moviesPresenter.isLoading()) return;
                 if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
                         && lastVisibleItemPosition >= 0) {
-                    isLoading = true;
-                    moviesPresenter.onDownloadMovies();
+                    moviesPresenter.setLoading(true);
+                    moviesPresenter.downloadMovies();
                 }
             }
         });
@@ -85,9 +58,23 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
 
     }
 
+    private int getColumns(){
+        Point point = new Point();
+        getWindowManager().getDefaultDisplay().getSize(point);
+        int number = point.x;
+        float scalefactor = getResources().getDisplayMetrics().density * 150;
+        return (int) ((float) number / (float) scalefactor);
+    }
+
+    private StaggeredGridLayoutManager getLayoutManager(){
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(getColumns(), StaggeredGridLayoutManager.VERTICAL);
+        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        return staggeredGridLayoutManager;
+    }
+
     @Override
-    public void showMovies(List<ConcreteMovie> movies) {
-        isLoading = false;
+    public void showMovies(List<Movie> movies) {
+        moviesPresenter.setLoading(false);
         moviesAdapter.setMoviesList(movies);
     }
 
@@ -95,11 +82,6 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
     protected void onStop() {
         super.onStop();
         moviesPresenter.onStop();
-    }
-
-    @Override
-    public void initDatabase() {
-        DatabaseManager.getInstance().init(this);
     }
 
     private int getLastVisibleItemPosition(){
