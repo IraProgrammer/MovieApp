@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <dimen name="textViewPadding">4dp</dimen>
     <dimen name="cardCornerRadius">6dp</dimen>
     <dimen name="cardLayoutMargin">4dp</dimen>
     <dimen name="cardPadding">8dp</dimen>
+
 </resources>
