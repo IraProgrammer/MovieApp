@@ -24,6 +24,7 @@ public class MoviesRepository implements IMoviesRepository {
     }
 
     private void onSaveMovies(List<MovieModel> movies) {
+        // TODO: почему бы сразу не получать MoviesDao?
         DatabaseManager.getInstance().getAppDatabase().getMovieDao().insertAll(movies);
     }
 
@@ -48,6 +49,7 @@ public class MoviesRepository implements IMoviesRepository {
 
         return getMoviesFromInternet()
                 .onErrorResumeNext(getMoviesFromDatabase())
+                // TODO: observeOn относится к presentation слою и должен быть в перезнтере
                 .observeOn(AndroidSchedulers.mainThread());
     }
 }

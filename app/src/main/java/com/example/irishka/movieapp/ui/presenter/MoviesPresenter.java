@@ -15,6 +15,9 @@ public class MoviesPresenter extends MvpPresenter<MoviesView> {
 
     private Disposable disposable;
 
+    // TODO: я предложил плохую идею, все таки лучше вернуть в активити
+    // а в цепочке rx поставить на doOnSuccess и doOnError установку isLoading в false
+    // всмысле ты будешь обращаться к view (например, методы будет finishLoading())
     private boolean isLoading;
 
     public boolean isLoading() {

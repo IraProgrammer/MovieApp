@@ -42,6 +42,8 @@ public class ApiManager {
 
     private void init() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                // TODO: лучше создать свой interceptor унаследованный от Interceptor и передавать сюда объект
+                // тогда цепочка билдера будет читабельнее
                 .addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {

@@ -6,6 +6,7 @@ import java.util.List;
 
 import io.reactivex.Single;
 
+// TODO: стоит так же создать package с именем repository в domain и хранить интерфейс там
 public interface IMoviesRepository {
 
  //   void onSaveMovies(List<MovieModel> movies);
