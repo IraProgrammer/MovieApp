@@ -14,12 +14,8 @@ public class DatabaseManager {
     private DatabaseManager() {
     }
 
-    /* public MovieDao getMoviesDao() {
+    public MovieDao getMoviesDao() {
         return appDatabase.getMovieDao();
-    } */
-
-    public AppDatabase getAppDatabase() {
-        return appDatabase;
     }
 
     public static DatabaseManager getInstance() {

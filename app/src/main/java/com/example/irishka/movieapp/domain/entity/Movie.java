@@ -7,41 +7,24 @@ import android.arch.persistence.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-// TODO: это Entity, здесь не нужно использовать аннотации gson'a и room'a
-// так же тут можно хранить уже полноценную ссылку на постер, а подставлять ее в маппере
-// тогда в вью холдере не будет этого - BASE_IMAGE_URL + movie.getPosterPath()
 public class Movie {
 
-    @SerializedName("id")
-    @Expose
     private int id;
 
-    @SerializedName("video")
-    @Expose
     private boolean video;
 
-    @SerializedName("title")
-    @Expose
     private String title;
-    @SerializedName("popularity")
-    @Expose
+
     private double popularity;
-    @SerializedName("poster_path")
-    @Expose
+
     private String posterPath;
-    @SerializedName("original_language")
-    @Expose
+
     private String originalLanguage;
-    @SerializedName("original_title")
-    @Expose
+
     private String originalTitle;
 
-    @SerializedName("backdrop_path")
-    @Expose
     private String backdropPath;
 
-    @SerializedName("release_date")
-    @Expose
     private String releaseDate;
 
     public int getId() {

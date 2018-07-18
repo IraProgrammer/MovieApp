@@ -5,7 +5,7 @@ import com.example.irishka.movieapp.data.mapper.MoviesMapper;
 import com.example.irishka.movieapp.data.network.ApiManager;
 import com.example.irishka.movieapp.data.database.DatabaseManager;
 import com.example.irishka.movieapp.data.MoviePage;
-import com.example.irishka.movieapp.domain.IMoviesRepository;
+import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
 import java.util.List;
@@ -24,8 +24,7 @@ public class MoviesRepository implements IMoviesRepository {
     }
 
     private void onSaveMovies(List<MovieModel> movies) {
-        // TODO: почему бы сразу не получать MoviesDao?
-        DatabaseManager.getInstance().getAppDatabase().getMovieDao().insertAll(movies);
+        DatabaseManager.getInstance().getMoviesDao().insertAll(movies);
     }
 
     private Single<List<Movie>> getMoviesFromInternet() {
@@ -40,7 +39,7 @@ public class MoviesRepository implements IMoviesRepository {
 
     private Single<List<Movie>> getMoviesFromDatabase() {
 
-        return DatabaseManager.getInstance().getAppDatabase().getMovieDao().getAllMovies()
+        return DatabaseManager.getInstance().getMoviesDao().getAllMovies()
                 .map(movies -> moviesMapper.getMoviesList(movies))
                 .subscribeOn(Schedulers.io());
     }
@@ -48,8 +47,7 @@ public class MoviesRepository implements IMoviesRepository {
     public Single<List<Movie>> downloadMovies() {
 
         return getMoviesFromInternet()
-                .onErrorResumeNext(getMoviesFromDatabase())
-                // TODO: observeOn относится к presentation слою и должен быть в перезнтере
-                .observeOn(AndroidSchedulers.mainThread());
+                .onErrorResumeNext(getMoviesFromDatabase());
+
     }
 }

@@ -10,4 +10,6 @@ public interface MoviesView extends MvpView {
 
     void showMovies(List<Movie> movie);
 
+    void finishLoading();
+
 }

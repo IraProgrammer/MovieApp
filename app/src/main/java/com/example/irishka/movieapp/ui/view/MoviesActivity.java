@@ -29,6 +29,8 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
 
     MoviesAdapter moviesAdapter;
 
+    private boolean isLoading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,10 +46,10 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
                 int totalItemCount = recyclerView.getLayoutManager().getItemCount();
                 int lastVisibleItemPosition = getLastVisibleItemPosition();
 
-                if (moviesPresenter.isLoading()) return;
+                if (isLoading) return;
                 if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
                         && lastVisibleItemPosition >= 0) {
-                    moviesPresenter.setLoading(true);
+                    isLoading = true;
                     moviesPresenter.downloadMovies();
                 }
             }
@@ -76,6 +78,11 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
     public void showMovies(List<Movie> movies) {
         moviesPresenter.setLoading(false);
         moviesAdapter.setMoviesList(movies);
+    }
+
+    @Override
+    public void finishLoading() {
+        isLoading = false;
     }
 
     @Override

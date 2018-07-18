@@ -10,6 +10,8 @@ import io.reactivex.functions.Function;
 
 public class MoviesMapper implements Function<MovieModel, Movie>{
 
+    private static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w500//";
+
     public MoviesMapper() {
     }
 
@@ -21,7 +23,7 @@ public class MoviesMapper implements Function<MovieModel, Movie>{
         movie.setOriginalLanguage(movieModel.getOriginalLanguage());
         movie.setOriginalTitle(movieModel.getOriginalTitle());
         movie.setPopularity(movieModel.getPopularity());
-        movie.setPosterPath(movieModel.getPosterPath());
+        movie.setPosterPath(BASE_IMAGE_URL + movieModel.getPosterPath());
         movie.setReleaseDate(movieModel.getReleaseDate());
         movie.setVideo(movieModel.getVideo());
         movie.setTitle(movieModel.getTitle());

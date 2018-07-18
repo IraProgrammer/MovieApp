@@ -23,8 +23,6 @@ import butterknife.ButterKnife;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder> {
 
-    private static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w500//";
-
     private List<Movie> movies = new ArrayList<>();
 
     public void setMoviesList(List<Movie> movies) {
@@ -71,7 +69,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
 
             Glide.with(itemView.getContext())
 
-                    .load(BASE_IMAGE_URL + movie.getPosterPath())
+                    .load(movie.getPosterPath())
                     .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                             .placeholder(R.drawable.no_image)
                             .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)

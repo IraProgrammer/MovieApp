@@ -9,7 +9,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        // TODO: вместо getApplicationContext() можно this передавать
-        DatabaseManager.getInstance().init(getApplicationContext());
+        DatabaseManager.getInstance().init(this);
     }
 }

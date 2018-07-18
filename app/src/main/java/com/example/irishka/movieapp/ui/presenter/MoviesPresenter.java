@@ -3,9 +3,10 @@ package com.example.irishka.movieapp.ui.presenter;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.irishka.movieapp.data.repository.MoviesRepository;
-import com.example.irishka.movieapp.domain.IMoviesRepository;
+import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.ui.view.MoviesView;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
 @InjectViewState
@@ -15,9 +16,6 @@ public class MoviesPresenter extends MvpPresenter<MoviesView> {
 
     private Disposable disposable;
 
-    // TODO: я предложил плохую идею, все таки лучше вернуть в активити
-    // а в цепочке rx поставить на doOnSuccess и doOnError установку isLoading в false
-    // всмысле ты будешь обращаться к view (например, методы будет finishLoading())
     private boolean isLoading;
 
     public boolean isLoading() {
@@ -44,6 +42,9 @@ public class MoviesPresenter extends MvpPresenter<MoviesView> {
         }
 
         disposable = moviesRepository.downloadMovies()
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(movies -> getViewState().finishLoading())
+                .doOnError(movies -> getViewState().finishLoading())
                 .subscribe(movies -> getViewState().showMovies(movies), Throwable::printStackTrace);
     }
 
