@@ -12,9 +12,6 @@ public class MoviesMapper implements Function<MovieModel, Movie>{
 
     private static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w500//";
 
-    public MoviesMapper() {
-    }
-
     @Override
     public Movie apply(MovieModel movieModel) {
         Movie movie = new Movie();
