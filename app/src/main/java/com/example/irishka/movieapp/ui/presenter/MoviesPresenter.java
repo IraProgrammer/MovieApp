@@ -2,9 +2,12 @@ package com.example.irishka.movieapp.ui.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.example.irishka.movieapp.App;
 import com.example.irishka.movieapp.data.repository.MoviesRepository;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.ui.view.MoviesView;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -12,21 +15,13 @@ import io.reactivex.disposables.Disposable;
 @InjectViewState
 public class MoviesPresenter extends MvpPresenter<MoviesView> {
 
-    private IMoviesRepository moviesRepository = new MoviesRepository();
+    private IMoviesRepository moviesRepository;
 
     private Disposable disposable;
 
-    private boolean isLoading;
-
-    public boolean isLoading() {
-        return isLoading;
-    }
-
-    public void setLoading(boolean loading) {
-        isLoading = loading;
-    }
-
-    public MoviesPresenter() {
+    @Inject
+    public MoviesPresenter(IMoviesRepository repository) {
+        this.moviesRepository = repository;
     }
 
     @Override

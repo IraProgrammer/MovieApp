@@ -6,11 +6,18 @@ import com.example.irishka.movieapp.domain.entity.Movie;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.functions.Function;
 
 public class MoviesMapper implements Function<MovieModel, Movie>{
 
     private static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w500//";
+
+    @Inject
+    public MoviesMapper(){
+
+    }
 
     @Override
     public Movie apply(MovieModel movieModel) {

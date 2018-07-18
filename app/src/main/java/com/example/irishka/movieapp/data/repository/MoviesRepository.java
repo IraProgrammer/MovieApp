@@ -1,14 +1,17 @@
 package com.example.irishka.movieapp.data.repository;
 
+import com.example.irishka.movieapp.App;
 import com.example.irishka.movieapp.data.MovieModel;
+import com.example.irishka.movieapp.data.database.MovieDao;
 import com.example.irishka.movieapp.data.mapper.MoviesMapper;
-import com.example.irishka.movieapp.data.network.ApiManager;
-import com.example.irishka.movieapp.data.database.DatabaseManager;
 import com.example.irishka.movieapp.data.MoviePage;
+import com.example.irishka.movieapp.data.network.MoviesApi;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -16,20 +19,29 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MoviesRepository implements IMoviesRepository {
 
-    private MoviesMapper moviesMapper = new MoviesMapper();
+    private MoviesMapper moviesMapper;
+
+    private MovieDao movieDao;
+
+    private MoviesApi moviesApi;
 
     private int page = 1;
 
-    public MoviesRepository(){
+    @Inject
+    public MoviesRepository(MoviesMapper moviesMapper,
+                            MovieDao movieDao, MoviesApi moviesApi) {
+        this.moviesMapper = moviesMapper;
+        this.movieDao = movieDao;
+        this.moviesApi = moviesApi;
     }
 
     private void onSaveMovies(List<MovieModel> movies) {
-        DatabaseManager.getInstance().getMoviesDao().insertAll(movies);
+        movieDao.insertAll(movies);
     }
 
     private Single<List<Movie>> getMoviesFromInternet() {
 
-        return ApiManager.getInstance().getMoviesApi()
+        return moviesApi
                 .getMovies(page)
                 .map(MoviePage::getResults)
                 .doOnSuccess(this::onSaveMovies)
@@ -39,7 +51,7 @@ public class MoviesRepository implements IMoviesRepository {
 
     private Single<List<Movie>> getMoviesFromDatabase() {
 
-        return DatabaseManager.getInstance().getMoviesDao().getAllMovies()
+        return movieDao.getAllMovies()
                 .map(movies -> moviesMapper.getMoviesList(movies))
                 .subscribeOn(Schedulers.io());
     }

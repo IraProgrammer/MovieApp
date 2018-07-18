@@ -18,12 +18,19 @@ import com.example.irishka.movieapp.domain.entity.Movie;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder> {
 
     private List<Movie> movies = new ArrayList<>();
+
+    @Inject
+    public MoviesAdapter(){
+
+    }
 
     public void setMoviesList(List<Movie> movies) {
         int idStart = this.movies.size();

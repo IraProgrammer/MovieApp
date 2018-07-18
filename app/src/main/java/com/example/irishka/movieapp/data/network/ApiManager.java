@@ -15,7 +15,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ApiManager {
+/*public class ApiManager {
 
     private static final String BASE_URL = "https://api.themoviedb.org/3/";
 
@@ -55,4 +55,4 @@ public class ApiManager {
                 .create(MoviesApi.class);
 
     }
-}
+} */

@@ -8,7 +8,10 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.example.irishka.movieapp.App;
 import com.example.irishka.movieapp.R;
+import com.example.irishka.movieapp.di.AppComponent;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.presenter.MoviesPresenter;
 
@@ -16,23 +19,34 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.Provides;
 
 public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
 
     @BindView(R.id.movies_recycler_view)
     RecyclerView moviesRecyclerView;
 
+    @Inject
     @InjectPresenter
     MoviesPresenter moviesPresenter;
 
+    @ProvidePresenter
+    MoviesPresenter providePresenter() {
+        return moviesPresenter;
+    }
+
+    @Inject
     MoviesAdapter moviesAdapter;
 
     private boolean isLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        App.buildMovieComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies);
         ButterKnife.bind(this);
@@ -55,12 +69,11 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
             }
         });
 
-        moviesAdapter = new MoviesAdapter();
         moviesRecyclerView.setAdapter(moviesAdapter);
 
     }
 
-    private int getColumns(){
+    private int getColumns() {
         Point point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
         int number = point.x;
@@ -68,7 +81,7 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
         return (int) ((float) number / (float) scalefactor);
     }
 
-    private StaggeredGridLayoutManager getLayoutManager(){
+    private StaggeredGridLayoutManager getLayoutManager() {
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(getColumns(), StaggeredGridLayoutManager.VERTICAL);
         staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         return staggeredGridLayoutManager;
@@ -76,7 +89,6 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
 
     @Override
     public void showMovies(List<Movie> movies) {
-        moviesPresenter.setLoading(false);
         moviesAdapter.setMoviesList(movies);
     }
 
@@ -91,7 +103,7 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
         moviesPresenter.onStop();
     }
 
-    private int getLastVisibleItemPosition(){
+    private int getLastVisibleItemPosition() {
         StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) moviesRecyclerView.getLayoutManager();
         int[] into = staggeredGridLayoutManager.findLastVisibleItemPositions(null);
         List<Integer> intoList = new ArrayList<>();
