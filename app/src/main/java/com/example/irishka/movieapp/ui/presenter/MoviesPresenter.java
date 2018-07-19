@@ -4,7 +4,6 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.irishka.movieapp.App;
 import com.example.irishka.movieapp.data.repository.MoviesRepository;
-import com.example.irishka.movieapp.di.MovieScope;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.ui.view.MoviesView;
 
@@ -13,7 +12,6 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
-@MovieScope
 @InjectViewState
 public class MoviesPresenter extends MvpPresenter<MoviesView> {
 

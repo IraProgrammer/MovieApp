@@ -1,5 +1,7 @@
 package com.example.irishka.movieapp.ui.view;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +24,13 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
+import dagger.android.HasFragmentInjector;
+import dagger.android.support.DaggerAppCompatActivity;
+import dagger.android.support.HasSupportFragmentInjector;
 
 public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
 
@@ -44,7 +53,7 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        App.buildMovieComponent().inject(this);
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies);
         ButterKnife.bind(this);
@@ -98,6 +107,7 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
     @Override
     protected void onStop() {
         super.onStop();
+        if (moviesPresenter != null)
         moviesPresenter.onStop();
     }
 
@@ -114,6 +124,6 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (isFinishing()) App.clearMovieComponent();
+       // if (isFinishing()) App.clearMovieComponent();
     }
 }

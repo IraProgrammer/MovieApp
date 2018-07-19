@@ -1,38 +1,24 @@
 package com.example.irishka.movieapp;
 
+import android.app.Activity;
 import android.app.Application;
 
 import com.example.irishka.movieapp.di.AppComponent;
 import com.example.irishka.movieapp.di.DaggerAppComponent;
-import com.example.irishka.movieapp.di.MovieComponent;
 
-public class App extends Application {
+import javax.inject.Inject;
 
-    private static AppComponent appComponent;
-    private static MovieComponent movieComponent;
+import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
 
-    public AppComponent buildAppComponent(){
-        return DaggerAppComponent.builder()
-                .context(this)
-                .build();
-    }
-
-
+public class App extends DaggerApplication {
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        appComponent = buildAppComponent();
-    }
-
-    public static MovieComponent buildMovieComponent() {
-        if(movieComponent == null) {
-            movieComponent = appComponent.movieComponentBuilder().build();
-    }
-        return movieComponent;
-    }
-
-    public static void clearMovieComponent() {
-        movieComponent = null;
+    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
+        return DaggerAppComponent.builder()
+                .context(this)
+                .create(this);
     }
 }

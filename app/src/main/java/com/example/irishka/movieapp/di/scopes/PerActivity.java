@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.di;
+package com.example.irishka.movieapp.di.scopes;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -7,6 +7,5 @@ import javax.inject.Scope;
 
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MovieScope {
-
+public @interface PerActivity {
 }

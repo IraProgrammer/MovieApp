@@ -10,6 +10,7 @@ import com.example.irishka.movieapp.domain.entity.Movie;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
