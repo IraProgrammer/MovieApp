@@ -35,13 +35,13 @@ public class MoviesMapper implements Function<MovieModel, Movie>{
         return movie;
     }
 
-    public List<Movie> getMapList(List<MovieModel> movieModels){
-        List<Movie> mapList = new ArrayList<>();
+    public List<Movie> mapMoviesList(List<MovieModel> movieModels){
+        List<Movie> movies = new ArrayList<>();
 
         for (MovieModel movieModel: movieModels) {
-            mapList.add(apply(movieModel));
+            movies.add(apply(movieModel));
         }
 
-        return mapList;
+        return movies;
     }
 }

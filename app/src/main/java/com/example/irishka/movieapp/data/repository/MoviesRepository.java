@@ -38,12 +38,12 @@ public class MoviesRepository implements IMoviesRepository {
                 .map(MoviePage::getResults)
                 .doOnSuccess(movies -> movieDao.insertAll(movies))
                 .doOnSuccess(movies -> page++)
-                .map(movies -> moviesMapper.getMapList(movies));
+                .map(movies -> moviesMapper.mapMoviesList(movies));
     }
 
     private Single<List<Movie>> getMoviesFromDatabase() {
         return movieDao.getAllMovies()
-                .map(movies -> moviesMapper.getMapList(movies))
+                .map(movies -> moviesMapper.mapMoviesList(movies))
                 .subscribeOn(Schedulers.io());
     }
 
