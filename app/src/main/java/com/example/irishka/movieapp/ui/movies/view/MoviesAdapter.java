@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.ui.view;
+package com.example.irishka.movieapp.ui.movies.view;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -27,9 +27,15 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
 
     private List<Movie> movies = new ArrayList<>();
 
-    @Inject
-    public MoviesAdapter() {
+    private OnItemClickListener onItemClickListener;
 
+  //  @Inject
+    public MoviesAdapter(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Movie movie);
     }
 
     public void setMoviesList(List<Movie> movies) {
@@ -65,14 +71,19 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
         @BindView(R.id.movie_image)
         ImageView image;
 
+        //  View itemView;
+
         MoviesViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            //    this.itemView = itemView;
         }
 
         void bind(Movie movie) {
 
             title.setText(movie.getTitle());
+
+            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(movie));
 
             Glide.with(itemView.getContext())
                     .load(movie.getPosterUrl())

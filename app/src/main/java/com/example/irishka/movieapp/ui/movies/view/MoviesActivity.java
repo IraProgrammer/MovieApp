@@ -1,7 +1,6 @@
-package com.example.irishka.movieapp.ui.view;
+package com.example.irishka.movieapp.ui.movies.view;
 
-import android.app.Activity;
-import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,10 +10,10 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
-import com.example.irishka.movieapp.App;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Movie;
-import com.example.irishka.movieapp.ui.presenter.MoviesPresenter;
+import com.example.irishka.movieapp.ui.film.view.FilmActivity;
+import com.example.irishka.movieapp.ui.movies.presenter.MoviesPresenter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,14 +24,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasActivityInjector;
-import dagger.android.HasFragmentInjector;
-import dagger.android.support.DaggerAppCompatActivity;
-import dagger.android.support.HasSupportFragmentInjector;
 
-public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
+public class MoviesActivity extends MvpAppCompatActivity implements MoviesView, MoviesAdapter.OnItemClickListener {
 
     @BindView(R.id.movies_recycler_view)
     RecyclerView moviesRecyclerView;
@@ -46,7 +39,7 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
         return moviesPresenter;
     }
 
-    @Inject
+  //  @Inject
     MoviesAdapter moviesAdapter;
 
     private boolean isLoading;
@@ -75,6 +68,8 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
                 }
             }
         });
+
+        moviesAdapter = new MoviesAdapter(this);
 
         moviesRecyclerView.setAdapter(moviesAdapter);
 
@@ -125,5 +120,11 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
     protected void onDestroy() {
         super.onDestroy();
        // if (isFinishing()) App.clearMovieComponent();
+    }
+
+    @Override
+    public void onItemClick(Movie movie) {
+        Intent intent = new Intent(this, FilmActivity.class);
+        startActivity(intent);
     }
 }

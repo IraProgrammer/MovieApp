@@ -1,8 +1,8 @@
 package com.example.irishka.movieapp.di.module;
 
 import com.example.irishka.movieapp.di.scopes.PerActivity;
-import com.example.irishka.movieapp.ui.di.MoviesActivityModule;
-import com.example.irishka.movieapp.ui.view.MoviesActivity;
+import com.example.irishka.movieapp.ui.movies.di.MoviesActivityModule;
+import com.example.irishka.movieapp.ui.movies.view.MoviesActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;

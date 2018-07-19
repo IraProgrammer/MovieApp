@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.ui.view;
+package com.example.irishka.movieapp.ui.movies.view;
 
 import com.arellomobile.mvp.MvpView;
 import com.example.irishka.movieapp.domain.entity.Movie;
