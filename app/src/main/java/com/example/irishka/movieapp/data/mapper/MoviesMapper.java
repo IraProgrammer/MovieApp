@@ -1,6 +1,6 @@
 package com.example.irishka.movieapp.data.mapper;
 
-import com.example.irishka.movieapp.data.MovieModel;
+import com.example.irishka.movieapp.data.models.MovieModel;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class MoviesMapper implements Function<MovieModel, Movie>{
         movie.setOriginalLanguage(movieModel.getOriginalLanguage());
         movie.setOriginalTitle(movieModel.getOriginalTitle());
         movie.setPopularity(movieModel.getPopularity());
-        movie.setPosterPath(BASE_IMAGE_URL + movieModel.getPosterPath());
+        movie.setPosterUrl(BASE_IMAGE_URL + movieModel.getPosterPath());
         movie.setReleaseDate(movieModel.getReleaseDate());
         movie.setVideo(movieModel.getVideo());
         movie.setTitle(movieModel.getTitle());
@@ -35,14 +35,13 @@ public class MoviesMapper implements Function<MovieModel, Movie>{
         return movie;
     }
 
-    // TODO: скорее mapList
-    public List<Movie> getMoviesList(List<MovieModel> movieModels){
-        List<Movie> movies = new ArrayList<>();
+    public List<Movie> getMapList(List<MovieModel> movieModels){
+        List<Movie> mapList = new ArrayList<>();
 
         for (MovieModel movieModel: movieModels) {
-            movies.add(apply(movieModel));
+            mapList.add(apply(movieModel));
         }
 
-        return movies;
+        return mapList;
     }
 }

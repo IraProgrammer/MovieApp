@@ -17,6 +17,8 @@ public class App extends Application {
                 .build();
     }
 
+
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -30,8 +32,7 @@ public class App extends Application {
         return movieComponent;
     }
 
-    // TODO: не вызываешь этот метод, а надо
-    public void clearRepComponent() {
+    public static void clearMovieComponent() {
         movieComponent = null;
     }
 }

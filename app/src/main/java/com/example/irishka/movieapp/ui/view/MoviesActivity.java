@@ -110,4 +110,10 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
         }
         return Collections.max(intoList);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (isFinishing()) App.clearMovieComponent();
+    }
 }

@@ -1,9 +1,8 @@
 package com.example.irishka.movieapp.data.repository;
 
-import com.example.irishka.movieapp.data.MovieModel;
 import com.example.irishka.movieapp.data.database.MovieDao;
 import com.example.irishka.movieapp.data.mapper.MoviesMapper;
-import com.example.irishka.movieapp.data.MoviePage;
+import com.example.irishka.movieapp.data.models.MoviePage;
 import com.example.irishka.movieapp.data.network.MoviesApi;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.domain.entity.Movie;
@@ -33,23 +32,18 @@ public class MoviesRepository implements IMoviesRepository {
         this.moviesApi = moviesApi;
     }
 
-    private void onSaveMovies(List<MovieModel> movies) {
-        // TODO: тут всего одна строчка, можно ее и вставлять в doOnSuccess
-        movieDao.insertAll(movies);
-    }
-
     private Single<List<Movie>> getMoviesFromInternet() {
         return moviesApi
                 .getMovies(page)
                 .map(MoviePage::getResults)
-                .doOnSuccess(this::onSaveMovies)
+                .doOnSuccess(movies -> movieDao.insertAll(movies))
                 .doOnSuccess(movies -> page++)
-                .map(movies -> moviesMapper.getMoviesList(movies));
+                .map(movies -> moviesMapper.getMapList(movies));
     }
 
     private Single<List<Movie>> getMoviesFromDatabase() {
         return movieDao.getAllMovies()
-                .map(movies -> moviesMapper.getMoviesList(movies))
+                .map(movies -> moviesMapper.getMapList(movies))
                 .subscribeOn(Schedulers.io());
     }
 

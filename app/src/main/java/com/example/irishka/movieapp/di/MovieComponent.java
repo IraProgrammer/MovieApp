@@ -1,11 +1,10 @@
 package com.example.irishka.movieapp.di;
 
-import com.example.irishka.movieapp.di.module.MovieModule;
 import com.example.irishka.movieapp.ui.view.MoviesActivity;
 
 import dagger.Subcomponent;
 
-@Subcomponent(modules = {MovieModule.class})
+@Subcomponent
 @MovieScope
 public interface MovieComponent {
 

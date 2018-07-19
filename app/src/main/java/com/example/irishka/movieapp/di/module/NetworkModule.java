@@ -30,12 +30,6 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    static ApiKeyInterceptor provideApiKeyInterceptor(){
-        return new ApiKeyInterceptor();
-    }
-
-    @Provides
-    @Singleton
     static HttpLoggingInterceptor provideHttpLoggingInterceptor(){
         return new HttpLoggingInterceptor();
     }

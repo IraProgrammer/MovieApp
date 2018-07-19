@@ -1,6 +1,6 @@
 package com.example.irishka.movieapp.data.network;
 
-import com.example.irishka.movieapp.data.MoviePage;
+import com.example.irishka.movieapp.data.models.MoviePage;
 
 import io.reactivex.Single;
 import retrofit2.http.GET;

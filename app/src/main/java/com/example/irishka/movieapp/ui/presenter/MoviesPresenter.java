@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
+@MovieScope
 @InjectViewState
 public class MoviesPresenter extends MvpPresenter<MoviesView> {
 

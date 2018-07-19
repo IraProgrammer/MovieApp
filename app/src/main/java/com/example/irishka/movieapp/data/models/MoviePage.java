@@ -1,8 +1,9 @@
 
-package com.example.irishka.movieapp.data;
+package com.example.irishka.movieapp.data.models;
 
 import java.util.List;
 
+import com.example.irishka.movieapp.data.models.MovieModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

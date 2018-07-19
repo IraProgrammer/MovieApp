@@ -1,12 +1,6 @@
 
 package com.example.irishka.movieapp.domain.entity;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 public class Movie {
 
     private int id;
@@ -17,7 +11,7 @@ public class Movie {
 
     private double popularity;
 
-    private String posterPath;
+    private String posterUrl;
 
     private String originalLanguage;
 
@@ -59,13 +53,12 @@ public class Movie {
         this.popularity = popularity;
     }
 
-    public String getPosterPath() {
-        return posterPath;
+    public String getPosterUrl() {
+        return posterUrl;
     }
 
-    // TODO: теперь эта переменная скорее posterUrl
-    public void setPosterPath(String posterPath) {
-        this.posterPath = posterPath;
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
     }
 
     public String getOriginalLanguage() {
