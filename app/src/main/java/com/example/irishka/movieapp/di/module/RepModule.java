@@ -19,9 +19,4 @@ public abstract class RepModule {
     @Singleton
     abstract IMoviesRepository provideRepository(MoviesRepository moviesRepository);
 
-  /*  @Provides
-    static MoviesAdapter providesMoviesAdapter(MoviesAdapter.OnItemClickListener onItemClickListener){
-        return new MoviesAdapter(onItemClickListener);
-    } */
-
 }

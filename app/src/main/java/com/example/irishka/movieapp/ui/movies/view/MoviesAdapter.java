@@ -29,7 +29,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
 
     private OnItemClickListener onItemClickListener;
 
-  //  @Inject
+    @Inject
     public MoviesAdapter(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }

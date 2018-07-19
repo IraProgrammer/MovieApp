@@ -39,7 +39,7 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView, 
         return moviesPresenter;
     }
 
-  //  @Inject
+    @Inject
     MoviesAdapter moviesAdapter;
 
     private boolean isLoading;
@@ -68,8 +68,6 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView, 
                 }
             }
         });
-
-        moviesAdapter = new MoviesAdapter(this);
 
         moviesRecyclerView.setAdapter(moviesAdapter);
 
