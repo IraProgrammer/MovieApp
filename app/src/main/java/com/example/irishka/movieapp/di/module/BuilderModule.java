@@ -1,8 +1,10 @@
 package com.example.irishka.movieapp.di.module;
 
 import com.example.irishka.movieapp.di.scopes.PerActivity;
-import com.example.irishka.movieapp.ui.movies.di.MoviesActivityModule;
-import com.example.irishka.movieapp.ui.movies.view.MoviesActivity;
+import com.example.irishka.movieapp.ui.film.di.MovieActivityModule;
+import com.example.irishka.movieapp.ui.film.view.MovieActivity;
+import com.example.irishka.movieapp.ui.movies.di.MoviesListActivityModule;
+import com.example.irishka.movieapp.ui.movies.view.MoviesListActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -12,6 +14,11 @@ import dagger.android.support.AndroidSupportInjectionModule;
 public abstract class BuilderModule {
 
     @PerActivity
-    @ContributesAndroidInjector(modules = MoviesActivityModule.class)
-    abstract MoviesActivity provideMoviesActivity();
+    @ContributesAndroidInjector(modules = MoviesListActivityModule.class)
+    abstract MoviesListActivity provideMoviesActivity();
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = MovieActivityModule.class)
+    abstract MovieActivity provideMovieActivity();
+
 }

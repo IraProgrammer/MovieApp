@@ -8,8 +8,11 @@ import android.view.ViewGroup;
 
 import com.example.irishka.movieapp.R;
 
+import javax.inject.Inject;
+
 public class TrailersFragment extends Fragment {
 
+    @Inject
     public TrailersFragment() {
     }
 

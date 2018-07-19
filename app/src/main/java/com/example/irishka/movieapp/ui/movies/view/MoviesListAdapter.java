@@ -23,14 +23,14 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder> {
+public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.MoviesViewHolder> {
 
     private List<Movie> movies = new ArrayList<>();
 
     private OnItemClickListener onItemClickListener;
 
     @Inject
-    public MoviesAdapter(OnItemClickListener onItemClickListener) {
+    public MoviesListAdapter(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 

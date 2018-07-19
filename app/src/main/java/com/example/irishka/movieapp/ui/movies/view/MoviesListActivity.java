@@ -12,8 +12,8 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Movie;
-import com.example.irishka.movieapp.ui.film.view.FilmActivity;
-import com.example.irishka.movieapp.ui.movies.presenter.MoviesPresenter;
+import com.example.irishka.movieapp.ui.film.view.MovieActivity;
+import com.example.irishka.movieapp.ui.movies.presenter.MoviesListPresenter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,22 +25,22 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 
-public class MoviesActivity extends MvpAppCompatActivity implements MoviesView, MoviesAdapter.OnItemClickListener {
+public class MoviesListActivity extends MvpAppCompatActivity implements MoviesListView, MoviesListAdapter.OnItemClickListener {
 
     @BindView(R.id.movies_recycler_view)
     RecyclerView moviesRecyclerView;
 
     @Inject
     @InjectPresenter
-    MoviesPresenter moviesPresenter;
+    MoviesListPresenter moviesPresenter;
 
     @ProvidePresenter
-    MoviesPresenter providePresenter() {
+    MoviesListPresenter providePresenter() {
         return moviesPresenter;
     }
 
     @Inject
-    MoviesAdapter moviesAdapter;
+    MoviesListAdapter moviesAdapter;
 
     private boolean isLoading;
 
@@ -122,7 +122,7 @@ public class MoviesActivity extends MvpAppCompatActivity implements MoviesView, 
 
     @Override
     public void onItemClick(Movie movie) {
-        Intent intent = new Intent(this, FilmActivity.class);
+        Intent intent = new Intent(this, MovieActivity.class);
         startActivity(intent);
     }
 }

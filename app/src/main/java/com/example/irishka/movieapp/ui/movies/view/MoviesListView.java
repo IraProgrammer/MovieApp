@@ -5,7 +5,7 @@ import com.example.irishka.movieapp.domain.entity.Movie;
 
 import java.util.List;
 
-public interface MoviesView extends MvpView {
+public interface MoviesListView extends MvpView {
 
     void showMovies(List<Movie> movie);
 

@@ -3,7 +3,7 @@ package com.example.irishka.movieapp.ui.movies.presenter;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
-import com.example.irishka.movieapp.ui.movies.view.MoviesView;
+import com.example.irishka.movieapp.ui.movies.view.MoviesListView;
 
 import javax.inject.Inject;
 
@@ -11,14 +11,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
 @InjectViewState
-public class MoviesPresenter extends MvpPresenter<MoviesView> {
+public class MoviesListPresenter extends MvpPresenter<MoviesListView> {
 
     private IMoviesRepository moviesRepository;
 
     private Disposable disposable;
 
     @Inject
-    public MoviesPresenter(IMoviesRepository repository) {
+    public MoviesListPresenter(IMoviesRepository repository) {
         this.moviesRepository = repository;
     }
 

@@ -12,14 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.movies.view.MoviesActivity">
+        <activity android:name=".ui.movies.view.MoviesListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.film.view.FilmActivity"></activity>
+        <activity android:name=".ui.film.view.MovieActivity"></activity>
     </application>
 
 </manifest>
