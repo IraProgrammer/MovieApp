@@ -15,6 +15,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+// TODO: не удалила
 /*public class ApiManager {
 
     private static final String BASE_URL = "https://api.themoviedb.org/3/";

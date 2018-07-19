@@ -30,6 +30,7 @@ public class App extends Application {
         return movieComponent;
     }
 
+    // TODO: не вызываешь этот метод, а надо
     public void clearRepComponent() {
         movieComponent = null;
     }

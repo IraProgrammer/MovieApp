@@ -7,14 +7,5 @@ import java.util.List;
 import io.reactivex.Single;
 
 public interface IMoviesRepository {
-
- //   void onSaveMovies(List<MovieModel> movies);
-
- //   Single<List<MovieModel>> getMoviesFromInternet();
-
- //   Single<List<MovieModel>> getMoviesFromDatabase();
-
     Single<List<Movie>> downloadMovies();
-
-
 }

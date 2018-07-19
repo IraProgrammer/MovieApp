@@ -1,6 +1,5 @@
 package com.example.irishka.movieapp.data.repository;
 
-import com.example.irishka.movieapp.App;
 import com.example.irishka.movieapp.data.MovieModel;
 import com.example.irishka.movieapp.data.database.MovieDao;
 import com.example.irishka.movieapp.data.mapper.MoviesMapper;
@@ -14,7 +13,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class MoviesRepository implements IMoviesRepository {
@@ -36,11 +34,11 @@ public class MoviesRepository implements IMoviesRepository {
     }
 
     private void onSaveMovies(List<MovieModel> movies) {
+        // TODO: тут всего одна строчка, можно ее и вставлять в doOnSuccess
         movieDao.insertAll(movies);
     }
 
     private Single<List<Movie>> getMoviesFromInternet() {
-
         return moviesApi
                 .getMovies(page)
                 .map(MoviePage::getResults)
@@ -50,16 +48,13 @@ public class MoviesRepository implements IMoviesRepository {
     }
 
     private Single<List<Movie>> getMoviesFromDatabase() {
-
         return movieDao.getAllMovies()
                 .map(movies -> moviesMapper.getMoviesList(movies))
                 .subscribeOn(Schedulers.io());
     }
 
     public Single<List<Movie>> downloadMovies() {
-
         return getMoviesFromInternet()
                 .onErrorResumeNext(getMoviesFromDatabase());
-
     }
 }

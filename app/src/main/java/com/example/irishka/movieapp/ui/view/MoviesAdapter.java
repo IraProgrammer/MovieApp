@@ -28,7 +28,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
     private List<Movie> movies = new ArrayList<>();
 
     @Inject
-    public MoviesAdapter(){
+    public MoviesAdapter() {
 
     }
 
@@ -72,15 +72,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
 
         void bind(Movie movie) {
 
-             title.setText(movie.getTitle());
+            title.setText(movie.getTitle());
 
             Glide.with(itemView.getContext())
-
                     .load(movie.getPosterPath())
                     .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                             .placeholder(R.drawable.no_image)
-                            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                    )
+                            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
                     .into(image);
         }
     }

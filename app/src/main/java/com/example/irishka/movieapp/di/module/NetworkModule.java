@@ -52,7 +52,6 @@ public class NetworkModule {
     @Singleton
     @Provides
     static MoviesApi provideApi(OkHttpClient okHttpClient) {
-
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(okHttpClient)

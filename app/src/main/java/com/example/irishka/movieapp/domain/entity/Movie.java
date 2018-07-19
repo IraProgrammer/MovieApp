@@ -63,6 +63,7 @@ public class Movie {
         return posterPath;
     }
 
+    // TODO: теперь эта переменная скорее posterUrl
     public void setPosterPath(String posterPath) {
         this.posterPath = posterPath;
     }

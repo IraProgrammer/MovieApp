@@ -16,12 +16,15 @@ import dagger.Provides;
 public abstract class RepModule {
 
     @Provides
+    // TODO: если ты провайдишь реализацию не по интерфейсу, то не обязательно даже в модуле указывать провайд метод
+    // главное, что стоит @Inject в конструкторе, а даггер сам найдет конкретную реализацию
     static MoviesMapper provideMapper(){
         return new MoviesMapper();
     }
 
     @Provides
     @Singleton
+    // TODO: это можно через @Binds вместо @Provides
     static IMoviesRepository provideRepository(MoviesMapper moviesMapper, MovieDao movieDao, MoviesApi moviesApi){
         return new MoviesRepository(moviesMapper, movieDao, moviesApi);
     }

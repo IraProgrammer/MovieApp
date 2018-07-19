@@ -11,7 +11,6 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.App;
 import com.example.irishka.movieapp.R;
-import com.example.irishka.movieapp.di.AppComponent;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.presenter.MoviesPresenter;
 
@@ -23,7 +22,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.Provides;
 
 public class MoviesActivity extends MvpAppCompatActivity implements MoviesView {
 

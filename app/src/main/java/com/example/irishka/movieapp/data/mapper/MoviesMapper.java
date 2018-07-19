@@ -15,7 +15,7 @@ public class MoviesMapper implements Function<MovieModel, Movie>{
     private static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w500//";
 
     @Inject
-    public MoviesMapper(){
+    public MoviesMapper() {
 
     }
 
@@ -35,8 +35,8 @@ public class MoviesMapper implements Function<MovieModel, Movie>{
         return movie;
     }
 
+    // TODO: скорее mapList
     public List<Movie> getMoviesList(List<MovieModel> movieModels){
-
         List<Movie> movies = new ArrayList<>();
 
         for (MovieModel movieModel: movieModels) {
@@ -45,6 +45,4 @@ public class MoviesMapper implements Function<MovieModel, Movie>{
 
         return movies;
     }
-
-
 }

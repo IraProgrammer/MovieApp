@@ -7,6 +7,7 @@ import android.arch.persistence.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+// TODO: модельки тоже стоит в свою папку положить, например models
 @Entity
 public class MovieModel {
 

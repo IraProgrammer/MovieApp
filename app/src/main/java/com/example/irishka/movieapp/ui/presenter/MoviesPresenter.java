@@ -4,6 +4,7 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.irishka.movieapp.App;
 import com.example.irishka.movieapp.data.repository.MoviesRepository;
+import com.example.irishka.movieapp.di.MovieScope;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.ui.view.MoviesView;
 

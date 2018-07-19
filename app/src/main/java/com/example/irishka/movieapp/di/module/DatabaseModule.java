@@ -1,10 +1,8 @@
 package com.example.irishka.movieapp.di.module;
 
-import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 
-import com.example.irishka.movieapp.App;
 import com.example.irishka.movieapp.data.database.AppDatabase;
 import com.example.irishka.movieapp.data.database.MovieDao;
 
