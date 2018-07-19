@@ -71,12 +71,9 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
         @BindView(R.id.movie_image)
         ImageView image;
 
-        //  View itemView;
-
         MoviesViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            //    this.itemView = itemView;
         }
 
         void bind(Movie movie) {

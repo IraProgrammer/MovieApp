@@ -27,4 +27,8 @@ public class CreatorsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_creators, container, false);
     }
 
+    @Override
+    public String toString() {
+        return "Creators";
+    }
 }

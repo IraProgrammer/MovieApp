@@ -28,4 +28,9 @@ public class DescriptionFragment extends dagger.android.support.DaggerFragment {
         return inflater.inflate(R.layout.fragment_description, container, false);
     }
 
+    @Override
+    public String toString() {
+        return "Description";
+    }
+
 }

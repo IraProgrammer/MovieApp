@@ -2,9 +2,13 @@ package com.example.irishka.movieapp.ui.film.view;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
 import com.example.irishka.movieapp.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -37,9 +41,12 @@ public class MovieActivity extends DaggerAppCompatActivity {
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(descriptionFragment, "FRAG1");
-        adapter.addFragment(trailersFragment, "FRAG2");
-        adapter.addFragment(creatorsFragment, "FRAG3");
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(descriptionFragment);
+        fragments.add(trailersFragment);
+        fragments.add(creatorsFragment);
+
+        adapter.setFragments(fragments);
 
         viewPager.setAdapter(adapter);
 

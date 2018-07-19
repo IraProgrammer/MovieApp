@@ -27,4 +27,9 @@ public class TrailersFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_trailers, container, false);
     }
 
+    @Override
+    public String toString() {
+        return "Trailers";
+    }
+
 }
