@@ -13,7 +13,7 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabMode="fixed"
+        app:tabMode="scrollable"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         app:tabGravity="fill"
