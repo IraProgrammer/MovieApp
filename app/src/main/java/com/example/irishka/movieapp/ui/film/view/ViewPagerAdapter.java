@@ -7,13 +7,15 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-class ViewPagerAdapter extends FragmentPagerAdapter {
+import javax.inject.Inject;
+
+public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> fragments = new ArrayList<>();
 
     private List<String> titles = new ArrayList<>();
 
-   // @Inject
+    @Inject
     public ViewPagerAdapter(FragmentManager manager) {
         super(manager);
     }
