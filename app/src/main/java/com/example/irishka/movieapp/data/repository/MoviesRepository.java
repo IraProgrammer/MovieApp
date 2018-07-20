@@ -2,6 +2,7 @@ package com.example.irishka.movieapp.data.repository;
 
 import com.example.irishka.movieapp.data.database.MovieDao;
 import com.example.irishka.movieapp.data.mapper.MoviesMapper;
+import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.data.models.MoviePage;
 import com.example.irishka.movieapp.data.network.MoviesApi;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
@@ -48,8 +49,15 @@ public class MoviesRepository implements IMoviesRepository {
                 .subscribeOn(Schedulers.io());
     }
 
+    @Override
     public Single<List<Movie>> downloadMovies() {
         return getMoviesFromInternet()
                 .onErrorResumeNext(getMoviesFromDatabase());
+    }
+
+    @Override
+    public Single<DescriptionModel> downloadDescription(long movieId){
+        return moviesApi
+                .getDescription(movieId);
     }
 }

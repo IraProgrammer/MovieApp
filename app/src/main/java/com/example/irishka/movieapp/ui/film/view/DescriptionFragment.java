@@ -26,6 +26,10 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
     @InjectPresenter
     DescriptionPresenter presenter;
 
+    public static DescriptionFragment newInstance(){
+        return new DescriptionFragment();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

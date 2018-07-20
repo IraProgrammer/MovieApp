@@ -27,6 +27,8 @@ import dagger.android.AndroidInjection;
 
 public class MoviesListActivity extends MvpAppCompatActivity implements MoviesListView, MoviesListAdapter.OnItemClickListener {
 
+    public static final String MOVIE_ID = "id_of_movie";
+
     @BindView(R.id.movies_recycler_view)
     RecyclerView moviesRecyclerView;
 
@@ -115,14 +117,9 @@ public class MoviesListActivity extends MvpAppCompatActivity implements MoviesLi
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-       // if (isFinishing()) App.clearMovieComponent();
-    }
-
-    @Override
     public void onItemClick(Movie movie) {
         Intent intent = new Intent(this, MovieActivity.class);
+        intent.putExtra(MOVIE_ID, movie.getId());
         startActivity(intent);
     }
 }
