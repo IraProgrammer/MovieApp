@@ -20,9 +20,11 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.Provides;
 import dagger.android.AndroidInjection;
 
 public class MoviesListActivity extends MvpAppCompatActivity implements MoviesListView, MoviesListAdapter.OnItemClickListener {
@@ -33,12 +35,14 @@ public class MoviesListActivity extends MvpAppCompatActivity implements MoviesLi
     RecyclerView moviesRecyclerView;
 
     @Inject
+    Provider<MoviesListPresenter> moviesPresenterProvider;
+
     @InjectPresenter
     MoviesListPresenter moviesPresenter;
 
     @ProvidePresenter
     MoviesListPresenter providePresenter() {
-        return moviesPresenter;
+        return moviesPresenterProvider.get();
     }
 
     @Inject

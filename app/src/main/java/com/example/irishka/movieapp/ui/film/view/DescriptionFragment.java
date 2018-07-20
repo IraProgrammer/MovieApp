@@ -18,9 +18,11 @@ import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.ui.film.presenter.DescriptionPresenter;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.Lazy;
 import dagger.android.DaggerFragment;
 
 import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOVIE_ID;
@@ -32,20 +34,22 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
     }
 
     @Inject
+    Provider<DescriptionPresenter> presenterProvider;
+
     @InjectPresenter
     DescriptionPresenter presenter;
 
     @ProvidePresenter
     DescriptionPresenter providePresenter() {
-        return presenter;
+        return presenterProvider.get();
     }
 
     @BindView(R.id.film_title)
     TextView filmTitle;
 
-  /*  public static DescriptionFragment newInstance(){
+    public static DescriptionFragment newInstance(){
         return new DescriptionFragment();
-    } */
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,9 +63,6 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
         View v = inflater.inflate(R.layout.fragment_description, container, false);
 
         ButterKnife.bind(this, v);
-
-        presenter.setId(getActivity().getIntent().getLongExtra(MOVIE_ID, 164558));
-
         return v;
     }
 

@@ -18,11 +18,13 @@ public class DescriptionPresenter extends MvpPresenter<DescriptionView> {
 
     private Disposable disposable;
 
-    private long movieId;
+    //@Inject
+    private final long movieId;
 
     @Inject
-    public DescriptionPresenter(IMoviesRepository repository) {
+    public DescriptionPresenter(IMoviesRepository repository, long movieId) {
         this.moviesRepository = repository;
+        this.movieId = movieId;
     }
 
     @Override
@@ -31,9 +33,9 @@ public class DescriptionPresenter extends MvpPresenter<DescriptionView> {
         downloadDescriptions(movieId);
     }
 
-    public void setId(long movieId){
+  /*  public void setId(long movieId){
         this.movieId = movieId;
-    }
+    } */
 
     public void downloadDescriptions(long movieId) {
 

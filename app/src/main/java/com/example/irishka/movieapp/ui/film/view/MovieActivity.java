@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.example.irishka.movieapp.R;
 
@@ -15,7 +16,10 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.AndroidInjection;
 import dagger.android.support.DaggerAppCompatActivity;
+
+import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOVIE_ID;
 
 public class MovieActivity extends DaggerAppCompatActivity {
 
@@ -39,11 +43,10 @@ public class MovieActivity extends DaggerAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film);
         ButterKnife.bind(this);
-
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(descriptionFragment);

@@ -16,12 +16,20 @@ import dagger.Module;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 
+import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOVIE_ID;
+
 @Module
 public abstract class MovieActivityModule {
 
-    @PerFragment
+    @Provides
+    @PerActivity
+    static long provideId(MovieActivity movieActivity) {
+        return movieActivity.getIntent().getLongExtra(MOVIE_ID, 164558);
+    }
+
+ /*  @PerFragment
     @ContributesAndroidInjector(modules = {DescriptionFragmentModule.class})
-    abstract DescriptionFragment providesDescriptionFragment();
+    abstract DescriptionFragment providesDescriptionFragment(); */
 
     @PerFragment
     @ContributesAndroidInjector(modules = {CreatorsFragmentModule.class})
