@@ -10,14 +10,21 @@ import com.example.irishka.movieapp.R;
 
 import javax.inject.Inject;
 
+import dagger.android.support.AndroidSupportInjection;
+
 public class TrailersFragment extends Fragment {
 
-    @Inject
-    public TrailersFragment() {
+//    @Inject
+//    public TrailersFragment() {
+//    }
+
+    public static TrailersFragment newInstance(){
+        return new TrailersFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        AndroidSupportInjection.inject(this);
         super.onCreate(savedInstanceState);
     }
 

@@ -29,31 +29,23 @@ public class MovieActivity extends DaggerAppCompatActivity {
     @BindView(R.id.pager)
     ViewPager viewPager;
 
-    @Inject
-    DescriptionFragment descriptionFragment;
-
-    @Inject
-    CreatorsFragment creatorsFragment;
-
-    @Inject
-    TrailersFragment trailersFragment;
+//    @Inject
+//    DescriptionFragment descriptionFragment;
+//
+//    @Inject
+//    CreatorsFragment creatorsFragment;
+//
+//    @Inject
+//    TrailersFragment trailersFragment;
 
     @Inject
     ViewPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film);
         ButterKnife.bind(this);
-
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(descriptionFragment);
-        fragments.add(trailersFragment);
-        fragments.add(creatorsFragment);
-
-        adapter.setFragments(fragments);
 
         viewPager.setAdapter(adapter);
 

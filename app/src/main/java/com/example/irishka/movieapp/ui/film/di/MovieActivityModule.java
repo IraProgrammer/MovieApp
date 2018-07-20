@@ -27,9 +27,9 @@ public abstract class MovieActivityModule {
         return movieActivity.getIntent().getLongExtra(MOVIE_ID, 164558);
     }
 
- /*  @PerFragment
+   @PerFragment
     @ContributesAndroidInjector(modules = {DescriptionFragmentModule.class})
-    abstract DescriptionFragment providesDescriptionFragment(); */
+    abstract DescriptionFragment providesDescriptionFragment();
 
     @PerFragment
     @ContributesAndroidInjector(modules = {CreatorsFragmentModule.class})

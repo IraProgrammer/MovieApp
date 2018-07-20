@@ -24,14 +24,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.Lazy;
 import dagger.android.DaggerFragment;
+import dagger.android.support.AndroidSupportInjection;
 
 import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOVIE_ID;
 
 public class DescriptionFragment extends MvpAppCompatFragment implements DescriptionView {
 
-    @Inject
+  /*  @Inject
     public DescriptionFragment() {
-    }
+    } */
 
     @Inject
     Provider<DescriptionPresenter> presenterProvider;
@@ -53,6 +54,7 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        AndroidSupportInjection.inject(this);
         super.onCreate(savedInstanceState);
     }
 

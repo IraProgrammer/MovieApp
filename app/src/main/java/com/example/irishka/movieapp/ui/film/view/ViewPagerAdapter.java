@@ -18,6 +18,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Inject
     public ViewPagerAdapter(FragmentManager manager) {
         super(manager);
+        setFragments();
     }
 
     @Override
@@ -30,11 +31,15 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         return fragments.size();
     }
 
-    public void setFragments(List<Fragment> fragments) {
-        this.fragments = fragments;
+    private void setFragments() {
+        fragments.add(DescriptionFragment.newInstance());
+        fragments.add(TrailersFragment.newInstance());
+        fragments.add(CreatorsFragment.newInstance());
+
         for (Fragment f: fragments) {
             titles.add(f.toString());
         }
+
     }
 
     @Override

@@ -10,14 +10,21 @@ import com.example.irishka.movieapp.R;
 
 import javax.inject.Inject;
 
+import dagger.android.support.AndroidSupportInjection;
+
 public class CreatorsFragment extends Fragment {
 
-    @Inject
-    public CreatorsFragment() {
+//    @Inject
+//    public CreatorsFragment() {
+//    }
+
+    public static CreatorsFragment newInstance(){
+        return new CreatorsFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        AndroidSupportInjection.inject(this);
         super.onCreate(savedInstanceState);
     }
 
