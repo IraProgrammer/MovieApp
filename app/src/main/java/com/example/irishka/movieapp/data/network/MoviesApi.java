@@ -13,7 +13,7 @@ public interface MoviesApi {
     @GET("discover/movie/")
     Single<MoviePage> getMovies(@Query("page") int page);
 
-    @GET("/movie/{movie_id}")
+    @GET("movie/{movie_id}")
     Single<DescriptionModel> getDescription(@Path("movie_id") long movieId);
 
 }
