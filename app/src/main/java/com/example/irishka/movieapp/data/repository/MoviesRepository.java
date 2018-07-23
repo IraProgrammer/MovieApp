@@ -1,10 +1,12 @@
 package com.example.irishka.movieapp.data.repository;
 
 import com.example.irishka.movieapp.data.database.MovieDao;
+import com.example.irishka.movieapp.data.mapper.DescriptionMapper;
 import com.example.irishka.movieapp.data.mapper.MoviesMapper;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.data.models.MoviePage;
 import com.example.irishka.movieapp.data.network.MoviesApi;
+import com.example.irishka.movieapp.domain.entity.Description;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
@@ -20,6 +22,8 @@ public class MoviesRepository implements IMoviesRepository {
 
     private MoviesMapper moviesMapper;
 
+    private DescriptionMapper descriptionMapper;
+
     private MovieDao movieDao;
 
     private MoviesApi moviesApi;
@@ -27,8 +31,9 @@ public class MoviesRepository implements IMoviesRepository {
     private int page = 1;
 
     @Inject
-    public MoviesRepository(MoviesMapper moviesMapper,
+    public MoviesRepository(MoviesMapper moviesMapper, DescriptionMapper descriptionMapper,
                             MovieDao movieDao, MoviesApi moviesApi) {
+        this.descriptionMapper = descriptionMapper;
         this.moviesMapper = moviesMapper;
         this.movieDao = movieDao;
         this.moviesApi = moviesApi;
@@ -56,8 +61,17 @@ public class MoviesRepository implements IMoviesRepository {
     }
 
     @Override
-    public Single<DescriptionModel> downloadDescription(long movieId){
+    public Single<Description> downloadDescription(long movieId){
         return moviesApi
-                .getDescription(movieId);
+                .getDescription(movieId)
+                .map(description -> descriptionMapper.apply(description));
+    }
+
+    @Override
+    public Single<List<Movie>> downloadRelatedMovies(long movieId){
+        return moviesApi
+                .getRelated(movieId)
+                .map(MoviePage::getResults)
+                .map(movies -> moviesMapper.mapMoviesList(movies));
     }
 }

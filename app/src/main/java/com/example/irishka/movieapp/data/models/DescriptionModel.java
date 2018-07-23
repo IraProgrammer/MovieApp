@@ -21,7 +21,7 @@ public class DescriptionModel {
     private Integer budget;
     @SerializedName("genres")
     @Expose
-    private List<Genre> genres = null;
+    private List<GenreModel> genres = null;
     @SerializedName("homepage")
     @Expose
     private String homepage;
@@ -51,7 +51,7 @@ public class DescriptionModel {
     private List<ProductionCompany> productionCompanies = null;
     @SerializedName("production_countries")
     @Expose
-    private List<ProductionCountry> productionCountries = null;
+    private List<ProductionCountryModel> productionCountries = null;
     @SerializedName("release_date")
     @Expose
     private String releaseDate;
@@ -115,11 +115,11 @@ public class DescriptionModel {
         this.budget = budget;
     }
 
-    public List<Genre> getGenres() {
+    public List<GenreModel> getGenres() {
         return genres;
     }
 
-    public void setGenres(List<Genre> genres) {
+    public void setGenres(List<GenreModel> genres) {
         this.genres = genres;
     }
 
@@ -195,11 +195,11 @@ public class DescriptionModel {
         this.productionCompanies = productionCompanies;
     }
 
-    public List<ProductionCountry> getProductionCountries() {
+    public List<ProductionCountryModel> getProductionCountries() {
         return productionCountries;
     }
 
-    public void setProductionCountries(List<ProductionCountry> productionCountries) {
+    public void setProductionCountries(List<ProductionCountryModel> productionCountries) {
         this.productionCountries = productionCountries;
     }
 

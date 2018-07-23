@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:padding="8dp"
@@ -95,10 +95,10 @@
                 android:text="TextView" />
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/same_recycler_view"
+                android:id="@+id/related_recycler_view"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
         </LinearLayout>
     </LinearLayout>
 
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>

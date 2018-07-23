@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.ui.film.view;
+package com.example.irishka.movieapp.ui.movie.trailers;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,18 +8,12 @@ import android.view.ViewGroup;
 
 import com.example.irishka.movieapp.R;
 
-import javax.inject.Inject;
-
 import dagger.android.support.AndroidSupportInjection;
 
-public class CreatorsFragment extends Fragment {
+public class TrailersFragment extends Fragment {
 
-//    @Inject
-//    public CreatorsFragment() {
-//    }
-
-    public static CreatorsFragment newInstance(){
-        return new CreatorsFragment();
+    public static TrailersFragment newInstance(){
+        return new TrailersFragment();
     }
 
     @Override
@@ -31,11 +25,12 @@ public class CreatorsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_creators, container, false);
+        return inflater.inflate(R.layout.fragment_trailers, container, false);
     }
 
     @Override
     public String toString() {
-        return "Creators";
+        return "Trailers";
     }
+
 }

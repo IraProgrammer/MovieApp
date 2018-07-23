@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.ui.film.di;
+package com.example.irishka.movieapp.ui.movie.di;
 
 import dagger.Module;
 

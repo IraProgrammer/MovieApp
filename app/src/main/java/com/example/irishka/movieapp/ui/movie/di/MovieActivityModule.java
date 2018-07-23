@@ -1,16 +1,12 @@
-package com.example.irishka.movieapp.ui.film.di;
-
-import android.support.v4.app.Fragment;
+package com.example.irishka.movieapp.ui.movie.di;
 
 import com.example.irishka.movieapp.di.scopes.PerActivity;
 import com.example.irishka.movieapp.di.scopes.PerFragment;
-import com.example.irishka.movieapp.ui.film.view.CreatorsFragment;
-import com.example.irishka.movieapp.ui.film.view.DescriptionFragment;
-import com.example.irishka.movieapp.ui.film.view.MovieActivity;
-import com.example.irishka.movieapp.ui.film.view.TrailersFragment;
-import com.example.irishka.movieapp.ui.film.view.ViewPagerAdapter;
-import com.example.irishka.movieapp.ui.movies.view.MoviesListActivity;
-import com.example.irishka.movieapp.ui.movies.view.MoviesListAdapter;
+import com.example.irishka.movieapp.ui.movie.creators.CreatorsFragment;
+import com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment;
+import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
+import com.example.irishka.movieapp.ui.movie.trailers.TrailersFragment;
+import com.example.irishka.movieapp.ui.movie.view.ViewPagerAdapter;
 
 import dagger.Module;
 import dagger.Provides;

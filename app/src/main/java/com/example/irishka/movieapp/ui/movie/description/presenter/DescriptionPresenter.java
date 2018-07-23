@@ -1,10 +1,9 @@
-package com.example.irishka.movieapp.ui.film.presenter;
+package com.example.irishka.movieapp.ui.movie.description.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
-import com.example.irishka.movieapp.ui.film.view.DescriptionView;
+import com.example.irishka.movieapp.ui.movie.description.view.DescriptionView;
 
 import javax.inject.Inject;
 
@@ -18,7 +17,6 @@ public class DescriptionPresenter extends MvpPresenter<DescriptionView> {
 
     private Disposable disposable;
 
-    //@Inject
     private final long movieId;
 
     @Inject
@@ -31,11 +29,8 @@ public class DescriptionPresenter extends MvpPresenter<DescriptionView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         downloadDescriptions(movieId);
+        downloadRelatedMovies(movieId);
     }
-
-  /*  public void setId(long movieId){
-        this.movieId = movieId;
-    } */
 
     public void downloadDescriptions(long movieId) {
 
@@ -46,6 +41,13 @@ public class DescriptionPresenter extends MvpPresenter<DescriptionView> {
         disposable = moviesRepository.downloadDescription(movieId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(movies -> getViewState().showDescription(movies), Throwable::printStackTrace);
+    }
+
+    public void downloadRelatedMovies(long movieId) {
+
+        disposable = moviesRepository.downloadRelatedMovies(movieId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(movies -> getViewState().showRelatedMovies(movies), Throwable::printStackTrace);
     }
 
     public void onStop() {

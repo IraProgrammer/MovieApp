@@ -16,4 +16,6 @@ public interface MoviesApi {
     @GET("movie/{movie_id}")
     Single<DescriptionModel> getDescription(@Path("movie_id") long movieId);
 
+    @GET("movie/{movie_id}/similar")
+    Single<MoviePage> getRelated(@Path("movie_id") long movieId);
 }

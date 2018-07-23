@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.ui.film.view;
+package com.example.irishka.movieapp.ui.movie.view;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -28,15 +28,6 @@ public class MovieActivity extends DaggerAppCompatActivity {
 
     @BindView(R.id.pager)
     ViewPager viewPager;
-
-//    @Inject
-//    DescriptionFragment descriptionFragment;
-//
-//    @Inject
-//    CreatorsFragment creatorsFragment;
-//
-//    @Inject
-//    TrailersFragment trailersFragment;
 
     @Inject
     ViewPagerAdapter adapter;

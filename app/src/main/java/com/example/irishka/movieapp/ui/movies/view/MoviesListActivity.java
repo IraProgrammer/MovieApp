@@ -12,7 +12,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Movie;
-import com.example.irishka.movieapp.ui.film.view.MovieActivity;
+import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 import com.example.irishka.movieapp.ui.movies.presenter.MoviesListPresenter;
 
 import java.util.ArrayList;
@@ -106,7 +106,7 @@ public class MoviesListActivity extends MvpAppCompatActivity implements MoviesLi
     @Override
     protected void onStop() {
         super.onStop();
-        if (moviesPresenter != null)
+      //  if (moviesPresenter != null)
         moviesPresenter.onStop();
     }
 

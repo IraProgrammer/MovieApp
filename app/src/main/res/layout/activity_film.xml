@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.irishka.movieapp.ui.film.view.MovieActivity">
+    tools:context="com.example.irishka.movieapp.ui.movie.view.MovieActivity">
 
 
     <android.support.design.widget.TabLayout

@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MovieApp</string>
+
+    <string name="see_also">See also</string>
+
+    <string name="description_fragment">Description</string>
+
+    <string name="adult">18+</string>
 </resources>

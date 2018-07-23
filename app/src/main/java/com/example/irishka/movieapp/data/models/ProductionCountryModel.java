@@ -4,7 +4,7 @@ package com.example.irishka.movieapp.data.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ProductionCountry {
+public class ProductionCountryModel {
 
     @SerializedName("iso_3166_1")
     @Expose

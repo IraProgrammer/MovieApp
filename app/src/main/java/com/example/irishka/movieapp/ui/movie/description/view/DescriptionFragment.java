@@ -1,18 +1,17 @@
-package com.example.irishka.movieapp.ui.film.view;
+package com.example.irishka.movieapp.ui.movie.description.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.telecom.TelecomManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
-import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.bumptech.glide.Glide;
@@ -20,9 +19,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
-import com.example.irishka.movieapp.data.models.DescriptionModel;
-import com.example.irishka.movieapp.data.models.Genre;
-import com.example.irishka.movieapp.ui.film.presenter.DescriptionPresenter;
+import com.example.irishka.movieapp.domain.entity.Description;
+import com.example.irishka.movieapp.domain.entity.Genre;
+import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.ui.movie.description.presenter.DescriptionPresenter;
+import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 
 import java.util.List;
 
@@ -31,18 +32,15 @@ import javax.inject.Provider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.Lazy;
-import dagger.android.DaggerFragment;
 import dagger.android.support.AndroidSupportInjection;
+import okhttp3.Interceptor;
 
-import static android.content.Context.DEVICE_POLICY_SERVICE;
 import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOVIE_ID;
 
-public class DescriptionFragment extends MvpAppCompatFragment implements DescriptionView {
+public class DescriptionFragment extends MvpAppCompatFragment implements DescriptionView, RelatedMoviesAdapter.OnItemClickListener {
 
-  /*  @Inject
-    public DescriptionFragment() {
-    } */
+    @Inject
+    RelatedMoviesAdapter relatedMoviesAdapter;
 
     @Inject
     Provider<DescriptionPresenter> presenterProvider;
@@ -79,6 +77,9 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
     @BindView(R.id.see_also)
     TextView seeAlso;
 
+    @BindView(R.id.related_recycler_view)
+    RecyclerView relatedMovies;
+
     public static DescriptionFragment newInstance(){
         return new DescriptionFragment();
     }
@@ -94,8 +95,11 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_description, container, false);
-
         ButterKnife.bind(this, v);
+
+        relatedMovies.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        relatedMovies.setAdapter(relatedMoviesAdapter);
+
         return v;
     }
 
@@ -105,7 +109,7 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
     }
 
     @Override
-    public void showDescription(DescriptionModel description) {
+    public void showDescription(Description description) {
 
         filmTitle.setText(description.getTitle());
 
@@ -115,32 +119,66 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
 
         setGenre(description);
 
-        duration.setText(description.getRuntime() + ", " + description.getAdult());
+        setDurationAndAdult(description);
 
         rate.setText(String.valueOf(description.getPopularity()));
 
         overview.setText(description.getOverview());
 
-        seeAlso.setText("See Also");
+        seeAlso.setText(R.string.see_also);
     }
 
-    private void setPicture(DescriptionModel description){
+    private void setPicture(Description description){
         Glide.with(this)
-                .load("http://image.tmdb.org/t/p/w500//" + description.getPosterPath())
+                .load(description.getPosterPath())
                 .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                         .placeholder(R.drawable.no_image)
                         .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
                 .into(image);
     }
 
-    private void setGenre(DescriptionModel description){
-        String genresStr = "";
-
+    private void setGenre(Description description){
+        StringBuilder genresStr = new StringBuilder();
         List<Genre> genres = description.getGenres();
-        for (Genre g: genres) {
-            genresStr += g.getName() + ", ";
+
+        for (int i = 0; i < genres.size()-1; i++) {
+            genresStr.append(genres.get(i).getName()).append(", ");
         }
 
-        genre.setText(genresStr);
+        genresStr.append(genres.get(genres.size()-1).getName());
+
+        genre.setText(genresStr.toString());
+    }
+
+    private void setDurationAndAdult(Description description){
+        int hours = description.getRuntime()/60;
+        int minutes = description.getRuntime()%60;
+
+        String minStr;
+        if (minutes < 10) minStr = "0" + String.valueOf(minutes);
+        else minStr = String.valueOf(String.valueOf(minutes));
+        duration.setText(String.valueOf(hours) + ":" + minStr);
+        if (description.getAdult()) {
+            duration.append(", 18+");
+        }
+
+    }
+
+    @Override
+    public void showRelatedMovies(List<Movie> movies){
+        relatedMoviesAdapter.setRelatedList(movies);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenter.onStop();
+    }
+
+    @Override
+    public void onItemClick(Movie movie) {
+        Intent intent = new Intent(getActivity(), MovieActivity.class);
+        intent.putExtra(MOVIE_ID, movie.getId());
+        startActivity(intent);
     }
 }

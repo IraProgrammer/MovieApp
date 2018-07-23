@@ -32,7 +32,7 @@ public class NetworkModule {
     @Provides
     @Singleton
     static HttpLoggingInterceptor provideHttpLoggingInterceptor(){
-        return new HttpLoggingInterceptor();
+        return new HttpLoggingInterceptor().setLevel((BuildConfig.DEBUG) ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
     }
 
     @Provides
@@ -40,12 +40,12 @@ public class NetworkModule {
     static OkHttpClient provideOkHttpClient(ApiKeyInterceptor apiKeyInterceptor, HttpLoggingInterceptor httpLoggingInterceptor){
         return new OkHttpClient.Builder()
                 .addInterceptor(apiKeyInterceptor)
-                .addInterceptor(httpLoggingInterceptor.setLevel((BuildConfig.DEBUG) ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE))
+                .addInterceptor(httpLoggingInterceptor)
                 .build();
     }
 
-    @Singleton
     @Provides
+    @Singleton
     static MoviesApi provideApi(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
