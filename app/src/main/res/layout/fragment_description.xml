@@ -9,12 +9,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:orientation="horizontal">
 
                 <ImageView
@@ -124,7 +125,8 @@
         android:id="@+id/overview"
         android:layout_width="wrap_content"
         android:textSize="14sp"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="4dp"
         android:layout_height="wrap_content"
         android:text="TextView" />
 
@@ -139,7 +141,8 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:text="GALLERY"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="4dp"
                 android:textSize="14sp" />
 
             <android.support.v7.widget.RecyclerView
@@ -159,7 +162,8 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:text="TextView"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="4dp"
             android:textSize="14sp" />
 
         <android.support.v7.widget.RecyclerView
