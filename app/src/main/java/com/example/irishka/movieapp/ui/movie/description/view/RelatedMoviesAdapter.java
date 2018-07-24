@@ -47,7 +47,7 @@ public class RelatedMoviesAdapter extends RecyclerView.Adapter<RelatedMoviesAdap
     @NonNull
     @Override
     public RelatedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new RelatedViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false));
+        return new RelatedViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.related_item, parent, false));
     }
 
     @Override

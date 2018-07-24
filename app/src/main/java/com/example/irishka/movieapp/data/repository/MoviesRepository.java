@@ -3,6 +3,7 @@ package com.example.irishka.movieapp.data.repository;
 import com.example.irishka.movieapp.data.database.MovieDao;
 import com.example.irishka.movieapp.data.mapper.DescriptionMapper;
 import com.example.irishka.movieapp.data.mapper.MoviesMapper;
+import com.example.irishka.movieapp.data.models.Credits;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.data.models.MoviePage;
 import com.example.irishka.movieapp.data.network.MoviesApi;
@@ -73,5 +74,11 @@ public class MoviesRepository implements IMoviesRepository {
                 .getRelated(movieId)
                 .map(MoviePage::getResults)
                 .map(movies -> moviesMapper.mapMoviesList(movies));
+    }
+
+    @Override
+    public Single<Credits> downloadCreators(long movieId){
+        return moviesApi
+                .getCreators(movieId);
     }
 }

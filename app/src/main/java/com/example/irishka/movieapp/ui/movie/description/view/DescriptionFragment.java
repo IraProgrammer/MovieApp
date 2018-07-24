@@ -33,7 +33,6 @@ import javax.inject.Provider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
-import okhttp3.Interceptor;
 
 import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOVIE_ID;
 
@@ -56,14 +55,20 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
     @BindView(R.id.film_title)
     TextView filmTitle;
 
-    @BindView(R.id.year_country)
-    TextView yearCountry;
+    @BindView(R.id.year)
+    TextView year;
+
+    @BindView(R.id.country)
+    TextView country;
 
     @BindView(R.id.genre)
     TextView genre;
 
     @BindView(R.id.duration)
     TextView duration;
+
+    @BindView(R.id.adult)
+    TextView adult;
 
     @BindView(R.id.rate)
     TextView rate;
@@ -113,15 +118,19 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
 
         filmTitle.setText(description.getTitle());
 
-        yearCountry.setText(description.getReleaseDate() + ", " + description.getProductionCountries().get(0).getName());
+        setYear(description);
 
         setPicture(description);
 
         setGenre(description);
 
-        setDurationAndAdult(description);
+        setDuration(description);
+
+        setAdult(description);
 
         rate.setText(String.valueOf(description.getPopularity()));
+
+        country.setText(description.getProductionCountries().get(0).getName());
 
         overview.setText(description.getOverview());
 
@@ -150,17 +159,25 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
         genre.setText(genresStr.toString());
     }
 
-    private void setDurationAndAdult(Description description){
+    private void setYear(Description description){
+        String releaseDate = description.getReleaseDate();
+        year.setText(releaseDate.substring(0,4));
+    }
+
+    private void setDuration(Description description){
         int hours = description.getRuntime()/60;
         int minutes = description.getRuntime()%60;
 
-        String minStr;
-        if (minutes < 10) minStr = "0" + String.valueOf(minutes);
-        else minStr = String.valueOf(String.valueOf(minutes));
-        duration.setText(String.valueOf(hours) + ":" + minStr);
-        if (description.getAdult()) {
-            duration.append(", 18+");
-        }
+        String n = "";
+        if (minutes < 10) n = "0";
+
+        duration.setText(String.valueOf(hours) + "h " + String.valueOf(minutes) + n + "min");
+    }
+
+    private void setAdult(Description description){
+
+        if (!description.getAdult()) adult.setText("18+");
+        else adult.setText("");
 
     }
 

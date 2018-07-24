@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.irishka.movieapp.ui.movie.creators.CreatorsFragment;
+import com.example.irishka.movieapp.ui.movie.creators.view.CreatorsFragment;
 import com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment;
 import com.example.irishka.movieapp.ui.movie.trailers.TrailersFragment;
 

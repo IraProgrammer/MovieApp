@@ -1,5 +1,6 @@
 package com.example.irishka.movieapp.data.network;
 
+import com.example.irishka.movieapp.data.models.Credits;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.data.models.MoviePage;
 
@@ -18,4 +19,7 @@ public interface MoviesApi {
 
     @GET("movie/{movie_id}/similar")
     Single<MoviePage> getRelated(@Path("movie_id") long movieId);
+
+    @GET("movie/{movie_id}/credits")
+    Single<Credits> getCreators(@Path("movie_id") long movieId);
 }
