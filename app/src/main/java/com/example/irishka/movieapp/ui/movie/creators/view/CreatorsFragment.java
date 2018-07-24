@@ -67,7 +67,7 @@ public class CreatorsFragment extends MvpAppCompatFragment implements CreatorsVi
 
     @Override
     public String toString() {
-        return "Creators";
+        return "Cast";
     }
 
     @Override

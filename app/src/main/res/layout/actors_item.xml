@@ -7,11 +7,14 @@
     android:orientation="horizontal"
     android:padding="8dp">
 
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/actor_image"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:adjustViewBounds="true" />
+        android:scaleType="fitCenter"
+        app:riv_corner_radius="100dp"
+        app:riv_mutate_background="true"
+        app:riv_tile_mode="repeat"/>
 
     <TextView
         android:id="@+id/actor_name"
@@ -19,6 +22,6 @@
         android:layout_height="match_parent"
         android:gravity="center|left"
         android:padding="@dimen/textViewPadding"
-        android:textColor="@color/black" />
+        android:textColor="@color/white" />
 
 </LinearLayout>

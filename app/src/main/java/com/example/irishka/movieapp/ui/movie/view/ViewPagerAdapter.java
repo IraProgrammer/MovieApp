@@ -37,8 +37,8 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     private void setFragments() {
         fragments.add(DescriptionFragment.newInstance());
-        fragments.add(TrailersFragment.newInstance());
         fragments.add(CreatorsFragment.newInstance());
+        fragments.add(TrailersFragment.newInstance());
 
         for (Fragment f: fragments) {
             titles.add(f.toString());

@@ -4,11 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp">
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="8dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -45,12 +46,22 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
+                    <RatingBar
+                        android:id="@+id/ratingBar_small"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:numStars="5"
+                        android:stepSize="0.1" />
+
                     <TextView
                         android:id="@+id/rate"
                         android:textSize="14sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
+                        android:layout_marginStart="4dp"
                         android:layout_gravity="end"
                         android:text="TextView" />
 
@@ -116,6 +127,26 @@
         android:layout_marginTop="4dp"
         android:layout_height="wrap_content"
         android:text="TextView" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/gallery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="GALLERY"
+                android:layout_marginTop="4dp"
+                android:textSize="14sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/gallery_recycler_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

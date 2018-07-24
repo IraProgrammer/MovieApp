@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.Target;
@@ -32,7 +33,7 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.CreatorsVi
 
     private List<CastModel> actors = new ArrayList<>();
 
- //   private OnItemClickListener onItemClickListener;
+    //   private OnItemClickListener onItemClickListener;
 
 //    @Inject
 //    public ActorsAdapter(OnItemClickListener onItemClickListener) {
@@ -87,14 +88,16 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.CreatorsVi
 
             title.setText(actor.getName());
 
-          //  itemView.setOnClickListener(view -> onItemClickListener.onItemClick(actor));
+            //  itemView.setOnClickListener(view -> onItemClickListener.onItemClick(actor));
 
             Glide.with(itemView.getContext())
                     .load("http://image.tmdb.org/t/p/w500//" + actor.getProfilePath())
                     .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                                    .placeholder(R.drawable.no_image)
+                          //  .circleCrop()
+                            .transform(new RoundedCorners(1000))
+                            .placeholder(R.drawable.no_image)
+                            .dontAnimate()
                             .error(R.drawable.no_image)
-                            .circleCrop()
                     )
                     .into(image);
 

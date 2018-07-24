@@ -28,11 +28,12 @@ public class DescriptionPresenter extends MvpPresenter<DescriptionView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        downloadDescriptions(movieId);
+        downloadDescription(movieId);
         downloadRelatedMovies(movieId);
+        downloadGallery(movieId);
     }
 
-    public void downloadDescriptions(long movieId) {
+    public void downloadDescription(long movieId) {
 
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
@@ -48,6 +49,13 @@ public class DescriptionPresenter extends MvpPresenter<DescriptionView> {
         disposable = moviesRepository.downloadRelatedMovies(movieId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(movies -> getViewState().showRelatedMovies(movies), Throwable::printStackTrace);
+    }
+
+    public void downloadGallery(long movieId) {
+
+        disposable = moviesRepository.downloadGallery(movieId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(images -> getViewState().showGallery(images), Throwable::printStackTrace);
     }
 
     public void onStop() {

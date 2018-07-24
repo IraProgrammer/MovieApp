@@ -21,6 +21,10 @@ public class Movie {
 
     private String releaseDate;
 
+    private Boolean adult;
+
+    private double voteAverage;
+
     public long getId() {
         return id;
     }
@@ -92,6 +96,22 @@ public class Movie {
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public Boolean getAdult() {
+        return adult;
+    }
+
+    public void setAdult(Boolean adult) {
+        this.adult = adult;
+    }
+
+    public double getVoteAverage() {
+        return voteAverage;
+    }
+
+    public void setVoteAverage(double voteAverage) {
+        this.voteAverage = voteAverage;
     }
 
 }

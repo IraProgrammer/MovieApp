@@ -3,8 +3,10 @@ package com.example.irishka.movieapp.data.repository;
 import com.example.irishka.movieapp.data.database.MovieDao;
 import com.example.irishka.movieapp.data.mapper.DescriptionMapper;
 import com.example.irishka.movieapp.data.mapper.MoviesMapper;
+import com.example.irishka.movieapp.data.models.BackdropModel;
 import com.example.irishka.movieapp.data.models.Credits;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
+import com.example.irishka.movieapp.data.models.GalleryModel;
 import com.example.irishka.movieapp.data.models.MoviePage;
 import com.example.irishka.movieapp.data.network.MoviesApi;
 import com.example.irishka.movieapp.domain.entity.Description;
@@ -80,5 +82,12 @@ public class MoviesRepository implements IMoviesRepository {
     public Single<Credits> downloadCreators(long movieId){
         return moviesApi
                 .getCreators(movieId);
+    }
+
+    @Override
+    public Single<List<BackdropModel>> downloadGallery(long movieId) {
+        return moviesApi
+                .getGallery(movieId)
+                .map(GalleryModel::getBackdrops);
     }
 }

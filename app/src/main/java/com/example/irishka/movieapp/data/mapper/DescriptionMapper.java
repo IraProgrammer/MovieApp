@@ -63,6 +63,7 @@ public class DescriptionMapper implements Function<DescriptionModel, Description
         description.setRuntime(descriptionModel.getRuntime());
         description.setTitle(descriptionModel.getTitle());
         description.setVideo(descriptionModel.getVideo());
+        description.setVoteAverage(descriptionModel.getVoteAverage());
 
         return description;
     }

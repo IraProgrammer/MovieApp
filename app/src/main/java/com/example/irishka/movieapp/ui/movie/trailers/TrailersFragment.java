@@ -30,7 +30,7 @@ public class TrailersFragment extends Fragment {
 
     @Override
     public String toString() {
-        return "Trailers";
+        return "Review";
     }
 
 }

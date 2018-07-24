@@ -34,6 +34,16 @@ public class Description {
 
     private Boolean video;
 
+    private Double voteAverage;
+
+    public Double getVoteAverage() {
+        return voteAverage;
+    }
+
+    public void setVoteAverage(Double voteAverage) {
+        this.voteAverage = voteAverage;
+    }
+
     public Boolean getAdult() {
         return adult;
     }

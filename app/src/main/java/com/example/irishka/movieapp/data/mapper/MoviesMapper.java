@@ -31,6 +31,8 @@ public class MoviesMapper implements Function<MovieModel, Movie>{
         movie.setReleaseDate(movieModel.getReleaseDate());
         movie.setVideo(movieModel.getVideo());
         movie.setTitle(movieModel.getTitle());
+        movie.setVoteAverage(movieModel.getVoteAverage());
+        movie.setAdult(movieModel.getAdult());
 
         return movie;
     }

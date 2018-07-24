@@ -25,6 +25,12 @@ public class MovieModel {
     @SerializedName("popularity")
     @Expose
     private double popularity;
+    @SerializedName("adult")
+    @Expose
+    private boolean adult;
+    @SerializedName("vote_average")
+    @Expose
+    private double voteAverage;
     @SerializedName("poster_path")
     @Expose
     private String posterPath;
@@ -114,6 +120,22 @@ public class MovieModel {
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public Boolean getAdult() {
+        return adult;
+    }
+
+    public void setAdult(Boolean adult) {
+        this.adult = adult;
+    }
+
+    public double getVoteAverage() {
+        return voteAverage;
+    }
+
+    public void setVoteAverage(double voteAverage) {
+        this.voteAverage = voteAverage;
     }
 
 }

@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -70,6 +69,12 @@ public class RelatedMoviesAdapter extends RecyclerView.Adapter<RelatedMoviesAdap
         @BindView(R.id.movie_image)
         ImageView image;
 
+        @BindView(R.id.rate_text)
+        TextView rateText;
+
+        @BindView(R.id.adult_text)
+        TextView adultText;
+
         RelatedViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -79,12 +84,20 @@ public class RelatedMoviesAdapter extends RecyclerView.Adapter<RelatedMoviesAdap
 
             title.setText(movie.getTitle());
 
+            rateText.setText("TMDb " + String.valueOf(movie.getVoteAverage()));
+
+            String adult = "";
+            if (movie.getAdult()) adult = "18+";
+            adultText.setText(adult);
+
             itemView.setOnClickListener(view -> onItemClickListener.onItemClick(movie));
 
             Glide.with(itemView.getContext())
                     .load(movie.getPosterUrl())
                     .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                             .placeholder(R.drawable.no_image)
+                            //  .dontTransform()
+                            //   .sizeMultiplier((float) 1)
                             .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
                     .into(image);
         }

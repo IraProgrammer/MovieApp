@@ -1,8 +1,12 @@
 package com.example.irishka.movieapp.data.network;
 
+import com.example.irishka.movieapp.data.models.BackdropModel;
 import com.example.irishka.movieapp.data.models.Credits;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
+import com.example.irishka.movieapp.data.models.GalleryModel;
 import com.example.irishka.movieapp.data.models.MoviePage;
+
+import java.util.List;
 
 import io.reactivex.Single;
 import retrofit2.http.GET;
@@ -22,4 +26,8 @@ public interface MoviesApi {
 
     @GET("movie/{movie_id}/credits")
     Single<Credits> getCreators(@Path("movie_id") long movieId);
+
+    @GET("movie/{movie_id}/images")
+    Single<GalleryModel> getGallery(@Path("movie_id") long movieId);
+
 }
