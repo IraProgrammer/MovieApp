@@ -84,10 +84,12 @@ public class RelatedMoviesAdapter extends RecyclerView.Adapter<RelatedMoviesAdap
 
             title.setText(movie.getTitle());
 
-            rateText.setText("TMDb " + String.valueOf(movie.getVoteAverage()));
+            String voteAverage = String.format(itemView.getContext().getString(R.string.vote_average), (float) movie.getVoteAverage());
+
+            rateText.setText(voteAverage);
 
             String adult = "";
-            if (movie.getAdult()) adult = "18+";
+            if (movie.getAdult()) adult = itemView.getContext().getString(R.string.adult);
             adultText.setText(adult);
 
             itemView.setOnClickListener(view -> onItemClickListener.onItemClick(movie));

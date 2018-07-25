@@ -12,19 +12,13 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
-import com.example.irishka.movieapp.data.models.BackdropModel;
+import com.example.irishka.movieapp.domain.entity.Backdrop;
 import com.example.irishka.movieapp.domain.entity.Description;
-import com.example.irishka.movieapp.domain.entity.Genre;
 import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.ui.movie.description.PrepareDescription;
 import com.example.irishka.movieapp.ui.movie.description.presenter.DescriptionPresenter;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 import com.example.irishka.movieapp.ui.movie.view.MovieFragment;
@@ -36,7 +30,6 @@ import javax.inject.Provider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.android.support.AndroidSupportInjection;
 
 import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOVIE_ID;
 
@@ -49,6 +42,9 @@ public class DescriptionFragment extends MovieFragment implements DescriptionVie
     GalleryAdapter galleryAdapter;
 
     @Inject
+    PrepareDescription prepareDescription;
+
+    @Inject
     Provider<DescriptionPresenter> presenterProvider;
 
     @InjectPresenter
@@ -58,6 +54,12 @@ public class DescriptionFragment extends MovieFragment implements DescriptionVie
     DescriptionPresenter providePresenter() {
         return presenterProvider.get();
     }
+
+    @BindView(R.id.related_recycler_view)
+    RecyclerView relatedMovies;
+
+    @BindView(R.id.gallery_recycler_view)
+    RecyclerView gallery;
 
     @BindView(R.id.film_title)
     TextView filmTitle;
@@ -88,15 +90,8 @@ public class DescriptionFragment extends MovieFragment implements DescriptionVie
 
     @BindView(R.id.see_also)
     TextView seeAlso;
-
-    @BindView(R.id.related_recycler_view)
-    RecyclerView relatedMovies;
-
     @BindView(R.id.ratingBar_small)
     RatingBar ratingBar;
-
-    @BindView(R.id.gallery_recycler_view)
-    RecyclerView gallery;
 
     public static DescriptionFragment newInstance() {
         return new DescriptionFragment();
@@ -126,77 +121,27 @@ public class DescriptionFragment extends MovieFragment implements DescriptionVie
     @Override
     public void showDescription(Description description) {
 
-        setProgress(description);
+        ratingBar.setProgress(description.getVoteAverage().intValue());
 
         filmTitle.setText(description.getTitle());
 
-        setYear(description);
+        year.setText(prepareDescription.getYear(description));
 
-        setPicture(description);
+        prepareDescription.getPicture(description, image);
 
-        setGenre(description);
+        genre.setText(prepareDescription.getGenre(description));
 
-        setDuration(description);
+        duration.setText(prepareDescription.getDuration(description));
 
-        setAdult(description);
+        adult.setText(prepareDescription.getAdult(description));
 
         rate.setText(String.valueOf(description.getVoteAverage()));
 
-        country.setText(description.getProductionCountries().get(0).getName());
+        //TODO попробовать сделать setTitle onAttach
+
+        country.setText(prepareDescription.getCountries(description));
 
         overview.setText(description.getOverview());
-
-        seeAlso.setText(R.string.see_also);
-    }
-
-    private void setProgress(Description description) {
-        ratingBar.setMax(10);
-        ratingBar.setClickable(false);
-        ratingBar.setProgress(description.getVoteAverage().intValue());
-    }
-
-    private void setPicture(Description description) {
-        Glide.with(this)
-                .load(description.getPosterPath())
-                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                        .transform(new RoundedCorners(20))
-                        .placeholder(R.drawable.no_image)
-                        .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
-                .into(image);
-    }
-
-    private void setGenre(Description description) {
-        StringBuilder genresStr = new StringBuilder();
-        List<Genre> genres = description.getGenres();
-
-        for (int i = 0; i < genres.size() - 1; i++) {
-            genresStr.append(genres.get(i).getName()).append(", ");
-        }
-
-        genresStr.append(genres.get(genres.size() - 1).getName());
-
-        genre.setText(genresStr.toString());
-    }
-
-    private void setYear(Description description) {
-        String releaseDate = description.getReleaseDate();
-        year.setText(releaseDate.substring(0, 4));
-    }
-
-    private void setDuration(Description description) {
-        int hours = description.getRuntime() / 60;
-        int minutes = description.getRuntime() % 60;
-
-        String n = "";
-        if (minutes < 10) n = "0";
-
-        duration.setText(String.valueOf(hours) + "h " + String.valueOf(minutes) + n + "min");
-    }
-
-    private void setAdult(Description description) {
-
-        if (!description.getAdult()) adult.setText("18+");
-        else adult.setText("");
 
     }
 
@@ -206,7 +151,7 @@ public class DescriptionFragment extends MovieFragment implements DescriptionVie
     }
 
     @Override
-    public void showGallery(List<BackdropModel> backdrops) {
+    public void showGallery(List<Backdrop> backdrops) {
         galleryAdapter.setGalleryList(backdrops);
 
     }

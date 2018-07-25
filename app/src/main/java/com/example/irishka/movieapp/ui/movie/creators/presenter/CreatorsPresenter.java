@@ -29,18 +29,18 @@ public class CreatorsPresenter extends MvpPresenter<CreatorsView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        downloadCredits(movieId);
+        downloadCasts(movieId);
     }
 
-    public void downloadCredits(long movieId) {
+    public void downloadCasts(long movieId) {
 
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
 
-        disposable = moviesRepository.downloadCreators(movieId)
+        disposable = moviesRepository.downloadCasts(movieId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movies -> getViewState().showCreators(movies), Throwable::printStackTrace);
+                .subscribe(casts -> getViewState().showCasts(casts), Throwable::printStackTrace);
     }
 
     public void onStop() {

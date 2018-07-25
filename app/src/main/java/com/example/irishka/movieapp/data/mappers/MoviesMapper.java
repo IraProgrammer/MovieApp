@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.data.mapper;
+package com.example.irishka.movieapp.data.mappers;
 
 import com.example.irishka.movieapp.data.models.MovieModel;
 import com.example.irishka.movieapp.domain.entity.Movie;
@@ -24,9 +24,6 @@ public class MoviesMapper implements Function<MovieModel, Movie>{
         Movie movie = new Movie();
         movie.setBackdropPath(movieModel.getBackdropPath());
         movie.setId(movieModel.getId());
-        movie.setOriginalLanguage(movieModel.getOriginalLanguage());
-        movie.setOriginalTitle(movieModel.getOriginalTitle());
-        movie.setPopularity(movieModel.getPopularity());
         movie.setPosterUrl(BASE_IMAGE_URL + movieModel.getPosterPath());
         movie.setReleaseDate(movieModel.getReleaseDate());
         movie.setVideo(movieModel.getVideo());

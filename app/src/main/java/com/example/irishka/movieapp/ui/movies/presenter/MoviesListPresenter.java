@@ -17,6 +17,8 @@ public class MoviesListPresenter extends MvpPresenter<MoviesListView> {
 
     private Disposable disposable;
 
+    private int page = 1;
+
     @Inject
     public MoviesListPresenter(IMoviesRepository repository) {
         this.moviesRepository = repository;
@@ -34,9 +36,10 @@ public class MoviesListPresenter extends MvpPresenter<MoviesListView> {
             disposable.dispose();
         }
 
-        disposable = moviesRepository.downloadMovies()
+        disposable = moviesRepository.downloadMovies(page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(movies -> getViewState().finishLoading())
+                .doOnSuccess(movies -> page++)
                 .doOnError(movies -> getViewState().finishLoading())
                 .subscribe(movies -> getViewState().showMovies(movies), Throwable::printStackTrace);
     }

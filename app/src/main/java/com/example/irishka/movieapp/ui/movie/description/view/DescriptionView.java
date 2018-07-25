@@ -2,6 +2,7 @@ package com.example.irishka.movieapp.ui.movie.description.view;
 
 import com.arellomobile.mvp.MvpView;
 import com.example.irishka.movieapp.data.models.BackdropModel;
+import com.example.irishka.movieapp.domain.entity.Backdrop;
 import com.example.irishka.movieapp.domain.entity.Description;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
@@ -13,6 +14,6 @@ public interface DescriptionView extends MvpView{
 
     void showRelatedMovies(List<Movie> movies);
 
-    void showGallery(List<BackdropModel> backdrops);
+    void showGallery(List<Backdrop> backdrops);
 
 }

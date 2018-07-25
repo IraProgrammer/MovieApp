@@ -38,7 +38,6 @@
                     android:id="@+id/film_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -54,7 +53,8 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:numStars="5"
-                        android:stepSize="0.1" />
+                        android:max="10"
+                        android:clickable="false"/>
 
                     <TextView
                         android:id="@+id/rate"
@@ -63,8 +63,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:layout_marginStart="4dp"
-                        android:layout_gravity="end"
-                        android:text="TextView" />
+                        android:layout_gravity="end" />
 
                 </LinearLayout>
 
@@ -80,8 +79,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
                         android:gravity="start"
-                        android:layout_weight="1"
-                        android:text="TextView" />
+                        android:layout_weight="1" />
 
                     <TextView
                         android:id="@+id/duration"
@@ -89,8 +87,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:textSize="14sp"
-                        android:layout_weight="1"
-                        android:text="TextView" />
+                        android:layout_weight="1"/>
 
                     <TextView
                         android:id="@+id/adult"
@@ -98,8 +95,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
                         android:layout_weight="1"
-                        android:gravity="end"
-                        android:text="TextView" />
+                        android:gravity="end" />
 
                 </LinearLayout>
 
@@ -107,15 +103,13 @@
                     android:id="@+id/genre"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="TextView" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/country"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="TextView" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -127,8 +121,7 @@
         android:textSize="14sp"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="4dp"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -140,7 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="GALLERY"
+                android:text="@string/gallery"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="4dp"
                 android:textSize="14sp" />
@@ -161,7 +154,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:text="TextView"
+            android:text="@string/see_also"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="4dp"
             android:textSize="14sp" />

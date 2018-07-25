@@ -16,15 +16,9 @@ public class DescriptionModel {
     @SerializedName("belongs_to_collection")
     @Expose
     private Object belongsToCollection;
-    @SerializedName("budget")
-    @Expose
-    private Integer budget;
     @SerializedName("genres")
     @Expose
     private List<GenreModel> genres = null;
-    @SerializedName("homepage")
-    @Expose
-    private String homepage;
     @SerializedName("id")
     @Expose
     private long id;
@@ -46,30 +40,15 @@ public class DescriptionModel {
     @SerializedName("poster_path")
     @Expose
     private String posterPath;
-    @SerializedName("production_companies")
-    @Expose
-    private List<ProductionCompany> productionCompanies = null;
     @SerializedName("production_countries")
     @Expose
     private List<ProductionCountryModel> productionCountries = null;
     @SerializedName("release_date")
     @Expose
     private String releaseDate;
-    @SerializedName("revenue")
-    @Expose
-    private Integer revenue;
     @SerializedName("runtime")
     @Expose
     private Integer runtime;
-    @SerializedName("spoken_languages")
-    @Expose
-    private List<SpokenLanguage> spokenLanguages = null;
-    @SerializedName("status")
-    @Expose
-    private String status;
-    @SerializedName("tagline")
-    @Expose
-    private String tagline;
     @SerializedName("title")
     @Expose
     private String title;
@@ -107,13 +86,6 @@ public class DescriptionModel {
         this.belongsToCollection = belongsToCollection;
     }
 
-    public Integer getBudget() {
-        return budget;
-    }
-
-    public void setBudget(Integer budget) {
-        this.budget = budget;
-    }
 
     public List<GenreModel> getGenres() {
         return genres;
@@ -121,14 +93,6 @@ public class DescriptionModel {
 
     public void setGenres(List<GenreModel> genres) {
         this.genres = genres;
-    }
-
-    public String getHomepage() {
-        return homepage;
-    }
-
-    public void setHomepage(String homepage) {
-        this.homepage = homepage;
     }
 
     public long getId() {
@@ -187,14 +151,6 @@ public class DescriptionModel {
         this.posterPath = posterPath;
     }
 
-    public List<ProductionCompany> getProductionCompanies() {
-        return productionCompanies;
-    }
-
-    public void setProductionCompanies(List<ProductionCompany> productionCompanies) {
-        this.productionCompanies = productionCompanies;
-    }
-
     public List<ProductionCountryModel> getProductionCountries() {
         return productionCountries;
     }
@@ -211,44 +167,12 @@ public class DescriptionModel {
         this.releaseDate = releaseDate;
     }
 
-    public Integer getRevenue() {
-        return revenue;
-    }
-
-    public void setRevenue(Integer revenue) {
-        this.revenue = revenue;
-    }
-
     public Integer getRuntime() {
         return runtime;
     }
 
     public void setRuntime(Integer runtime) {
         this.runtime = runtime;
-    }
-
-    public List<SpokenLanguage> getSpokenLanguages() {
-        return spokenLanguages;
-    }
-
-    public void setSpokenLanguages(List<SpokenLanguage> spokenLanguages) {
-        this.spokenLanguages = spokenLanguages;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getTagline() {
-        return tagline;
-    }
-
-    public void setTagline(String tagline) {
-        this.tagline = tagline;
     }
 
     public String getTitle() {

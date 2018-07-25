@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.ui.movie.creators.view.CreatorsFragment;
 import com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment;
 import com.example.irishka.movieapp.ui.movie.review.ReviewFragment;
@@ -19,9 +20,12 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     private List<String> titles = new ArrayList<>();
 
+    FragmentManager fm;
+
     @Inject
     public ViewPagerAdapter(FragmentManager manager) {
         super(manager);
+        fm = manager;
         setFragments();
     }
 
@@ -36,11 +40,12 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     private void setFragments() {
+
         fragments.add(DescriptionFragment.newInstance());
         fragments.add(CreatorsFragment.newInstance());
         fragments.add(ReviewFragment.newInstance());
 
-        for (MovieFragment f: fragments) {
+        for (MovieFragment f : fragments) {
             titles.add(f.getTitle());
         }
 

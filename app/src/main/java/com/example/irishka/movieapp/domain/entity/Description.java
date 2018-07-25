@@ -1,9 +1,6 @@
 
 package com.example.irishka.movieapp.domain.entity;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 public class Description {
@@ -20,7 +17,7 @@ public class Description {
 
     private Double popularity;
 
-    private String posterPath;
+    private String posterUrl;
 
     private List<ProductionCountry> productionCountries = null;
 
@@ -93,12 +90,12 @@ public class Description {
         this.popularity = popularity;
     }
 
-    public String getPosterPath() {
-        return posterPath;
+    public String getPosterUrl() {
+        return posterUrl;
     }
 
-    public void setPosterPath(String posterPath) {
-        this.posterPath = posterPath;
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
     }
 
     public List<ProductionCountry> getProductionCountries() {

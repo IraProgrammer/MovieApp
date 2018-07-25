@@ -22,9 +22,6 @@ public class MovieModel {
     @SerializedName("title")
     @Expose
     private String title;
-    @SerializedName("popularity")
-    @Expose
-    private double popularity;
     @SerializedName("adult")
     @Expose
     private boolean adult;
@@ -34,17 +31,9 @@ public class MovieModel {
     @SerializedName("poster_path")
     @Expose
     private String posterPath;
-    @SerializedName("original_language")
-    @Expose
-    private String originalLanguage;
-    @SerializedName("original_title")
-    @Expose
-    private String originalTitle;
-
     @SerializedName("backdrop_path")
     @Expose
     private String backdropPath;
-
     @SerializedName("release_date")
     @Expose
     private String releaseDate;
@@ -72,39 +61,6 @@ public class MovieModel {
     public void setTitle(String title) {
         this.title = title;
     }
-
-    public double getPopularity() {
-        return popularity;
-    }
-
-    public void setPopularity(double popularity) {
-        this.popularity = popularity;
-    }
-
-    public String getPosterPath() {
-        return posterPath;
-    }
-
-    public void setPosterPath(String posterPath) {
-        this.posterPath = posterPath;
-    }
-
-    public String getOriginalLanguage() {
-        return originalLanguage;
-    }
-
-    public void setOriginalLanguage(String originalLanguage) {
-        this.originalLanguage = originalLanguage;
-    }
-
-    public String getOriginalTitle() {
-        return originalTitle;
-    }
-
-    public void setOriginalTitle(String originalTitle) {
-        this.originalTitle = originalTitle;
-    }
-
 
     public String getBackdropPath() {
         return backdropPath;
@@ -136,6 +92,14 @@ public class MovieModel {
 
     public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public void setPosterPath(String posterUrl) {
+        this.posterPath = posterUrl;
     }
 
 }

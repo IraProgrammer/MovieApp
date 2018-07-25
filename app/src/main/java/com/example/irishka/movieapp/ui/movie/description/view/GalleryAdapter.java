@@ -14,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.data.models.BackdropModel;
+import com.example.irishka.movieapp.domain.entity.Backdrop;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import butterknife.ButterKnife;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder> {
 
-    private List<BackdropModel> backdrops = new ArrayList<>();
+    private List<Backdrop> backdrops = new ArrayList<>();
 
    // private OnItemClickListener onItemClickListener;
 
@@ -43,7 +44,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 //        void onItemClick(Movie movie);
 //    }
 
-    public void setGalleryList(List<BackdropModel> backdrops) {
+    public void setGalleryList(List<Backdrop> backdrops) {
         this.backdrops = backdrops;
         notifyDataSetChanged();
     }
@@ -76,12 +77,12 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
             ButterKnife.bind(this, itemView);
         }
 
-        void bind(BackdropModel backdrop) {
+        void bind(Backdrop backdrop) {
 
            // itemView.setOnClickListener(view -> onItemClickListener.onItemClick(movie));
 
             Glide.with(itemView.getContext())
-                    .load("http://image.tmdb.org/t/p/w500/" + backdrop.getFilePath())
+                    .load(backdrop.getFileUrl())
                     .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                             .placeholder(R.drawable.no_image)
                             .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))

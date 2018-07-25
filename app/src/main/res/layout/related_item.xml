@@ -39,7 +39,7 @@
                 android:id="@+id/rate_text"
                 android:padding="@dimen/textViewPadding"
                 android:textColor="@color/accent_material_dark_1"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <TextView
@@ -47,6 +47,7 @@
                 android:padding="@dimen/textViewPadding"
                 android:textColor="@color/white"
                 android:layout_width="match_parent"
+                android:textAlignment="textEnd"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>

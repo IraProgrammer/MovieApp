@@ -13,9 +13,6 @@ public class GalleryModel {
     @SerializedName("backdrops")
     @Expose
     private List<BackdropModel> backdrops = null;
-    @SerializedName("posters")
-    @Expose
-    private List<Poster> posters = null;
 
     public Integer getId() {
         return id;
@@ -32,13 +29,4 @@ public class GalleryModel {
     public void setBackdrops(List<BackdropModel> backdrops) {
         this.backdrops = backdrops;
     }
-
-    public List<Poster> getPosters() {
-        return posters;
-    }
-
-    public void setPosters(List<Poster> posters) {
-        this.posters = posters;
-    }
-
 }

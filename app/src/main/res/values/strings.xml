@@ -1,9 +1,15 @@
 <resources>
     <string name="app_name">MovieApp</string>
 
+    <string name="gallery">GALLERY</string>
     <string name="see_also">SEE ALSO</string>
 
-    <string name="description_fragment">Description</string>
+    <string name="description_fragment">Info</string>
+    <string name="creators_fragment">Cast</string>
+    <string name="rewiew_fragment">Review</string>
 
     <string name="adult">18+</string>
+    <string name="duration">%1$dh %2$dmin</string>
+    <string name="durationWithNull">%1$dh %2$d 0min</string>
+    <string name="vote_average">TMDb %1$.01f</string>
 </resources>

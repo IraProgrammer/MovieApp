@@ -4,6 +4,7 @@ import com.example.irishka.movieapp.di.scopes.PerFragment;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.ui.movie.creators.presenter.CreatorsPresenter;
 import com.example.irishka.movieapp.ui.movie.creators.view.ActorsAdapter;
+import com.example.irishka.movieapp.ui.movie.description.PrepareDescription;
 import com.example.irishka.movieapp.ui.movie.description.presenter.DescriptionPresenter;
 import com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment;
 import com.example.irishka.movieapp.ui.movie.description.view.GalleryAdapter;
@@ -21,12 +22,6 @@ public abstract class DescriptionFragmentModule {
         return new DescriptionPresenter(moviesRepository, movieId);
     }
 
-//    @Provides
-//    @PerFragment
-//    static CreatorsPresenter providesCreatorsPresenter(IMoviesRepository moviesRepository, long movieId) {
-//        return new CreatorsPresenter(moviesRepository, movieId);
-//    }
-
     @Provides
     @PerFragment
     static GalleryAdapter providesGalleryAdapter(){
@@ -37,6 +32,12 @@ public abstract class DescriptionFragmentModule {
     @PerFragment
     static RelatedMoviesAdapter providesRelatedMoviesAdapter(DescriptionFragment descriptionFragment){
         return new RelatedMoviesAdapter(descriptionFragment);
+    }
+
+    @Provides
+    @PerFragment
+    static PrepareDescription providesPrepareDescriptions(DescriptionFragment descriptionFragment){
+        return new PrepareDescription(descriptionFragment);
     }
 
 }

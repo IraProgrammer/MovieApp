@@ -19,6 +19,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.data.models.CastModel;
+import com.example.irishka.movieapp.domain.entity.Cast;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ import butterknife.ButterKnife;
 
 public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.CreatorsViewHolder> {
 
-    private List<CastModel> actors = new ArrayList<>();
+    private List<Cast> actors = new ArrayList<>();
 
     //   private OnItemClickListener onItemClickListener;
 
@@ -48,7 +49,7 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.CreatorsVi
 //        void onItemClick(CastModel castModel);
 //    }
 
-    public void setList(List<CastModel> actors) {
+    public void setList(List<Cast> actors) {
         this.actors = actors;
         notifyDataSetChanged();
     }
@@ -84,29 +85,23 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.CreatorsVi
             ButterKnife.bind(this, itemView);
         }
 
-        void bind(CastModel actor) {
+        void bind(Cast actor) {
 
             title.setText(actor.getName());
 
             //  itemView.setOnClickListener(view -> onItemClickListener.onItemClick(actor));
 
             Glide.with(itemView.getContext())
-                    .load("http://image.tmdb.org/t/p/w500//" + actor.getProfilePath())
+                    .load(actor.getProfileUrl())
                     .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                           //  .circleCrop()
                             .transform(new RoundedCorners(1000))
                             .placeholder(R.drawable.no_image)
                             .dontAnimate()
+                         //   .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                             .error(R.drawable.no_image)
                     )
                     .into(image);
-
-//            Glide.with(itemView.getContext())
-//                    .load("http://image.tmdb.org/t/p/w500//" + actor.getProfilePath())
-//                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-//                            .placeholder(R.drawable.no_image)
-//                            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
-//                    .into(image);
         }
     }
 }

@@ -7,7 +7,7 @@ import com.example.irishka.movieapp.data.models.MovieModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MoviePage {
+public class MoviePageModel {
 
     @SerializedName("page")
     @Expose
