@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.irishka.movieapp.ui.movie.creators.view.CreatorsFragment;
 import com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment;
-import com.example.irishka.movieapp.ui.movie.trailers.TrailersFragment;
+import com.example.irishka.movieapp.ui.movie.review.ReviewFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import javax.inject.Inject;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    private List<Fragment> fragments = new ArrayList<>();
+    private List<MovieFragment> fragments = new ArrayList<>();
 
     private List<String> titles = new ArrayList<>();
 
@@ -26,7 +26,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public MovieFragment getItem(int position) {
         return fragments.get(position);
     }
 
@@ -38,10 +38,10 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     private void setFragments() {
         fragments.add(DescriptionFragment.newInstance());
         fragments.add(CreatorsFragment.newInstance());
-        fragments.add(TrailersFragment.newInstance());
+        fragments.add(ReviewFragment.newInstance());
 
-        for (Fragment f: fragments) {
-            titles.add(f.toString());
+        for (MovieFragment f: fragments) {
+            titles.add(f.getTitle());
         }
 
     }

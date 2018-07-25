@@ -27,6 +27,7 @@ import com.example.irishka.movieapp.domain.entity.Genre;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.movie.description.presenter.DescriptionPresenter;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
+import com.example.irishka.movieapp.ui.movie.view.MovieFragment;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ import dagger.android.support.AndroidSupportInjection;
 
 import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOVIE_ID;
 
-public class DescriptionFragment extends MvpAppCompatFragment implements DescriptionView, RelatedMoviesAdapter.OnItemClickListener {
+public class DescriptionFragment extends MovieFragment implements DescriptionView, RelatedMoviesAdapter.OnItemClickListener {
 
     @Inject
     RelatedMoviesAdapter relatedMoviesAdapter;
@@ -102,12 +103,6 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        AndroidSupportInjection.inject(this);
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -124,7 +119,7 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
     }
 
     @Override
-    public String toString() {
+    public String getTitle() {
         return "Info";
     }
 

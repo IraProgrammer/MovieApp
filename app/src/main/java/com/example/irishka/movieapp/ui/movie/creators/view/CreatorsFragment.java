@@ -15,6 +15,7 @@ import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.data.models.Credits;
 import com.example.irishka.movieapp.ui.movie.creators.presenter.CreatorsPresenter;
 import com.example.irishka.movieapp.ui.movie.description.presenter.DescriptionPresenter;
+import com.example.irishka.movieapp.ui.movie.view.MovieFragment;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -23,7 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 
-public class CreatorsFragment extends MvpAppCompatFragment implements CreatorsView {
+public class CreatorsFragment extends MovieFragment implements CreatorsView {
 
     @Inject
     Provider<CreatorsPresenter> presenterProvider;
@@ -47,12 +48,6 @@ public class CreatorsFragment extends MvpAppCompatFragment implements CreatorsVi
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        AndroidSupportInjection.inject(this);
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_creators, container, false);
@@ -66,7 +61,7 @@ public class CreatorsFragment extends MvpAppCompatFragment implements CreatorsVi
     }
 
     @Override
-    public String toString() {
+    public String getTitle() {
         return "Cast";
     }
 

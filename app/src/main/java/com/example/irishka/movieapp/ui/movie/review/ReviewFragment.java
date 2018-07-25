@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.ui.movie.trailers;
+package com.example.irishka.movieapp.ui.movie.review;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,19 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.irishka.movieapp.R;
+import com.example.irishka.movieapp.ui.movie.view.MovieFragment;
 
 import dagger.android.support.AndroidSupportInjection;
 
-public class TrailersFragment extends Fragment {
+public class ReviewFragment extends MovieFragment {
 
-    public static TrailersFragment newInstance(){
-        return new TrailersFragment();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        AndroidSupportInjection.inject(this);
-        super.onCreate(savedInstanceState);
+    public static ReviewFragment newInstance(){
+        return new ReviewFragment();
     }
 
     @Override
@@ -29,7 +24,7 @@ public class TrailersFragment extends Fragment {
     }
 
     @Override
-    public String toString() {
+    public String getTitle() {
         return "Review";
     }
 

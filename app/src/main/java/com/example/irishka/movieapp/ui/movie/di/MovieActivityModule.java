@@ -4,8 +4,8 @@ import com.example.irishka.movieapp.di.scopes.PerActivity;
 import com.example.irishka.movieapp.di.scopes.PerFragment;
 import com.example.irishka.movieapp.ui.movie.creators.view.CreatorsFragment;
 import com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment;
+import com.example.irishka.movieapp.ui.movie.review.ReviewFragment;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
-import com.example.irishka.movieapp.ui.movie.trailers.TrailersFragment;
 import com.example.irishka.movieapp.ui.movie.view.ViewPagerAdapter;
 
 import dagger.Module;
@@ -33,7 +33,7 @@ public abstract class MovieActivityModule {
 
     @PerFragment
     @ContributesAndroidInjector(modules = {TrailersFragmentModule.class})
-    abstract TrailersFragment providesTrailersFragment();
+    abstract ReviewFragment providesTrailersFragment();
 
     @Provides
     @PerActivity
