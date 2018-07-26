@@ -1,16 +1,13 @@
 
-package com.example.irishka.movieapp.domain.entity;
+package com.example.irishka.movieapp.data.database.entity;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 
-public class Genre {
+@Entity
+public class GenreDb {
 
-    public Genre(int id, String name){
-        this.id = id;
-        this.name = name;
-    }
-
+    @PrimaryKey
     private Integer id;
 
     private String name;

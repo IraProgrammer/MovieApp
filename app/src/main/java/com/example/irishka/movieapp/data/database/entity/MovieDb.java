@@ -1,40 +1,34 @@
 
-package com.example.irishka.movieapp.data.models;
+package com.example.irishka.movieapp.data.database.entity;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+@Entity
+public class MovieDb {
 
-public class MovieModel {
-
-    @SerializedName("id")
-    @Expose
+    @PrimaryKey
     private long id;
 
-    @SerializedName("video")
-    @Expose
     private boolean video;
 
-    @SerializedName("title")
-    @Expose
     private String title;
-    @SerializedName("adult")
-    @Expose
-    private boolean adult;
-    @SerializedName("vote_average")
-    @Expose
-    private double voteAverage;
-    @SerializedName("poster_path")
-    @Expose
-    private String posterPath;
-    @SerializedName("backdrop_path")
-    @Expose
+
+    private double popularity;
+
+    private String posterUrl;
+
+    private String originalLanguage;
+
+    private String originalTitle;
+
     private String backdropPath;
-    @SerializedName("release_date")
-    @Expose
+
     private String releaseDate;
+
+    private Boolean adult;
+
+    private double voteAverage;
 
     public long getId() {
         return id;
@@ -59,6 +53,39 @@ public class MovieModel {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public double getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(double popularity) {
+        this.popularity = popularity;
+    }
+
+    public String getPosterUrl() {
+        return posterUrl;
+    }
+
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
+    }
+
+    public String getOriginalLanguage() {
+        return originalLanguage;
+    }
+
+    public void setOriginalLanguage(String originalLanguage) {
+        this.originalLanguage = originalLanguage;
+    }
+
+    public String getOriginalTitle() {
+        return originalTitle;
+    }
+
+    public void setOriginalTitle(String originalTitle) {
+        this.originalTitle = originalTitle;
+    }
+
 
     public String getBackdropPath() {
         return backdropPath;
@@ -90,14 +117,6 @@ public class MovieModel {
 
     public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
-    }
-
-    public String getPosterPath() {
-        return posterPath;
-    }
-
-    public void setPosterPath(String posterUrl) {
-        this.posterPath = posterUrl;
     }
 
 }

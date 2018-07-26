@@ -15,14 +15,4 @@ public abstract class RepModule {
     @Singleton
     abstract IMoviesRepository provideRepository(MoviesRepository moviesRepository);
 
-//    @Provides
-//    static GenreMapper provideGenresMapper(){
-//        return new GenreMapper();
-//    }
-//
-//    @Provides
-//    static ProductionCountryMapper provideProductionCountryMapper(){
-//        return new ProductionCountryMapper();
-//    }
-
 }

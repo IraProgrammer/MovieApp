@@ -6,17 +6,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class ProductionCountry {
 
-    private String iso31661;
+    public ProductionCountry(String name){
+
+    }
 
     private String name;
-
-    public String getIso31661() {
-        return iso31661;
-    }
-
-    public void setIso31661(String iso31661) {
-        this.iso31661 = iso31661;
-    }
 
     public String getName() {
         return name;
