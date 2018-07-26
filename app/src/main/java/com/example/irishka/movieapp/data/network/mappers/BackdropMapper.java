@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.data.mappers;
+package com.example.irishka.movieapp.data.network.mappers;
 
 import com.example.irishka.movieapp.data.models.BackdropModel;
 import com.example.irishka.movieapp.domain.entity.Backdrop;

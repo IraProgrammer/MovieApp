@@ -3,6 +3,7 @@ package com.example.irishka.movieapp.ui.movies.presenter;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
+import com.example.irishka.movieapp.ui.BasePresenter;
 import com.example.irishka.movieapp.ui.movies.view.MoviesListView;
 
 import javax.inject.Inject;
@@ -11,7 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
 @InjectViewState
-public class MoviesListPresenter extends MvpPresenter<MoviesListView> {
+public class MoviesListPresenter extends BasePresenter<MoviesListView> {
 
     private IMoviesRepository moviesRepository;
 
@@ -32,21 +33,11 @@ public class MoviesListPresenter extends MvpPresenter<MoviesListView> {
 
     public void downloadMovies() {
 
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
-        }
-
-        disposable = moviesRepository.downloadMovies(page)
+        addDisposables(moviesRepository.downloadMovies(page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(movies -> getViewState().finishLoading())
                 .doOnSuccess(movies -> page++)
                 .doOnError(movies -> getViewState().finishLoading())
-                .subscribe(movies -> getViewState().showMovies(movies), Throwable::printStackTrace);
-    }
-
-    public void onStop() {
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
-        }
+                .subscribe(movies -> getViewState().showMovies(movies), Throwable::printStackTrace));
     }
 }

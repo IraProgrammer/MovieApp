@@ -115,7 +115,7 @@ public class DescriptionFragment extends MovieFragment implements DescriptionVie
 
     @Override
     public String getTitle() {
-        return "Info";
+        return getString(R.string.adult);
     }
 
     @Override
@@ -154,12 +154,6 @@ public class DescriptionFragment extends MovieFragment implements DescriptionVie
     public void showGallery(List<Backdrop> backdrops) {
         galleryAdapter.setGalleryList(backdrops);
 
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        presenter.onStop();
     }
 
     @Override

@@ -16,43 +16,45 @@ import javax.inject.Inject;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    private List<MovieFragment> fragments = new ArrayList<>();
-
-    private List<String> titles = new ArrayList<>();
-
-    FragmentManager fm;
+    private MovieActivity movieActivity;
 
     @Inject
-    public ViewPagerAdapter(FragmentManager manager) {
-        super(manager);
-        fm = manager;
-        setFragments();
+    public ViewPagerAdapter(MovieActivity movieActivity) {
+        super(movieActivity.getSupportFragmentManager());
+        this.movieActivity = movieActivity;
     }
 
     @Override
     public MovieFragment getItem(int position) {
-        return fragments.get(position);
+
+        switch (position) {
+            case 0:
+                return DescriptionFragment.newInstance();
+            case 1:
+                return CreatorsFragment.newInstance();
+            case 2:
+                return ReviewFragment.newInstance();
+            default:
+                return null;
+        }
     }
 
     @Override
     public int getCount() {
-        return fragments.size();
-    }
-
-    private void setFragments() {
-
-        fragments.add(DescriptionFragment.newInstance());
-        fragments.add(CreatorsFragment.newInstance());
-        fragments.add(ReviewFragment.newInstance());
-
-        for (MovieFragment f : fragments) {
-            titles.add(f.getTitle());
-        }
-
+        return 3;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return titles.get(position);
+        switch (position) {
+            case 0:
+                return movieActivity.getString(R.string.description_fragment);
+            case 1:
+                return movieActivity.getString(R.string.creators_fragment);
+            case 2:
+                return movieActivity.getString(R.string.rewiew_fragment);
+            default:
+                return "";
+        }
     }
 }

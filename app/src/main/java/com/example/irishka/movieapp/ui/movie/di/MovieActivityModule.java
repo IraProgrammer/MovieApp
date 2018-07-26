@@ -38,6 +38,6 @@ public abstract class MovieActivityModule {
     @Provides
     @PerActivity
     static ViewPagerAdapter providesViewPagerAdapter(MovieActivity movieActivity){
-        return new ViewPagerAdapter(movieActivity.getSupportFragmentManager());
+        return new ViewPagerAdapter(movieActivity);
     }
 }

@@ -1,8 +1,6 @@
-package com.example.irishka.movieapp.data.mappers;
+package com.example.irishka.movieapp.data.network.mappers;
 
-import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.data.models.GenreModel;
-import com.example.irishka.movieapp.domain.entity.Description;
 import com.example.irishka.movieapp.domain.entity.Genre;
 
 import java.util.ArrayList;

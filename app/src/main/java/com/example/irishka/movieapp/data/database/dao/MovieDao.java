@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.data.database;
+package com.example.irishka.movieapp.data.database.dao;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;

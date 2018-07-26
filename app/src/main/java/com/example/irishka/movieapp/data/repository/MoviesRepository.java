@@ -1,10 +1,10 @@
 package com.example.irishka.movieapp.data.repository;
 
-import com.example.irishka.movieapp.data.database.MovieDao;
-import com.example.irishka.movieapp.data.mappers.BackdropMapper;
-import com.example.irishka.movieapp.data.mappers.CastMapper;
-import com.example.irishka.movieapp.data.mappers.DescriptionMapper;
-import com.example.irishka.movieapp.data.mappers.MoviesMapper;
+import com.example.irishka.movieapp.data.database.dao.MovieDao;
+import com.example.irishka.movieapp.data.network.mappers.BackdropMapper;
+import com.example.irishka.movieapp.data.network.mappers.CastMapper;
+import com.example.irishka.movieapp.data.network.mappers.DescriptionMapper;
+import com.example.irishka.movieapp.data.network.mappers.MoviesMapper;
 import com.example.irishka.movieapp.data.models.CreditsModel;
 import com.example.irishka.movieapp.data.models.GalleryModel;
 import com.example.irishka.movieapp.data.models.MoviePageModel;

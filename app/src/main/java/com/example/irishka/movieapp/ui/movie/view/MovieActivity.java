@@ -40,29 +40,26 @@ public class MovieActivity extends DaggerAppCompatActivity {
     @Inject
     ViewPagerAdapter adapter;
 
+    FragmentManager fm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film);
         ButterKnife.bind(this);
 
-//        DescriptionFragment descriptionFragment = DescriptionFragment.newInstance();
-//        FragmentManager fm = getSupportFragmentManager();
-//        fm.beginTransaction()
-//                .add(R.id.container222, descriptionFragment)
-//                .commit();
-
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        DescriptionFragment desc = (DescriptionFragment) getSupportFragmentManager().findFragmentById(R.id.container222);
-//        Toast.makeText(this, desc.getTitle(), Toast.LENGTH_LONG).show();
-//    }
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
+
+      //  viewPager.setAdapter(new ViewPagerAdapter(fm));
+      //  tabLayout.setupWithViewPager(viewPager);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

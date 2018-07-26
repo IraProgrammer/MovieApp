@@ -103,13 +103,6 @@ public class MoviesListActivity extends MvpAppCompatActivity implements MoviesLi
         isLoading = false;
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-      //  if (moviesPresenter != null)
-        moviesPresenter.onStop();
-    }
-
     private int getLastVisibleItemPosition() {
         StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) moviesRecyclerView.getLayoutManager();
         int[] into = staggeredGridLayoutManager.findLastVisibleItemPositions(null);

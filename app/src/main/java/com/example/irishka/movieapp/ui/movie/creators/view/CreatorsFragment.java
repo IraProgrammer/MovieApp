@@ -70,10 +70,4 @@ public class CreatorsFragment extends MovieFragment implements CreatorsView {
         actorsAdapter.setList(cast);
 
     }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        presenter.onStop();
-    }
 }
