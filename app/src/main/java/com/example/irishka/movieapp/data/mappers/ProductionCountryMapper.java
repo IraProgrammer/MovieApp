@@ -25,7 +25,7 @@ public class ProductionCountryMapper {
     }
 
     public ProductionCountryDb applyToDb(ProductionCountryModel productionCountryModel){
-        ProductionCountryDb productionCountry = new ProductionCountryDb();
+        ProductionCountryDb productionCountry = new ProductionCountryDb("");
         productionCountry.setName(productionCountryModel.getName());
         return productionCountry;
     }

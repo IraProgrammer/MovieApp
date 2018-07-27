@@ -5,12 +5,10 @@ import android.arch.persistence.room.RoomDatabase;
 
 import com.example.irishka.movieapp.data.database.dao.BackdropDao;
 import com.example.irishka.movieapp.data.database.dao.CastDao;
-import com.example.irishka.movieapp.data.database.dao.CountriesOfDescriptionDao;
 import com.example.irishka.movieapp.data.database.dao.DescriptionDao;
 import com.example.irishka.movieapp.data.database.dao.GenreDao;
 import com.example.irishka.movieapp.data.database.dao.GenreOfDescriptionDao;
 import com.example.irishka.movieapp.data.database.dao.MovieDao;
-import com.example.irishka.movieapp.data.database.dao.ProductionCountryDao;
 import com.example.irishka.movieapp.data.database.entity.BackdropDb;
 import com.example.irishka.movieapp.data.database.entity.CastDb;
 import com.example.irishka.movieapp.data.database.entity.CountriesOfDescription;
@@ -40,8 +38,4 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract GenreOfDescriptionDao getGenreOfDescroptionDao();
 
     public abstract DescriptionDao getDescriptionDao();
-
-    public abstract ProductionCountryDao getProductionCountryDao();
-
-    public abstract CountriesOfDescriptionDao getCountriesOfDescriptionDao();
 }

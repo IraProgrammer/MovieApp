@@ -7,6 +7,10 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity
 public class ProductionCountryDb {
 
+    public ProductionCountryDb(String name){
+        this.name = name;
+    }
+
     @PrimaryKey(autoGenerate = true)
     public int id;
 

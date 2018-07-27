@@ -17,6 +17,10 @@ public interface GenreOfDescriptionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(List<GenresOfDescription> genresOfDescripton);
 
+
+//    SELECT Employee.emp_name FROM (Department JOIN Employed USING (dep_id)) JOIN Employee USING (emp_id)
+//    WHERE Department.dep_name = ‘отдел ...’;
+
     @Query("SELECT * FROM GenresOfDescription WHERE descriptionId = :movieId")
     Single<List<GenresOfDescription>> getGoD(long movieId);
 }

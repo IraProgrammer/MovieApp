@@ -34,6 +34,4 @@ public class GenresOfDescription {
         this.genreId = genreId;
     }
 
-    public getGenres
-
 }

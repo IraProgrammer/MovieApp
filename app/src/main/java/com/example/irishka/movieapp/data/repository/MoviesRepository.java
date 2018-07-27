@@ -1,16 +1,15 @@
 package com.example.irishka.movieapp.data.repository;
 
+import android.util.Pair;
+
 import com.example.irishka.movieapp.data.database.dao.BackdropDao;
 import com.example.irishka.movieapp.data.database.dao.CastDao;
-import com.example.irishka.movieapp.data.database.dao.CountriesOfDescriptionDao;
 import com.example.irishka.movieapp.data.database.dao.DescriptionDao;
 import com.example.irishka.movieapp.data.database.dao.GenreDao;
 import com.example.irishka.movieapp.data.database.dao.GenreOfDescriptionDao;
 import com.example.irishka.movieapp.data.database.dao.MovieDao;
-import com.example.irishka.movieapp.data.database.entity.CountriesOfDescription;
 import com.example.irishka.movieapp.data.database.entity.GenreDb;
 import com.example.irishka.movieapp.data.database.entity.GenresOfDescription;
-import com.example.irishka.movieapp.data.database.entity.ProductionCountryDb;
 import com.example.irishka.movieapp.data.mappers.BackdropMapper;
 import com.example.irishka.movieapp.data.mappers.CastMapper;
 import com.example.irishka.movieapp.data.mappers.DescriptionMapper;
@@ -26,7 +25,6 @@ import com.example.irishka.movieapp.domain.entity.Backdrop;
 import com.example.irishka.movieapp.domain.entity.Cast;
 import com.example.irishka.movieapp.domain.entity.Description;
 import com.example.irishka.movieapp.domain.entity.Genre;
-import com.example.irishka.movieapp.domain.entity.ProductionCountry;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
@@ -62,8 +60,6 @@ public class MoviesRepository implements IMoviesRepository {
 
     private GenreOfDescriptionDao genreOfDescriptonDao;
 
-    private CountriesOfDescriptionDao countriesOfDescriptionDao;
-
     private DescriptionDao descriptionDao;
 
     private MoviesApi moviesApi;
@@ -74,7 +70,6 @@ public class MoviesRepository implements IMoviesRepository {
                             GenreMapper genreMapper, ProductionCountryMapper countryMapper,
                             MovieDao movieDao, BackdropDao backdropDao, CastDao castDao,
                             GenreDao genreDao, GenreOfDescriptionDao genreOfDescriptonDao, DescriptionDao descriptionDao,
-                            CountriesOfDescriptionDao countriesOfDescriptionDao,
                             MoviesApi moviesApi) {
         this.moviesMapper = moviesMapper;
         this.descriptionMapper = descriptionMapper;
@@ -87,7 +82,6 @@ public class MoviesRepository implements IMoviesRepository {
         this.castDao = castDao;
         this.genreDao = genreDao;
         this.genreOfDescriptonDao = genreOfDescriptonDao;
-        this.countriesOfDescriptionDao = countriesOfDescriptionDao;
         this.descriptionDao = descriptionDao;
         this.moviesApi = moviesApi;
     }
@@ -116,49 +110,27 @@ public class MoviesRepository implements IMoviesRepository {
         return moviesApi
                 .getDescription(movieId)
                 .doOnSuccess(descriptionModel -> insertGoD(descriptionModel))
-                .doOnSuccess(descriptionModel -> insertCoD(descriptionModel))
+             //   .doOnSuccess(descriptionModel -> insertCoD(descriptionModel))
                 .doOnSuccess(description -> descriptionDao.insert(descriptionMapper.applyToDb(description)))
                 .map(descriptionModel -> descriptionMapper.apply(descriptionModel));
     }
 
-//    private Single<List<GenresOfDescription>> getGoD(long movieId) {
-//        return genreOfDescriptonDao.getGoD(movieId)
-//                .doOnSuccess(genresOfDescriptions -> getDescriptionFromDatabase(movieId, genresOfDescriptions))
-//                .subscribeOn(Schedulers.io());
-//    }
-//
-//    private Single<String> getGenre(int genreId) {
-//        return genreDao.getGenre(genreId)
-//                .map(genreDb -> genreMapper.applyFromDb(genreDb))
-//                .map(genre -> genre.getName())
-//                .subscribeOn(Schedulers.io());
-//    }
-
-    private void addName(){
-
+    private Single<List<Genre>> getGenres(long movieId) {
+        return genreOfDescriptonDao.getGoD(movieId)
+                .toObservable()
+                .flatMapIterable(list -> list)
+                .map(genreOfDescription -> genreOfDescription.getGenreId())
+                .flatMapSingle(id -> genreDao.getGenre(id))
+                .toList()
+                .map(list -> genreMapper.mapGenresListFromDb(list))
+                .subscribeOn(Schedulers.io());
     }
 
     private Single<Description> getDescriptionFromDatabase(long movieId) {
-
-        List<GenresOfDescription> genresOfDescription = genreOfDescriptonDao.getGoD(movieId);
-        List<Genre> genres = new ArrayList<>();
-
-        List<CountriesOfDescription> countriesOfDescription = countriesOfDescriptionDao.getCoD(movieId);
-        List<ProductionCountry> countries = new ArrayList<>();
-
-        int genreId = 0;
-
-        for (int i = 0; i < genresOfDescription.size(); i++) {
-            genreId = genresOfDescription.get(i).getGenreId();
-            genres.add(new Genre(genreId, genreDao.getGenre(genreId).getName()));
-        }
-
-        for (int i = 0; i < countriesOfDescription.size(); i++) {
-            countries.add(new ProductionCountry(countriesOfDescription.get(i).getCountryName()));
-        }
-
         return descriptionDao.getDescription(movieId)
-                .map(description -> descriptionMapper.applyFromDb(description, genres, countries))
+                .flatMap(descriptionDb -> getGenres(movieId)
+                        .map(list -> new Pair<>(descriptionDb, list)))
+                .map(pair -> descriptionMapper.applyFromDb(pair.first, pair.second))
                 .subscribeOn(Schedulers.io());
     }
 
@@ -217,20 +189,20 @@ public class MoviesRepository implements IMoviesRepository {
                 .onErrorResumeNext(getBackdropsFromDatabase());
     }
 
-    private void insertCoD(DescriptionModel description) {
-
-        List<CountriesOfDescription> countriesOfDescriptons = new ArrayList<>();
-
-        List<ProductionCountryDb> countries = countryMapper.mapProductionCountryListToDb(description.getProductionCountries());
-
-        for (int i = 0; i < description.getGenres().size(); i++) {
-
-            countriesOfDescriptons.add(new CountriesOfDescription(description.getId(), countries.get(i).getName()));
-
-        }
-
-        countriesOfDescriptionDao.insert(countriesOfDescriptons);
-    }
+//    private void insertCoD(DescriptionModel description) {
+//
+//        List<CountriesOfDescription> countriesOfDescriptons = new ArrayList<>();
+//
+//        List<ProductionCountryDb> countries = countryMapper.mapProductionCountryListToDb(description.getProductionCountries());
+//
+//        for (int i = 0; i < description.getGenres().size(); i++) {
+//
+//            countriesOfDescriptons.add(new CountriesOfDescription(description.getId(), countries.get(i).getName()));
+//
+//        }
+//
+//        countriesOfDescriptionDao.insert(countriesOfDescriptons);
+//    }
 
     private void insertGoD(DescriptionModel description) {
 

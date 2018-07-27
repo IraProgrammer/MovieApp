@@ -11,6 +11,8 @@ import com.example.irishka.movieapp.domain.entity.Genre;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.Single;
 
 @Dao

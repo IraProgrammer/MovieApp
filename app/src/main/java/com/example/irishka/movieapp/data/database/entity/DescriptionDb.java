@@ -3,6 +3,10 @@ package com.example.irishka.movieapp.data.database.entity;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+
+import com.example.irishka.movieapp.data.database.CountriesConverter;
+import com.example.irishka.movieapp.domain.entity.ProductionCountry;
 
 import java.util.List;
 
@@ -27,6 +31,9 @@ public class DescriptionDb {
     private Boolean video;
 
     private Double voteAverage;
+
+    @TypeConverters(CountriesConverter.class)
+    private List<ProductionCountryDb> countries;
 
     public Double getVoteAverage() {
         return voteAverage;
@@ -97,6 +104,14 @@ public class DescriptionDb {
 
     public void setVideo(Boolean video) {
         this.video = video;
+    }
+
+    public List<ProductionCountryDb> getCountries() {
+        return countries;
+    }
+
+    public void setCountries(List<ProductionCountryDb> countries) {
+        this.countries = countries;
     }
 
 }

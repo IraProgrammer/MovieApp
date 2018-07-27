@@ -65,13 +65,12 @@ public class DescriptionMapper{
         return descriptionDb;
     }
 
-    public Description applyFromDb(DescriptionDb descriptionDb, List<Genre> genres, List<ProductionCountry> productionCountries) {
+    public Description applyFromDb(DescriptionDb descriptionDb, List<Genre> genres) {
         Description description = new Description();
         description.setAdult(descriptionDb.getAdult());
         description.setId(descriptionDb.getId());
 
         description.setGenres(genres);
-        description.setProductionCountries(productionCountries);
 
         description.setOverview(descriptionDb.getOverview());
         description.setPosterUrl(descriptionDb.getPosterUrl());
