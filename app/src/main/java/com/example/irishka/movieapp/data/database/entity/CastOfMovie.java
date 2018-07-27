@@ -1,6 +1,7 @@
 package com.example.irishka.movieapp.data.database.entity;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity
@@ -12,6 +13,9 @@ public class CastOfMovie {
     long movieId;
     int castId;
 
+    public CastOfMovie(){}
+
+    @Ignore
     public CastOfMovie(long descriptionId, int genreId){
         this.movieId = descriptionId;
         this.castId = genreId;

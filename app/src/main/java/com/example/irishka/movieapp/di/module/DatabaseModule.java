@@ -4,9 +4,8 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import com.example.irishka.movieapp.data.database.AppDatabase;
-import com.example.irishka.movieapp.data.database.dao.BackdropDao;
 import com.example.irishka.movieapp.data.database.dao.CastDao;
-import com.example.irishka.movieapp.data.database.dao.DescriptionDao;
+import com.example.irishka.movieapp.data.database.dao.CastOfMovieDao;
 import com.example.irishka.movieapp.data.database.dao.GenreDao;
 import com.example.irishka.movieapp.data.database.dao.GenreOfMovieDao;
 import com.example.irishka.movieapp.data.database.dao.MovieDao;
@@ -34,12 +33,6 @@ public abstract class DatabaseModule {
 
     @Singleton
     @Provides
-    static BackdropDao provideBackdropDao(AppDatabase database){
-        return database.getBackdropDao();
-    }
-
-    @Singleton
-    @Provides
     static CastDao provideCastDao(AppDatabase database){
         return database.getCastDao();
     }
@@ -58,7 +51,7 @@ public abstract class DatabaseModule {
 
     @Singleton
     @Provides
-    static DescriptionDao provideDescriptionDao(AppDatabase database){
-        return database.getDescriptionDao();
+    static CastOfMovieDao provideCastOfMovieDao(AppDatabase database){
+        return database.getCastOfMovieDao();
     }
 }

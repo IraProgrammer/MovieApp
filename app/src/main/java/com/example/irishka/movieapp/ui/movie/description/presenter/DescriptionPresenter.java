@@ -31,12 +31,11 @@ public class DescriptionPresenter extends BasePresenter<DescriptionView> {
         super.onFirstViewAttach();
         downloadDescription(movieId);
         downloadRelatedMovies(movieId);
-        downloadGallery(movieId);
     }
 
     public void downloadDescription(long movieId) {
 
-        addDisposables(moviesRepository.downloadDescription(movieId)
+        addDisposables(moviesRepository.downloadMovie(movieId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(movies -> getViewState().showDescription(movies), Throwable::printStackTrace));
     }
@@ -48,10 +47,10 @@ public class DescriptionPresenter extends BasePresenter<DescriptionView> {
                 .subscribe(movies -> getViewState().showRelatedMovies(movies), Throwable::printStackTrace));
     }
 
-    public void downloadGallery(long movieId) {
-
-        addDisposables(disposable = moviesRepository.downloadGallery(movieId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(images -> getViewState().showGallery(images), Throwable::printStackTrace));
-    }
+//    public void downloadGallery(long movieId) {
+//
+//        addDisposables(disposable = moviesRepository.downloadGallery(movieId)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(images -> getViewState().showGallery(images), Throwable::printStackTrace));
+//    }
 }

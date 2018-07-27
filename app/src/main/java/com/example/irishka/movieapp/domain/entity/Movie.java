@@ -26,6 +26,16 @@ public class Movie {
 
     private double voteAverage;
 
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    private String overview;
+
     public List<Genre> getGenres() {
         return genres;
     }

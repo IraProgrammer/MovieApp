@@ -36,6 +36,18 @@ public class MovieModel {
     @Expose
     private String releaseDate;
 
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    @SerializedName("overview")
+    @Expose
+    private String overview;
+
     public long getId() {
         return id;
     }
@@ -76,11 +88,11 @@ public class MovieModel {
         this.releaseDate = releaseDate;
     }
 
-    public Boolean getAdult() {
+    public boolean getAdult() {
         return adult;
     }
 
-    public void setAdult(Boolean adult) {
+    public void setAdult(boolean adult) {
         this.adult = adult;
     }
 

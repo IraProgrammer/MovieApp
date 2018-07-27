@@ -211,24 +211,6 @@ public class MoviesRepository implements IMoviesRepository {
         castOfMovieDao.insert(castOfMovies);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private Single<Movie> getMovieFromInternet(long movieId) {
         return moviesApi
                 .getDescription(movieId)

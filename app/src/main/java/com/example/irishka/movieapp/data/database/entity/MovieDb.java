@@ -7,6 +7,8 @@ import android.arch.persistence.room.TypeConverters;
 
 import com.example.irishka.movieapp.data.database.BackdropsConverter;
 import com.example.irishka.movieapp.data.database.CountriesConverter;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -49,6 +51,16 @@ public class MovieDb {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    private String overview;
 
     public String getPosterUrl() {
         return posterUrl;

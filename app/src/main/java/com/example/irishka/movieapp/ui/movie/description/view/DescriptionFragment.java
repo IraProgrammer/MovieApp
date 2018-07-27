@@ -16,7 +16,6 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Backdrop;
-import com.example.irishka.movieapp.domain.entity.Description;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.movie.description.PrepareDescription;
 import com.example.irishka.movieapp.ui.movie.description.presenter.DescriptionPresenter;
@@ -119,29 +118,29 @@ public class DescriptionFragment extends MovieFragment implements DescriptionVie
     }
 
     @Override
-    public void showDescription(Description description) {
+    public void showDescription(Movie movie) {
 
-        ratingBar.setProgress(description.getVoteAverage().intValue());
+        ratingBar.setProgress((int)movie.getVoteAverage());
 
-        filmTitle.setText(description.getTitle());
+        filmTitle.setText(movie.getTitle());
 
-        year.setText(prepareDescription.getYear(description));
+        year.setText(prepareDescription.getYear(movie));
 
-        prepareDescription.getPicture(description, image);
+        prepareDescription.getPicture(movie, image);
 
-        genre.setText(prepareDescription.getGenre(description));
+        genre.setText(prepareDescription.getGenre(movie));
 
-        duration.setText(prepareDescription.getDuration(description));
+        duration.setText(prepareDescription.getDuration(movie));
 
-        adult.setText(prepareDescription.getAdult(description));
+        adult.setText(prepareDescription.getAdult(movie));
 
-        rate.setText(String.valueOf(description.getVoteAverage()));
+        rate.setText(String.valueOf(movie.getVoteAverage()));
 
-        //TODO попробовать сделать setTitle onAttach
+        country.setText(prepareDescription.getCountries(movie));
 
-        country.setText(prepareDescription.getCountries(description));
+        overview.setText(movie.getOverview());
 
-        overview.setText(description.getOverview());
+        galleryAdapter.setGalleryList(movie.getBackdrops());
 
     }
 
@@ -150,11 +149,11 @@ public class DescriptionFragment extends MovieFragment implements DescriptionVie
         relatedMoviesAdapter.setRelatedList(movies);
     }
 
-    @Override
-    public void showGallery(List<Backdrop> backdrops) {
-        galleryAdapter.setGalleryList(backdrops);
-
-    }
+//    @Override
+//    public void showGallery(List<Backdrop> backdrops) {
+//        galleryAdapter.setGalleryList(backdrops);
+//
+//    }
 
     @Override
     public void onItemClick(Movie movie) {

@@ -14,7 +14,6 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.example.irishka.movieapp.R;
-import com.example.irishka.movieapp.domain.entity.Description;
 import com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment;
 
 import java.util.ArrayList;

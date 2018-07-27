@@ -19,11 +19,6 @@ public class MoviesMapper {
 
     private static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w500//";
 
-    @Inject
-    public MoviesMapper() {
-
-    }
-
     private BackdropMapper backdropMapper;
 
     private GenreMapper genreMapper;
@@ -45,6 +40,7 @@ public class MoviesMapper {
         movie.setReleaseDate(descriptionModel.getReleaseDate());
         movie.setTitle(descriptionModel.getTitle());
         movie.setVoteAverage(descriptionModel.getVoteAverage());
+        movie.setOverview(descriptionModel.getOverview());
         movie.setAdult(descriptionModel.getAdult());
         movie.setGenres(genreMapper.mapGenresList(descriptionModel.getGenres()));
         movie.setRuntime(descriptionModel.getRuntime());
@@ -60,6 +56,7 @@ public class MoviesMapper {
         movieDb.setPosterUrl(movie.getPosterUrl());
         movieDb.setReleaseDate(movie.getReleaseDate());
         movieDb.setTitle(movie.getTitle());
+        movieDb.setOverview(movie.getOverview());
         movieDb.setVoteAverage(movie.getVoteAverage());
         movieDb.setAdult(movie.getAdult());
         movieDb.setRuntime(movie.getRuntime());
@@ -75,6 +72,7 @@ public class MoviesMapper {
         movie.setPosterUrl(movieDb.getPosterUrl());
         movie.setReleaseDate(movieDb.getReleaseDate());
         movie.setTitle(movieDb.getTitle());
+        movie.setOverview(movieDb.getOverview());
         movie.setVoteAverage(movieDb.getVoteAverage());
         movie.setAdult(movieDb.getAdult());
         movie.setGenres(genres);

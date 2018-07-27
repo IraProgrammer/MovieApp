@@ -13,8 +13,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
-import com.example.irishka.movieapp.domain.entity.Description;
 import com.example.irishka.movieapp.domain.entity.Genre;
+import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.domain.entity.ProductionCountry;
 
 import java.util.List;
@@ -33,9 +33,9 @@ public class PrepareDescription {
         this.fragment = fragment;
     }
 
-    public void getPicture(Description description, ImageView image) {
+    public void getPicture(Movie movie, ImageView image) {
         Glide.with(image.getContext())
-                .load(description.getPosterUrl())
+                .load(movie.getPosterUrl())
                 .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                         .transform(new RoundedCorners(20))
                         .placeholder(R.drawable.no_image)
@@ -43,9 +43,9 @@ public class PrepareDescription {
                 .into(image);
     }
 
-    public String getGenre(Description description) {
+    public String getGenre(Movie movie) {
         StringBuilder genresStr = new StringBuilder();
-        List<Genre> genres = description.getGenres();
+        List<Genre> genres = movie.getGenres();
 
         for (int i = 0; i < genres.size() - 1; i++) {
             genresStr.append(genres.get(i).getName()).append(", ");
@@ -56,30 +56,30 @@ public class PrepareDescription {
         return genresStr.toString();
     }
 
-    public String getYear(Description description) {
-        String releaseDate = description.getReleaseDate();
+    public String getYear(Movie movie) {
+        String releaseDate = movie.getReleaseDate();
         return releaseDate.substring(0, 4);
     }
 
-    public String getDuration(Description description) {
-        int hours = description.getRuntime() / 60;
-        int minutes = description.getRuntime() % 60;
+    public String getDuration(Movie movie) {
+        int hours = movie.getRuntime() / 60;
+        int minutes = movie.getRuntime() % 60;
 
         if (minutes < 10) return String.format(fragment.getString(R.string.durationWithNull), hours, minutes);
 
         return String.format(fragment.getString(R.string.duration), hours, minutes);
     }
 
-    public String getAdult(Description description) {
+    public String getAdult(Movie movie) {
 
-        if (description.getAdult()) return fragment.getString(R.string.adult);
+        if (movie.getAdult()) return fragment.getString(R.string.adult);
         else return "";
 
     }
 
-    public String getCountries(Description description) {
+    public String getCountries(Movie movie) {
         StringBuilder countriesStr = new StringBuilder();
-        List<ProductionCountry> productionCountries = description.getProductionCountries();
+        List<ProductionCountry> productionCountries = movie.getCountries();
 
         for (int i = 0; i < productionCountries.size() - 1; i++) {
             countriesStr.append(productionCountries.get(i).getName()).append(", ");
