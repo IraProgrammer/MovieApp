@@ -44,13 +44,13 @@ public class Movie {
         this.genres = genres;
     }
 
-    private List<Genre> genres;
+    private List<Genre> genres = null;
 
-    private Integer runtime;
+    private Integer runtime = 0;
 
-    private List<ProductionCountry> countries;
+    private List<ProductionCountry> countries = null;
 
-    private List<Backdrop> backdrops;
+    private List<Backdrop> backdrops = null;
 
     public long getId() {
         return id;

@@ -18,6 +18,7 @@ public class BackdropsConverter {
         for (BackdropDb backdrop: backdrops) {
             str.append(backdrop.getFileUrl()).append(", ");
         }
+        if (backdrops.size() == 0) return "";
         return str.deleteCharAt(str.length()-1).toString();
     }
 

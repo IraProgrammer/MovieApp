@@ -1,6 +1,8 @@
 package com.example.irishka.movieapp.data.mappers;
 
+import com.example.irishka.movieapp.data.database.entity.BackdropDb;
 import com.example.irishka.movieapp.data.database.entity.MovieDb;
+import com.example.irishka.movieapp.data.database.entity.ProductionCountryDb;
 import com.example.irishka.movieapp.data.models.BackdropModel;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.data.models.GalleryModel;
@@ -50,6 +52,22 @@ public class MoviesMapper {
         return movie;
     }
 
+
+
+    public Movie applyForMovies(MovieModel movieModel) {
+        Movie movie = new Movie();
+        movie.setId(movieModel.getId());
+        movie.setPosterUrl(BASE_IMAGE_URL + movieModel.getPosterPath());
+        movie.setReleaseDate(movieModel.getReleaseDate());
+        movie.setTitle(movieModel.getTitle());
+        movie.setVoteAverage(movieModel.getVoteAverage());
+        movie.setOverview(movieModel.getOverview());
+        movie.setAdult(movieModel.getAdult());
+
+        return movie;
+    }
+
+
     public MovieDb applyToDb(Movie movie) {
         MovieDb movieDb = new MovieDb();
         movieDb.setId(movie.getId());
@@ -59,9 +77,9 @@ public class MoviesMapper {
         movieDb.setOverview(movie.getOverview());
         movieDb.setVoteAverage(movie.getVoteAverage());
         movieDb.setAdult(movie.getAdult());
-        movieDb.setRuntime(movie.getRuntime());
-        movieDb.setCountries(productionCountryMapper.mapProductionCountryListToDb(movie.getCountries()));
-        movieDb.setBackdrops(backdropMapper.mapBackdropsListToDb(movie.getBackdrops()));
+        movieDb.setRuntime(0);
+        movieDb.setCountries(new ArrayList<ProductionCountryDb>());
+        movieDb.setBackdrops(new ArrayList<BackdropDb>());
 
         return movieDb;
     }
@@ -83,6 +101,20 @@ public class MoviesMapper {
         return movie;
     }
 
+    public Movie applyFromDb(MovieDb movieDb) {
+        Movie movie = new Movie();
+        movie.setId(movieDb.getId());
+        movie.setPosterUrl(movieDb.getPosterUrl());
+        movie.setReleaseDate(movieDb.getReleaseDate());
+        movie.setTitle(movieDb.getTitle());
+        movie.setOverview(movieDb.getOverview());
+        movie.setVoteAverage(movieDb.getVoteAverage());
+        movie.setAdult(movieDb.getAdult());
+        movie.setRuntime(movieDb.getRuntime());
+
+        return movie;
+    }
+
 //    public Movie applyFromDb(MovieDb movieDb, List<Cast> casts) {
 //        Movie movie = new Movie();
 //        movie.setId(movieDb.getId());
@@ -99,16 +131,15 @@ public class MoviesMapper {
 //        return movie;
 //    }
 
-//    public List<Movie> mapMoviesList(List<MovieModel> movieModels, List<DescriptionModel> descriptionModels,
-//                                     List<BackdropModel> backdropModels){
-//        List<Movie> movies = new ArrayList<>();
-//
-//        for (int i = 0; i < movieModels.size(); i++) {
-//            movies.add(apply(movieModels.get(i), descriptionModels.get(i), backdropModels));
-//        }
-//
-//        return movies;
-//    }
+    public List<Movie> mapMovies(List<MovieModel> movieModels){
+        List<Movie> movies = new ArrayList<>();
+
+        for (int i = 0; i < movieModels.size(); i++) {
+            movies.add(applyForMovies(movieModels.get(i)));
+        }
+
+        return movies;
+    }
 
     public List<MovieDb> mapMoviesListToDb(List<Movie> movies){
         List<MovieDb> moviesDb = new ArrayList<>();
@@ -120,13 +151,13 @@ public class MoviesMapper {
         return moviesDb;
     }
 
-//    public List<Movie> mapMoviesListFromDb(List<MovieDb> moviesDb){
-//        List<Movie> movies = new ArrayList<>();
-//
-//        for (MovieDb movieDb: moviesDb) {
-//            movies.add(applyFromDb(movieDb));
-//        }
-//
-//        return movies;
-//    }
+    public List<Movie> mapMoviesListFromDb(List<MovieDb> moviesDb){
+        List<Movie> movies = new ArrayList<>();
+
+        for (MovieDb movieDb: moviesDb) {
+            movies.add(applyFromDb(movieDb));
+        }
+
+        return movies;
+    }
 }

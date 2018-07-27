@@ -18,6 +18,8 @@ public class CountriesConverter {
         for (ProductionCountryDb country: countries) {
             str.append(country.getName()).append(", ");
         }
+
+        if (countries.size() == 0) return "";
         return str.deleteCharAt(str.length()-1).toString();
     }
 
