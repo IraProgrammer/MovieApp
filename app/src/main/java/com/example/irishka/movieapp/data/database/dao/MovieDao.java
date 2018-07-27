@@ -15,9 +15,15 @@ import io.reactivex.Single;
 public interface MovieDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(List<MovieDb> concreteMovies);
+    void insertAll(List<MovieDb> movies);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(MovieDb movie);
 
     @Query("SELECT * FROM MovieDb")
     Single<List<MovieDb>> getAllMovies();
+
+    @Query("SELECT * FROM MovieDb WHERE id = :movieId")
+    Single<MovieDb> getMovie(long movieId);
 
 }

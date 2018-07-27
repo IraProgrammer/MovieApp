@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 public class CastDb {
 
     @PrimaryKey
-    private Integer castId;
+    private int castId;
 
     private String name;
 

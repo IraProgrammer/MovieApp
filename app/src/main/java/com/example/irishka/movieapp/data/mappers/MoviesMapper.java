@@ -1,7 +1,13 @@
 package com.example.irishka.movieapp.data.mappers;
 
 import com.example.irishka.movieapp.data.database.entity.MovieDb;
+import com.example.irishka.movieapp.data.models.BackdropModel;
+import com.example.irishka.movieapp.data.models.DescriptionModel;
+import com.example.irishka.movieapp.data.models.GalleryModel;
 import com.example.irishka.movieapp.data.models.MovieModel;
+import com.example.irishka.movieapp.domain.entity.Backdrop;
+import com.example.irishka.movieapp.domain.entity.Cast;
+import com.example.irishka.movieapp.domain.entity.Genre;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
 import java.util.ArrayList;
@@ -18,75 +24,111 @@ public class MoviesMapper {
 
     }
 
-    public Movie apply(MovieModel movieModel) {
+    private BackdropMapper backdropMapper;
+
+    private GenreMapper genreMapper;
+
+    private ProductionCountryMapper productionCountryMapper;
+
+    @Inject
+    public MoviesMapper(BackdropMapper backdropMapper, GenreMapper genreMapper,
+                        ProductionCountryMapper productionCountryMapper) {
+        this.backdropMapper = backdropMapper;
+        this.genreMapper = genreMapper;
+        this.productionCountryMapper = productionCountryMapper;
+    }
+
+    public Movie apply(DescriptionModel descriptionModel, List<BackdropModel> backdrops) {
         Movie movie = new Movie();
-        movie.setBackdropPath(movieModel.getBackdropPath());
-        movie.setId(movieModel.getId());
-        movie.setPosterUrl(BASE_IMAGE_URL + movieModel.getPosterPath());
-        movie.setReleaseDate(movieModel.getReleaseDate());
-        movie.setVideo(movieModel.getVideo());
-        movie.setTitle(movieModel.getTitle());
-        movie.setVoteAverage(movieModel.getVoteAverage());
-        movie.setAdult(movieModel.getAdult());
+        movie.setId(descriptionModel.getId());
+        movie.setPosterUrl(BASE_IMAGE_URL + descriptionModel.getPosterPath());
+        movie.setReleaseDate(descriptionModel.getReleaseDate());
+        movie.setTitle(descriptionModel.getTitle());
+        movie.setVoteAverage(descriptionModel.getVoteAverage());
+        movie.setAdult(descriptionModel.getAdult());
+        movie.setGenres(genreMapper.mapGenresList(descriptionModel.getGenres()));
+        movie.setRuntime(descriptionModel.getRuntime());
+        movie.setCountries(productionCountryMapper.mapProductionCountryList(descriptionModel.getProductionCountries()));
+        movie.setBackdrops(backdropMapper.mapBackdropsList(backdrops));
 
         return movie;
     }
 
-    public MovieDb applyToDb(MovieModel movieModel) {
-        MovieDb movie = new MovieDb();
-        movie.setBackdropPath(movieModel.getBackdropPath());
-        movie.setId(movieModel.getId());
-        movie.setPosterUrl(BASE_IMAGE_URL + movieModel.getPosterPath());
-        movie.setReleaseDate(movieModel.getReleaseDate());
-        movie.setVideo(movieModel.getVideo());
-        movie.setTitle(movieModel.getTitle());
-        movie.setVoteAverage(movieModel.getVoteAverage());
-        movie.setAdult(movieModel.getAdult());
+    public MovieDb applyToDb(Movie movie) {
+        MovieDb movieDb = new MovieDb();
+        movieDb.setId(movie.getId());
+        movieDb.setPosterUrl(movie.getPosterUrl());
+        movieDb.setReleaseDate(movie.getReleaseDate());
+        movieDb.setTitle(movie.getTitle());
+        movieDb.setVoteAverage(movie.getVoteAverage());
+        movieDb.setAdult(movie.getAdult());
+        movieDb.setRuntime(movie.getRuntime());
+        movieDb.setCountries(productionCountryMapper.mapProductionCountryListToDb(movie.getCountries()));
+        movieDb.setBackdrops(backdropMapper.mapBackdropsListToDb(movie.getBackdrops()));
 
-        return movie;
+        return movieDb;
     }
 
-    public Movie applyFromDb(MovieDb movieDb) {
+    public Movie applyFromDb(MovieDb movieDb, List<Genre> genres) {
         Movie movie = new Movie();
-        movie.setBackdropPath(movieDb.getBackdropPath());
         movie.setId(movieDb.getId());
         movie.setPosterUrl(movieDb.getPosterUrl());
         movie.setReleaseDate(movieDb.getReleaseDate());
-        movie.setVideo(movieDb.getVideo());
         movie.setTitle(movieDb.getTitle());
         movie.setVoteAverage(movieDb.getVoteAverage());
         movie.setAdult(movieDb.getAdult());
+        movie.setGenres(genres);
+        movie.setRuntime(movieDb.getRuntime());
+        movie.setBackdrops(backdropMapper.mapBackdropsListFromDb(movieDb.getBackdrops()));
+        movie.setCountries(productionCountryMapper.mapProductionCountryListFromDb(movieDb.getCountries()));
 
         return movie;
     }
 
-    public List<Movie> mapMoviesList(List<MovieModel> movieModels){
-        List<Movie> movies = new ArrayList<>();
+//    public Movie applyFromDb(MovieDb movieDb, List<Cast> casts) {
+//        Movie movie = new Movie();
+//        movie.setId(movieDb.getId());
+//        movie.setPosterUrl(movieDb.getPosterUrl());
+//        movie.setReleaseDate(movieDb.getReleaseDate());
+//        movie.setTitle(movieDb.getTitle());
+//        movie.setVoteAverage(movieDb.getVoteAverage());
+//        movie.setAdult(movieDb.getAdult());
+//        movie.setCasts(casts);
+//        movie.setRuntime(movieDb.getRuntime());
+//        movie.setBackdrops(backdropMapper.mapBackdropsListFromDb(movieDb.getBackdrops()));
+//        movie.setCountries(productionCountryMapper.mapProductionCountryListFromDb(movieDb.getCountries()));
+//
+//        return movie;
+//    }
 
-        for (MovieModel movieModel: movieModels) {
-            movies.add(apply(movieModel));
+//    public List<Movie> mapMoviesList(List<MovieModel> movieModels, List<DescriptionModel> descriptionModels,
+//                                     List<BackdropModel> backdropModels){
+//        List<Movie> movies = new ArrayList<>();
+//
+//        for (int i = 0; i < movieModels.size(); i++) {
+//            movies.add(apply(movieModels.get(i), descriptionModels.get(i), backdropModels));
+//        }
+//
+//        return movies;
+//    }
+
+    public List<MovieDb> mapMoviesListToDb(List<Movie> movies){
+        List<MovieDb> moviesDb = new ArrayList<>();
+
+        for (int i = 0; i < movies.size(); i++) {
+            moviesDb.add(applyToDb(movies.get(i)));
         }
 
-        return movies;
+        return moviesDb;
     }
 
-    public List<MovieDb> mapMoviesListToDb(List<MovieModel> movieModels){
-        List<MovieDb> movies = new ArrayList<>();
-
-        for (MovieModel movieModel: movieModels) {
-            movies.add(applyToDb(movieModel));
-        }
-
-        return movies;
-    }
-
-    public List<Movie> mapMoviesListFromDb(List<MovieDb> moviesDb){
-        List<Movie> movies = new ArrayList<>();
-
-        for (MovieDb movieDb: moviesDb) {
-            movies.add(applyFromDb(movieDb));
-        }
-
-        return movies;
-    }
+//    public List<Movie> mapMoviesListFromDb(List<MovieDb> moviesDb){
+//        List<Movie> movies = new ArrayList<>();
+//
+//        for (MovieDb movieDb: moviesDb) {
+//            movies.add(applyFromDb(movieDb));
+//        }
+//
+//        return movies;
+//    }
 }

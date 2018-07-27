@@ -24,10 +24,10 @@ public class ProductionCountryMapper {
         return productionCountry;
     }
 
-    public ProductionCountryDb applyToDb(ProductionCountryModel productionCountryModel){
-        ProductionCountryDb productionCountry = new ProductionCountryDb("");
-        productionCountry.setName(productionCountryModel.getName());
-        return productionCountry;
+    public ProductionCountryDb applyToDb(ProductionCountry productionCountry){
+        ProductionCountryDb productionCountryDb = new ProductionCountryDb("");
+        productionCountryDb.setName(productionCountry.getName());
+        return productionCountryDb;
     }
 
     public ProductionCountry applyFromDb(ProductionCountryDb productionCountryDb){
@@ -46,14 +46,14 @@ public class ProductionCountryMapper {
         return productionCountries;
     }
 
-    public List<ProductionCountryDb> mapProductionCountryListToDb(List<ProductionCountryModel> productionCountryModels){
-        List<ProductionCountryDb> productionCountries = new ArrayList<>();
+    public List<ProductionCountryDb> mapProductionCountryListToDb(List<ProductionCountry> productionCountries){
+        List<ProductionCountryDb> productionCountriesDb = new ArrayList<>();
 
-        for (ProductionCountryModel productionCountryModel: productionCountryModels) {
-            productionCountries.add(applyToDb(productionCountryModel));
+        for (ProductionCountry productionCountry: productionCountries) {
+            productionCountriesDb.add(applyToDb(productionCountry));
         }
 
-        return productionCountries;
+        return productionCountriesDb;
     }
 
     public List<ProductionCountry> mapProductionCountryListFromDb(List<ProductionCountryDb> productionCountriesDb){

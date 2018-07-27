@@ -2,28 +2,29 @@ package com.example.irishka.movieapp.data.repository;
 
 import android.util.Pair;
 
-import com.example.irishka.movieapp.data.database.dao.BackdropDao;
 import com.example.irishka.movieapp.data.database.dao.CastDao;
-import com.example.irishka.movieapp.data.database.dao.DescriptionDao;
+import com.example.irishka.movieapp.data.database.dao.CastOfMovieDao;
 import com.example.irishka.movieapp.data.database.dao.GenreDao;
-import com.example.irishka.movieapp.data.database.dao.GenreOfDescriptionDao;
+import com.example.irishka.movieapp.data.database.dao.GenreOfMovieDao;
 import com.example.irishka.movieapp.data.database.dao.MovieDao;
+import com.example.irishka.movieapp.data.database.entity.CastDb;
+import com.example.irishka.movieapp.data.database.entity.CastOfMovie;
 import com.example.irishka.movieapp.data.database.entity.GenreDb;
-import com.example.irishka.movieapp.data.database.entity.GenresOfDescription;
+import com.example.irishka.movieapp.data.database.entity.GenreOfMovie;
 import com.example.irishka.movieapp.data.mappers.BackdropMapper;
 import com.example.irishka.movieapp.data.mappers.CastMapper;
-import com.example.irishka.movieapp.data.mappers.DescriptionMapper;
 import com.example.irishka.movieapp.data.mappers.GenreMapper;
 import com.example.irishka.movieapp.data.mappers.MoviesMapper;
 import com.example.irishka.movieapp.data.mappers.ProductionCountryMapper;
+import com.example.irishka.movieapp.data.models.BackdropModel;
+import com.example.irishka.movieapp.data.models.CastModel;
 import com.example.irishka.movieapp.data.models.CreditsModel;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.data.models.GalleryModel;
+import com.example.irishka.movieapp.data.models.MovieModel;
 import com.example.irishka.movieapp.data.models.MoviePageModel;
 import com.example.irishka.movieapp.data.network.MoviesApi;
-import com.example.irishka.movieapp.domain.entity.Backdrop;
 import com.example.irishka.movieapp.domain.entity.Cast;
-import com.example.irishka.movieapp.domain.entity.Description;
 import com.example.irishka.movieapp.domain.entity.Genre;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.domain.entity.Movie;
@@ -40,8 +41,6 @@ public class MoviesRepository implements IMoviesRepository {
 
     private MoviesMapper moviesMapper;
 
-    private DescriptionMapper descriptionMapper;
-
     private CastMapper castMapper;
 
     private BackdropMapper backdropMapper;
@@ -52,37 +51,32 @@ public class MoviesRepository implements IMoviesRepository {
 
     private MovieDao movieDao;
 
-    private BackdropDao backdropDao;
-
     private CastDao castDao;
 
     private GenreDao genreDao;
 
-    private GenreOfDescriptionDao genreOfDescriptonDao;
+    private GenreOfMovieDao genreOfMovieDao;
 
-    private DescriptionDao descriptionDao;
+    private CastOfMovieDao castOfMovieDao;
 
     private MoviesApi moviesApi;
 
     @Inject
-    public MoviesRepository(MoviesMapper moviesMapper, DescriptionMapper descriptionMapper,
-                            CastMapper castMapper, BackdropMapper backdropMapper,
+    public MoviesRepository(MoviesMapper moviesMapper, CastMapper castMapper, BackdropMapper backdropMapper,
                             GenreMapper genreMapper, ProductionCountryMapper countryMapper,
-                            MovieDao movieDao, BackdropDao backdropDao, CastDao castDao,
-                            GenreDao genreDao, GenreOfDescriptionDao genreOfDescriptonDao, DescriptionDao descriptionDao,
+                            MovieDao movieDao, CastDao castDao, GenreDao genreDao,
+                            GenreOfMovieDao genreOfDescriptonDao, CastOfMovieDao castOfMovieDao,
                             MoviesApi moviesApi) {
         this.moviesMapper = moviesMapper;
-        this.descriptionMapper = descriptionMapper;
         this.castMapper = castMapper;
         this.backdropMapper = backdropMapper;
         this.genreMapper = genreMapper;
         this.countryMapper = countryMapper;
         this.movieDao = movieDao;
-        this.backdropDao = backdropDao;
         this.castDao = castDao;
         this.genreDao = genreDao;
-        this.genreOfDescriptonDao = genreOfDescriptonDao;
-        this.descriptionDao = descriptionDao;
+        this.genreOfMovieDao = genreOfDescriptonDao;
+        this.castOfMovieDao = castOfMovieDao;
         this.moviesApi = moviesApi;
     }
 
@@ -90,13 +84,34 @@ public class MoviesRepository implements IMoviesRepository {
         return moviesApi
                 .getMovies(page)
                 .map(MoviePageModel::getResults)
-                .doOnSuccess(movies -> movieDao.insertAll(moviesMapper.mapMoviesListToDb(movies)))
-                .map(movies -> moviesMapper.mapMoviesList(movies));
+                .toObservable()
+                .flatMapIterable(list -> list)
+                .flatMapSingle(movieModel -> getDescriptionFromInternet(movieModel.getId())
+                .flatMap(descriptionModel -> getBackdropsFromInternet(movieModel.getId())
+                        .map(backdrops -> moviesMapper.apply(descriptionModel, backdrops))))
+                .toList()
+                .doOnSuccess(movies -> movieDao.insertAll(moviesMapper.mapMoviesListToDb(movies)));
+    }
+
+    private Single<List<Genre>> getGenres(long movieId) {
+        return genreOfMovieDao.getGenresOfMovie(movieId)
+                .toObservable()
+                .flatMapIterable(list -> list)
+                .map(genreOfMovie -> genreOfMovie.getGenreId())
+                .flatMapSingle(id -> genreDao.getGenre(id))
+                .toList()
+                .map(list -> genreMapper.mapGenresListFromDb(list))
+                .subscribeOn(Schedulers.io());
     }
 
     private Single<List<Movie>> getMoviesFromDatabase() {
         return movieDao.getAllMovies()
-                .map(movies -> moviesMapper.mapMoviesListFromDb(movies))
+                .toObservable()
+                .flatMapIterable(list -> list)
+                .flatMapSingle(movieDb -> getGenres(movieDb.getId())
+                        .map(genres -> moviesMapper.applyFromDb(movieDb, genres)))
+                .toList()
+             //   .map(pairs -> moviesMapper.mapMoviesListFromDb(pairs))
                 .subscribeOn(Schedulers.io());
     }
 
@@ -106,39 +121,10 @@ public class MoviesRepository implements IMoviesRepository {
                 .onErrorResumeNext(getMoviesFromDatabase());
     }
 
-    private Single<Description> getDescriptionFromInternet(long movieId) {
+    private Single<DescriptionModel> getDescriptionFromInternet(long movieId) {
         return moviesApi
                 .getDescription(movieId)
-                .doOnSuccess(descriptionModel -> insertGoD(descriptionModel))
-             //   .doOnSuccess(descriptionModel -> insertCoD(descriptionModel))
-                .doOnSuccess(description -> descriptionDao.insert(descriptionMapper.applyToDb(description)))
-                .map(descriptionModel -> descriptionMapper.apply(descriptionModel));
-    }
-
-    private Single<List<Genre>> getGenres(long movieId) {
-        return genreOfDescriptonDao.getGoD(movieId)
-                .toObservable()
-                .flatMapIterable(list -> list)
-                .map(genreOfDescription -> genreOfDescription.getGenreId())
-                .flatMapSingle(id -> genreDao.getGenre(id))
-                .toList()
-                .map(list -> genreMapper.mapGenresListFromDb(list))
-                .subscribeOn(Schedulers.io());
-    }
-
-    private Single<Description> getDescriptionFromDatabase(long movieId) {
-        return descriptionDao.getDescription(movieId)
-                .flatMap(descriptionDb -> getGenres(movieId)
-                        .map(list -> new Pair<>(descriptionDb, list)))
-                .map(pair -> descriptionMapper.applyFromDb(pair.first, pair.second))
-                .subscribeOn(Schedulers.io());
-    }
-
-    @Override
-    public Single<Description> downloadDescription(long movieId){
-
-        return getDescriptionFromInternet(movieId)
-                .onErrorResumeNext(getDescriptionFromDatabase(movieId));
+                .doOnSuccess(descriptionModel -> insertGenresOfMovie(descriptionModel));
     }
 
     @Override
@@ -146,77 +132,136 @@ public class MoviesRepository implements IMoviesRepository {
         return moviesApi
                 .getRelated(movieId)
                 .map(MoviePageModel::getResults)
-                .map(movies -> moviesMapper.mapMoviesList(movies));
+                .toObservable()
+                .flatMapIterable(list -> list)
+                .flatMapSingle(movieModel -> getDescriptionFromInternet(movieModel.getId())
+                        .flatMap(descriptionModel -> getBackdropsFromInternet(movieModel.getId())
+                                .map(backdrops -> moviesMapper.apply(descriptionModel, backdrops))))
+                .toList()
+                .map(movies -> moviesMapper.mapMoviesListToDb(movies))
+                .doOnSuccess(list -> movieDao.insertAll(list))
+                .toObservable()
+                .flatMapIterable(list -> list)
+                .flatMapSingle(movieDb -> getGenres(movieDb.getId())
+                        .map(genres -> moviesMapper.applyFromDb(movieDb, genres)))
+                .toList();
     }
 
     private Single<List<Cast>> getCastsFromInternet(long movieId) {
         return moviesApi
                 .getCreators(movieId)
                 .map(CreditsModel::getCast)
-                .doOnSuccess(casts -> castDao.insertAll(castMapper.mapCastsListToDb(casts)))
-                .map(casts -> castMapper.mapCastsList(casts));
+                .doOnSuccess(castModels -> castDao.insertAll(castMapper.mapCastsListToDb(castModels)))
+                .doOnSuccess(castModels -> insertCastsOfMovie(movieId, castModels))
+                .map(castModels -> castMapper.mapCastsList(castModels));
+
     }
 
-    private Single<List<Cast>> getCastsFromDatabase() {
-        return castDao.getAllCasts()
-                .map(casts -> castMapper.mapCastsListFromDb(casts))
+    private Single<List<Cast>> getCastsFromDatabase(long movieId) {
+        return castOfMovieDao.getCastsOfMovie(movieId)
+                .toObservable()
+                .flatMapIterable(list -> list)
+                .map(castOfMovie -> castOfMovie.getCastId())
+                .flatMapSingle(id -> castDao.getCast(id))
+                .toList()
+                .map(list -> castMapper.mapCastsListFromDb(list))
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
     public Single<List<Cast>> downloadCasts(long movieId){
         return getCastsFromInternet(movieId)
-                .onErrorResumeNext(getCastsFromDatabase());
+                .onErrorResumeNext(getCastsFromDatabase(movieId));
     }
 
-    private Single<List<Backdrop>> getBackdropsFromInternet(long movieId) {
+    private Single<List<BackdropModel>> getBackdropsFromInternet(long movieId) {
         return moviesApi
                 .getGallery(movieId)
-                .map(GalleryModel::getBackdrops)
-                .doOnSuccess(backdrops -> backdropDao.insertAll(backdropMapper.mapBackdropsListToDb(backdrops)))
-                .map(backdrops -> backdropMapper.mapBackdropsList(backdrops));
+                .map(GalleryModel::getBackdrops);
     }
 
-    private Single<List<Backdrop>> getBackdropsFromDatabase() {
-        return backdropDao.getAllBackdrops()
-                .map(backdrops -> backdropMapper.mapBackdropsListFromDb(backdrops))
-                .subscribeOn(Schedulers.io());
-    }
+    private void insertGenresOfMovie(DescriptionModel description) {
 
-    @Override
-    public Single<List<Backdrop>> downloadGallery(long movieId) {
-        return getBackdropsFromInternet(movieId)
-                .onErrorResumeNext(getBackdropsFromDatabase());
-    }
-
-//    private void insertCoD(DescriptionModel description) {
-//
-//        List<CountriesOfDescription> countriesOfDescriptons = new ArrayList<>();
-//
-//        List<ProductionCountryDb> countries = countryMapper.mapProductionCountryListToDb(description.getProductionCountries());
-//
-//        for (int i = 0; i < description.getGenres().size(); i++) {
-//
-//            countriesOfDescriptons.add(new CountriesOfDescription(description.getId(), countries.get(i).getName()));
-//
-//        }
-//
-//        countriesOfDescriptionDao.insert(countriesOfDescriptons);
-//    }
-
-    private void insertGoD(DescriptionModel description) {
-
-        List<GenresOfDescription> genreOfDescriptons = new ArrayList<>();
+        List<GenreOfMovie> genreOfDescriptons = new ArrayList<>();
 
         List<GenreDb> genres = genreMapper.mapGenresListToDb(description.getGenres());
 
         for (int i = 0; i < description.getGenres().size(); i++) {
 
-            genreOfDescriptons.add(new GenresOfDescription(description.getId(), genres.get(i).getId()));
+            genreOfDescriptons.add(new GenreOfMovie(description.getId(), genres.get(i).getId()));
 
         }
 
         genreDao.insert(genres);
-        genreOfDescriptonDao.insert(genreOfDescriptons);
+        genreOfMovieDao.insert(genreOfDescriptons);
     }
+
+    private void insertCastsOfMovie(long movieId, List<CastModel> castModels) {
+
+        List<CastOfMovie> castOfMovies = new ArrayList<>();
+
+        List<CastDb> casts = castMapper.mapCastsListToDb(castModels);
+
+        for (int i = 0; i < castModels.size(); i++) {
+
+            castOfMovies.add(new CastOfMovie(movieId, casts.get(i).getCastId()));
+
+        }
+
+        castOfMovieDao.insert(castOfMovies);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private Single<Movie> getMovieFromInternet(long movieId) {
+        return moviesApi
+                .getDescription(movieId)
+                .flatMap(descriptionModel -> getBackdropsFromInternet(descriptionModel.getId())
+                                .map(backdrops -> moviesMapper.apply(descriptionModel, backdrops)))
+                .doOnSuccess(movie -> movieDao.insert(moviesMapper.applyToDb(movie)));
+    }
+
+    private Single<Movie> getMovieFromDatabase(long movieId) {
+        return movieDao.getMovie(movieId)
+                .flatMap(movieDb -> getGenres(movieId)
+                        .map(list -> new Pair<>(movieDb, list)))
+                .map(pair -> moviesMapper.applyFromDb(pair.first, pair.second))
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Single<Movie> downloadMovie(long movieId) {
+        return getMovieFromInternet(movieId)
+                .onErrorResumeNext(getMovieFromDatabase(movieId));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

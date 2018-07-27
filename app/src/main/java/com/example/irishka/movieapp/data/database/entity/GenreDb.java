@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 public class GenreDb {
 
     @PrimaryKey
-    private Integer id;
+    private int id;
 
     private String name;
 

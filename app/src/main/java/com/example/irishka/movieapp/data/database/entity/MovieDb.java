@@ -3,6 +3,12 @@ package com.example.irishka.movieapp.data.database.entity;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+
+import com.example.irishka.movieapp.data.database.BackdropsConverter;
+import com.example.irishka.movieapp.data.database.CountriesConverter;
+
+import java.util.List;
 
 @Entity
 public class MovieDb {
@@ -10,13 +16,9 @@ public class MovieDb {
     @PrimaryKey
     private long id;
 
-    private boolean video;
-
     private String title;
 
     private String posterUrl;
-
-    private String backdropPath;
 
     private String releaseDate;
 
@@ -24,20 +26,20 @@ public class MovieDb {
 
     private double voteAverage;
 
+    private Integer runtime;
+
+    @TypeConverters(CountriesConverter.class)
+    private List<ProductionCountryDb> countries;
+
+    @TypeConverters(BackdropsConverter.class)
+    private List<BackdropDb> backdrops;
+
     public long getId() {
         return id;
     }
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public boolean getVideo() {
-        return video;
-    }
-
-    public void setVideo(boolean video) {
-        this.video = video;
     }
 
     public String getTitle() {
@@ -54,14 +56,6 @@ public class MovieDb {
 
     public void setPosterUrl(String posterUrl) {
         this.posterUrl = posterUrl;
-    }
-
-    public String getBackdropPath() {
-        return backdropPath;
-    }
-
-    public void setBackdropPath(String backdropPath) {
-        this.backdropPath = backdropPath;
     }
 
     public String getReleaseDate() {
@@ -86,6 +80,30 @@ public class MovieDb {
 
     public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
+    }
+
+    public Integer getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(Integer runtime) {
+        this.runtime = runtime;
+    }
+
+    public List<ProductionCountryDb> getCountries() {
+        return countries;
+    }
+
+    public void setCountries(List<ProductionCountryDb> countries) {
+        this.countries = countries;
+    }
+
+    public List<BackdropDb> getBackdrops() {
+        return backdrops;
+    }
+
+    public void setBackdrops(List<BackdropDb> backdrops) {
+        this.backdrops = backdrops;
     }
 
 }

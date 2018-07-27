@@ -6,8 +6,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class ProductionCountry {
 
-    public ProductionCountry(String name){
+    public ProductionCountry() {
+    }
 
+    public ProductionCountry(String name) {
+        this.name = name;
     }
 
     private String name;

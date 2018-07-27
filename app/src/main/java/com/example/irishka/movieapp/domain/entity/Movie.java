@@ -1,23 +1,24 @@
 
 package com.example.irishka.movieapp.domain.entity;
 
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+
+import com.example.irishka.movieapp.data.database.BackdropsConverter;
+import com.example.irishka.movieapp.data.database.CountriesConverter;
+import com.example.irishka.movieapp.data.database.entity.BackdropDb;
+import com.example.irishka.movieapp.data.database.entity.ProductionCountryDb;
+
+import java.util.List;
+
 public class Movie {
 
+    @PrimaryKey
     private long id;
-
-    private boolean video;
 
     private String title;
 
-    private double popularity;
-
     private String posterUrl;
-
-    private String originalLanguage;
-
-    private String originalTitle;
-
-    private String backdropPath;
 
     private String releaseDate;
 
@@ -25,20 +26,28 @@ public class Movie {
 
     private double voteAverage;
 
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
+    }
+
+    private List<Genre> genres;
+
+    private Integer runtime;
+
+    private List<ProductionCountry> countries;
+
+    private List<Backdrop> backdrops;
+
     public long getId() {
         return id;
     }
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public boolean getVideo() {
-        return video;
-    }
-
-    public void setVideo(boolean video) {
-        this.video = video;
     }
 
     public String getTitle() {
@@ -49,45 +58,12 @@ public class Movie {
         this.title = title;
     }
 
-    public double getPopularity() {
-        return popularity;
-    }
-
-    public void setPopularity(double popularity) {
-        this.popularity = popularity;
-    }
-
     public String getPosterUrl() {
         return posterUrl;
     }
 
     public void setPosterUrl(String posterUrl) {
         this.posterUrl = posterUrl;
-    }
-
-    public String getOriginalLanguage() {
-        return originalLanguage;
-    }
-
-    public void setOriginalLanguage(String originalLanguage) {
-        this.originalLanguage = originalLanguage;
-    }
-
-    public String getOriginalTitle() {
-        return originalTitle;
-    }
-
-    public void setOriginalTitle(String originalTitle) {
-        this.originalTitle = originalTitle;
-    }
-
-
-    public String getBackdropPath() {
-        return backdropPath;
-    }
-
-    public void setBackdropPath(String backdropPath) {
-        this.backdropPath = backdropPath;
     }
 
     public String getReleaseDate() {
@@ -112,6 +88,30 @@ public class Movie {
 
     public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
+    }
+
+    public Integer getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(Integer runtime) {
+        this.runtime = runtime;
+    }
+
+    public List<ProductionCountry> getCountries() {
+        return countries;
+    }
+
+    public void setCountries(List<ProductionCountry> countries) {
+        this.countries = countries;
+    }
+
+    public List<Backdrop> getBackdrops() {
+        return backdrops;
+    }
+
+    public void setBackdrops(List<Backdrop> backdrops) {
+        this.backdrops = backdrops;
     }
 
 }

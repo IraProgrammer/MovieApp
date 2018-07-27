@@ -5,22 +5,20 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.example.irishka.movieapp.data.database.entity.GenreDb;
-import com.example.irishka.movieapp.domain.entity.Genre;
+import com.example.irishka.movieapp.data.database.entity.CastOfMovie;
+import com.example.irishka.movieapp.data.database.entity.GenreOfMovie;
 
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.Single;
 
 @Dao
-public interface GenreDao {
+public interface CastOfMovieDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(List<GenreDb> genres);
+    void insert(List<CastOfMovie> castsOfMovie);
 
-    @Query("SELECT * FROM GenreDb WHERE id = :genreId")
-    Single<GenreDb> getGenre(long genreId);
+    @Query("SELECT * FROM CastOfMovie WHERE movieId = :movieId")
+    Single<List<CastOfMovie>> getCastsOfMovie(long movieId);
 
 }

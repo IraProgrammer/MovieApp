@@ -32,6 +32,13 @@ public class GenreMapper{
         return genre;
     }
 
+    public GenreDb applyToDb(Genre genreModel){
+        GenreDb genre = new GenreDb();
+        genre.setId(genreModel.getId());
+        genre.setName(genreModel.getName());
+        return genre;
+    }
+
     public Genre applyFromDb(GenreDb genreDb){
         Genre genre = new Genre(0, "");
         genre.setId(genreDb.getId());

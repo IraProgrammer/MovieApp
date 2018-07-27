@@ -8,9 +8,8 @@ import com.example.irishka.movieapp.data.database.dao.BackdropDao;
 import com.example.irishka.movieapp.data.database.dao.CastDao;
 import com.example.irishka.movieapp.data.database.dao.DescriptionDao;
 import com.example.irishka.movieapp.data.database.dao.GenreDao;
-import com.example.irishka.movieapp.data.database.dao.GenreOfDescriptionDao;
+import com.example.irishka.movieapp.data.database.dao.GenreOfMovieDao;
 import com.example.irishka.movieapp.data.database.dao.MovieDao;
-import com.example.irishka.movieapp.domain.entity.ProductionCountry;
 
 import javax.inject.Singleton;
 
@@ -53,7 +52,7 @@ public abstract class DatabaseModule {
 
     @Singleton
     @Provides
-    static GenreOfDescriptionDao provideGenreOfDescriptionDao(AppDatabase database){
+    static GenreOfMovieDao provideGenreOfDescriptionDao(AppDatabase database){
         return database.getGenreOfDescroptionDao();
     }
 

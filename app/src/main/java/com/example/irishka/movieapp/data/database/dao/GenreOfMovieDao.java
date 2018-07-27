@@ -5,20 +5,18 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.example.irishka.movieapp.data.database.entity.BackdropDb;
-import com.example.irishka.movieapp.data.database.entity.MovieDb;
+import com.example.irishka.movieapp.data.database.entity.GenreOfMovie;
 
 import java.util.List;
 
 import io.reactivex.Single;
 
 @Dao
-public interface BackdropDao {
+public interface GenreOfMovieDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(List<BackdropDb> backdrops);
+    void insert(List<GenreOfMovie> genresOfMovie);
 
-    @Query("SELECT * FROM BackdropDb")
-    Single<List<BackdropDb>> getAllBackdrops();
-
+    @Query("SELECT * FROM GenreOfMovie WHERE movieId = :movieId")
+    Single<List<GenreOfMovie>> getGenresOfMovie(long movieId);
 }

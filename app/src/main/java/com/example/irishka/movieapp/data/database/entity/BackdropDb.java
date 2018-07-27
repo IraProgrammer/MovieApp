@@ -10,8 +10,13 @@ public class BackdropDb {
     public int id;
 
     private String fileUrl;
-    private Integer height;
-    private Integer width;
+
+    public BackdropDb(){
+    }
+
+    public BackdropDb(String fileUrl){
+        this.fileUrl = fileUrl;
+    }
 
     public String getFileUrl() {
         return fileUrl;
@@ -19,21 +24,5 @@ public class BackdropDb {
 
     public void setFileUrl(String fileUrl) {
         this.fileUrl = fileUrl;
-    }
-
-    public Integer getHeight() {
-        return height;
-    }
-
-    public void setHeight(Integer height) {
-        this.height = height;
-    }
-
-    public Integer getWidth() {
-        return width;
-    }
-
-    public void setWidth(Integer width) {
-        this.width = width;
     }
 }

@@ -26,10 +26,10 @@ public class BackdropMapper{
         return backdrop;
     }
 
-    public BackdropDb applyToDb(BackdropModel backdropModel) {
-        BackdropDb backdrop = new BackdropDb();
-        backdrop.setFileUrl(BASE_IMAGE_URL + backdropModel.getFilePath());
-        return backdrop;
+    public BackdropDb applyToDb(Backdrop backdrop) {
+        BackdropDb backdropDb = new BackdropDb();
+        backdropDb.setFileUrl(backdrop.getFileUrl());
+        return backdropDb;
     }
 
     public Backdrop applyFromDb(BackdropDb backdropDb) {
@@ -48,11 +48,11 @@ public class BackdropMapper{
         return backdrops;
     }
 
-    public List<BackdropDb> mapBackdropsListToDb(List<BackdropModel> backdropModels){
+    public List<BackdropDb> mapBackdropsListToDb(List<Backdrop> backdropList){
         List<BackdropDb> backdrops = new ArrayList<>();
 
-        for (BackdropModel backdropModel: backdropModels) {
-            backdrops.add(applyToDb(backdropModel));
+        for (Backdrop backdrop: backdropList) {
+            backdrops.add(applyToDb(backdrop));
         }
 
         return backdrops;
