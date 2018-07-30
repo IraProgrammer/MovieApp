@@ -90,6 +90,30 @@ public class MoviesMapper {
         return movieDb;
     }
 
+    public MovieDb applyToDb(Movie movie, long movieId) {
+        MovieDb movieDb = new MovieDb();
+        movieDb.setId(movie.getId());
+        movieDb.setPosterUrl(movie.getPosterUrl());
+        movieDb.setReleaseDate(movie.getReleaseDate());
+        movieDb.setTitle(movie.getTitle());
+        movieDb.setOverview(movie.getOverview());
+        movieDb.setVoteAverage(movie.getVoteAverage());
+        movieDb.setAdult(movie.getAdult());
+        movieDb.setRuntime(movie.getRuntime());
+
+        movieDb.setRelatedId(movieId);
+
+        if (movie.getCountries() != null){
+            movieDb.setCountries(productionCountryMapper.mapProductionCountryListToDb(movie.getCountries()));}
+        else movieDb.setCountries(new ArrayList<>());
+
+        if (movie.getBackdrops() != null)
+            movieDb.setBackdrops(backdropMapper.mapBackdropsListToDb(movie.getBackdrops()));
+        else movieDb.setBackdrops(new ArrayList<>());
+
+        return movieDb;
+    }
+
     public Movie applyFromDb(MovieDb movieDb, List<Genre> genres) {
         Movie movie = new Movie();
         movie.setId(movieDb.getId());
@@ -156,6 +180,17 @@ public class MoviesMapper {
 
         return moviesDb;
     }
+
+    public List<MovieDb> mapMoviesListToDb(List<Movie> movies, long movieId){
+        List<MovieDb> moviesDb = new ArrayList<>();
+
+        for (int i = 0; i < movies.size(); i++) {
+            moviesDb.add(applyToDb(movies.get(i), movieId));
+        }
+
+        return moviesDb;
+    }
+
 
     public List<Movie> mapMoviesListFromDb(List<MovieDb> moviesDb){
         List<Movie> movies = new ArrayList<>();

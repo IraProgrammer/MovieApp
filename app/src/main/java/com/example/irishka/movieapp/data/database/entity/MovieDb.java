@@ -18,6 +18,16 @@ public class MovieDb {
     @PrimaryKey
     private long id;
 
+    public long getRelatedId() {
+        return relatedId;
+    }
+
+    public void setRelatedId(long relatedId) {
+        this.relatedId = relatedId;
+    }
+
+    private long relatedId;
+
     private String title;
 
     private String posterUrl;

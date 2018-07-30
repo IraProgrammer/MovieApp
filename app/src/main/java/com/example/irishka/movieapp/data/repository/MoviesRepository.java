@@ -110,30 +110,27 @@ public class MoviesRepository implements IMoviesRepository {
                 });
     }
 
-    private Single<DescriptionModel> getDescriptionFromInternet(long movieId) {
+    private Single<List<Movie>> getRelatedFromInternet(long movieId) {
         return moviesApi
-                .getDescription(movieId)
-                .doOnSuccess(descriptionModel -> insertGenresOfMovie(descriptionModel));
+                .getRelated(movieId)
+                .map(MoviePageModel::getResults)
+                .map(movies -> moviesMapper.mapMovies(movies))
+                .doOnSuccess(movies -> movieDao.insertAll(moviesMapper.mapMoviesListToDb(movies, movieId)));
+    }
+
+    private Single<List<Movie>> getRelatedFromDatabase(long movieId) {
+        return movieDao.getRelatedMovies(movieId)
+                .map(moviesDb -> moviesMapper.mapMoviesListFromDb(moviesDb))
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
     public Single<List<Movie>> downloadRelatedMovies(long movieId) {
-        return moviesApi
-                .getRelated(movieId)
-                .map(MoviePageModel::getResults)
-//                .toObservable()
-//                .flatMapIterable(list -> list)
-//                .flatMapSingle(movieModel -> getDescriptionFromInternet(movieModel.getId())
-//                        .flatMap(descriptionModel -> getBackdropsFromInternet(movieModel.getId())
-//                                .map(backdrops -> moviesMapper.apply(descriptionModel, backdrops))))
-//                .toList()
-                .map(movies -> moviesMapper.mapMovies(movies))
-                .doOnSuccess(movies -> movieDao.insertAll(moviesMapper.mapMoviesListToDb(movies)));
-//                .toObservable()
-//                .flatMapIterable(list -> list)
-//                .flatMapSingle(movieDb -> getGenres(movieDb.getId())
-//                        .map(genres -> moviesMapper.applyFromDb(movieDb, genres)))
-//                .toList();
+        return getRelatedFromInternet(movieId)
+                .onErrorResumeNext(throwable -> {
+                    throwable.printStackTrace();
+                    return getRelatedFromDatabase(movieId);
+                });
     }
 
     private Single<List<Cast>> getCastsFromInternet(long movieId) {
@@ -171,7 +168,7 @@ public class MoviesRepository implements IMoviesRepository {
 
     private void insertGenresOfMovie(DescriptionModel description) {
 
-        Set<GenreOfMovie> genreOfDescriptons = new HashSet<>();
+        List<GenreOfMovie> genreOfDescriptons = new ArrayList<>();
 
         List<GenreDb> genres = genreMapper.mapGenresListToDb(description.getGenres());
 

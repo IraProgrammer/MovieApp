@@ -16,7 +16,7 @@ import io.reactivex.Single;
 public interface GenreOfMovieDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Set<GenreOfMovie> genresOfMovie);
+    void insert(List<GenreOfMovie> genresOfMovie);
 
     @Query("SELECT * FROM GenreOfMovie WHERE movieId = :movieId")
     Single<List<GenreOfMovie>> getGenresOfMovie(long movieId);

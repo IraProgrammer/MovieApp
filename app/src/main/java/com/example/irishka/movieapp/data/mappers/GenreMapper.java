@@ -5,7 +5,9 @@ import com.example.irishka.movieapp.data.models.GenreModel;
 import com.example.irishka.movieapp.domain.entity.Genre;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -58,7 +60,6 @@ public class GenreMapper{
 
     public List<GenreDb> mapGenresListToDb(List<GenreModel> genreModels){
         List<GenreDb> genres = new ArrayList<>();
-
         for (GenreModel genreModel: genreModels) {
             genres.add(applyToDb(genreModel));
         }
