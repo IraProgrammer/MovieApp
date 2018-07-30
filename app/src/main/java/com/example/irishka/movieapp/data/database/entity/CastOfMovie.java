@@ -10,8 +10,8 @@ public class CastOfMovie {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    long movieId;
-    int castId;
+    private long movieId;
+    private int castId;
 
     public CastOfMovie(){}
 

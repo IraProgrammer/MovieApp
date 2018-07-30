@@ -9,16 +9,16 @@ public class GalleryModel {
 
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private int id;
     @SerializedName("backdrops")
     @Expose
     private List<BackdropModel> backdrops = null;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

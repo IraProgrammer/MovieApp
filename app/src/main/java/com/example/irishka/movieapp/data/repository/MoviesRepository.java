@@ -43,11 +43,7 @@ public class MoviesRepository implements IMoviesRepository {
 
     private CastMapper castMapper;
 
-    private BackdropMapper backdropMapper;
-
     private GenreMapper genreMapper;
-
-    private ProductionCountryMapper countryMapper;
 
     private MovieDao movieDao;
 
@@ -62,16 +58,14 @@ public class MoviesRepository implements IMoviesRepository {
     private MoviesApi moviesApi;
 
     @Inject
-    public MoviesRepository(MoviesMapper moviesMapper, CastMapper castMapper, BackdropMapper backdropMapper,
-                            GenreMapper genreMapper, ProductionCountryMapper countryMapper,
+    public MoviesRepository(MoviesMapper moviesMapper, CastMapper castMapper,
+                            GenreMapper genreMapper,
                             MovieDao movieDao, CastDao castDao, GenreDao genreDao,
                             GenreOfMovieDao genreOfMovieDao, CastOfMovieDao castOfMovieDao,
                             MoviesApi moviesApi) {
         this.moviesMapper = moviesMapper;
         this.castMapper = castMapper;
-        this.backdropMapper = backdropMapper;
         this.genreMapper = genreMapper;
-        this.countryMapper = countryMapper;
         this.movieDao = movieDao;
         this.castDao = castDao;
         this.genreDao = genreDao;
@@ -84,12 +78,6 @@ public class MoviesRepository implements IMoviesRepository {
         return moviesApi
                 .getMovies(page)
                 .map(MoviePageModel::getResults)
-                //   .toObservable()
-                //   .flatMapIterable(list -> list)
-                //   .flatMapSingle(movieModel -> getDescriptionFromInternet(movieModel.getId())
-                //   .flatMap(descriptionModel -> getBackdropsFromInternet(movieModel.getId())
-                //           .map(backdrops -> moviesMapper.apply(descriptionModel, backdrops))))
-                //   .toList()
                 .map(movieModels -> moviesMapper.mapMovies(movieModels))
                 .doOnSuccess(movies -> movieDao.insertAll(moviesMapper.mapMoviesListToDb(movies)));
     }
@@ -107,12 +95,6 @@ public class MoviesRepository implements IMoviesRepository {
 
     private Single<List<Movie>> getMoviesFromDatabase() {
         return movieDao.getAllMovies()
-                //    .toObservable()
-                //    .flatMapIterable(list -> list)
-                //    .flatMapSingle(movieDb -> getGenres(movieDb.getId())
-                //            .map(genres -> moviesMapper.applyFromDb(movieDb, genres)))
-                //    .toList()
-                //    .map(pairs -> moviesMapper.mapMoviesListFromDb(pairs))
                 .map(moviesDb -> moviesMapper.mapMoviesListFromDb(moviesDb))
                 .subscribeOn(Schedulers.io());
     }

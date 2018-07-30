@@ -8,28 +8,28 @@ public class BackdropModel {
 
     @SerializedName("aspect_ratio")
     @Expose
-    private Double aspectRatio;
+    private double aspectRatio;
     @SerializedName("file_path")
     @Expose
     private String filePath;
     @SerializedName("height")
     @Expose
-    private Integer height;
+    private int height;
     @SerializedName("vote_average")
     @Expose
-    private Double voteAverage;
+    private double voteAverage;
     @SerializedName("vote_count")
     @Expose
-    private Integer voteCount;
+    private int voteCount;
     @SerializedName("width")
     @Expose
-    private Integer width;
+    private int width;
 
-    public Double getAspectRatio() {
+    public double getAspectRatio() {
         return aspectRatio;
     }
 
-    public void setAspectRatio(Double aspectRatio) {
+    public void setAspectRatio(double aspectRatio) {
         this.aspectRatio = aspectRatio;
     }
 
@@ -41,35 +41,35 @@ public class BackdropModel {
         this.filePath = filePath;
     }
 
-    public Integer getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public void setHeight(Integer height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 
-    public Double getVoteAverage() {
+    public double getVoteAverage() {
         return voteAverage;
     }
 
-    public void setVoteAverage(Double voteAverage) {
+    public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
     }
 
-    public Integer getVoteCount() {
+    public int getVoteCount() {
         return voteCount;
     }
 
-    public void setVoteCount(Integer voteCount) {
+    public void setVoteCount(int voteCount) {
         this.voteCount = voteCount;
     }
 
-    public Integer getWidth() {
+    public int getWidth() {
         return width;
     }
 
-    public void setWidth(Integer width) {
+    public void setWidth(int width) {
         this.width = width;
     }
 

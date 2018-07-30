@@ -22,7 +22,7 @@ public class Movie {
 
     private String releaseDate;
 
-    private Boolean adult;
+    private boolean adult;
 
     private double voteAverage;
 
@@ -46,7 +46,7 @@ public class Movie {
 
     private List<Genre> genres = null;
 
-    private Integer runtime = 0;
+    private int runtime;
 
     private List<ProductionCountry> countries = null;
 
@@ -84,7 +84,7 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
-    public Boolean getAdult() {
+    public boolean getAdult() {
         return adult;
     }
 
@@ -100,11 +100,11 @@ public class Movie {
         this.voteAverage = voteAverage;
     }
 
-    public Integer getRuntime() {
+    public int getRuntime() {
         return runtime;
     }
 
-    public void setRuntime(Integer runtime) {
+    public void setRuntime(int runtime) {
         this.runtime = runtime;
     }
 

@@ -16,8 +16,6 @@ public class DescriptionPresenter extends BasePresenter<DescriptionView> {
 
     private IMoviesRepository moviesRepository;
 
-    private Disposable disposable;
-
     private final long movieId;
 
     @Inject
@@ -42,15 +40,8 @@ public class DescriptionPresenter extends BasePresenter<DescriptionView> {
 
     public void downloadRelatedMovies(long movieId) {
 
-        addDisposables(disposable = moviesRepository.downloadRelatedMovies(movieId)
+        addDisposables(moviesRepository.downloadRelatedMovies(movieId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(movies -> getViewState().showRelatedMovies(movies), Throwable::printStackTrace));
     }
-
-//    public void downloadGallery(long movieId) {
-//
-//        addDisposables(disposable = moviesRepository.downloadGallery(movieId)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(images -> getViewState().showGallery(images), Throwable::printStackTrace));
-//    }
 }

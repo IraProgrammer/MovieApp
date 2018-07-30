@@ -111,5 +111,4 @@ public class MovieModel {
     public void setPosterPath(String posterUrl) {
         this.posterPath = posterUrl;
     }
-
 }

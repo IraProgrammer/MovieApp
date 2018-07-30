@@ -24,11 +24,11 @@ public class MovieDb {
 
     private String releaseDate;
 
-    private Boolean adult;
+    private boolean adult;
 
     private double voteAverage;
 
-    private Integer runtime;
+    private int runtime;
 
     @TypeConverters(CountriesConverter.class)
     private List<ProductionCountryDb> countries;
@@ -78,11 +78,11 @@ public class MovieDb {
         this.releaseDate = releaseDate;
     }
 
-    public Boolean getAdult() {
+    public boolean getAdult() {
         return adult;
     }
 
-    public void setAdult(Boolean adult) {
+    public void setAdult(boolean adult) {
         this.adult = adult;
     }
 
@@ -94,11 +94,11 @@ public class MovieDb {
         this.voteAverage = voteAverage;
     }
 
-    public Integer getRuntime() {
+    public int getRuntime() {
         return runtime;
     }
 
-    public void setRuntime(Integer runtime) {
+    public void setRuntime(int runtime) {
         this.runtime = runtime;
     }
 

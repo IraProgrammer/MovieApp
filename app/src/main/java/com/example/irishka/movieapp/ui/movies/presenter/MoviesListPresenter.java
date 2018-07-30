@@ -16,8 +16,6 @@ public class MoviesListPresenter extends BasePresenter<MoviesListView> {
 
     private IMoviesRepository moviesRepository;
 
-    private Disposable disposable;
-
     private int page = 1;
 
     @Inject

@@ -19,7 +19,7 @@ public class BasePresenter<T extends MvpView> extends MvpPresenter<T> {
     }
 
     private void dispose() {
-        if(disposables != null && !disposables.isDisposed()) disposables.dispose();
+        if(disposables != null) disposables.clear();
     }
 
     @Override

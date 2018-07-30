@@ -47,6 +47,8 @@ public class PrepareDescription {
         StringBuilder genresStr = new StringBuilder();
         List<Genre> genres = movie.getGenres();
 
+        if (genres.size() == 0) return "";
+
         for (int i = 0; i < genres.size() - 1; i++) {
             genresStr.append(genres.get(i).getName()).append(", ");
         }
@@ -65,7 +67,7 @@ public class PrepareDescription {
         int hours = movie.getRuntime() / 60;
         int minutes = movie.getRuntime() % 60;
 
-        if (minutes < 10) return String.format(fragment.getString(R.string.durationWithNull), hours, minutes);
+        if (minutes < 10 && minutes > 0) return String.format(fragment.getString(R.string.durationWithNull), hours, minutes);
 
         return String.format(fragment.getString(R.string.duration), hours, minutes);
     }
@@ -80,6 +82,8 @@ public class PrepareDescription {
     public String getCountries(Movie movie) {
         StringBuilder countriesStr = new StringBuilder();
         List<ProductionCountry> productionCountries = movie.getCountries();
+
+        if (productionCountries.size() == 0) return "";
 
         for (int i = 0; i < productionCountries.size() - 1; i++) {
             countriesStr.append(productionCountries.get(i).getName()).append(", ");

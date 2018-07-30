@@ -9,13 +9,10 @@ public class DescriptionModel {
 
     @SerializedName("adult")
     @Expose
-    private Boolean adult;
+    private boolean adult;
     @SerializedName("backdrop_path")
     @Expose
     private String backdropPath;
-    @SerializedName("belongs_to_collection")
-    @Expose
-    private Object belongsToCollection;
     @SerializedName("genres")
     @Expose
     private List<GenreModel> genres = null;
@@ -36,7 +33,7 @@ public class DescriptionModel {
     private String overview;
     @SerializedName("popularity")
     @Expose
-    private Double popularity;
+    private double popularity;
     @SerializedName("poster_path")
     @Expose
     private String posterPath;
@@ -48,25 +45,25 @@ public class DescriptionModel {
     private String releaseDate;
     @SerializedName("runtime")
     @Expose
-    private Integer runtime;
+    private int runtime;
     @SerializedName("title")
     @Expose
     private String title;
     @SerializedName("video")
     @Expose
-    private Boolean video;
+    private boolean video;
     @SerializedName("vote_average")
     @Expose
-    private Double voteAverage;
+    private double voteAverage;
     @SerializedName("vote_count")
     @Expose
-    private Integer voteCount;
+    private int voteCount;
 
-    public Boolean getAdult() {
+    public boolean getAdult() {
         return adult;
     }
 
-    public void setAdult(Boolean adult) {
+    public void setAdult(boolean adult) {
         this.adult = adult;
     }
 
@@ -77,15 +74,6 @@ public class DescriptionModel {
     public void setBackdropPath(String backdropPath) {
         this.backdropPath = backdropPath;
     }
-
-    public Object getBelongsToCollection() {
-        return belongsToCollection;
-    }
-
-    public void setBelongsToCollection(Object belongsToCollection) {
-        this.belongsToCollection = belongsToCollection;
-    }
-
 
     public List<GenreModel> getGenres() {
         return genres;
@@ -135,11 +123,11 @@ public class DescriptionModel {
         this.overview = overview;
     }
 
-    public Double getPopularity() {
+    public double getPopularity() {
         return popularity;
     }
 
-    public void setPopularity(Double popularity) {
+    public void setPopularity(double popularity) {
         this.popularity = popularity;
     }
 
@@ -167,11 +155,11 @@ public class DescriptionModel {
         this.releaseDate = releaseDate;
     }
 
-    public Integer getRuntime() {
+    public int getRuntime() {
         return runtime;
     }
 
-    public void setRuntime(Integer runtime) {
+    public void setRuntime(int runtime) {
         this.runtime = runtime;
     }
 
@@ -183,27 +171,27 @@ public class DescriptionModel {
         this.title = title;
     }
 
-    public Boolean getVideo() {
+    public boolean getVideo() {
         return video;
     }
 
-    public void setVideo(Boolean video) {
+    public void setVideo(boolean video) {
         this.video = video;
     }
 
-    public Double getVoteAverage() {
+    public double getVoteAverage() {
         return voteAverage;
     }
 
-    public void setVoteAverage(Double voteAverage) {
+    public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
     }
 
-    public Integer getVoteCount() {
+    public int getVoteCount() {
         return voteCount;
     }
 
-    public void setVoteCount(Integer voteCount) {
+    public void setVoteCount(int voteCount) {
         this.voteCount = voteCount;
     }
 

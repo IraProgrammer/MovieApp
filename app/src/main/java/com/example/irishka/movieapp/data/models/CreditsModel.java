@@ -9,7 +9,7 @@ public class CreditsModel {
 
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private int id;
     @SerializedName("cast")
     @Expose
     private List<CastModel> cast = null;
@@ -17,11 +17,11 @@ public class CreditsModel {
     @Expose
     private List<CrewModel> crew = null;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

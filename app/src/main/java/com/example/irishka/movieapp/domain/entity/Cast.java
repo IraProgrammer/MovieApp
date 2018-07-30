@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Cast {
 
-    private Integer castId;
+    private int castId;
 
     private String name;
 
@@ -27,11 +27,11 @@ public class Cast {
         this.profileUrl = profileUrl;
     }
 
-    public Integer getCastId() {
+    public int getCastId() {
         return castId;
     }
 
-    public void setCastId(Integer castId) {
+    public void setCastId(int castId) {
         this.castId = castId;
     }
 

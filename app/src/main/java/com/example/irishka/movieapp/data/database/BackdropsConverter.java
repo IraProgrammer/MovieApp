@@ -1,6 +1,7 @@
 package com.example.irishka.movieapp.data.database;
 
 import android.arch.persistence.room.TypeConverter;
+import android.support.annotation.Nullable;
 
 import com.example.irishka.movieapp.data.database.entity.BackdropDb;
 import com.example.irishka.movieapp.data.database.entity.ProductionCountryDb;
@@ -13,7 +14,7 @@ import java.util.List;
 public class BackdropsConverter {
 
     @TypeConverter
-    public String fromBackdropsList(List<BackdropDb> backdrops) {
+    public String fromBackdropsList(@Nullable List<BackdropDb> backdrops) {
         StringBuilder str = new StringBuilder();
         for (BackdropDb backdrop: backdrops) {
             str.append(backdrop.getFileUrl()).append(", ");
@@ -23,7 +24,7 @@ public class BackdropsConverter {
     }
 
     @TypeConverter
-    public List<BackdropDb> toCountriesList(String backdropsStr) {
+    public List<BackdropDb> toCountriesList(@Nullable String backdropsStr) {
         List<String> urls = Arrays.asList(backdropsStr.split(","));
 
         List<BackdropDb> backdrops = new ArrayList<>();

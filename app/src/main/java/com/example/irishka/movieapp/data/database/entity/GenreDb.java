@@ -12,7 +12,7 @@ public class GenreDb {
 
     private String name;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 

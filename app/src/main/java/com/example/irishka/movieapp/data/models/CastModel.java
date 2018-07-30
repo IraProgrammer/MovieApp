@@ -8,7 +8,7 @@ public class CastModel {
 
     @SerializedName("cast_id")
     @Expose
-    private Integer castId;
+    private int castId;
     @SerializedName("character")
     @Expose
     private String character;
@@ -17,25 +17,25 @@ public class CastModel {
     private String creditId;
     @SerializedName("gender")
     @Expose
-    private Integer gender;
+    private int gender;
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private int id;
     @SerializedName("name")
     @Expose
     private String name;
     @SerializedName("order")
     @Expose
-    private Integer order;
+    private int order;
     @SerializedName("profile_path")
     @Expose
     private String profilePath;
 
-    public Integer getCastId() {
+    public int getCastId() {
         return castId;
     }
 
-    public void setCastId(Integer castId) {
+    public void setCastId(int castId) {
         this.castId = castId;
     }
 
@@ -55,15 +55,15 @@ public class CastModel {
         this.creditId = creditId;
     }
 
-    public Integer getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(Integer gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
@@ -79,11 +79,11 @@ public class CastModel {
         this.name = name;
     }
 
-    public Integer getOrder() {
+    public int getOrder() {
         return order;
     }
 
-    public void setOrder(Integer order) {
+    public void setOrder(int order) {
         this.order = order;
     }
 

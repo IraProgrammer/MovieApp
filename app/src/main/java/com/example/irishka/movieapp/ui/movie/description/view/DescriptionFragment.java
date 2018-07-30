@@ -149,12 +149,6 @@ public class DescriptionFragment extends MovieFragment implements DescriptionVie
         relatedMoviesAdapter.setRelatedList(movies);
     }
 
-//    @Override
-//    public void showGallery(List<Backdrop> backdrops) {
-//        galleryAdapter.setGalleryList(backdrops);
-//
-//    }
-
     @Override
     public void onItemClick(Movie movie) {
         Intent intent = new Intent(getActivity(), MovieActivity.class);

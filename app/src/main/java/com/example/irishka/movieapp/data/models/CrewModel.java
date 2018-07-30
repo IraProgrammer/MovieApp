@@ -14,10 +14,10 @@ public class CrewModel {
     private String department;
     @SerializedName("gender")
     @Expose
-    private Integer gender;
+    private int gender;
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private int id;
     @SerializedName("job")
     @Expose
     private String job;
@@ -44,19 +44,19 @@ public class CrewModel {
         this.department = department;
     }
 
-    public Integer getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(Integer gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
