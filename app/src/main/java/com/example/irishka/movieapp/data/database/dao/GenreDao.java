@@ -9,6 +9,7 @@ import com.example.irishka.movieapp.data.database.entity.GenreDb;
 import com.example.irishka.movieapp.domain.entity.Genre;
 
 import java.util.List;
+import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;

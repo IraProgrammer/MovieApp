@@ -8,6 +8,7 @@ import android.arch.persistence.room.Query;
 import com.example.irishka.movieapp.data.database.entity.GenreOfMovie;
 
 import java.util.List;
+import java.util.Set;
 
 import io.reactivex.Single;
 
@@ -15,7 +16,7 @@ import io.reactivex.Single;
 public interface GenreOfMovieDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(List<GenreOfMovie> genresOfMovie);
+    void insert(Set<GenreOfMovie> genresOfMovie);
 
     @Query("SELECT * FROM GenreOfMovie WHERE movieId = :movieId")
     Single<List<GenreOfMovie>> getGenresOfMovie(long movieId);

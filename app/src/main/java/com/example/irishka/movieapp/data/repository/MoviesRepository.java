@@ -30,7 +30,9 @@ import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -119,19 +121,19 @@ public class MoviesRepository implements IMoviesRepository {
         return moviesApi
                 .getRelated(movieId)
                 .map(MoviePageModel::getResults)
-                .toObservable()
-                .flatMapIterable(list -> list)
-                .flatMapSingle(movieModel -> getDescriptionFromInternet(movieModel.getId())
-                        .flatMap(descriptionModel -> getBackdropsFromInternet(movieModel.getId())
-                                .map(backdrops -> moviesMapper.apply(descriptionModel, backdrops))))
-                .toList()
-                .map(movies -> moviesMapper.mapMoviesListToDb(movies))
-                .doOnSuccess(list -> movieDao.insertAll(list))
-                .toObservable()
-                .flatMapIterable(list -> list)
-                .flatMapSingle(movieDb -> getGenres(movieDb.getId())
-                        .map(genres -> moviesMapper.applyFromDb(movieDb, genres)))
-                .toList();
+//                .toObservable()
+//                .flatMapIterable(list -> list)
+//                .flatMapSingle(movieModel -> getDescriptionFromInternet(movieModel.getId())
+//                        .flatMap(descriptionModel -> getBackdropsFromInternet(movieModel.getId())
+//                                .map(backdrops -> moviesMapper.apply(descriptionModel, backdrops))))
+//                .toList()
+                .map(movies -> moviesMapper.mapMovies(movies))
+                .doOnSuccess(movies -> movieDao.insertAll(moviesMapper.mapMoviesListToDb(movies)));
+//                .toObservable()
+//                .flatMapIterable(list -> list)
+//                .flatMapSingle(movieDb -> getGenres(movieDb.getId())
+//                        .map(genres -> moviesMapper.applyFromDb(movieDb, genres)))
+//                .toList();
     }
 
     private Single<List<Cast>> getCastsFromInternet(long movieId) {
@@ -169,7 +171,7 @@ public class MoviesRepository implements IMoviesRepository {
 
     private void insertGenresOfMovie(DescriptionModel description) {
 
-        List<GenreOfMovie> genreOfDescriptons = new ArrayList<>();
+        Set<GenreOfMovie> genreOfDescriptons = new HashSet<>();
 
         List<GenreDb> genres = genreMapper.mapGenresListToDb(description.getGenres());
 
@@ -201,6 +203,7 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<Movie> getMovieFromInternet(long movieId) {
         return moviesApi
                 .getDescription(movieId)
+                .doOnSuccess(descriptionModel -> insertGenresOfMovie(descriptionModel))
                 .flatMap(descriptionModel -> getBackdropsFromInternet(descriptionModel.getId())
                         .map(backdrops -> moviesMapper.apply(descriptionModel, backdrops)))
                 .doOnSuccess(movie -> movieDao.insert(moviesMapper.applyToDb(movie)));
@@ -209,7 +212,7 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<Movie> getMovieFromDatabase(long movieId) {
         return movieDao.getMovie(movieId)
                 .flatMap(movieDb -> getGenres(movieId)
-                        .map(list -> new Pair<>(movieDb, list)))
+                        .map(genres -> new Pair<>(movieDb, genres)))
                 .map(pair -> moviesMapper.applyFromDb(pair.first, pair.second))
                 .subscribeOn(Schedulers.io());
     }

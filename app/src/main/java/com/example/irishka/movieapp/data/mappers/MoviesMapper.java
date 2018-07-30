@@ -77,9 +77,15 @@ public class MoviesMapper {
         movieDb.setOverview(movie.getOverview());
         movieDb.setVoteAverage(movie.getVoteAverage());
         movieDb.setAdult(movie.getAdult());
-        movieDb.setRuntime(0);
-        movieDb.setCountries(new ArrayList<ProductionCountryDb>());
-        movieDb.setBackdrops(new ArrayList<BackdropDb>());
+        movieDb.setRuntime(movie.getRuntime());
+
+        if (movie.getCountries() != null){
+        movieDb.setCountries(productionCountryMapper.mapProductionCountryListToDb(movie.getCountries()));}
+        else movieDb.setCountries(new ArrayList<>());
+
+        if (movie.getBackdrops() != null)
+        movieDb.setBackdrops(backdropMapper.mapBackdropsListToDb(movie.getBackdrops()));
+        else movieDb.setBackdrops(new ArrayList<>());
 
         return movieDb;
     }
