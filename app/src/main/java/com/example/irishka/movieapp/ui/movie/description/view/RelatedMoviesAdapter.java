@@ -27,6 +27,9 @@ public class RelatedMoviesAdapter extends RecyclerView.Adapter<RelatedMoviesAdap
 
     private List<Movie> relatedMovies = new ArrayList<>();
 
+    // TODO: листенер в конструктор вью холдера
+    // как в MoviesListAdapter
+    // проверь другие адаптеры
     private OnItemClickListener onItemClickListener;
 
     @Inject

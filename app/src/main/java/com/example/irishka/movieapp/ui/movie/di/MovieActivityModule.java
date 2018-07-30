@@ -20,6 +20,7 @@ public abstract class MovieActivityModule {
     @Provides
     @PerActivity
     static long provideId(MovieActivity movieActivity) {
+        // TODO: что за магическое число?
         return movieActivity.getIntent().getLongExtra(MOVIE_ID, 164558);
     }
 

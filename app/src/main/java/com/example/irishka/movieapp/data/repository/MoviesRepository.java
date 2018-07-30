@@ -41,6 +41,10 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MoviesRepository implements IMoviesRepository {
 
+    // TODO: много зависимостей
+    // предлагаю обращения к Dao поднять выше и положить в некий MoviesDbSource
+    // обращение в интеренет поднять в MoviesNetworkSource
+    // да и вообще класс сам по себе большой вышел
     private MoviesMapper moviesMapper;
 
     private CastMapper castMapper;
@@ -86,6 +90,7 @@ public class MoviesRepository implements IMoviesRepository {
 
     private Single<List<Genre>> getGenres(long movieId) {
         return genreOfMovieDao.getGenresOfMovie(movieId)
+                // TODO: вместо следующих двух операторов можно использовать один flattenAsObservable
                 .toObservable()
                 .flatMapIterable(list -> list)
                 .map(genreOfMovie -> genreOfMovie.getGenreId())
@@ -105,6 +110,9 @@ public class MoviesRepository implements IMoviesRepository {
     public Single<List<Movie>> downloadMovies(int page) {
         return getMoviesFromInternet(page)
                 .onErrorResumeNext(throwable -> {
+                    // TODO: на будущее - логи можно выводить только в дев билде, можно ставить проверку на BuildConfig.DEBUG
+                    // но такие проверки везде будут нагромождать код, поэтому логи можно вынести в одно место
+                    // здесь не надо ничего править
                     throwable.printStackTrace();
                     return getMoviesFromDatabase();
                 });
@@ -145,6 +153,7 @@ public class MoviesRepository implements IMoviesRepository {
 
     private Single<List<Cast>> getCastsFromDatabase(long movieId) {
         return castOfMovieDao.getCastsOfMovie(movieId)
+                // TODO: flattenAsObservable
                 .toObservable()
                 .flatMapIterable(list -> list)
                 .map(castOfMovie -> castOfMovie.getCastId())
@@ -172,6 +181,7 @@ public class MoviesRepository implements IMoviesRepository {
                 .subscribeOn(Schedulers.io());
     }
 
+    // TODO: это можно обойти sql запросом + почитай про транзакции в room
     private void insertGenresOfMovie(DescriptionModel description, List<GenreOfMovie> genresOfMovie) {
 
         List<GenreOfMovie> genresOfMovieOld = genresOfMovie;
@@ -182,16 +192,16 @@ public class MoviesRepository implements IMoviesRepository {
 
         for (int i = 0; i < description.getGenres().size(); i++) {
 
-                if (!containsMovie(genresOfMovieOld, description.getId()))
-                    genresOfMovieNew.add(new GenreOfMovie(description.getId(), genres.get(i).getId()));
+            if (!containsMovie(genresOfMovieOld, description.getId()))
+                genresOfMovieNew.add(new GenreOfMovie(description.getId(), genres.get(i).getId()));
         }
 
         genreDao.insert(genres);
         genreOfMovieDao.insert(genresOfMovieNew);
     }
 
-    private boolean containsMovie(List<GenreOfMovie> genresOfMovie, long movieId){
-        for (GenreOfMovie g: genresOfMovie) {
+    private boolean containsMovie(List<GenreOfMovie> genresOfMovie, long movieId) {
+        for (GenreOfMovie g : genresOfMovie) {
             if (g.getMovieId() == movieId)
                 return true;
         }
@@ -217,7 +227,7 @@ public class MoviesRepository implements IMoviesRepository {
         return moviesApi
                 .getDescription(movieId)
                 .flatMap(descriptionModel -> getGenresOfMovie(descriptionModel)
-                .map(genreOfMovies -> new Pair<>(descriptionModel, genreOfMovies)))
+                        .map(genreOfMovies -> new Pair<>(descriptionModel, genreOfMovies)))
                 .doOnSuccess(pair -> insertGenresOfMovie(pair.first, pair.second))
                 .flatMap(pair -> getBackdropsFromInternet(pair.first.getId())
                         .map(backdrops -> moviesMapper.apply(pair.first, backdrops)))

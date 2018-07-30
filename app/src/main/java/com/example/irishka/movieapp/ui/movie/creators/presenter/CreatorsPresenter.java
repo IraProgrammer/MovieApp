@@ -17,6 +17,7 @@ public class CreatorsPresenter extends BasePresenter<CreatorsView> {
 
     private IMoviesRepository moviesRepository;
 
+    // TODO: ненужно
     private Disposable disposable;
 
     private final long movieId;

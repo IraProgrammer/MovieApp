@@ -13,6 +13,7 @@ import java.util.List;
 
 public class Movie {
 
+    // TODO: аннотация от room в entity
     @PrimaryKey
     private long id;
 

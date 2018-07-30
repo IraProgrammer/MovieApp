@@ -34,6 +34,8 @@ public abstract class DescriptionFragmentModule {
         return new RelatedMoviesAdapter(descriptionFragment);
     }
 
+    // TODO: ненужно, т.к. не покрывается интерфейсом, т.е. есть только 1 реализация
+    // проверь все подобные места
     @Provides
     @PerFragment
     static PrepareDescription providesPrepareDescriptions(DescriptionFragment descriptionFragment){

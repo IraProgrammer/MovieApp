@@ -27,6 +27,8 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
 
     private List<Movie> movies = new ArrayList<>();
 
+    // TODO: плохо, лучше прокидывать в конструктор вьюхолдера
+    // а так же, раз уж на то пошло, то сделать вьюхолдер статик
     private OnItemClickListener onItemClickListener;
 
     @Inject
@@ -38,6 +40,8 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
         void onItemClick(Movie movie);
     }
 
+    // TODO: скорее add, т.к. ты добавляешь
+    // set - это если дропаешь старые данные и устанавливаешь новые
     public void setMoviesList(List<Movie> movies) {
         int idStart = this.movies.size();
         int idEnd = movies.size();

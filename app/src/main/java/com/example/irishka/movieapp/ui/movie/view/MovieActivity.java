@@ -39,6 +39,7 @@ public class MovieActivity extends DaggerAppCompatActivity {
     @Inject
     ViewPagerAdapter adapter;
 
+    // TODO: ненужно
     FragmentManager fm;
 
     @Override
@@ -52,6 +53,7 @@ public class MovieActivity extends DaggerAppCompatActivity {
 
     }
 
+    // TODO: ненужно
     @Override
     public void onAttachFragment(Fragment fragment) {
         super.onAttachFragment(fragment);

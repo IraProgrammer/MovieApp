@@ -19,6 +19,7 @@ public class CountriesConverter {
             str.append(country.getName()).append(", ");
         }
 
+        // TODO: удаляй последний char в цикле, тогда эта проверка уйдет
         if (countries.size() == 0) return "";
         return str.deleteCharAt(str.length()-1).toString();
     }

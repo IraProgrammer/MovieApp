@@ -1,5 +1,6 @@
 package com.example.irishka.movieapp.ui.movie.view;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;

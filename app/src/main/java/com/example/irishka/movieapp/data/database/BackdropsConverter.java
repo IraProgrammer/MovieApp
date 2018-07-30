@@ -14,11 +14,13 @@ import java.util.List;
 public class BackdropsConverter {
 
     @TypeConverter
+    // TODO: если указываешь аргумент nullable, то обрабатывай возможность null'a
     public String fromBackdropsList(@Nullable List<BackdropDb> backdrops) {
         StringBuilder str = new StringBuilder();
         for (BackdropDb backdrop: backdrops) {
             str.append(backdrop.getFileUrl()).append(", ");
         }
+        // TODO: удаляй последний char в цикле, тогда эта проверка уйдет
         if (backdrops.size() == 0) return "";
         return str.deleteCharAt(str.length()-1).toString();
     }

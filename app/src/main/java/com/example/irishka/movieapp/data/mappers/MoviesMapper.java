@@ -13,6 +13,7 @@ import com.example.irishka.movieapp.domain.entity.Genre;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -81,8 +82,9 @@ public class MoviesMapper {
 
         if (movie.getCountries() != null){
         movieDb.setCountries(productionCountryMapper.mapProductionCountryListToDb(movie.getCountries()));}
+        // TODO: если коллекция является неизменяемой, то не нужно создавать пустой список
+        // используй Collections.emptyList()
         else movieDb.setCountries(new ArrayList<>());
-
         if (movie.getBackdrops() != null)
         movieDb.setBackdrops(backdropMapper.mapBackdropsListToDb(movie.getBackdrops()));
         else movieDb.setBackdrops(new ArrayList<>());

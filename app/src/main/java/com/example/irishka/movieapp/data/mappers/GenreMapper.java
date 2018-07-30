@@ -21,6 +21,8 @@ public class GenreMapper{
     }
 
     public Genre apply(GenreModel genreModel){
+        // TODO: зачем сетятся дефолтные значения в конструктор, если сразу же используются сеттеры?
+        // проверь другие подобные места
         Genre genre = new Genre(0, "");
         genre.setId(genreModel.getId());
         genre.setName(genreModel.getName());
