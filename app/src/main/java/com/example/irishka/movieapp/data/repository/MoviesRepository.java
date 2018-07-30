@@ -166,20 +166,36 @@ public class MoviesRepository implements IMoviesRepository {
                 .map(GalleryModel::getBackdrops);
     }
 
-    private void insertGenresOfMovie(DescriptionModel description) {
+    private Single<List<GenreOfMovie>> getGenresOfMovie(DescriptionModel description) {
+        return genreOfMovieDao
+                .getGenresOfMovie(description.getId())
+                .subscribeOn(Schedulers.io());
+    }
 
-        List<GenreOfMovie> genreOfDescriptons = new ArrayList<>();
+    private void insertGenresOfMovie(DescriptionModel description, List<GenreOfMovie> genresOfMovie) {
+
+        List<GenreOfMovie> genresOfMovieOld = genresOfMovie;
+
+        List<GenreOfMovie> genresOfMovieNew = new ArrayList<>();
 
         List<GenreDb> genres = genreMapper.mapGenresListToDb(description.getGenres());
 
         for (int i = 0; i < description.getGenres().size(); i++) {
 
-            genreOfDescriptons.add(new GenreOfMovie(description.getId(), genres.get(i).getId()));
-
+                if (!containsMovie(genresOfMovieOld, description.getId()))
+                    genresOfMovieNew.add(new GenreOfMovie(description.getId(), genres.get(i).getId()));
         }
 
         genreDao.insert(genres);
-        genreOfMovieDao.insert(genreOfDescriptons);
+        genreOfMovieDao.insert(genresOfMovieNew);
+    }
+
+    private boolean containsMovie(List<GenreOfMovie> genresOfMovie, long movieId){
+        for (GenreOfMovie g: genresOfMovie) {
+            if (g.getMovieId() == movieId)
+                return true;
+        }
+        return false;
     }
 
     private void insertCastsOfMovie(long movieId, List<CastModel> castModels) {
@@ -200,9 +216,11 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<Movie> getMovieFromInternet(long movieId) {
         return moviesApi
                 .getDescription(movieId)
-                .doOnSuccess(descriptionModel -> insertGenresOfMovie(descriptionModel))
-                .flatMap(descriptionModel -> getBackdropsFromInternet(descriptionModel.getId())
-                        .map(backdrops -> moviesMapper.apply(descriptionModel, backdrops)))
+                .flatMap(descriptionModel -> getGenresOfMovie(descriptionModel)
+                .map(genreOfMovies -> new Pair<>(descriptionModel, genreOfMovies)))
+                .doOnSuccess(pair -> insertGenresOfMovie(pair.first, pair.second))
+                .flatMap(pair -> getBackdropsFromInternet(pair.first.getId())
+                        .map(backdrops -> moviesMapper.apply(pair.first, backdrops)))
                 .doOnSuccess(movie -> movieDao.insert(moviesMapper.applyToDb(movie)));
     }
 
