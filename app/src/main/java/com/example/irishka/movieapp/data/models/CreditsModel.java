@@ -12,10 +12,10 @@ public class CreditsModel {
     private int id;
     @SerializedName("cast")
     @Expose
-    private List<CastModel> cast = null;
+    private List<CastModel> cast;
     @SerializedName("crew")
     @Expose
-    private List<CrewModel> crew = null;
+    private List<CrewModel> crew;
 
     public int getId() {
         return id;

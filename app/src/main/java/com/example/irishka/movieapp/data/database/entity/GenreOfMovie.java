@@ -9,8 +9,8 @@ public class GenreOfMovie {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    private long movieId;
-    private int genreId;
+    public long movieId;
+    public int genreId;
 
     public GenreOfMovie(long movieId, int genreId){
         this.movieId = movieId;

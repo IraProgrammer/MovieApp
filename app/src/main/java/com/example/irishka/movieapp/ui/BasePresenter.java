@@ -22,10 +22,9 @@ public class BasePresenter<T extends MvpView> extends MvpPresenter<T> {
         if(disposables != null) disposables.clear();
     }
 
-    // TODO: этот onDestroy и onDestroy у view совершенно разные
-    // скорее будет правильнее на detachView это делать
     @Override
-    public void onDestroy() {
+    public void detachView(T view) {
+        super.detachView(view);
         dispose();
     }
 }

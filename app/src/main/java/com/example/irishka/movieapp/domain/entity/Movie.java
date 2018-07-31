@@ -1,20 +1,10 @@
 
 package com.example.irishka.movieapp.domain.entity;
 
-import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
-
-import com.example.irishka.movieapp.data.database.BackdropsConverter;
-import com.example.irishka.movieapp.data.database.CountriesConverter;
-import com.example.irishka.movieapp.data.database.entity.BackdropDb;
-import com.example.irishka.movieapp.data.database.entity.ProductionCountryDb;
-
 import java.util.List;
 
 public class Movie {
 
-    // TODO: аннотация от room в entity
-    @PrimaryKey
     private long id;
 
     private String title;

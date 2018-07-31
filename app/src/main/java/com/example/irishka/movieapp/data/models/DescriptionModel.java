@@ -39,7 +39,7 @@ public class DescriptionModel {
     private String posterPath;
     @SerializedName("production_countries")
     @Expose
-    private List<ProductionCountryModel> productionCountries = null;
+    private List<ProductionCountryModel> productionCountries;
     @SerializedName("release_date")
     @Expose
     private String releaseDate;

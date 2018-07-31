@@ -19,20 +19,19 @@ public class ProductionCountryMapper {
     }
 
     public ProductionCountry apply(ProductionCountryModel productionCountryModel){
-        // TODO: в конструкторе устанавливается name как пустая строка, а потом сетится в сеттере, смысл?
-        ProductionCountry productionCountry = new ProductionCountry("");
+        ProductionCountry productionCountry = new ProductionCountry();
         productionCountry.setName(productionCountryModel.getName());
         return productionCountry;
     }
 
     public ProductionCountryDb applyToDb(ProductionCountry productionCountry){
-        ProductionCountryDb productionCountryDb = new ProductionCountryDb("");
+        ProductionCountryDb productionCountryDb = new ProductionCountryDb();
         productionCountryDb.setName(productionCountry.getName());
         return productionCountryDb;
     }
 
     public ProductionCountry applyFromDb(ProductionCountryDb productionCountryDb){
-        ProductionCountry productionCountry = new ProductionCountry("");
+        ProductionCountry productionCountry = new ProductionCountry();
         productionCountry.setName(productionCountryDb.getName());
         return productionCountry;
     }

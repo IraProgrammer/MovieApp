@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.data.database;
+package com.example.irishka.movieapp.data.database.converters;
 
 import android.arch.persistence.room.TypeConverter;
 
@@ -15,13 +15,11 @@ public class CountriesConverter {
     @TypeConverter
     public String fromCountriesList(List<ProductionCountryDb> countries) {
         StringBuilder str = new StringBuilder();
-        for (ProductionCountryDb country: countries) {
-            str.append(country.getName()).append(", ");
+        for (int i = 0; i < countries.size(); i++) {
+            str.append(countries.get(i).getName()).append(", ");
+            if (i == countries.size() - 1) str.deleteCharAt(str.length()-1);
         }
-
-        // TODO: удаляй последний char в цикле, тогда эта проверка уйдет
-        if (countries.size() == 0) return "";
-        return str.deleteCharAt(str.length()-1).toString();
+        return str.toString();
     }
 
     @TypeConverter

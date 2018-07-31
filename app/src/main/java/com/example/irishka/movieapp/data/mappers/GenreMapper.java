@@ -1,6 +1,8 @@
 package com.example.irishka.movieapp.data.mappers;
 
 import com.example.irishka.movieapp.data.database.entity.GenreDb;
+import com.example.irishka.movieapp.data.database.entity.GenreOfMovie;
+import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.data.models.GenreModel;
 import com.example.irishka.movieapp.domain.entity.Genre;
 
@@ -21,9 +23,7 @@ public class GenreMapper{
     }
 
     public Genre apply(GenreModel genreModel){
-        // TODO: зачем сетятся дефолтные значения в конструктор, если сразу же используются сеттеры?
-        // проверь другие подобные места
-        Genre genre = new Genre(0, "");
+        Genre genre = new Genre();
         genre.setId(genreModel.getId());
         genre.setName(genreModel.getName());
         return genre;
@@ -44,10 +44,24 @@ public class GenreMapper{
     }
 
     public Genre applyFromDb(GenreDb genreDb){
-        Genre genre = new Genre(0, "");
+        Genre genre = new Genre();
         genre.setId(genreDb.getId());
         genre.setName(genreDb.getName());
         return genre;
+    }
+
+    public List<GenreOfMovie> createGoMList(DescriptionModel description){
+        List<GenreOfMovie> genresOfMovie = new ArrayList<>();
+
+        List<GenreModel> genres = description.getGenres();
+
+        for (int i = 0; i < genres.size(); i++) {
+
+            genresOfMovie.add(new GenreOfMovie(description.getId(), genres.get(i).getId()));
+        }
+
+        return genresOfMovie;
+
     }
 
     public List<Genre> mapGenresList(List<GenreModel> genreModels){

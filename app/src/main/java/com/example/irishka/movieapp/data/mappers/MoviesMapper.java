@@ -82,12 +82,10 @@ public class MoviesMapper {
 
         if (movie.getCountries() != null){
         movieDb.setCountries(productionCountryMapper.mapProductionCountryListToDb(movie.getCountries()));}
-        // TODO: если коллекция является неизменяемой, то не нужно создавать пустой список
-        // используй Collections.emptyList()
-        else movieDb.setCountries(new ArrayList<>());
+        else movieDb.setCountries(Collections.emptyList());
         if (movie.getBackdrops() != null)
         movieDb.setBackdrops(backdropMapper.mapBackdropsListToDb(movie.getBackdrops()));
-        else movieDb.setBackdrops(new ArrayList<>());
+        else movieDb.setBackdrops(Collections.emptyList());
 
         return movieDb;
     }
@@ -107,11 +105,11 @@ public class MoviesMapper {
 
         if (movie.getCountries() != null){
             movieDb.setCountries(productionCountryMapper.mapProductionCountryListToDb(movie.getCountries()));}
-        else movieDb.setCountries(new ArrayList<>());
+        else movieDb.setCountries(Collections.emptyList());
 
         if (movie.getBackdrops() != null)
             movieDb.setBackdrops(backdropMapper.mapBackdropsListToDb(movie.getBackdrops()));
-        else movieDb.setBackdrops(new ArrayList<>());
+        else movieDb.setBackdrops(Collections.emptyList());
 
         return movieDb;
     }

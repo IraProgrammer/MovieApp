@@ -12,8 +12,7 @@ public class GalleryModel {
     private int id;
     @SerializedName("backdrops")
     @Expose
-    // TODO: инициализация null не нужна, как и во многих других моделях
-    private List<BackdropModel> backdrops = null;
+    private List<BackdropModel> backdrops;
 
     public int getId() {
         return id;

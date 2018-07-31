@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.data.database;
+package com.example.irishka.movieapp.data.database.converters;
 
 import android.arch.persistence.room.TypeConverter;
 import android.support.annotation.Nullable;
@@ -14,19 +14,18 @@ import java.util.List;
 public class BackdropsConverter {
 
     @TypeConverter
-    // TODO: если указываешь аргумент nullable, то обрабатывай возможность null'a
-    public String fromBackdropsList(@Nullable List<BackdropDb> backdrops) {
+    public String fromBackdropsList(List<BackdropDb> backdrops) {
+
         StringBuilder str = new StringBuilder();
-        for (BackdropDb backdrop: backdrops) {
-            str.append(backdrop.getFileUrl()).append(", ");
+        for (int i = 0; i < backdrops.size(); i++) {
+            str.append(backdrops.get(i).getFileUrl()).append(", ");
+            if (i == backdrops.size() - 1) str.deleteCharAt(str.length()-1);
         }
-        // TODO: удаляй последний char в цикле, тогда эта проверка уйдет
-        if (backdrops.size() == 0) return "";
-        return str.deleteCharAt(str.length()-1).toString();
+        return str.toString();
     }
 
     @TypeConverter
-    public List<BackdropDb> toCountriesList(@Nullable String backdropsStr) {
+    public List<BackdropDb> toCountriesList(String backdropsStr) {
         List<String> urls = Arrays.asList(backdropsStr.split(","));
 
         List<BackdropDb> backdrops = new ArrayList<>();

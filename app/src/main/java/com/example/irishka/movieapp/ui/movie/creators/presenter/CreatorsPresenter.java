@@ -17,9 +17,6 @@ public class CreatorsPresenter extends BasePresenter<CreatorsView> {
 
     private IMoviesRepository moviesRepository;
 
-    // TODO: ненужно
-    private Disposable disposable;
-
     private final long movieId;
 
     @Inject
@@ -38,7 +35,7 @@ public class CreatorsPresenter extends BasePresenter<CreatorsView> {
 
         addDisposables(moviesRepository.downloadCasts(movieId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(casts -> getViewState().showCasts(casts), Throwable::printStackTrace));
+                .subscribe(casts -> getViewState().showCasts(casts)));
     }
 }
 

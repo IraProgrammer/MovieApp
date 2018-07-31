@@ -5,10 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
-import com.example.irishka.movieapp.data.database.BackdropsConverter;
-import com.example.irishka.movieapp.data.database.CountriesConverter;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.example.irishka.movieapp.data.database.converters.BackdropsConverter;
+import com.example.irishka.movieapp.data.database.converters.CountriesConverter;
 
 import java.util.List;
 
