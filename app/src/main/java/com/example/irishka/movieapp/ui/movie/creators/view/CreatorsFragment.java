@@ -7,13 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.data.models.CreditsModel;
 import com.example.irishka.movieapp.domain.entity.Cast;
 import com.example.irishka.movieapp.ui.movie.creators.presenter.CreatorsPresenter;
-import com.example.irishka.movieapp.ui.movie.view.MovieFragment;
 
 import java.util.List;
 
@@ -22,8 +22,9 @@ import javax.inject.Provider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.support.AndroidSupportInjection;
 
-public class CreatorsFragment extends MovieFragment implements CreatorsView {
+public class CreatorsFragment extends MvpAppCompatFragment implements CreatorsView {
 
     @Inject
     Provider<CreatorsPresenter> presenterProvider;
@@ -47,6 +48,12 @@ public class CreatorsFragment extends MovieFragment implements CreatorsView {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        AndroidSupportInjection.inject(this);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_creators, container, false);
@@ -57,11 +64,6 @@ public class CreatorsFragment extends MovieFragment implements CreatorsView {
         actorsRecyclerView.setAdapter(actorsAdapter);
 
         return v;
-    }
-
-    @Override
-    public String getTitle() {
-        return "Cast";
     }
 
     @Override

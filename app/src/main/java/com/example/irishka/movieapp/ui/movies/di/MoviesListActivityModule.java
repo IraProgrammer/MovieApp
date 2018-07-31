@@ -16,17 +16,18 @@ import dagger.Provides;
 @Module
 public class MoviesListActivityModule {
 
-    // TODO: ненужно, MoviesListPresenter не покрыт интерфейсом и конструктор имеет аннотацию @Inject
-    // он и так заинжектится
-    @Provides
-    @PerActivity
-    static MoviesListPresenter providesMoviesPresenter(IMoviesRepository moviesRepository){
-        return new MoviesListPresenter(moviesRepository);
-    }
-
     @Provides
     @PerActivity
     static MoviesListAdapter providesMoviesAdapter(MoviesListActivity moviesActivity){
         return new MoviesListAdapter(moviesActivity);
+    }
+
+    @Provides
+    @PerActivity
+    static StaggeredGridLayoutManager providesStaggeredGridLayoutManager(MoviesListActivity moviesActivity){
+
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(moviesActivity.getColumns(), StaggeredGridLayoutManager.VERTICAL);
+        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        return staggeredGridLayoutManager;
     }
 }

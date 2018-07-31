@@ -47,14 +47,10 @@ public class PrepareDescription {
         StringBuilder genresStr = new StringBuilder();
         List<Genre> genres = movie.getGenres();
 
-        // TODO: что бы убрать это, ты можешь делать итерацию до genres.size(), а внутри проверять, является ли i == genres.size() - 1
-        if (genres.size() == 0) return "";
-
-        for (int i = 0; i < genres.size() - 1; i++) {
+        for (int i = 0; i < genres.size(); i++) {
             genresStr.append(genres.get(i).getName()).append(", ");
+            if (i == genres.size() - 1) genresStr.append(genres.get(genres.size() - 1).getName());
         }
-
-        genresStr.append(genres.get(genres.size() - 1).getName());
 
         return genresStr.toString();
     }
@@ -84,14 +80,10 @@ public class PrepareDescription {
         StringBuilder countriesStr = new StringBuilder();
         List<ProductionCountry> productionCountries = movie.getCountries();
 
-        // TODO: смотри getGenre
-        if (productionCountries.size() == 0) return "";
-
-        for (int i = 0; i < productionCountries.size() - 1; i++) {
+        for (int i = 0; i < productionCountries.size(); i++) {
             countriesStr.append(productionCountries.get(i).getName()).append(", ");
+            if (i == productionCountries.size() - 1) countriesStr.append(productionCountries.get(productionCountries.size() - 1).getName());
         }
-
-        countriesStr.append(productionCountries.get(productionCountries.size() - 1).getName());
 
         return countriesStr.toString();
     }

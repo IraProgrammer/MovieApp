@@ -20,7 +20,7 @@ public abstract class MovieActivityModule {
     @Provides
     @PerActivity
     static long provideId(MovieActivity movieActivity) {
-        // TODO: что за магическое число?
+        // TODO
         return movieActivity.getIntent().getLongExtra(MOVIE_ID, 164558);
     }
 
@@ -33,7 +33,7 @@ public abstract class MovieActivityModule {
     abstract CreatorsFragment providesCreatorsFragment();
 
     @PerFragment
-    @ContributesAndroidInjector(modules = {TrailersFragmentModule.class})
+    @ContributesAndroidInjector(modules = {ReviewFragmentModule.class})
     abstract ReviewFragment providesTrailersFragment();
 
     @Provides

@@ -40,9 +40,7 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
         void onItemClick(Movie movie);
     }
 
-    // TODO: скорее add, т.к. ты добавляешь
-    // set - это если дропаешь старые данные и устанавливаешь новые
-    public void setMoviesList(List<Movie> movies) {
+    public void addMoviesList(List<Movie> movies) {
         int idStart = this.movies.size();
         int idEnd = movies.size();
         this.movies.addAll(movies);

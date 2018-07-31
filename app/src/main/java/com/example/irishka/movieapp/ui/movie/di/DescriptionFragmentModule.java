@@ -18,24 +18,11 @@ public abstract class DescriptionFragmentModule {
 
     @Provides
     @PerFragment
-    static DescriptionPresenter providesDescriptionPresenter(IMoviesRepository moviesRepository, long movieId) {
-        return new DescriptionPresenter(moviesRepository, movieId);
-    }
-
-    @Provides
-    @PerFragment
-    static GalleryAdapter providesGalleryAdapter(){
-        return new GalleryAdapter();
-    }
-
-    @Provides
-    @PerFragment
     static RelatedMoviesAdapter providesRelatedMoviesAdapter(DescriptionFragment descriptionFragment){
         return new RelatedMoviesAdapter(descriptionFragment);
     }
 
-    // TODO: ненужно, т.к. не покрывается интерфейсом, т.е. есть только 1 реализация
-    // проверь все подобные места
+    // TODO
     @Provides
     @PerFragment
     static PrepareDescription providesPrepareDescriptions(DescriptionFragment descriptionFragment){

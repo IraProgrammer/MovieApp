@@ -45,10 +45,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MoviesRepository implements IMoviesRepository {
 
-    // TODO: много зависимостей
-    // предлагаю обращения к Dao поднять выше и положить в некий MoviesDbSource
-    // обращение в интеренет поднять в MoviesNetworkSource
-    // да и вообще класс сам по себе большой вышел
     private MoviesMapper moviesMapper;
 
     private CastMapper castMapper;
@@ -158,12 +154,6 @@ public class MoviesRepository implements IMoviesRepository {
         return networkSource
                 .getGallery(movieId)
                 .map(GalleryModel::getBackdrops);
-    }
-
-    private Single<List<GenreOfMovie>> getGenresOfMovie(DescriptionModel description) {
-        return dbSource
-                .getGenresOfMovie(description.getId())
-                .subscribeOn(Schedulers.io());
     }
 
     private void insertGenresOfMovie(DescriptionModel description) {

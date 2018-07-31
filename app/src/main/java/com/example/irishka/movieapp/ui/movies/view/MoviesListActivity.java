@@ -16,17 +16,14 @@ import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 import com.example.irishka.movieapp.ui.movies.presenter.MoviesListPresenter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.Provides;
 import dagger.android.AndroidInjection;
 
 public class MoviesListActivity extends MvpAppCompatActivity implements MoviesListView, MoviesListAdapter.OnItemClickListener {
@@ -50,6 +47,9 @@ public class MoviesListActivity extends MvpAppCompatActivity implements MoviesLi
     @Inject
     MoviesListAdapter moviesAdapter;
 
+    @Inject
+    StaggeredGridLayoutManager staggeredGridLayoutManager;
+
     private boolean isLoading;
 
     @Override
@@ -59,7 +59,7 @@ public class MoviesListActivity extends MvpAppCompatActivity implements MoviesLi
         setContentView(R.layout.activity_movies);
         ButterKnife.bind(this);
 
-        moviesRecyclerView.setLayoutManager(getLayoutManager());
+        moviesRecyclerView.setLayoutManager(staggeredGridLayoutManager);
 
         moviesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -81,7 +81,7 @@ public class MoviesListActivity extends MvpAppCompatActivity implements MoviesLi
 
     }
 
-    private int getColumns() {
+    public int getColumns() {
         Point point = new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
         int number = point.x;
@@ -89,16 +89,15 @@ public class MoviesListActivity extends MvpAppCompatActivity implements MoviesLi
         return (int) ((float) number / (float) scalefactor);
     }
 
-    // TODO: можно даггером предоставлять
-    private StaggeredGridLayoutManager getLayoutManager() {
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(getColumns(), StaggeredGridLayoutManager.VERTICAL);
-        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-        return staggeredGridLayoutManager;
-    }
+//    private StaggeredGridLayoutManager getLayoutManager() {
+//        staggeredGridLayoutManager = new StaggeredGridLayoutManager(getColumns(), StaggeredGridLayoutManager.VERTICAL);
+//        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+//        return staggeredGridLayoutManager;
+//    }
 
     @Override
     public void showMovies(List<Movie> movies) {
-        moviesAdapter.setMoviesList(movies);
+        moviesAdapter.addMoviesList(movies);
     }
 
     @Override
@@ -107,9 +106,6 @@ public class MoviesListActivity extends MvpAppCompatActivity implements MoviesLi
     }
 
     private int getLastVisibleItemPosition() {
-        //TODO: раз у тебя в 2-х местах дергается StaggeredGridLayoutManager, то имеет смысл хранить его как поле в активити
-        StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) moviesRecyclerView.getLayoutManager();
-        // TODO: студия говорит, что может быть NLP
         int[] into = staggeredGridLayoutManager.findLastVisibleItemPositions(null);
         List<Integer> intoList = new ArrayList<>();
         for (int i : into) {

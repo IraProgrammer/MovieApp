@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
@@ -20,7 +21,6 @@ import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.movie.description.PrepareDescription;
 import com.example.irishka.movieapp.ui.movie.description.presenter.DescriptionPresenter;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
-import com.example.irishka.movieapp.ui.movie.view.MovieFragment;
 
 import java.util.List;
 
@@ -29,10 +29,11 @@ import javax.inject.Provider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.support.AndroidSupportInjection;
 
 import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOVIE_ID;
 
-public class DescriptionFragment extends MovieFragment implements DescriptionView, RelatedMoviesAdapter.OnItemClickListener {
+public class DescriptionFragment extends MvpAppCompatFragment implements DescriptionView, RelatedMoviesAdapter.OnItemClickListener {
 
     @Inject
     RelatedMoviesAdapter relatedMoviesAdapter;
@@ -97,6 +98,12 @@ public class DescriptionFragment extends MovieFragment implements DescriptionVie
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        AndroidSupportInjection.inject(this);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -110,11 +117,6 @@ public class DescriptionFragment extends MovieFragment implements DescriptionVie
         gallery.setAdapter(galleryAdapter);
 
         return v;
-    }
-
-    @Override
-    public String getTitle() {
-        return getString(R.string.adult);
     }
 
     @Override

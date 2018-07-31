@@ -26,7 +26,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public MovieFragment getItem(int position) {
+    public Fragment getItem(int position) {
 
         switch (position) {
             case 0:

@@ -11,16 +11,4 @@ import dagger.Provides;
 @Module
 public abstract class CreatorsFragmentModule {
 
-    @Provides
-    @PerFragment
-    static CreatorsPresenter providesCreatorsPresenter(IMoviesRepository moviesRepository, long movieId) {
-        return new CreatorsPresenter(moviesRepository, movieId);
-    }
-
-    @Provides
-    @PerFragment
-    static ActorsAdapter providesActorsAdapter(){
-        return new ActorsAdapter();
-    }
-
 }

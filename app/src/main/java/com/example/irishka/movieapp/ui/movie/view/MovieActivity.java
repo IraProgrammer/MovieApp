@@ -39,9 +39,6 @@ public class MovieActivity extends DaggerAppCompatActivity {
     @Inject
     ViewPagerAdapter adapter;
 
-    // TODO: ненужно
-    FragmentManager fm;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,15 +48,6 @@ public class MovieActivity extends DaggerAppCompatActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
-    }
-
-    // TODO: ненужно
-    @Override
-    public void onAttachFragment(Fragment fragment) {
-        super.onAttachFragment(fragment);
-
-      //  viewPager.setAdapter(new ViewPagerAdapter(fm));
-      //  tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
