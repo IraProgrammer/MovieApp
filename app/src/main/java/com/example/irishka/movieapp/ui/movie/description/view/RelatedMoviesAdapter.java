@@ -14,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.ui.movies.view.MoviesListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +28,6 @@ public class RelatedMoviesAdapter extends RecyclerView.Adapter<RelatedMoviesAdap
 
     private List<Movie> relatedMovies = new ArrayList<>();
 
-    // TODO: листенер в конструктор вью холдера
-    // как в MoviesListAdapter
-    // проверь другие адаптеры
     private OnItemClickListener onItemClickListener;
 
     @Inject
@@ -49,7 +47,7 @@ public class RelatedMoviesAdapter extends RecyclerView.Adapter<RelatedMoviesAdap
     @NonNull
     @Override
     public RelatedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new RelatedViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.related_item, parent, false));
+        return new RelatedViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.related_item, parent, false), onItemClickListener);
     }
 
     @Override
@@ -66,6 +64,8 @@ public class RelatedMoviesAdapter extends RecyclerView.Adapter<RelatedMoviesAdap
 
     class RelatedViewHolder extends RecyclerView.ViewHolder {
 
+        OnItemClickListener onItemClickListener;
+
         @BindView(R.id.movie_text)
         TextView title;
 
@@ -78,9 +78,10 @@ public class RelatedMoviesAdapter extends RecyclerView.Adapter<RelatedMoviesAdap
         @BindView(R.id.adult_text)
         TextView adultText;
 
-        RelatedViewHolder(View itemView) {
+        RelatedViewHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            this.onItemClickListener = onItemClickListener;
         }
 
         void bind(Movie movie) {

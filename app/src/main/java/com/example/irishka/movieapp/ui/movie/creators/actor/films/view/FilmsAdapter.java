@@ -46,7 +46,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHo
     @NonNull
     @Override
     public MoviesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MoviesViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.film_item, parent, false));
+        return new MoviesViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.film_item, parent, false), onItemClickListener);
     }
 
     @Override
@@ -61,7 +61,9 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHo
         return movies.size();
     }
 
-    class MoviesViewHolder extends RecyclerView.ViewHolder {
+    static class MoviesViewHolder extends RecyclerView.ViewHolder {
+
+        OnItemClickListener onItemClickListener;
 
         @BindView(R.id.movie_text)
         TextView title;
@@ -75,9 +77,10 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHo
         @BindView(R.id.adult_text)
         TextView adultText;
 
-        MoviesViewHolder(View itemView) {
+        MoviesViewHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            this.onItemClickListener = onItemClickListener;
         }
 
         void bind(MovieModel movie) {

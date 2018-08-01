@@ -18,14 +18,13 @@ public abstract class DescriptionFragmentModule {
 
     @Provides
     @PerFragment
-    static RelatedMoviesAdapter providesRelatedMoviesAdapter(DescriptionFragment descriptionFragment){
+    static RelatedMoviesAdapter providesRelatedMoviesAdapter(DescriptionFragment descriptionFragment) {
         return new RelatedMoviesAdapter(descriptionFragment);
     }
 
-    // TODO
     @Provides
     @PerFragment
-    static PrepareDescription providesPrepareDescriptions(DescriptionFragment descriptionFragment){
+    static PrepareDescription providesPrepareDescriptions(DescriptionFragment descriptionFragment) {
         return new PrepareDescription(descriptionFragment);
     }
 
