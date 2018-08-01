@@ -1,18 +1,18 @@
-
 package com.example.irishka.movieapp.data.models;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CreditsModel {
+import java.util.List;
+
+public class FilmsModel {
 
     @SerializedName("id")
     @Expose
     private int id;
     @SerializedName("cast")
     @Expose
-    private List<CastModel> cast;
+    private List<MovieModel> movies;
 
     public int getId() {
         return id;
@@ -22,12 +22,12 @@ public class CreditsModel {
         this.id = id;
     }
 
-    public List<CastModel> getCast() {
-        return cast;
+    public List<MovieModel> getMovies() {
+        return movies;
     }
 
-    public void setCast(List<CastModel> cast) {
-        this.cast = cast;
+    public void setMovies(List<MovieModel> movies) {
+        this.movies = movies;
     }
 
 }

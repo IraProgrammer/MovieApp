@@ -1,32 +1,37 @@
 package com.example.irishka.movieapp.ui.movie.creators.actor.films;
 
+import com.arellomobile.mvp.InjectViewState;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.ui.BasePresenter;
+import com.example.irishka.movieapp.ui.movie.creators.actor.films.view.FilmsView;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+
+@InjectViewState
 public class FilmsPresenter extends BasePresenter<FilmsView> {
     private IMoviesRepository moviesRepository;
 
-    private final long movieId;
+    private final long id;
 
     @Inject
-    public FilmsPresenter(IMoviesRepository repository, long movieId) {
+    public FilmsPresenter(IMoviesRepository repository, long id) {
         this.moviesRepository = repository;
-        this.movieId = movieId;
+        this.id = id;
     }
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-     //   downloadCasts(movieId);
+        downloadFilms(id);
     }
 
-//    public void downloadCasts(long movieId) {
-//
-//        addDisposables(moviesRepository.downloadCasts(movieId)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(casts -> getViewState().showCasts(casts), Throwable::printStackTrace));
-//    }
+    private void downloadFilms(long id) {
+
+        addDisposables(moviesRepository.getActorFilms(id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(movies -> getViewState().showMovies(movies)));
+    }
 }
 

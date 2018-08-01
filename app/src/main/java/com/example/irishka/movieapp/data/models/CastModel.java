@@ -20,7 +20,7 @@ public class CastModel {
     private int gender;
     @SerializedName("id")
     @Expose
-    private int id;
+    private long id;
     @SerializedName("name")
     @Expose
     private String name;
@@ -63,14 +63,6 @@ public class CastModel {
         this.gender = gender;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -93,6 +85,14 @@ public class CastModel {
 
     public void setProfilePath(String profilePath) {
         this.profilePath = profilePath;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
 }

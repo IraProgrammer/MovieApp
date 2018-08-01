@@ -6,9 +6,11 @@ import com.example.irishka.movieapp.data.database.dao.GenreDao;
 import com.example.irishka.movieapp.data.database.dao.GenreOfMovieDao;
 import com.example.irishka.movieapp.data.database.dao.MovieDao;
 import com.example.irishka.movieapp.data.database.entity.MovieDb;
+import com.example.irishka.movieapp.data.models.ActorInfoModel;
 import com.example.irishka.movieapp.data.models.ActorPhotosModel;
 import com.example.irishka.movieapp.data.models.CreditsModel;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
+import com.example.irishka.movieapp.data.models.FilmsModel;
 import com.example.irishka.movieapp.data.models.GalleryModel;
 import com.example.irishka.movieapp.data.models.MovieModel;
 import com.example.irishka.movieapp.data.models.MoviePageModel;
@@ -48,7 +50,15 @@ public class MoviesNetworkSource {
         return moviesApi.getDescription(movieId);
     }
 
-    public Single<ActorPhotosModel> getActorPhotos(long castId){
-        return moviesApi.getActorPhotos(castId);
+    public Single<ActorPhotosModel> getActorPhotos(long id){
+        return moviesApi.getActorPhotos(id);
+    }
+
+    public Single<ActorInfoModel> getActorInfo(long id){
+        return moviesApi.getActorInfo(id);
+    }
+
+    public Single<FilmsModel> getActorFilms(long id){
+        return moviesApi.getActorFilms(id);
     }
 }

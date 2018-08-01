@@ -85,7 +85,7 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.CreatorsVi
 
             title.setText(actor.getName());
 
-            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(actor));
+            itemView.setOnClickListener(itemView -> onItemClickListener.onItemClick(actor));
 
             Glide.with(itemView.getContext())
                     .load(actor.getProfileUrl())

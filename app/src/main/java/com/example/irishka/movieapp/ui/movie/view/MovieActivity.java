@@ -33,7 +33,6 @@ public class MovieActivity extends DaggerAppCompatActivity {
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
-
     }
 
     @Override

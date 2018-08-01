@@ -26,7 +26,13 @@ public class MoviesListActivityModule {
     @PerActivity
     static StaggeredGridLayoutManager providesStaggeredGridLayoutManager(MoviesListActivity moviesActivity){
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(moviesActivity.getColumns(), StaggeredGridLayoutManager.VERTICAL);
+            Point point = new Point();
+            moviesActivity.getWindowManager().getDefaultDisplay().getSize(point);
+            int number = point.x;
+            float scalefactor = moviesActivity.getResources().getDisplayMetrics().density * 150;
+            int columns = (int) ((float) number / (float) scalefactor);
+
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(columns, StaggeredGridLayoutManager.VERTICAL);
         staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         return staggeredGridLayoutManager;
     }

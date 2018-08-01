@@ -18,11 +18,13 @@ import com.example.irishka.movieapp.data.mappers.CastMapper;
 import com.example.irishka.movieapp.data.mappers.GenreMapper;
 import com.example.irishka.movieapp.data.mappers.MoviesMapper;
 import com.example.irishka.movieapp.data.mappers.ProductionCountryMapper;
+import com.example.irishka.movieapp.data.models.ActorInfoModel;
 import com.example.irishka.movieapp.data.models.ActorPhotosModel;
 import com.example.irishka.movieapp.data.models.BackdropModel;
 import com.example.irishka.movieapp.data.models.CastModel;
 import com.example.irishka.movieapp.data.models.CreditsModel;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
+import com.example.irishka.movieapp.data.models.FilmsModel;
 import com.example.irishka.movieapp.data.models.GalleryModel;
 import com.example.irishka.movieapp.data.models.GenreModel;
 import com.example.irishka.movieapp.data.models.MovieModel;
@@ -203,8 +205,29 @@ public class MoviesRepository implements IMoviesRepository {
     }
 
     @Override
-    public Single<ActorPhotosModel> getActorPhotoModel(long castId) {
+    public Single<ActorPhotosModel> getActorPhotoModel(long id) {
         return networkSource
-                .getActorPhotos(castId);
+                .getActorPhotos(id);
+    }
+
+    @Override
+    public Single<ActorInfoModel> getActorInfoModel(long id) {
+        return networkSource
+                .getActorInfo(id);
+    }
+
+    @Override
+    public Single<List<MovieModel>> getActorFilms(long id) {
+        return networkSource
+                .getActorFilms(id)
+                .map(FilmsModel::getMovies)
+                .onErrorResumeNext(throwable -> {
+                    // на будущее - логи можно выводить только в дев билде, можно ставить проверку на BuildConfig.DEBUG
+                    // но такие проверки везде будут нагромождать код, поэтому логи можно вынести в одно место
+                    // здесь не надо ничего править
+                    throwable.printStackTrace();
+                    return null;
+                });
+               // .map(movies -> moviesMapper.mapMovies(movies));
     }
 }

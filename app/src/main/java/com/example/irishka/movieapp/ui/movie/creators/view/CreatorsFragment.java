@@ -12,7 +12,6 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
-import com.example.irishka.movieapp.data.models.CreditsModel;
 import com.example.irishka.movieapp.domain.entity.Cast;
 import com.example.irishka.movieapp.ui.movie.creators.actor.ActorActivity;
 import com.example.irishka.movieapp.ui.movie.creators.presenter.CreatorsPresenter;
@@ -28,7 +27,7 @@ import dagger.android.support.AndroidSupportInjection;
 
 public class CreatorsFragment extends MvpAppCompatFragment implements CreatorsView, ActorsAdapter.OnItemClickListener {
 
-    public static final String CAST_ID = "id_of_cast";
+    public static final String PERSON_ID = "id_of_cast";
 
     @Inject
     Provider<CreatorsPresenter> presenterProvider;
@@ -80,7 +79,7 @@ public class CreatorsFragment extends MvpAppCompatFragment implements CreatorsVi
     @Override
     public void onItemClick(Cast cast) {
         Intent intent = new Intent(getActivity(), ActorActivity.class);
-        intent.putExtra(CAST_ID, cast.getCastId());
+        intent.putExtra(PERSON_ID, cast.getId());
         startActivity(intent);
     }
 }

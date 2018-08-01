@@ -7,6 +7,8 @@ public class Cast {
 
     private long castId;
 
+    private long id;
+
     private String name;
 
     private String profileUrl;
@@ -33,6 +35,14 @@ public class Cast {
 
     public void setCastId(long castId) {
         this.castId = castId;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
 }

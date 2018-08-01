@@ -22,6 +22,7 @@ public class CastMapper{
 
     public Cast apply(CastModel castModel) {
         Cast cast = new Cast();
+        cast.setId(castModel.getId());
         cast.setCastId(castModel.getCastId());
         cast.setName(castModel.getName());
         cast.setProfileUrl(BASE_IMAGE_URL + castModel.getProfilePath());

@@ -24,6 +24,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static java.lang.String.format;
+
 public class PrepareDescription {
 
     private Fragment fragment;
@@ -64,7 +66,7 @@ public class PrepareDescription {
         int hours = movie.getRuntime() / 60;
         int minutes = movie.getRuntime() % 60;
 
-        if (minutes < 10 && minutes > 0) return String.format(fragment.getString(R.string.durationWithNull), hours, minutes);
+        if (minutes < 10 && minutes > 0) return format(fragment.getString(R.string.durationWithNull), hours, minutes);
 
         return String.format(fragment.getString(R.string.duration), hours, minutes);
     }

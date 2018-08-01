@@ -56,7 +56,7 @@ public class MoviesListActivity extends MvpAppCompatActivity implements MoviesLi
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movies);
+        setContentView(R.layout.activity_fragment_movies);
         ButterKnife.bind(this);
 
         moviesRecyclerView.setLayoutManager(staggeredGridLayoutManager);
@@ -79,14 +79,6 @@ public class MoviesListActivity extends MvpAppCompatActivity implements MoviesLi
 
         moviesRecyclerView.setAdapter(moviesAdapter);
 
-    }
-
-    public int getColumns() {
-        Point point = new Point();
-        getWindowManager().getDefaultDisplay().getSize(point);
-        int number = point.x;
-        float scalefactor = getResources().getDisplayMetrics().density * 150;
-        return (int) ((float) number / (float) scalefactor);
     }
 
     @Override

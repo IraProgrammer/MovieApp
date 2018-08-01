@@ -12,25 +12,33 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class InfoPresenter extends BasePresenter<InfoView> {
     private IMoviesRepository moviesRepository;
 
-    private final long castId;
+    private final long id;
 
     @Inject
-    public InfoPresenter(IMoviesRepository repository, long castId) {
+    public InfoPresenter(IMoviesRepository repository, long id) {
         this.moviesRepository = repository;
-        this.castId = castId;
+        this.id = id;
     }
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        downloadPhotos(castId);
+        downloadInfo(id);
+        downloadPhotos(id);
     }
 
-    public void downloadPhotos(long castId) {
+    private void downloadInfo(long id) {
 
-        addDisposables(moviesRepository.getActorPhotoModel(castId)
+        addDisposables(moviesRepository.getActorInfoModel(id)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(actorPhotosModel -> getViewState().showPhotos(actorPhotosModel), Throwable::printStackTrace));
+                .subscribe(actorInfoModel -> getViewState().showInfo(actorInfoModel)));
+    }
+
+    private void downloadPhotos(long id) {
+
+        addDisposables(moviesRepository.getActorPhotoModel(id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(actorPhotosModel -> getViewState().showPhotos(actorPhotosModel)));
     }
 }
 

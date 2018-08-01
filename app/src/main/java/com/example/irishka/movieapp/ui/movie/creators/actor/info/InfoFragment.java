@@ -1,17 +1,37 @@
 package com.example.irishka.movieapp.ui.movie.creators.actor.info;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
+import com.example.irishka.movieapp.data.models.ActorInfoModel;
 import com.example.irishka.movieapp.data.models.ActorPhotosModel;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -39,6 +59,21 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView {
     @BindView(R.id.photos_recycler_view)
     RecyclerView photosRecyclerView;
 
+    @BindView(R.id.name)
+    TextView name;
+
+    @BindView(R.id.birth)
+    TextView birth;
+
+    @BindView(R.id.place)
+    TextView place;
+
+    @BindView(R.id.info)
+    TextView biography;
+
+    @BindView(R.id.actor_image)
+    ImageView image;
+
     public static InfoFragment newInstance(){
         return new InfoFragment();
     }
@@ -63,14 +98,42 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView {
     }
 
     @Override
+    public void showInfo(ActorInfoModel info) {
+        name.setText(info.getName());
+
+        String s = info.getBirthday() + System.lineSeparator();
+
+        birth.setText(getBirthday(info));
+        place.setText(info.getPlaceOfBirth());
+        biography.setText(info.getBiography());
+
+        Glide.with(this)
+                .load("http://image.tmdb.org/t/p/w500/" + info.getProfilePath())
+                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                        .placeholder(R.drawable.no_image)
+                        .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
+                .into(image);
+    }
+
+    private String getBirthday(ActorInfoModel info){
+
+        String oldDateString = info.getBirthday();
+        SimpleDateFormat oldDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy, dd MMMM", Locale.ENGLISH);
+
+        Date date = null;
+        try {
+            date = oldDateFormat.parse(oldDateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String result = newDateFormat.format(date);
+
+        return result + System.lineSeparator();
+    }
+
+    @Override
     public void showPhotos(ActorPhotosModel photosModel) {
         photosAdapter.setPhotosList(photosModel.getProfiles());
     }
-
-//    @Override
-//    public void showInfo(List<Cast> cast) {
-//
-//        photosAdapter.setList(cast);
-//
-//    }
 }
