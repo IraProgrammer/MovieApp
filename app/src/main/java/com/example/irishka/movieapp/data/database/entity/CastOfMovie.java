@@ -11,14 +11,14 @@ public class CastOfMovie {
     public int id;
 
     private long movieId;
-    private int castId;
+    private long castId;
 
     public CastOfMovie(){}
 
     @Ignore
-    public CastOfMovie(long descriptionId, int genreId){
+    public CastOfMovie(long descriptionId, long castId){
         this.movieId = descriptionId;
-        this.castId = genreId;
+        this.castId = castId;
     }
 
     public long getMovieId() {
@@ -29,11 +29,11 @@ public class CastOfMovie {
         this.movieId = movieId;
     }
 
-    public int getCastId() {
+    public long getCastId() {
         return castId;
     }
 
-    public void setCastId(int castId) {
+    public void setCastId(long castId) {
         this.castId = castId;
     }
 

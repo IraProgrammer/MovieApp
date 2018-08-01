@@ -12,4 +12,11 @@
     <string name="duration">%1$dh %2$dmin</string>
     <string name="durationWithNull">%1$dh 0%2$dmin</string>
     <string name="vote_average">TMDb %1$.01f</string>
+
+    <string name="info_fragment">Info</string>
+    <string name="films_fragment">Films</string>
+
+    <string name="photos">PHOTOS</string>
+    <string name="birth">Date of birth:</string>
+    <string name="place">Place of birth:</string>
 </resources>

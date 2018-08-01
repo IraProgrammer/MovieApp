@@ -73,7 +73,7 @@ public class MoviesDbSource {
         return castOfMovieDao.getCastsOfMovie(movieId);
     }
 
-    public Single<CastDb> getCast(int castId){
+    public Single<CastDb> getCast(long castId){
         return castDao.getCast(castId);
     }
 

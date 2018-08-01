@@ -8,7 +8,7 @@ public class CastModel {
 
     @SerializedName("cast_id")
     @Expose
-    private int castId;
+    private long castId;
     @SerializedName("character")
     @Expose
     private String character;
@@ -31,11 +31,11 @@ public class CastModel {
     @Expose
     private String profilePath;
 
-    public int getCastId() {
+    public long getCastId() {
         return castId;
     }
 
-    public void setCastId(int castId) {
+    public void setCastId(long castId) {
         this.castId = castId;
     }
 

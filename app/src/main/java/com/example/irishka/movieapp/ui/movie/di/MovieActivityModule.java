@@ -20,8 +20,7 @@ public abstract class MovieActivityModule {
     @Provides
     @PerActivity
     static long provideId(MovieActivity movieActivity) {
-        // TODO
-        return movieActivity.getIntent().getLongExtra(MOVIE_ID, 164558);
+        return movieActivity.getIntent().getLongExtra(MOVIE_ID, 0);
     }
 
    @PerFragment

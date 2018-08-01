@@ -1,5 +1,6 @@
 package com.example.irishka.movieapp.domain.repository;
 
+import com.example.irishka.movieapp.data.models.ActorPhotosModel;
 import com.example.irishka.movieapp.data.models.BackdropModel;
 import com.example.irishka.movieapp.data.models.CreditsModel;
 import com.example.irishka.movieapp.domain.entity.Backdrop;
@@ -18,5 +19,7 @@ public interface IMoviesRepository {
     Single<List<Movie>> downloadRelatedMovies(long movieId);
 
     Single<List<Cast>> downloadCasts(long movieId);
+
+    Single<ActorPhotosModel> getActorPhotoModel(long castId);
 
 }

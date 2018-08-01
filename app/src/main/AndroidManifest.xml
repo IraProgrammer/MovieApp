@@ -24,6 +24,9 @@
             android:theme="@style/AppCompatDarkNoActionBar"
             android:parentActivityName=".ui.movies.view.MoviesListActivity">
         </activity>
+        <activity android:name=".ui.movie.creators.actor.ActorActivity"
+            android:theme="@style/AppCompatDarkNoActionBar">
+        </activity>
     </application>
 
 </manifest>

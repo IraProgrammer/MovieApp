@@ -20,6 +20,6 @@ public interface CastDao {
     void insertAll(List<CastDb> casts);
 
     @Query("SELECT * FROM CastDb WHERE castId = :castId")
-    Single<CastDb> getCast(int castId);
+    Single<CastDb> getCast(long castId);
 
 }

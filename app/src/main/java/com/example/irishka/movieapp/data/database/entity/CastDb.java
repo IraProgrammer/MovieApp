@@ -10,16 +10,16 @@ import com.google.gson.annotations.SerializedName;
 public class CastDb {
 
     @PrimaryKey
-    private int castId;
+    private long castId;
 
     private String name;
 
     private String profileUrl;
-    public Integer getCastId() {
+    public long getCastId() {
         return castId;
     }
 
-    public void setCastId(Integer castId) {
+    public void setCastId(long castId) {
         this.castId = castId;
     }
 

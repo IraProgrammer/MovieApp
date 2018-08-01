@@ -34,20 +34,16 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.CreatorsVi
 
     private List<Cast> actors = new ArrayList<>();
 
-    //   private OnItemClickListener onItemClickListener;
-
-//    @Inject
-//    public ActorsAdapter(OnItemClickListener onItemClickListener) {
-//        this.onItemClickListener = onItemClickListener;
-//    }
+    private OnItemClickListener onItemClickListener;
 
     @Inject
-    public ActorsAdapter() {
+    public ActorsAdapter(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
-// public interface OnItemClickListener {
-//        void onItemClick(CastModel castModel);
-//    }
+    public interface OnItemClickListener {
+        void onItemClick(Cast cast);
+    }
 
     public void setList(List<Cast> actors) {
         this.actors = actors;
@@ -89,19 +85,19 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.CreatorsVi
 
             title.setText(actor.getName());
 
-            //  itemView.setOnClickListener(view -> onItemClickListener.onItemClick(actor));
+            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(actor));
 
             Glide.with(itemView.getContext())
                     .load(actor.getProfileUrl())
                     .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                          //  .circleCrop()
-                            .transform(new RoundedCorners(1000))
+                            //    .optionalFitCenter()
                             .placeholder(R.drawable.no_image)
-                            .dontAnimate()
-                         //   .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                            //   .centerCrop()
                             .error(R.drawable.no_image)
                     )
                     .into(image);
         }
     }
 }
+

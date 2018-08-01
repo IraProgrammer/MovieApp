@@ -18,6 +18,7 @@ import com.example.irishka.movieapp.data.mappers.CastMapper;
 import com.example.irishka.movieapp.data.mappers.GenreMapper;
 import com.example.irishka.movieapp.data.mappers.MoviesMapper;
 import com.example.irishka.movieapp.data.mappers.ProductionCountryMapper;
+import com.example.irishka.movieapp.data.models.ActorPhotosModel;
 import com.example.irishka.movieapp.data.models.BackdropModel;
 import com.example.irishka.movieapp.data.models.CastModel;
 import com.example.irishka.movieapp.data.models.CreditsModel;
@@ -199,5 +200,11 @@ public class MoviesRepository implements IMoviesRepository {
     public Single<Movie> downloadMovie(long movieId) {
         return getMovieFromInternet(movieId)
                 .onErrorResumeNext(getMovieFromDatabase(movieId));
+    }
+
+    @Override
+    public Single<ActorPhotosModel> getActorPhotoModel(long castId) {
+        return networkSource
+                .getActorPhotos(castId);
     }
 }

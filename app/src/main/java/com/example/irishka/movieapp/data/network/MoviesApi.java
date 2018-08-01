@@ -1,5 +1,6 @@
 package com.example.irishka.movieapp.data.network;
 
+import com.example.irishka.movieapp.data.models.ActorPhotosModel;
 import com.example.irishka.movieapp.data.models.CreditsModel;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.data.models.GalleryModel;
@@ -26,5 +27,8 @@ public interface MoviesApi {
 
     @GET("movie/{movie_id}/images")
     Single<GalleryModel> getGallery(@Path("movie_id") long movieId);
+
+    @GET("person/{cast_id}/images")
+    Single<ActorPhotosModel> getActorPhotos(@Path("cast_id") long castId);
 
 }

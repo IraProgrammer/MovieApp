@@ -89,12 +89,6 @@ public class MoviesListActivity extends MvpAppCompatActivity implements MoviesLi
         return (int) ((float) number / (float) scalefactor);
     }
 
-//    private StaggeredGridLayoutManager getLayoutManager() {
-//        staggeredGridLayoutManager = new StaggeredGridLayoutManager(getColumns(), StaggeredGridLayoutManager.VERTICAL);
-//        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-//        return staggeredGridLayoutManager;
-//    }
-
     @Override
     public void showMovies(List<Movie> movies) {
         moviesAdapter.addMoviesList(movies);

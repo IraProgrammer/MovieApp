@@ -1,10 +1,8 @@
-package com.example.irishka.movieapp.ui.movie.view;
+package com.example.irishka.movieapp.ui.movie.creators.actor;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.view.Menu;
-import android.view.MenuInflater;
 
 import com.example.irishka.movieapp.R;
 
@@ -14,7 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
 
-public class MovieActivity extends DaggerAppCompatActivity {
+public class ActorActivity extends DaggerAppCompatActivity {
 
     @BindView(R.id.tabs)
     TabLayout tabLayout;
@@ -23,7 +21,7 @@ public class MovieActivity extends DaggerAppCompatActivity {
     ViewPager viewPager;
 
     @Inject
-    ViewPagerAdapter adapter;
+    ActorViewPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +32,5 @@ public class MovieActivity extends DaggerAppCompatActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.tabs, menu);
-        return true;
     }
 }

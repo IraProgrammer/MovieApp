@@ -6,6 +6,7 @@ import com.example.irishka.movieapp.data.database.dao.GenreDao;
 import com.example.irishka.movieapp.data.database.dao.GenreOfMovieDao;
 import com.example.irishka.movieapp.data.database.dao.MovieDao;
 import com.example.irishka.movieapp.data.database.entity.MovieDb;
+import com.example.irishka.movieapp.data.models.ActorPhotosModel;
 import com.example.irishka.movieapp.data.models.CreditsModel;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.data.models.GalleryModel;
@@ -45,5 +46,9 @@ public class MoviesNetworkSource {
 
     public Single<DescriptionModel> getDescription(long movieId){
         return moviesApi.getDescription(movieId);
+    }
+
+    public Single<ActorPhotosModel> getActorPhotos(long castId){
+        return moviesApi.getActorPhotos(castId);
     }
 }
