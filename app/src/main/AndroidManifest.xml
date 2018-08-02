@@ -27,6 +27,8 @@
         <activity android:name=".ui.movie.creators.actor.ActorActivity"
             android:theme="@style/AppCompatDarkNoActionBar">
         </activity>
+
+        <activity  android:name=".ui.movie.description.view.ImageDialog" android:theme="@style/myDialogTheme" />
     </application>
 
 </manifest>

@@ -12,6 +12,8 @@ import com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragmen
 import com.example.irishka.movieapp.ui.movie.description.view.GalleryAdapter;
 import com.example.irishka.movieapp.ui.movie.description.view.RelatedMoviesAdapter;
 
+import javax.inject.Named;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -32,8 +34,16 @@ public abstract class DescriptionFragmentModule {
 
     @Provides
     @PerFragment
-    static LinearLayoutManager providesLinearLayoutManager(DescriptionFragment descriptionFragment){
+ //   @Named("LinearLayoutForRelated")
+    static LinearLayoutManager providesLinearLayoutManagerForRelated(DescriptionFragment descriptionFragment){
         return new LinearLayoutManager(descriptionFragment.getContext(), LinearLayoutManager.HORIZONTAL, false);
     }
+
+//    @Provides
+//    @PerFragment
+//    @Named("LinearLayoutForGallery")
+//    static LinearLayoutManager providesLinearLayoutManagerForGallery(DescriptionFragment descriptionFragment){
+//        return new LinearLayoutManager(descriptionFragment.getContext(), LinearLayoutManager.HORIZONTAL, false);
+//    }
 
 }

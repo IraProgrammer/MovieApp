@@ -3,12 +3,14 @@ package com.example.irishka.movieapp.ui.movie.description.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.transition.TransitionManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -24,6 +26,7 @@ import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Provider;
 
 import butterknife.BindView;
@@ -94,10 +97,12 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
     RatingBar ratingBar;
 
     @Inject
+ //   @Named("LinearLayoutForRelated")
     LinearLayoutManager linearLayoutManagerRelated;
 
-//    @Inject
-//    LinearLayoutManager linearLayoutManagerGallery;
+    @Inject
+ //   @Named("LinearLayoutForGallery")
+    LinearLayoutManager linearLayoutManagerGallery;
 
     private boolean isLoading;
 
@@ -152,13 +157,25 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
     @Override
     public void showDescription(Movie movie) {
 
-        ratingBar.setProgress((int)movie.getVoteAverage());
+        ratingBar.setProgress((int) movie.getVoteAverage());
 
         filmTitle.setText(movie.getTitle());
 
         year.setText(prepareDescription.getYear(movie));
 
         prepareDescription.getPicture(movie, image);
+
+        //
+        //Я ЭТОТ МОМЕНТ ИСПРАВЛЮ, НЕ ОБРАЩАЙ ВНИМАНИЯ
+        //
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), ImageDialog.class);
+                intent.putExtra("URL", movie.getPosterUrl());
+                startActivity(intent);
+            }
+        });
 
         genre.setText(prepareDescription.getGenres(movie));
 
