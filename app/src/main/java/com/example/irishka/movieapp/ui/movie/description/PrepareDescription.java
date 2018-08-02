@@ -45,13 +45,16 @@ public class PrepareDescription {
                 .into(image);
     }
 
-    public String getGenre(Movie movie) {
+    public String getGenres(Movie movie) {
         StringBuilder genresStr = new StringBuilder();
         List<Genre> genres = movie.getGenres();
 
         for (int i = 0; i < genres.size(); i++) {
+            if (i == genres.size() - 1){
+                genresStr.append(genres.get(genres.size() - 1).getName());
+                return genresStr.toString();
+            }
             genresStr.append(genres.get(i).getName()).append(", ");
-            if (i == genres.size() - 1) genresStr.append(genres.get(genres.size() - 1).getName());
         }
 
         return genresStr.toString();
@@ -83,8 +86,11 @@ public class PrepareDescription {
         List<ProductionCountry> productionCountries = movie.getCountries();
 
         for (int i = 0; i < productionCountries.size(); i++) {
+            if (i == productionCountries.size() - 1){
+                countriesStr.append(productionCountries.get(productionCountries.size() - 1).getName());
+                return countriesStr.toString();
+            }
             countriesStr.append(productionCountries.get(i).getName()).append(", ");
-            if (i == productionCountries.size() - 1) countriesStr.append(productionCountries.get(productionCountries.size() - 1).getName());
         }
 
         return countriesStr.toString();

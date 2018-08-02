@@ -34,8 +34,8 @@ public class MoviesNetworkSource {
         return moviesApi.getMovies(page);
     }
 
-    public Single<MoviePageModel> getRelated(long movieId){
-        return moviesApi.getRelated(movieId);
+    public Single<MoviePageModel> getRelated(long movieId, int page){
+        return moviesApi.getRelated(movieId, page);
     }
 
     public Single<CreditsModel> getCreators(long movieId){

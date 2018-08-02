@@ -16,7 +16,6 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
-import com.example.irishka.movieapp.domain.entity.Backdrop;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.movie.description.PrepareDescription;
 import com.example.irishka.movieapp.ui.movie.description.presenter.DescriptionPresenter;
@@ -70,7 +69,7 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
     @BindView(R.id.country)
     TextView country;
 
-    @BindView(R.id.genre)
+    @BindView(R.id.genres)
     TextView genre;
 
     @BindView(R.id.duration)
@@ -90,8 +89,17 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
 
     @BindView(R.id.see_also)
     TextView seeAlso;
+
     @BindView(R.id.ratingBar_small)
     RatingBar ratingBar;
+
+    @Inject
+    LinearLayoutManager linearLayoutManagerRelated;
+
+//    @Inject
+//    LinearLayoutManager linearLayoutManagerGallery;
+
+    private boolean isLoading;
 
     public static DescriptionFragment newInstance() {
         return new DescriptionFragment();
@@ -110,13 +118,35 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
         View v = inflater.inflate(R.layout.fragment_description, container, false);
         ButterKnife.bind(this, v);
 
-        relatedMovies.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        relatedMovies.setLayoutManager(linearLayoutManagerRelated);
+
+        relatedMovies.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                int visibleItemCount = recyclerView.getLayoutManager().getChildCount();
+                int totalItemCount = recyclerView.getLayoutManager().getItemCount();
+                int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+
+                if (isLoading) return;
+                if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
+                        && lastVisibleItemPosition >= 0) {
+                    isLoading = true;
+                    presenter.downloadRelatedMovies();
+                }
+            }
+        });
+
         relatedMovies.setAdapter(relatedMoviesAdapter);
 
         gallery.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         gallery.setAdapter(galleryAdapter);
 
         return v;
+    }
+
+    @Override
+    public void finishLoading() {
+        isLoading = false;
     }
 
     @Override
@@ -130,7 +160,7 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
 
         prepareDescription.getPicture(movie, image);
 
-        genre.setText(prepareDescription.getGenre(movie));
+        genre.setText(prepareDescription.getGenres(movie));
 
         duration.setText(prepareDescription.getDuration(movie));
 

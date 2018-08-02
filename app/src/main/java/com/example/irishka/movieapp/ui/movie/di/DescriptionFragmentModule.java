@@ -1,5 +1,7 @@
 package com.example.irishka.movieapp.ui.movie.di;
 
+import android.support.v7.widget.LinearLayoutManager;
+
 import com.example.irishka.movieapp.di.scopes.PerFragment;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.ui.movie.creators.presenter.CreatorsPresenter;
@@ -26,6 +28,12 @@ public abstract class DescriptionFragmentModule {
     @PerFragment
     static PrepareDescription providesPrepareDescriptions(DescriptionFragment descriptionFragment) {
         return new PrepareDescription(descriptionFragment);
+    }
+
+    @Provides
+    @PerFragment
+    static LinearLayoutManager providesLinearLayoutManager(DescriptionFragment descriptionFragment){
+        return new LinearLayoutManager(descriptionFragment.getContext(), LinearLayoutManager.HORIZONTAL, false);
     }
 
 }

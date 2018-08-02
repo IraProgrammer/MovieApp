@@ -18,6 +18,8 @@ public class DescriptionPresenter extends BasePresenter<DescriptionView> {
 
     private final long movieId;
 
+    private int page = 1;
+
     @Inject
     public DescriptionPresenter(IMoviesRepository repository, long movieId) {
         this.moviesRepository = repository;
@@ -27,21 +29,24 @@ public class DescriptionPresenter extends BasePresenter<DescriptionView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        downloadDescription(movieId);
-        downloadRelatedMovies(movieId);
+        downloadDescription();
+        downloadRelatedMovies();
     }
 
-    public void downloadDescription(long movieId) {
+    public void downloadDescription() {
 
         addDisposables(moviesRepository.downloadMovie(movieId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(movies -> getViewState().showDescription(movies)));
     }
 
-    public void downloadRelatedMovies(long movieId) {
+    public void downloadRelatedMovies() {
 
-        addDisposables(moviesRepository.downloadRelatedMovies(movieId)
+        addDisposables(moviesRepository.downloadRelatedMovies(movieId, page)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(movies -> getViewState().finishLoading())
+                .doOnSuccess(movies -> page++)
+                .doOnError(movies -> getViewState().finishLoading())
                 .subscribe(movies -> getViewState().showRelatedMovies(movies)));
     }
 }

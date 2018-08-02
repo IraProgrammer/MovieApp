@@ -40,8 +40,10 @@ public class RelatedMoviesAdapter extends RecyclerView.Adapter<RelatedMoviesAdap
     }
 
     public void setRelatedList(List<Movie> relatedMovies) {
-        this.relatedMovies = relatedMovies;
-        notifyDataSetChanged();
+        int idStart = this.relatedMovies.size();
+        int idEnd = relatedMovies.size();
+        this.relatedMovies.addAll(relatedMovies);
+        notifyItemRangeInserted(idStart, idEnd);
     }
 
     @NonNull

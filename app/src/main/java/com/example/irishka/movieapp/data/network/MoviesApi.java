@@ -22,7 +22,7 @@ public interface MoviesApi {
     Single<DescriptionModel> getDescription(@Path("movie_id") long movieId);
 
     @GET("movie/{movie_id}/similar")
-    Single<MoviePageModel> getRelated(@Path("movie_id") long movieId);
+    Single<MoviePageModel> getRelated(@Path("movie_id") long movieId, @Query("page") int page);
 
     @GET("movie/{movie_id}/credits")
     Single<CreditsModel> getCreators(@Path("movie_id") long movieId);

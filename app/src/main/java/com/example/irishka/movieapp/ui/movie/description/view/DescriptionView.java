@@ -9,10 +9,10 @@ import java.util.List;
 
 public interface DescriptionView extends MvpView{
 
+    void finishLoading();
+
     void showDescription(Movie movie);
 
     void showRelatedMovies(List<Movie> movies);
-
-  //  void showGallery(List<Backdrop> backdrops);
 
 }

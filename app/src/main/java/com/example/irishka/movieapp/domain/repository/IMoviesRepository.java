@@ -18,7 +18,7 @@ public interface IMoviesRepository {
 
     Single<Movie> downloadMovie(long movieId);
 
-    Single<List<Movie>> downloadRelatedMovies(long movieId);
+    Single<List<Movie>> downloadRelatedMovies(long movieId, int page);
 
     Single<List<Cast>> downloadCasts(long movieId);
 

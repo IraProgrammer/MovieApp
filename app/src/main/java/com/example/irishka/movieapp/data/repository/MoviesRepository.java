@@ -104,9 +104,9 @@ public class MoviesRepository implements IMoviesRepository {
                 });
     }
 
-    private Single<List<Movie>> getRelatedFromInternet(long movieId) {
+    private Single<List<Movie>> getRelatedFromInternet(long movieId, int page) {
         return networkSource
-                .getRelated(movieId)
+                .getRelated(movieId, page)
                 .map(MoviePageModel::getResults)
                 .map(movies -> moviesMapper.mapMovies(movies))
                 .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies, movieId)));
@@ -119,8 +119,8 @@ public class MoviesRepository implements IMoviesRepository {
     }
 
     @Override
-    public Single<List<Movie>> downloadRelatedMovies(long movieId) {
-        return getRelatedFromInternet(movieId)
+    public Single<List<Movie>> downloadRelatedMovies(long movieId, int page) {
+        return getRelatedFromInternet(movieId, page)
                 .onErrorResumeNext(throwable -> {
                     throwable.printStackTrace();
                     return getRelatedFromDatabase(movieId);
@@ -220,14 +220,6 @@ public class MoviesRepository implements IMoviesRepository {
     public Single<List<MovieModel>> getActorFilms(long id) {
         return networkSource
                 .getActorFilms(id)
-                .map(FilmsModel::getMovies)
-                .onErrorResumeNext(throwable -> {
-                    // на будущее - логи можно выводить только в дев билде, можно ставить проверку на BuildConfig.DEBUG
-                    // но такие проверки везде будут нагромождать код, поэтому логи можно вынести в одно место
-                    // здесь не надо ничего править
-                    throwable.printStackTrace();
-                    return null;
-                });
-               // .map(movies -> moviesMapper.mapMovies(movies));
+                .map(FilmsModel::getMovies);
     }
 }
