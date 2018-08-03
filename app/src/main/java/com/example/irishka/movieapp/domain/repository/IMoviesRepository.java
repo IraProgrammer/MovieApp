@@ -23,6 +23,9 @@ public interface IMoviesRepository {
 
     Single<List<Cast>> downloadCasts(long movieId);
 
+    // TODO: модели data слоя не должны выходить из репозитория
+    // мапай в модели domain слоя
+
     Single<ActorPhotosModel> getActorPhotoModel(long castId);
 
     Single<ActorInfoModel> getActorInfoModel(long castId);

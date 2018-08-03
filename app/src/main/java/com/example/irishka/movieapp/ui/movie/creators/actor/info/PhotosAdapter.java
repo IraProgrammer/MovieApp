@@ -79,6 +79,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
            // itemView.setOnClickListener(view -> onItemClickListener.onItemClick(movie));
 
             Glide.with(itemView.getContext())
+                    // TODO: хардкод
                     .load("http://image.tmdb.org/t/p/w500/" +  profileModel.getFilePath())
                     .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                             .placeholder(R.drawable.no_image)

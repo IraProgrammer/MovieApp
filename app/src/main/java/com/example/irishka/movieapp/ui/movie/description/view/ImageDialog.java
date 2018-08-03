@@ -16,8 +16,12 @@ import com.example.irishka.movieapp.domain.entity.Movie;
 
 import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOVIE_ID;
 
+// TODO: это диалог, а наследуется от активити
+// очень странно
+// и старайся использовать форматирование на Ctrl+Alt+L
 public class ImageDialog extends Activity {
 
+    // TODO: еще и imageView называется диалогом
     private ImageView mDialog;
 
 

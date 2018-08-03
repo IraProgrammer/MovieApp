@@ -24,11 +24,15 @@ public class FilmsPresenter extends BasePresenter<FilmsView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
+        // TODO: у тебя же id - поле класса, можно не передавать его в dowloadMovies, а сразу там использовать
         downloadFilms(id);
     }
 
     private void downloadFilms(long id) {
 
+        // TODO: обработка ошибок в rx обязательно, даже если ты укажешь что-то типа такого
+        // throwable -> {}
+        // иначе у тебя может крашнутся приложение с UndeliverableException
         addDisposables(moviesRepository.getActorFilms(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(movies -> getViewState().showMovies(movies)));

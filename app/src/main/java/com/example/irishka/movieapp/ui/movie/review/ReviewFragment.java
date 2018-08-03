@@ -11,6 +11,7 @@ import com.example.irishka.movieapp.R;
 
 import dagger.android.support.AndroidSupportInjection;
 
+// TODO: можно удалить, раз решили не делать
 public class ReviewFragment extends MvpAppCompatFragment {
 
     public static ReviewFragment newInstance(){
@@ -26,6 +27,7 @@ public class ReviewFragment extends MvpAppCompatFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // TODO: фрагмент - ревью, а верстка для трейлеров)
         return inflater.inflate(R.layout.fragment_trailers, container, false);
     }
 
