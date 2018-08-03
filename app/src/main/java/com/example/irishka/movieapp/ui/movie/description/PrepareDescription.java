@@ -1,6 +1,8 @@
 package com.example.irishka.movieapp.ui.movie.description;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +24,9 @@ import com.example.irishka.movieapp.domain.entity.ProductionCountry;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerFullScreenListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.playerUtils.FullScreenHelper;
 
 import java.util.List;
 
@@ -36,6 +40,10 @@ import static java.lang.String.format;
 public class PrepareDescription {
 
     private Fragment fragment;
+
+    private YouTubePlayerView youTubePlayerView;
+
+    private FullScreenHelper fullScreenHelper = new FullScreenHelper();
 
     @Inject
     public PrepareDescription(Fragment fragment){
@@ -104,6 +112,7 @@ public class PrepareDescription {
     }
 
     public void initializeYouTubePlayer(Movie movie, YouTubePlayerView youTubePlayerView) {
+        this.youTubePlayerView = youTubePlayerView;
         fragment.getLifecycle().addObserver(youTubePlayerView);
 
         youTubePlayerView.initialize(new YouTubePlayerInitListener() {
@@ -116,7 +125,28 @@ public class PrepareDescription {
                         initializedYouTubePlayer.cueVideo(movie.getTrailer().getKey(), 0);
                     }
                 });
+                addFullScreenListenerToPlayer(initializedYouTubePlayer);
             }
         }, true);
     }
+
+    private void addFullScreenListenerToPlayer(final YouTubePlayer youTubePlayer) {
+        youTubePlayerView.addFullScreenListener(new YouTubePlayerFullScreenListener() {
+            @Override
+            public void onYouTubePlayerEnterFullScreen() {
+                fragment.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//                fragment.getActivity().getActionBar().hide();
+                youTubePlayerView.enterFullScreen();
+          //
+            }
+
+            @Override
+            public void onYouTubePlayerExitFullScreen() {
+                fragment.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+ //              fragment.getActivity().getActionBar().show();
+                fullScreenHelper.exitFullScreen(youTubePlayerView.getRootView());
+            }
+        });
+    }
+
 }
