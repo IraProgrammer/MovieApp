@@ -1,6 +1,7 @@
 package com.example.irishka.movieapp.ui.movie.description;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,6 +19,10 @@ import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Genre;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.domain.entity.ProductionCountry;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
 
 import java.util.List;
 
@@ -98,4 +103,20 @@ public class PrepareDescription {
         return countriesStr.toString();
     }
 
+    public void initializeYouTubePlayer(Movie movie, YouTubePlayerView youTubePlayerView) {
+        fragment.getLifecycle().addObserver(youTubePlayerView);
+
+        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
+            @Override
+            public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
+                initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady() {
+                        String videoId = "SUXWAEX2jlg";
+                        initializedYouTubePlayer.cueVideo(videoId, 0);
+                    }
+                });
+            }
+        }, true);
+    }
 }

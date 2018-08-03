@@ -9,7 +9,6 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:label=""
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.movies.view.MoviesListActivity"
@@ -22,7 +21,8 @@
         </activity>
         <activity android:name=".ui.movie.view.MovieActivity"
             android:theme="@style/AppCompatDarkNoActionBar"
-            android:parentActivityName=".ui.movies.view.MoviesListActivity">
+            android:parentActivityName=".ui.movies.view.MoviesListActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout">
         </activity>
         <activity android:name=".ui.movie.creators.actor.ActorActivity"
             android:theme="@style/AppCompatDarkNoActionBar">

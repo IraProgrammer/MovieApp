@@ -62,8 +62,12 @@ dependencies {
     implementation 'com.google.dagger:dagger-android:2.16'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.16'
     implementation 'com.google.dagger:dagger-android-support:2.16'
+    //RoundedImageView
     implementation 'com.makeramen:roundedimageview:2.3.0'
+    //AndroidYouTubePlayer
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:8.0.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
 }
