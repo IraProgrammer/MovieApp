@@ -12,6 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
 
+// TODO: по структуре пакетов - экран актера это отдельаня фича и должна лежать на одном уровне с movies и movie
 public class ActorActivity extends DaggerAppCompatActivity {
 
     @BindView(R.id.tabs)

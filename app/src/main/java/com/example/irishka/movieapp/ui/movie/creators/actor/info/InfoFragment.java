@@ -101,6 +101,7 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView {
     public void showInfo(ActorInfoModel info) {
         name.setText(info.getName());
 
+        // TODO: не используется
         String s = info.getBirthday() + System.lineSeparator();
 
         birth.setText(getBirthday(info));
@@ -108,6 +109,7 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView {
         biography.setText(info.getBiography());
 
         Glide.with(this)
+                // TODO: положи урл в модельку, не хардкодь
                 .load("http://image.tmdb.org/t/p/w500/" + info.getProfilePath())
                 .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                         .placeholder(R.drawable.no_image)

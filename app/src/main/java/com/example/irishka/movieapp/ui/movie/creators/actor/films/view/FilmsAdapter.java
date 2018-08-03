@@ -97,7 +97,10 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHo
 
             itemView.setOnClickListener(view -> onItemClickListener.onItemClick(movie));
 
+            // TODO: стоит подумать о некой сущности, которая будет заниматься загрузкой картинок
+            // т.к. похожий код встречается во многих местах
             Glide.with(itemView.getContext())
+                    // TODO: хардкод
                     .load("http://image.tmdb.org/t/p/w500//" + movie.getPosterPath())
                     .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                             .placeholder(R.drawable.no_image)

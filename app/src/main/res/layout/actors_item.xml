@@ -16,6 +16,8 @@
         app:riv_mutate_background="true"
         app:riv_tile_mode="clamp"/>
 
+    <!--TODO вместо left используй start, а вместо right - end-->
+
     <TextView
         android:id="@+id/actor_name"
         android:layout_width="wrap_content"
