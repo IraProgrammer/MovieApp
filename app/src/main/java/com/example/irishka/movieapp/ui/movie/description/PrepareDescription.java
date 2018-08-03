@@ -113,7 +113,7 @@ public class PrepareDescription {
                     @Override
                     public void onReady() {
                         String videoId = "SUXWAEX2jlg";
-                        initializedYouTubePlayer.cueVideo(videoId, 0);
+                        initializedYouTubePlayer.cueVideo(movie.getTrailer().getKey(), 0);
                     }
                 });
             }

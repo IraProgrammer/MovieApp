@@ -37,7 +37,7 @@ public class DescriptionPresenter extends BasePresenter<DescriptionView> {
 
         addDisposables(moviesRepository.downloadMovie(movieId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movies -> getViewState().showDescription(movies)));
+                .subscribe(movie -> getViewState().showDescription(movie)));
     }
 
     public void downloadRelatedMovies() {

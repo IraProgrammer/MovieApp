@@ -35,13 +35,15 @@ public class Movie {
         this.genres = genres;
     }
 
-    private List<Genre> genres = null;
+    private List<Genre> genres;
 
     private int runtime;
 
-    private List<ProductionCountry> countries = null;
+    private List<ProductionCountry> countries;
 
-    private List<Backdrop> backdrops = null;
+    private List<Backdrop> backdrops;
+
+    private Trailer trailer;
 
     public long getId() {
         return id;
@@ -113,6 +115,14 @@ public class Movie {
 
     public void setBackdrops(List<Backdrop> backdrops) {
         this.backdrops = backdrops;
+    }
+
+    public Trailer getTrailer() {
+        return trailer;
+    }
+
+    public void setTrailer(Trailer trailer) {
+        this.trailer = trailer;
     }
 
 }

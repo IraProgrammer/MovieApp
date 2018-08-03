@@ -189,8 +189,6 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
 
         prepareDescription.getPicture(movie, image);
 
-        prepareDescription.initializeYouTubePlayer(movie, youTubePlayerView);
-
         //
         //Я ЭТОТ МОМЕНТ ИСПРАВЛЮ, НЕ ОБРАЩАЙ ВНИМАНИЯ
         //
@@ -218,6 +216,8 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
 
         galleryAdapter.setGalleryList(movie.getBackdrops());
 
+        prepareDescription.initializeYouTubePlayer(movie, youTubePlayerView);
+
     }
 
     @Override
@@ -231,14 +231,4 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
         intent.putExtra(MOVIE_ID, movie.getId());
         startActivity(intent);
     }
-
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfiguration) {
-        super.onConfigurationChanged(newConfiguration);
-        youTubePlayerView.getPlayerUIController().getMenu().dismiss();
-    }
-
-
-
 }

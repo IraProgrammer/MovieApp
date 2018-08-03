@@ -2,34 +2,20 @@ package com.example.irishka.movieapp.data.repository;
 
 import android.util.Pair;
 
-import com.example.irishka.movieapp.BuildConfig;
 import com.example.irishka.movieapp.data.database.MoviesDbSource;
-import com.example.irishka.movieapp.data.database.dao.CastDao;
-import com.example.irishka.movieapp.data.database.dao.CastOfMovieDao;
-import com.example.irishka.movieapp.data.database.dao.GenreDao;
-import com.example.irishka.movieapp.data.database.dao.GenreOfMovieDao;
-import com.example.irishka.movieapp.data.database.dao.MovieDao;
 import com.example.irishka.movieapp.data.database.entity.CastDb;
 import com.example.irishka.movieapp.data.database.entity.CastOfMovie;
-import com.example.irishka.movieapp.data.database.entity.GenreDb;
-import com.example.irishka.movieapp.data.database.entity.GenreOfMovie;
-import com.example.irishka.movieapp.data.mappers.BackdropMapper;
 import com.example.irishka.movieapp.data.mappers.CastMapper;
 import com.example.irishka.movieapp.data.mappers.GenreMapper;
 import com.example.irishka.movieapp.data.mappers.MoviesMapper;
-import com.example.irishka.movieapp.data.mappers.ProductionCountryMapper;
 import com.example.irishka.movieapp.data.models.ActorInfoModel;
 import com.example.irishka.movieapp.data.models.ActorPhotosModel;
 import com.example.irishka.movieapp.data.models.BackdropModel;
 import com.example.irishka.movieapp.data.models.CastModel;
-import com.example.irishka.movieapp.data.models.CreditsModel;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.data.models.FilmsModel;
-import com.example.irishka.movieapp.data.models.GalleryModel;
-import com.example.irishka.movieapp.data.models.GenreModel;
 import com.example.irishka.movieapp.data.models.MovieModel;
-import com.example.irishka.movieapp.data.models.MoviePageModel;
-import com.example.irishka.movieapp.data.network.MoviesApi;
+import com.example.irishka.movieapp.data.models.TrailerModel;
 import com.example.irishka.movieapp.data.network.MoviesNetworkSource;
 import com.example.irishka.movieapp.domain.entity.Cast;
 import com.example.irishka.movieapp.domain.entity.Genre;
@@ -37,9 +23,7 @@ import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -71,7 +55,6 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<List<Movie>> getMoviesFromInternet(int page) {
         return networkSource
                 .getMovies(page)
-                .map(MoviePageModel::getResults)
                 .map(movieModels -> moviesMapper.mapMovies(movieModels))
                 .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
     }
@@ -107,7 +90,6 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<List<Movie>> getRelatedFromInternet(long movieId, int page) {
         return networkSource
                 .getRelated(movieId, page)
-                .map(MoviePageModel::getResults)
                 .map(movies -> moviesMapper.mapMovies(movies))
                 .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies, movieId)));
     }
@@ -129,8 +111,7 @@ public class MoviesRepository implements IMoviesRepository {
 
     private Single<List<Cast>> getCastsFromInternet(long movieId) {
         return networkSource
-                .getCreators(movieId)
-                .map(CreditsModel::getCast)
+                .getCasts(movieId)
                 .doOnSuccess(castModels -> dbSource.insertAllCasts(castMapper.mapCastsListToDb(castModels)))
                 .doOnSuccess(castModels -> insertCastsOfMovie(movieId, castModels))
                 .map(castModels -> castMapper.mapCastsList(castModels));
@@ -155,8 +136,7 @@ public class MoviesRepository implements IMoviesRepository {
 
     private Single<List<BackdropModel>> getBackdropsFromInternet(long movieId) {
         return networkSource
-                .getGallery(movieId)
-                .map(GalleryModel::getBackdrops);
+                .getBackdrops(movieId);
     }
 
     private void insertGenresOfMovie(DescriptionModel description) {
@@ -186,7 +166,8 @@ public class MoviesRepository implements IMoviesRepository {
                 .doOnSuccess(descriptionModel -> dbSource.insertAllGenres(genreMapper.mapGenresListToDb(descriptionModel.getGenres())))
                 .doOnSuccess(descriptionModel -> insertGenresOfMovie(descriptionModel))
                 .flatMap(descriptionModel -> getBackdropsFromInternet(descriptionModel.getId())
-                        .map(backdrops -> moviesMapper.apply(descriptionModel, backdrops)))
+                        .flatMap(backdrops -> getTrailers(descriptionModel.getId())
+                                .map(trailers -> moviesMapper.apply(descriptionModel, backdrops, trailers))))
                 .doOnSuccess(movie -> dbSource.insertMovie(moviesMapper.applyToDb(movie)));
     }
 
@@ -219,7 +200,11 @@ public class MoviesRepository implements IMoviesRepository {
     @Override
     public Single<List<MovieModel>> getActorFilms(long id) {
         return networkSource
-                .getActorFilms(id)
-                .map(FilmsModel::getMovies);
+                .getActorFilms(id);
+    }
+
+    private Single<List<TrailerModel>> getTrailers(long movieId) {
+        return networkSource
+                .getTrailers(movieId);
     }
 }

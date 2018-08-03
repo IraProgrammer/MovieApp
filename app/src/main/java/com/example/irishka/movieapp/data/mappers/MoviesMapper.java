@@ -7,6 +7,7 @@ import com.example.irishka.movieapp.data.models.BackdropModel;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.data.models.GalleryModel;
 import com.example.irishka.movieapp.data.models.MovieModel;
+import com.example.irishka.movieapp.data.models.TrailerModel;
 import com.example.irishka.movieapp.domain.entity.Backdrop;
 import com.example.irishka.movieapp.domain.entity.Cast;
 import com.example.irishka.movieapp.domain.entity.Genre;
@@ -28,15 +29,18 @@ public class MoviesMapper {
 
     private ProductionCountryMapper productionCountryMapper;
 
+    private TrailersMapper trailersMapper;
+
     @Inject
     public MoviesMapper(BackdropMapper backdropMapper, GenreMapper genreMapper,
-                        ProductionCountryMapper productionCountryMapper) {
+                        ProductionCountryMapper productionCountryMapper, TrailersMapper trailersMapper) {
         this.backdropMapper = backdropMapper;
         this.genreMapper = genreMapper;
         this.productionCountryMapper = productionCountryMapper;
+        this.trailersMapper = trailersMapper;
     }
 
-    public Movie apply(DescriptionModel descriptionModel, List<BackdropModel> backdrops) {
+    public Movie apply(DescriptionModel descriptionModel, List<BackdropModel> backdrops, List<TrailerModel> trailers) {
         Movie movie = new Movie();
         movie.setId(descriptionModel.getId());
         movie.setPosterUrl(BASE_IMAGE_URL + descriptionModel.getPosterPath());
@@ -49,6 +53,7 @@ public class MoviesMapper {
         movie.setRuntime(descriptionModel.getRuntime());
         movie.setCountries(productionCountryMapper.mapProductionCountryList(descriptionModel.getProductionCountries()));
         movie.setBackdrops(backdropMapper.mapBackdropsList(backdrops));
+        movie.setTrailer(trailersMapper.mapTrailersListToOneTrailer(trailers));
 
         return movie;
     }

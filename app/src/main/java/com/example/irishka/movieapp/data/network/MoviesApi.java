@@ -7,6 +7,7 @@ import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.data.models.FilmsModel;
 import com.example.irishka.movieapp.data.models.GalleryModel;
 import com.example.irishka.movieapp.data.models.MoviePageModel;
+import com.example.irishka.movieapp.data.models.TrailerListModel;
 
 import io.reactivex.Single;
 import retrofit2.http.GET;
@@ -38,4 +39,7 @@ public interface MoviesApi {
 
     @GET("person/{id}/movie_credits")
     Single<FilmsModel> getActorFilms(@Path("id") long id);
+
+    @GET("movie/{movie_id}/videos")
+    Single<TrailerListModel> getTrailers(@Path("movie_id") long movieId);
 }
