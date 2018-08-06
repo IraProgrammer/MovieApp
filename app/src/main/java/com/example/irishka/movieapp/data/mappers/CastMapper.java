@@ -2,10 +2,14 @@ package com.example.irishka.movieapp.data.mappers;
 
 import com.example.irishka.movieapp.data.database.entity.ActorInfoDb;
 import com.example.irishka.movieapp.data.database.entity.CastDb;
+import com.example.irishka.movieapp.data.database.entity.CastOfMovie;
+import com.example.irishka.movieapp.data.database.entity.GenreOfMovie;
 import com.example.irishka.movieapp.data.models.ActorInfoModel;
 import com.example.irishka.movieapp.data.models.ActorPhotosModel;
 import com.example.irishka.movieapp.data.models.ActorProfileModel;
 import com.example.irishka.movieapp.data.models.CastModel;
+import com.example.irishka.movieapp.data.models.DescriptionModel;
+import com.example.irishka.movieapp.data.models.GenreModel;
 import com.example.irishka.movieapp.domain.entity.ActorInfo;
 import com.example.irishka.movieapp.domain.entity.Cast;
 
@@ -49,17 +53,17 @@ public class CastMapper {
         return cast;
     }
 
-    public CastDb applyToDb(ActorInfoModel infoModel, ActorPhotosModel actorPhotosModel) {
-        CastDb castDb = new CastDb();
-        castDb.setId(infoModel.getId());
-        castDb.setName(infoModel.getName());
-        castDb.setProfileUrl(BASE_IMAGE_URL + infoModel.getProfilePath());
-        castDb.setBiography(infoModel.getBiography());
-        castDb.setBirthday(infoModel.getBirthday());
-        castDb.setPlaceOfBirth(infoModel.getPlaceOfBirth());
-        castDb.setPhotosUrl(getPhotosUrl(actorPhotosModel));
-        return castDb;
-    }
+//    public CastDb applyToDb(ActorInfoModel infoModel, ActorPhotosModel actorPhotosModel) {
+//        CastDb castDb = new CastDb();
+//        castDb.setId(infoModel.getId());
+//        castDb.setName(infoModel.getName());
+//        castDb.setProfileUrl(BASE_IMAGE_URL + infoModel.getProfilePath());
+//        castDb.setBiography(infoModel.getBiography());
+//        castDb.setBirthday(infoModel.getBirthday());
+//        castDb.setPlaceOfBirth(infoModel.getPlaceOfBirth());
+//        castDb.setPhotosUrl(getPhotosUrl(actorPhotosModel));
+//        return castDb;
+//    }
 
     public CastDb applyToDb(Cast cast) {
         CastDb castDb = new CastDb();
@@ -73,23 +77,27 @@ public class CastMapper {
         return castDb;
     }
 
-    public Cast applyFromDb(ActorInfoDb infoDb, List<String> photosUrl) {
-        Cast cast = new Cast();
-        cast.setId(infoDb.getId());
-        cast.setName(infoDb.getName());
-        cast.setProfileUrl(BASE_IMAGE_URL + infoDb.getProfilePath());
-        cast.setBiography(infoDb.getBiography());
-        cast.setBirthday(infoDb.getBirthday());
-        cast.setPlaceOfBirth(infoDb.getPlaceOfBirth());
-        cast.setPhotosUrl(photosUrl);
-        return cast;
-    }
+//    public Cast applyFromDb(ActorInfoDb infoDb, List<String> photosUrl) {
+//        Cast cast = new Cast();
+//        cast.setId(infoDb.getId());
+//        cast.setName(infoDb.getName());
+//        cast.setProfileUrl(BASE_IMAGE_URL + infoDb.getProfilePath());
+//        cast.setBiography(infoDb.getBiography());
+//        cast.setBirthday(infoDb.getBirthday());
+//        cast.setPlaceOfBirth(infoDb.getPlaceOfBirth());
+//        cast.setPhotosUrl(photosUrl);
+//        return cast;
+//    }
 
     public Cast applyFromDb(CastDb castDb) {
         Cast cast = new Cast();
         cast.setId(castDb.getId());
         cast.setName(castDb.getName());
         cast.setProfileUrl(castDb.getProfileUrl());
+        cast.setBirthday(castDb.getBirthday());
+        cast.setPlaceOfBirth(castDb.getPlaceOfBirth());
+        cast.setBiography(castDb.getBiography());
+        cast.setPhotosUrl(castDb.getPhotosUrl());
         return cast;
     }
 
@@ -133,17 +141,17 @@ public class CastMapper {
         return castsDb;
     }
 
-    public List<Cast> mapCastsListFromDb(List<ActorInfoDb> actorInfosDb, List<List<String>> photosUrl) {
-        List<Cast> casts = new ArrayList<>();
+//    public List<Cast> mapCastsListFromDb(List<ActorInfoDb> actorInfosDb, List<List<String>> photosUrl) {
+//        List<Cast> casts = new ArrayList<>();
+//
+//        for (int i = 0; i < actorInfosDb.size(); i++) {
+//            casts.add(applyFromDb(actorInfosDb.get(i), photosUrl.get(i)));
+//        }
+//
+//        return casts;
+//    }
 
-        for (int i = 0; i < actorInfosDb.size(); i++) {
-            casts.add(applyFromDb(actorInfosDb.get(i), photosUrl.get(i)));
-        }
-
-        return casts;
-    }
-
-    public List<Cast> mapCastsListFromDb(List<CastDb> castsDb){
+    public List<Cast> mapCastsListFromDb(List<CastDb> castsDb) {
         List<Cast> casts = new ArrayList<>();
 
         for (int i = 0; i < castsDb.size(); i++) {
@@ -153,11 +161,22 @@ public class CastMapper {
         return casts;
     }
 
-    private List<String> getPhotosUrl(ActorPhotosModel actorPhotosModel){
+    private List<String> getPhotosUrl(ActorPhotosModel actorPhotosModel) {
         List<String> photosUrl = new ArrayList<>();
         for (ActorProfileModel profileModel : actorPhotosModel.getProfiles()) {
             photosUrl.add(BASE_IMAGE_URL + profileModel.getFilePath());
         }
         return photosUrl;
+    }
+
+    public List<CastOfMovie> createCoMList(long movieId, List<Cast> casts) {
+        List<CastOfMovie> castsOfMovie = new ArrayList<>();
+
+        for (int i = 0; i < casts.size(); i++) {
+
+            castsOfMovie.add(new CastOfMovie(movieId, casts.get(i).getId()));
+        }
+
+        return castsOfMovie;
     }
 }

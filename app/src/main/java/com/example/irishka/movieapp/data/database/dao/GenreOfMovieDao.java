@@ -23,8 +23,8 @@ public abstract class GenreOfMovieDao {
     public abstract List<GenreOfMovie> getGoTifExist(long movieId);
 
     @Transaction
-    public void trans(long movieId, List<GenreOfMovie> genreOfMovies) {
-        List<GenreOfMovie> gOm = getGoTifExist(movieId);
+    public void trans(List<GenreOfMovie> genreOfMovies) {
+        List<GenreOfMovie> gOm = getGoTifExist(genreOfMovies.get(0).getMovieId());
 
         if (gOm.size() == 0) insertGenreOfMovie(genreOfMovies);
     }

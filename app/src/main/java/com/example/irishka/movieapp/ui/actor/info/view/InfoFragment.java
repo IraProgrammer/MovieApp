@@ -69,7 +69,7 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
     @BindView(R.id.actor_image)
     ImageView image;
 
-    public static InfoFragment newInstance(){
+    public static InfoFragment newInstance() {
         return new InfoFragment();
     }
 
@@ -96,7 +96,10 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
     public void showInfo(Cast cast) {
         name.setText(cast.getName());
 
-        birth.setText(getBirthday(cast));
+        if (cast.getBirthday().length() > 0) {
+            birth.setText(getBirthday(cast));
+        }
+
         place.setText(cast.getPlaceOfBirth());
         biography.setText(cast.getBiography());
 
@@ -110,7 +113,7 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
         photosAdapter.setPhotosList(cast.getPhotosUrl());
     }
 
-    private String getBirthday(Cast cast){
+    private String getBirthday(Cast cast) {
 
         String oldDateString = cast.getBirthday();
         SimpleDateFormat oldDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());

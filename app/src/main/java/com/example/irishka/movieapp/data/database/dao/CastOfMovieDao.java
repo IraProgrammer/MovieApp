@@ -4,21 +4,35 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Transaction;
 
 import com.example.irishka.movieapp.data.database.entity.CastOfMovie;
 import com.example.irishka.movieapp.data.database.entity.GenreOfMovie;
+import com.example.irishka.movieapp.data.database.entity.RelatedOfMovie;
 
 import java.util.List;
 
 import io.reactivex.Single;
 
 @Dao
-public interface CastOfMovieDao {
+public abstract class CastOfMovieDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(List<CastOfMovie> castsOfMovie);
+    @Insert
+    public abstract void insertCastOfMovie(List<CastOfMovie> relatedOfMovie);
+
+    @Query("SELECT * " +
+            "FROM CastOfMovie " +
+            "WHERE movieId = :movieId")
+    public abstract List<CastOfMovie> getCoMifExist(long movieId);
+
+    @Transaction
+    public void trans( List<CastOfMovie> relatedOfMovie) {
+        List<CastOfMovie> cOm = getCoMifExist(relatedOfMovie.get(0).getMovieId());
+
+        if (cOm.size() == 0) insertCastOfMovie(relatedOfMovie);
+    }
 
     @Query("SELECT * FROM CastOfMovie WHERE movieId = :movieId")
-    Single<List<CastOfMovie>> getCastsOfMovie(long movieId);
+    public abstract Single<List<CastOfMovie>> getCastOfMovie(long movieId);
 
 }

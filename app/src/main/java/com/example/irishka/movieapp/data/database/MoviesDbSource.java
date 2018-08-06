@@ -5,11 +5,13 @@ import com.example.irishka.movieapp.data.database.dao.CastOfMovieDao;
 import com.example.irishka.movieapp.data.database.dao.GenreDao;
 import com.example.irishka.movieapp.data.database.dao.GenreOfMovieDao;
 import com.example.irishka.movieapp.data.database.dao.MovieDao;
+import com.example.irishka.movieapp.data.database.dao.RelatedOfMovieDao;
 import com.example.irishka.movieapp.data.database.entity.CastDb;
 import com.example.irishka.movieapp.data.database.entity.CastOfMovie;
 import com.example.irishka.movieapp.data.database.entity.GenreDb;
 import com.example.irishka.movieapp.data.database.entity.GenreOfMovie;
 import com.example.irishka.movieapp.data.database.entity.MovieDb;
+import com.example.irishka.movieapp.data.database.entity.RelatedOfMovie;
 import com.example.irishka.movieapp.data.mappers.CastMapper;
 import com.example.irishka.movieapp.data.mappers.GenreMapper;
 import com.example.irishka.movieapp.data.mappers.MoviesMapper;
@@ -35,69 +37,81 @@ public class MoviesDbSource {
 
     private CastOfMovieDao castOfMovieDao;
 
+    private RelatedOfMovieDao relatedOfMovieDao;
+
     @Inject
     public MoviesDbSource(MovieDao movieDao, CastDao castDao, GenreDao genreDao,
-                          GenreOfMovieDao genreOfMovieDao, CastOfMovieDao castOfMovieDao) {
+                          GenreOfMovieDao genreOfMovieDao, CastOfMovieDao castOfMovieDao,
+                          RelatedOfMovieDao relatedOfMovieDao) {
         this.movieDao = movieDao;
         this.castDao = castDao;
         this.genreDao = genreDao;
         this.genreOfMovieDao = genreOfMovieDao;
         this.castOfMovieDao = castOfMovieDao;
+        this.relatedOfMovieDao = relatedOfMovieDao;
     }
 
-    public void insertAllMovies(List<MovieDb> moviesDb){
+    public void insertAllMovies(List<MovieDb> moviesDb) {
         movieDao.insertAll(moviesDb);
     }
 
-    public Single<List<MovieDb>> getAllMovies(){
+    public Single<List<MovieDb>> getAllMovies() {
         return movieDao.getAllMovies();
     }
 
-    public Single<List<MovieDb>> getRelatedMovies(long movieId){
-        return movieDao.getRelatedMovies(movieId);
-    }
+//    public Single<List<MovieDb>> getRelatedMovies(long movieId) {
+//        return movieDao.getRelatedMovies(movieId);
+//    }
 
-    public Single<List<GenreOfMovie>> getGenresOfMovie(long movieId){
+    public Single<List<GenreOfMovie>> getGenresOfMovie(long movieId) {
         return genreOfMovieDao.getGenresOfMovie(movieId);
     }
 
-    public Single<GenreDb> getGenre(long genreId){
+    public Single<GenreDb> getGenre(long genreId) {
         return genreDao.getGenre(genreId);
     }
 
-    public void insertAllCasts(List<CastDb> castsDb){
+    public void insertAllCasts(List<CastDb> castsDb) {
         castDao.insertAll(castsDb);
     }
 
-    public void insertCast(CastDb castDb){
+    public void insertCast(CastDb castDb) {
         castDao.insert(castDb);
     }
 
-    public Single<List<CastOfMovie>> getCastsOfMovie(long movieId){
-        return castOfMovieDao.getCastsOfMovie(movieId);
+    public Single<List<CastOfMovie>> getCastsOfMovie(long movieId) {
+        return castOfMovieDao.getCastOfMovie(movieId);
     }
 
-    public Single<CastDb> getCast(long id){
+    public Single<CastDb> getCast(long id) {
         return castDao.getCast(id);
     }
 
-    public void insertAllGenres(List<GenreDb> genresDb){
+    public void insertAllGenres(List<GenreDb> genresDb) {
         genreDao.insert(genresDb);
     }
 
-    public void insertAllGoM(long movieId, List<GenreOfMovie> genresOfMovie){
-        genreOfMovieDao.trans(movieId, genresOfMovie);
+    public void insertAllGoM(List<GenreOfMovie> genresOfMovie) {
+        genreOfMovieDao.trans(genresOfMovie);
     }
 
-    public void insertAllCoM(List<CastOfMovie> castsOfMovie){
-        castOfMovieDao.insert(castsOfMovie);
+    public void insertAllCoM(List<CastOfMovie> castsOfMovie) {
+        castOfMovieDao.trans(castsOfMovie);
     }
 
-    public void insertMovie(MovieDb movieDb){
+    public void insertMovie(MovieDb movieDb) {
         movieDao.insert(movieDb);
     }
 
-    public Single<MovieDb> getMovie(long movieId){
+    public Single<MovieDb> getMovie(long movieId) {
         return movieDao.getMovie(movieId);
+    }
+
+    public Single<List<RelatedOfMovie>> getRelatedOfMovie(long movieId) {
+        return relatedOfMovieDao.getRelatedOfMovie(movieId);
+    }
+
+    public void insertAllRoM(List<RelatedOfMovie> relatedOfMovies) {
+        relatedOfMovieDao.trans(relatedOfMovies);
     }
 }

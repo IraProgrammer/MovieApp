@@ -19,8 +19,6 @@ public class MovieDb {
     @PrimaryKey
     private long id;
 
-    private long relatedId;
-
     private String title;
 
     private String posterUrl;
@@ -119,13 +117,5 @@ public class MovieDb {
 
     public void setBackdrops(List<BackdropDb> backdrops) {
         this.backdrops = backdrops;
-    }
-
-    public long getRelatedId() {
-        return relatedId;
-    }
-
-    public void setRelatedId(long relatedId) {
-        this.relatedId = relatedId;
     }
 }

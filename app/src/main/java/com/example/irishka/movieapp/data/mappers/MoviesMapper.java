@@ -1,17 +1,21 @@
 package com.example.irishka.movieapp.data.mappers;
 
 import com.example.irishka.movieapp.data.database.entity.BackdropDb;
+import com.example.irishka.movieapp.data.database.entity.GenreOfMovie;
 import com.example.irishka.movieapp.data.database.entity.MovieDb;
 import com.example.irishka.movieapp.data.database.entity.ProductionCountryDb;
+import com.example.irishka.movieapp.data.database.entity.RelatedOfMovie;
 import com.example.irishka.movieapp.data.models.BackdropModel;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.data.models.GalleryModel;
+import com.example.irishka.movieapp.data.models.GenreModel;
 import com.example.irishka.movieapp.data.models.MovieModel;
 import com.example.irishka.movieapp.data.models.TrailerModel;
 import com.example.irishka.movieapp.domain.entity.Backdrop;
 import com.example.irishka.movieapp.domain.entity.Cast;
 import com.example.irishka.movieapp.domain.entity.Genre;
 import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.ui.movie.di.qualifiers.Related;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -106,8 +110,6 @@ public class MoviesMapper {
         movieDb.setAdult(movie.getAdult());
         movieDb.setRuntime(movie.getRuntime());
 
-        movieDb.setRelatedId(movieId);
-
         if (movie.getCountries() != null){
             movieDb.setCountries(productionCountryMapper.mapProductionCountryListToDb(movie.getCountries()));}
         else movieDb.setCountries(Collections.emptyList());
@@ -150,22 +152,6 @@ public class MoviesMapper {
         return movie;
     }
 
-//    public Movie applyFromDb(MovieDb movieDb, List<Cast> casts) {
-//        Movie movie = new Movie();
-//        movie.setId(movieDb.getId());
-//        movie.setPosterUrl(movieDb.getPosterUrl());
-//        movie.setReleaseDate(movieDb.getReleaseDate());
-//        movie.setTitle(movieDb.getTitle());
-//        movie.setVoteAverage(movieDb.getVoteAverage());
-//        movie.setAdult(movieDb.getAdult());
-//        movie.setCasts(casts);
-//        movie.setRuntime(movieDb.getRuntime());
-//        movie.setBackdrops(backdropMapper.mapBackdropsListFromDb(movieDb.getBackdrops()));
-//        movie.setCountries(productionCountryMapper.mapProductionCountryListFromDb(movieDb.getCountries()));
-//
-//        return movie;
-//    }
-
     public List<Movie> mapMovies(List<MovieModel> movieModels){
         List<Movie> movies = new ArrayList<>();
 
@@ -205,5 +191,17 @@ public class MoviesMapper {
         }
 
         return movies;
+    }
+
+    public List<RelatedOfMovie> createRoMList(long movieId, List<MovieModel> related){
+        List<RelatedOfMovie> relatedOfMovie = new ArrayList<>();
+
+        for (int i = 0; i < related.size(); i++) {
+
+            relatedOfMovie.add(new RelatedOfMovie(movieId, related.get(i).getId()));
+        }
+
+        return relatedOfMovie;
+
     }
 }

@@ -90,13 +90,17 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<List<Movie>> getRelatedFromInternet(long movieId, int page) {
         return networkSource
                 .getRelated(movieId, page)
+                .doOnSuccess(movieModels -> insertRelatedOfMovie(movieId, movieModels))
                 .map(movies -> moviesMapper.mapMovies(movies))
                 .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies, movieId)));
     }
 
     private Single<List<Movie>> getRelatedFromDatabase(long movieId) {
-        return dbSource.getRelatedMovies(movieId)
-                .map(moviesDb -> moviesMapper.mapMoviesListFromDb(moviesDb))
+        return dbSource.getRelatedOfMovie(movieId)
+                .flattenAsObservable(list -> list)
+                .flatMapSingle(relatedOfMovie -> getMovieFromDatabase(relatedOfMovie.getRelatedId()))
+                .toList()
+              //  .map(movies -> moviesMapper.mapMoviesListFromDb(moviesDb))
                 .subscribeOn(Schedulers.io());
     }
 
@@ -161,21 +165,19 @@ public class MoviesRepository implements IMoviesRepository {
 
     private void insertGenresOfMovie(DescriptionModel description) {
 
-        dbSource.insertAllGoM(description.getId(), genreMapper.createGoMList(description));
+        dbSource.insertAllGoM(genreMapper.createGoMList(description));
+
+    }
+
+    private void insertRelatedOfMovie(long movieId, List<MovieModel> relatedMovies) {
+
+        dbSource.insertAllRoM(moviesMapper.createRoMList(movieId, relatedMovies));
 
     }
 
     private void insertCastsOfMovie(long movieId, List<Cast> casts) {
 
-        List<CastOfMovie> castOfMovies = new ArrayList<>();
-
-        for (int i = 0; i < casts.size(); i++) {
-
-            castOfMovies.add(new CastOfMovie(movieId, casts.get(i).getId()));
-
-        }
-
-        dbSource.insertAllCoM(castOfMovies);
+        dbSource.insertAllCoM(castMapper.createCoMList(movieId, casts));
     }
 
     private Single<Movie> getMovieFromInternet(long movieId) {
