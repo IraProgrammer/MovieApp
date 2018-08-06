@@ -69,12 +69,16 @@ public class MoviesDbSource {
         castDao.insertAll(castsDb);
     }
 
+    public void insertCast(CastDb castDb){
+        castDao.insert(castDb);
+    }
+
     public Single<List<CastOfMovie>> getCastsOfMovie(long movieId){
         return castOfMovieDao.getCastsOfMovie(movieId);
     }
 
-    public Single<CastDb> getCast(long castId){
-        return castDao.getCast(castId);
+    public Single<CastDb> getCast(long id){
+        return castDao.getCast(id);
     }
 
     public void insertAllGenres(List<GenreDb> genresDb){

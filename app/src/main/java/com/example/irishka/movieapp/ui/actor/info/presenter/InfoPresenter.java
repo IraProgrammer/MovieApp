@@ -1,8 +1,9 @@
-package com.example.irishka.movieapp.ui.actor.info;
+package com.example.irishka.movieapp.ui.actor.info.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.ui.BasePresenter;
+import com.example.irishka.movieapp.ui.actor.info.view.InfoView;
 
 import javax.inject.Inject;
 
@@ -24,21 +25,13 @@ public class InfoPresenter extends BasePresenter<InfoView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         downloadInfo(id);
-        downloadPhotos(id);
     }
 
     private void downloadInfo(long id) {
 
-        addDisposables(moviesRepository.getActorInfoModel(id)
+        addDisposables(moviesRepository.downloadConcreteCast(id)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(actorInfoModel -> getViewState().showInfo(actorInfoModel), throwable -> {}));
-    }
-
-    private void downloadPhotos(long id) {
-
-        addDisposables(moviesRepository.getActorPhotoModel(id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(actorPhotosModel -> getViewState().showPhotos(actorPhotosModel), throwable -> {}));
+                .subscribe(cast -> getViewState().showInfo(cast), throwable -> {}));
     }
 }
 

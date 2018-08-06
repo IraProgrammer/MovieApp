@@ -16,10 +16,13 @@ import io.reactivex.Single;
 @Dao
 public interface CastDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(List<CastDb> casts);
 
-    @Query("SELECT * FROM CastDb WHERE castId = :castId")
-    Single<CastDb> getCast(long castId);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(CastDb cast);
+
+    @Query("SELECT * FROM CastDb WHERE id = :id")
+    Single<CastDb> getCast(long id);
 
 }

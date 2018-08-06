@@ -71,7 +71,6 @@ public class CreatorsFragment extends MvpAppCompatFragment implements CreatorsVi
 
     @Override
     public void showCasts(List<Cast> cast) {
-
         actorsAdapter.setList(cast);
 
     }

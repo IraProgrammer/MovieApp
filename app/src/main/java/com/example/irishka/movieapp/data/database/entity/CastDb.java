@@ -2,25 +2,37 @@ package com.example.irishka.movieapp.data.database.entity;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.example.irishka.movieapp.data.database.converters.PhotosUrlConverter;
+
+import java.util.List;
 
 @Entity
 public class CastDb {
 
     @PrimaryKey
-    private long castId;
+    private long id;
 
     private String name;
 
     private String profileUrl;
-    public long getCastId() {
-        return castId;
+
+    private String birthday;
+
+    private String biography;
+
+    private String placeOfBirth;
+
+    @TypeConverters(PhotosUrlConverter.class)
+    private List<String> photosUrl;
+
+    public long getId() {
+        return id;
     }
 
-    public void setCastId(long castId) {
-        this.castId = castId;
+    public void setId(long castId) {
+        this.id = castId;
     }
 
     public String getName() {
@@ -38,5 +50,38 @@ public class CastDb {
     public void setProfileUrl(String profileUrl) {
         this.profileUrl = profileUrl;
     }
+
+    public List<String> getPhotosUrl() {
+        return photosUrl;
+    }
+
+    public void setPhotosUrl(List<String> photosUrl) {
+        this.photosUrl = photosUrl;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getBiography() {
+        return biography;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+
+    public String getPlaceOfBirth() {
+        return placeOfBirth;
+    }
+
+    public void setPlaceOfBirth(String placeOfBirth) {
+        this.placeOfBirth = placeOfBirth;
+    }
+
 
 }

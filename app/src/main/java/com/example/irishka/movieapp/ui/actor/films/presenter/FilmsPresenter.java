@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.ui.actor.films;
+package com.example.irishka.movieapp.ui.actor.films.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;

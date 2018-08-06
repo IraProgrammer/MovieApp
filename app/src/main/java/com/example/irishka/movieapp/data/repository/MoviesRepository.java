@@ -112,9 +112,9 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<List<Cast>> getCastsFromInternet(long movieId) {
         return networkSource
                 .getCasts(movieId)
-                .doOnSuccess(castModels -> dbSource.insertAllCasts(castMapper.mapCastsListToDb(castModels)))
-                .doOnSuccess(castModels -> insertCastsOfMovie(movieId, castModels))
-                .map(castModels -> castMapper.mapCastsList(castModels));
+                .map(castModels -> castMapper.mapCastsList(castModels))
+                .doOnSuccess(casts -> dbSource.insertAllCasts(castMapper.mapCastsListToDb(casts)))
+                .doOnSuccess(castModels -> insertCastsOfMovie(movieId, castModels));
 
     }
 
@@ -128,10 +128,30 @@ public class MoviesRepository implements IMoviesRepository {
                 .subscribeOn(Schedulers.io());
     }
 
+    private Single<Cast> getMoreAboutActorFromInternet(long id) {
+        return networkSource
+                .getActorInfo(id)
+                .flatMap(actorInfoModel -> networkSource.getActorPhotos(id)
+                .map(actorPhotosModel -> castMapper.apply(actorInfoModel, actorPhotosModel)))
+                .doOnSuccess(cast -> dbSource.insertCast(castMapper.applyToDb(cast)));
+    }
+
+    private Single<Cast> getConcreteCastFromDatabase(long id) {
+        return dbSource.getCast(id)
+                .map(castDb -> castMapper.applyFromDb(castDb))
+                .subscribeOn(Schedulers.io());
+    }
+
     @Override
     public Single<List<Cast>> downloadCasts(long movieId) {
         return getCastsFromInternet(movieId)
                 .onErrorResumeNext(getCastsFromDatabase(movieId));
+    }
+
+    @Override
+    public Single<Cast> downloadConcreteCast(long id) {
+        return getMoreAboutActorFromInternet(id)
+                .onErrorResumeNext(getConcreteCastFromDatabase(id));
     }
 
     private Single<List<BackdropModel>> getBackdropsFromInternet(long movieId) {
@@ -145,15 +165,13 @@ public class MoviesRepository implements IMoviesRepository {
 
     }
 
-    private void insertCastsOfMovie(long movieId, List<CastModel> castModels) {
+    private void insertCastsOfMovie(long movieId, List<Cast> casts) {
 
         List<CastOfMovie> castOfMovies = new ArrayList<>();
 
-        List<CastDb> casts = castMapper.mapCastsListToDb(castModels);
+        for (int i = 0; i < casts.size(); i++) {
 
-        for (int i = 0; i < castModels.size(); i++) {
-
-            castOfMovies.add(new CastOfMovie(movieId, casts.get(i).getCastId()));
+            castOfMovies.add(new CastOfMovie(movieId, casts.get(i).getId()));
 
         }
 
@@ -185,17 +203,17 @@ public class MoviesRepository implements IMoviesRepository {
                 .onErrorResumeNext(getMovieFromDatabase(movieId));
     }
 
-    @Override
-    public Single<ActorPhotosModel> getActorPhotoModel(long id) {
-        return networkSource
-                .getActorPhotos(id);
-    }
+//    @Override
+//    public Single<ActorPhotosModel> getActorPhotoModel(long id) {
+//        return networkSource
+//                .getActorPhotos(id);
+//    }
 
-    @Override
-    public Single<ActorInfoModel> getActorInfoModel(long id) {
-        return networkSource
-                .getActorInfo(id);
-    }
+//    @Override
+//    public Single<ActorInfoModel> getActorInfoModel(long id) {
+//        return networkSource
+//                .getActorInfo(id);
+//    }
 
     @Override
     public Single<List<MovieModel>> getActorFilms(long id) {

@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.ui.actor.info;
+package com.example.irishka.movieapp.ui.actor.info.view;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 
 public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosViewHolder> {
 
-    private List<ActorProfileModel> profileModels = new ArrayList<>();
+    private List<String> photosUrl = new ArrayList<>();
 
     private OnItemClickListener onItemClickListener;
 
@@ -34,11 +34,11 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
     }
 
     public interface OnItemClickListener {
-        void onItemClick(ActorProfileModel actorProfileModel);
+        void onItemClick(String photoUrl);
     }
 
-    public void setPhotosList(List<ActorProfileModel> profileModels) {
-        this.profileModels = profileModels;
+    public void setPhotosList(List<String> photosUrl) {
+        this.photosUrl = photosUrl;
         notifyDataSetChanged();
     }
 
@@ -51,13 +51,13 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
     @Override
     public void onBindViewHolder(@NonNull PhotosViewHolder holder, int position) {
 
-        holder.bind(profileModels.get(position));
+        holder.bind(photosUrl.get(position));
 
     }
 
     @Override
     public int getItemCount() {
-        return profileModels.size();
+        return photosUrl.size();
     }
 
     static class PhotosViewHolder extends RecyclerView.ViewHolder {
@@ -73,13 +73,13 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
             this.onItemClickListener = onItemClickListener;
         }
 
-        void bind(ActorProfileModel profileModel) {
+        void bind(String photoUrl) {
 
-            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(profileModel));
+            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(photoUrl));
 
             Glide.with(itemView.getContext())
                     // TODO: хардкод
-                    .load("http://image.tmdb.org/t/p/w500/" +  profileModel.getFilePath())
+                    .load(photoUrl)
                     .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                             .placeholder(R.drawable.no_image)
                             .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))

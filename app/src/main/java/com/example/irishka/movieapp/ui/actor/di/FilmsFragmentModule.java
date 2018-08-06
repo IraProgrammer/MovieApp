@@ -5,7 +5,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.example.irishka.movieapp.di.scopes.PerFragment;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
-import com.example.irishka.movieapp.ui.actor.films.FilmsPresenter;
+import com.example.irishka.movieapp.ui.actor.films.presenter.FilmsPresenter;
 import com.example.irishka.movieapp.ui.actor.films.view.FilmsAdapter;
 import com.example.irishka.movieapp.ui.actor.films.view.FilmsFragment;
 

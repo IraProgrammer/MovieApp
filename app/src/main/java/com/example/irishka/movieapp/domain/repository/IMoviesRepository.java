@@ -17,18 +17,13 @@ import io.reactivex.Single;
 public interface IMoviesRepository {
     Single<List<Movie>> downloadMovies(int page);
 
+    Single<Cast> downloadConcreteCast(long movieId);
+
     Single<Movie> downloadMovie(long movieId);
 
     Single<List<Movie>> downloadRelatedMovies(long movieId, int page);
 
     Single<List<Cast>> downloadCasts(long movieId);
-
-    // TODO: модели data слоя не должны выходить из репозитория
-    // мапай в модели domain слоя
-
-    Single<ActorPhotosModel> getActorPhotoModel(long castId);
-
-    Single<ActorInfoModel> getActorInfoModel(long castId);
 
     Single<List<MovieModel>> getActorFilms(long movieId);
 }

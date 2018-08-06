@@ -5,7 +5,7 @@ import com.example.irishka.movieapp.di.scopes.PerFragment;
 import com.example.irishka.movieapp.ui.actor.view.ActorActivity;
 import com.example.irishka.movieapp.ui.actor.view.ActorViewPagerAdapter;
 import com.example.irishka.movieapp.ui.actor.films.view.FilmsFragment;
-import com.example.irishka.movieapp.ui.actor.info.InfoFragment;
+import com.example.irishka.movieapp.ui.actor.info.view.InfoFragment;
 
 import dagger.Module;
 import dagger.Provides;

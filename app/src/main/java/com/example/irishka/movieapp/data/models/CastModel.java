@@ -6,9 +6,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class CastModel {
 
-    @SerializedName("cast_id")
-    @Expose
-    private long castId;
     @SerializedName("character")
     @Expose
     private String character;
@@ -30,14 +27,6 @@ public class CastModel {
     @SerializedName("profile_path")
     @Expose
     private String profilePath;
-
-    public long getCastId() {
-        return castId;
-    }
-
-    public void setCastId(long castId) {
-        this.castId = castId;
-    }
 
     public String getCharacter() {
         return character;

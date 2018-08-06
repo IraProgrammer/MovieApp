@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.ui.actor.films.view.FilmsFragment;
-import com.example.irishka.movieapp.ui.actor.info.InfoFragment;
+import com.example.irishka.movieapp.ui.actor.info.view.InfoFragment;
 
 import javax.inject.Inject;
 

@@ -1,13 +1,12 @@
-package com.example.irishka.movieapp.ui.actor.info;
+package com.example.irishka.movieapp.ui.actor.info.view;
 
 import com.arellomobile.mvp.MvpView;
 import com.example.irishka.movieapp.data.models.ActorInfoModel;
 import com.example.irishka.movieapp.data.models.ActorPhotosModel;
+import com.example.irishka.movieapp.domain.entity.Cast;
 
 public interface InfoView extends MvpView {
 
-    void showInfo(ActorInfoModel photosModel);
-
-    void showPhotos(ActorPhotosModel photosModel);
+    void showInfo(Cast cast);
 
 }
