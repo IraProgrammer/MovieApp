@@ -121,7 +121,6 @@ public class PrepareDescription {
                 initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
                     @Override
                     public void onReady() {
-                        String videoId = "SUXWAEX2jlg";
                         initializedYouTubePlayer.cueVideo(movie.getTrailer().getKey(), 0);
                     }
                 });

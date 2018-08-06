@@ -13,7 +13,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Cast;
-import com.example.irishka.movieapp.ui.movie.creators.actor.ActorActivity;
+import com.example.irishka.movieapp.ui.actor.view.ActorActivity;
 import com.example.irishka.movieapp.ui.movie.creators.presenter.CreatorsPresenter;
 
 import java.util.List;

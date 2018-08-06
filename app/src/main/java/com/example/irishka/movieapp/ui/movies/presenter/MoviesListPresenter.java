@@ -36,6 +36,6 @@ public class MoviesListPresenter extends BasePresenter<MoviesListView> {
                 .doOnSuccess(movies -> getViewState().finishLoading())
                 .doOnSuccess(movies -> page++)
                 .doOnError(movies -> getViewState().finishLoading())
-                .subscribe(movies -> getViewState().showMovies(movies)));
+                .subscribe(movies -> getViewState().showMovies(movies), throwable -> {}));
     }
 }

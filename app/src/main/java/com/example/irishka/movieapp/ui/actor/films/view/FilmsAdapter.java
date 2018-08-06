@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.ui.movie.creators.actor.films.view;
+package com.example.irishka.movieapp.ui.actor.films.view;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

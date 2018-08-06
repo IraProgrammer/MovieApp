@@ -37,7 +37,7 @@ public class DescriptionPresenter extends BasePresenter<DescriptionView> {
 
         addDisposables(moviesRepository.downloadMovie(movieId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movie -> getViewState().showDescription(movie)));
+                .subscribe(movie -> getViewState().showDescription(movie), throwable -> {}));
     }
 
     public void downloadRelatedMovies() {
@@ -47,6 +47,6 @@ public class DescriptionPresenter extends BasePresenter<DescriptionView> {
                 .doOnSuccess(movies -> getViewState().finishLoading())
                 .doOnSuccess(movies -> page++)
                 .doOnError(movies -> getViewState().finishLoading())
-                .subscribe(movies -> getViewState().showRelatedMovies(movies)));
+                .subscribe(movies -> getViewState().showRelatedMovies(movies), throwable -> {}));
     }
 }

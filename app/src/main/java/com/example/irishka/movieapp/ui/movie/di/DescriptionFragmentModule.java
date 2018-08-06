@@ -11,6 +11,8 @@ import com.example.irishka.movieapp.ui.movie.description.presenter.DescriptionPr
 import com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment;
 import com.example.irishka.movieapp.ui.movie.description.view.GalleryAdapter;
 import com.example.irishka.movieapp.ui.movie.description.view.RelatedMoviesAdapter;
+import com.example.irishka.movieapp.ui.movie.di.qualifiers.Gallery;
+import com.example.irishka.movieapp.ui.movie.di.qualifiers.Related;
 
 import javax.inject.Named;
 
@@ -28,22 +30,28 @@ public abstract class DescriptionFragmentModule {
 
     @Provides
     @PerFragment
+    static GalleryAdapter providesGalleryAdapter(DescriptionFragment descriptionFragment) {
+        return new GalleryAdapter(descriptionFragment);
+    }
+
+    @Provides
+    @PerFragment
     static PrepareDescription providesPrepareDescriptions(DescriptionFragment descriptionFragment) {
         return new PrepareDescription(descriptionFragment);
     }
 
     @Provides
     @PerFragment
- //   @Named("LinearLayoutForRelated")
+    @Related
     static LinearLayoutManager providesLinearLayoutManagerForRelated(DescriptionFragment descriptionFragment){
         return new LinearLayoutManager(descriptionFragment.getContext(), LinearLayoutManager.HORIZONTAL, false);
     }
 
-//    @Provides
-//    @PerFragment
-//    @Named("LinearLayoutForGallery")
-//    static LinearLayoutManager providesLinearLayoutManagerForGallery(DescriptionFragment descriptionFragment){
-//        return new LinearLayoutManager(descriptionFragment.getContext(), LinearLayoutManager.HORIZONTAL, false);
-//    }
+    @Provides
+    @PerFragment
+    @Gallery
+    static LinearLayoutManager providesLinearLayoutManagerForGallery(DescriptionFragment descriptionFragment){
+        return new LinearLayoutManager(descriptionFragment.getContext(), LinearLayoutManager.HORIZONTAL, false);
+    }
 
 }

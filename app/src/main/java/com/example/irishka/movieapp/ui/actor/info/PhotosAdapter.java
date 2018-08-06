@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.ui.movie.creators.actor.info;
+package com.example.irishka.movieapp.ui.actor.info;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -26,20 +26,16 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
 
     private List<ActorProfileModel> profileModels = new ArrayList<>();
 
-   // private OnItemClickListener onItemClickListener;
-
-//    @Inject
-//    public GalleryAdapter(OnItemClickListener onItemClickListener) {
-//        this.onItemClickListener = onItemClickListener;
-//    }
+    private OnItemClickListener onItemClickListener;
 
     @Inject
-    public PhotosAdapter() {
+    public PhotosAdapter(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
-//    public interface OnItemClickListener {
-//        void onItemClick(Movie movie);
-//    }
+    public interface OnItemClickListener {
+        void onItemClick(ActorProfileModel actorProfileModel);
+    }
 
     public void setPhotosList(List<ActorProfileModel> profileModels) {
         this.profileModels = profileModels;
@@ -49,7 +45,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
     @NonNull
     @Override
     public PhotosViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new PhotosViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.actor_photo_item, parent, false));
+        return new PhotosViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.actor_photo_item, parent, false), onItemClickListener);
     }
 
     @Override
@@ -64,19 +60,22 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
         return profileModels.size();
     }
 
-    class PhotosViewHolder extends RecyclerView.ViewHolder {
+    static class PhotosViewHolder extends RecyclerView.ViewHolder {
+
+        OnItemClickListener onItemClickListener;
 
         @BindView(R.id.actor_image)
         ImageView image;
 
-        PhotosViewHolder(View itemView) {
+        PhotosViewHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            this.onItemClickListener = onItemClickListener;
         }
 
         void bind(ActorProfileModel profileModel) {
 
-           // itemView.setOnClickListener(view -> onItemClickListener.onItemClick(movie));
+            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(profileModel));
 
             Glide.with(itemView.getContext())
                     // TODO: хардкод

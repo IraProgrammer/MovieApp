@@ -29,20 +29,16 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
     private List<Backdrop> backdrops = new ArrayList<>();
 
-   // private OnItemClickListener onItemClickListener;
-
-//    @Inject
-//    public GalleryAdapter(OnItemClickListener onItemClickListener) {
-//        this.onItemClickListener = onItemClickListener;
-//    }
+    private OnItemClickListener onItemClickListener;
 
     @Inject
-    public GalleryAdapter() {
+    public GalleryAdapter(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
-//    public interface OnItemClickListener {
-//        void onItemClick(Movie movie);
-//    }
+    public interface OnItemClickListener {
+        void onItemClick(Backdrop backdrop);
+    }
 
     public void setGalleryList(List<Backdrop> backdrops) {
         this.backdrops = backdrops;
@@ -52,7 +48,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     @NonNull
     @Override
     public GalleryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new GalleryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.gallery_item, parent, false));
+        return new GalleryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.gallery_item, parent, false), onItemClickListener);
     }
 
     @Override
@@ -67,25 +63,28 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
         return backdrops.size();
     }
 
-    class GalleryViewHolder extends RecyclerView.ViewHolder {
+    static class GalleryViewHolder extends RecyclerView.ViewHolder {
+
+        OnItemClickListener onItemClickListener;
 
         @BindView(R.id.backdrop_image)
         ImageView image;
 
-        GalleryViewHolder(View itemView) {
+        GalleryViewHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            this.onItemClickListener = onItemClickListener;
         }
 
         void bind(Backdrop backdrop) {
 
-           // itemView.setOnClickListener(view -> onItemClickListener.onItemClick(movie));
+            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(backdrop));
 
             Glide.with(itemView.getContext())
                     .load(backdrop.getFileUrl())
-                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                            .placeholder(R.drawable.no_image)
-                            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
+                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                            .placeholder(R.drawable.no_image))
+                     //       .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
                     .into(image);
         }
     }

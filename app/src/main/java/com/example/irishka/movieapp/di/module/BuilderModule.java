@@ -1,8 +1,8 @@
 package com.example.irishka.movieapp.di.module;
 
 import com.example.irishka.movieapp.di.scopes.PerActivity;
-import com.example.irishka.movieapp.ui.movie.creators.actor.ActorActivity;
-import com.example.irishka.movieapp.ui.movie.creators.actor.di.ActorActivityModule;
+import com.example.irishka.movieapp.ui.actor.di.ActorActivityModule;
+import com.example.irishka.movieapp.ui.actor.view.ActorActivity;
 import com.example.irishka.movieapp.ui.movie.di.MovieActivityModule;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 import com.example.irishka.movieapp.ui.movies.di.MoviesListActivityModule;

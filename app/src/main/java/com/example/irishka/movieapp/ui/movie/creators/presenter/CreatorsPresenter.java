@@ -35,7 +35,7 @@ public class CreatorsPresenter extends BasePresenter<CreatorsView> {
 
         addDisposables(moviesRepository.downloadCasts(movieId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(casts -> getViewState().showCasts(casts)));
+                .subscribe(casts -> getViewState().showCasts(casts), throwable -> {}));
     }
 }
 

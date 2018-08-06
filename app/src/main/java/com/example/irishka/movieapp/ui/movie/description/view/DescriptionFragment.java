@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.transition.TransitionManager;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,9 +28,13 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
+import com.example.irishka.movieapp.data.models.GalleryModel;
+import com.example.irishka.movieapp.domain.entity.Backdrop;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.movie.description.PrepareDescription;
 import com.example.irishka.movieapp.ui.movie.description.presenter.DescriptionPresenter;
+import com.example.irishka.movieapp.ui.movie.di.qualifiers.Gallery;
+import com.example.irishka.movieapp.ui.movie.di.qualifiers.Related;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
@@ -54,7 +59,8 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOVIE_ID;
 
-public class DescriptionFragment extends MvpAppCompatFragment implements DescriptionView, RelatedMoviesAdapter.OnItemClickListener {
+public class DescriptionFragment extends MvpAppCompatFragment
+        implements DescriptionView, RelatedMoviesAdapter.OnItemClickListener, GalleryAdapter.OnItemClickListener {
 
     @Inject
     RelatedMoviesAdapter relatedMoviesAdapter;
@@ -121,11 +127,11 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
     private FullScreenHelper fullScreenHelper = new FullScreenHelper();
 
     @Inject
- //   @Named("LinearLayoutForRelated")
+    @Related
     LinearLayoutManager linearLayoutManagerRelated;
 
     @Inject
- //   @Named("LinearLayoutForGallery")
+    @Gallery
     LinearLayoutManager linearLayoutManagerGallery;
 
     private boolean isLoading;
@@ -167,7 +173,7 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
 
         relatedMovies.setAdapter(relatedMoviesAdapter);
 
-        gallery.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        gallery.setLayoutManager(linearLayoutManagerGallery);
         gallery.setAdapter(galleryAdapter);
 
         return v;
@@ -188,19 +194,6 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
         year.setText(prepareDescription.getYear(movie));
 
         prepareDescription.getPicture(movie, image);
-
-        //
-        //Я ЭТОТ МОМЕНТ ИСПРАВЛЮ, НЕ ОБРАЩАЙ ВНИМАНИЯ
-        //
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ImageDialog.class);
-                intent.putExtra("URL", movie.getPosterUrl());
-                startActivity(intent);
-            }
-
-        });
 
         genre.setText(prepareDescription.getGenres(movie));
 
@@ -230,5 +223,12 @@ public class DescriptionFragment extends MvpAppCompatFragment implements Descrip
         Intent intent = new Intent(getActivity(), MovieActivity.class);
         intent.putExtra(MOVIE_ID, movie.getId());
         startActivity(intent);
+    }
+
+    @Override
+    public void onItemClick(Backdrop backdrop) {
+        FragmentManager manager = getFragmentManager();
+        ImageDialog dialog = ImageDialog.newInstance(backdrop.getFileUrl());
+        dialog.show(manager, "dialog");
     }
 }

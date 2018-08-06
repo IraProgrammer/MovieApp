@@ -1,8 +1,7 @@
-package com.example.irishka.movieapp.ui.movie.creators.actor.info;
+package com.example.irishka.movieapp.ui.actor.info;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,16 +20,12 @@ import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.data.models.ActorInfoModel;
 import com.example.irishka.movieapp.data.models.ActorPhotosModel;
+import com.example.irishka.movieapp.data.models.ActorProfileModel;
+import com.example.irishka.movieapp.ui.movie.description.view.ImageDialog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -40,7 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 
-public class InfoFragment extends MvpAppCompatFragment implements InfoView {
+public class InfoFragment extends MvpAppCompatFragment implements InfoView, PhotosAdapter.OnItemClickListener {
 
     @Inject
     Provider<InfoPresenter> presenterProvider;
@@ -101,9 +96,6 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView {
     public void showInfo(ActorInfoModel info) {
         name.setText(info.getName());
 
-        // TODO: не используется
-        String s = info.getBirthday() + System.lineSeparator();
-
         birth.setText(getBirthday(info));
         place.setText(info.getPlaceOfBirth());
         biography.setText(info.getBiography());
@@ -137,5 +129,12 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView {
     @Override
     public void showPhotos(ActorPhotosModel photosModel) {
         photosAdapter.setPhotosList(photosModel.getProfiles());
+    }
+
+    @Override
+    public void onItemClick(ActorProfileModel actorProfileModel) {
+//        FragmentManager manager = getFragmentManager();
+//        ImageDialog dialog = ImageDialog.newInstance(actorProfileModel.getFilePath());
+//        dialog.show(manager, "dialog");
     }
 }

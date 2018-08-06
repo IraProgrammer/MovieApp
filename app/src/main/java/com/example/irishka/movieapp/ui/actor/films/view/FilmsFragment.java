@@ -1,8 +1,7 @@
-package com.example.irishka.movieapp.ui.movie.creators.actor.films.view;
+package com.example.irishka.movieapp.ui.actor.films.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -14,10 +13,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.data.models.MovieModel;
-import com.example.irishka.movieapp.di.scopes.PerFragment;
-import com.example.irishka.movieapp.domain.entity.Movie;
-import com.example.irishka.movieapp.ui.movie.creators.actor.films.FilmsPresenter;
-import com.example.irishka.movieapp.ui.movie.creators.actor.info.PhotosAdapter;
+import com.example.irishka.movieapp.ui.actor.films.FilmsPresenter;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 
 import java.util.List;
@@ -27,7 +23,6 @@ import javax.inject.Provider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.Provides;
 import dagger.android.support.AndroidSupportInjection;
 
 import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOVIE_ID;

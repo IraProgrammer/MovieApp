@@ -1,9 +1,9 @@
-package com.example.irishka.movieapp.ui.movie.creators.actor.films;
+package com.example.irishka.movieapp.ui.actor.films;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.ui.BasePresenter;
-import com.example.irishka.movieapp.ui.movie.creators.actor.films.view.FilmsView;
+import com.example.irishka.movieapp.ui.actor.films.view.FilmsView;
 
 import javax.inject.Inject;
 
@@ -24,18 +24,14 @@ public class FilmsPresenter extends BasePresenter<FilmsView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        // TODO: у тебя же id - поле класса, можно не передавать его в dowloadMovies, а сразу там использовать
-        downloadFilms(id);
+        downloadFilms();
     }
 
-    private void downloadFilms(long id) {
+    private void downloadFilms() {
 
-        // TODO: обработка ошибок в rx обязательно, даже если ты укажешь что-то типа такого
-        // throwable -> {}
-        // иначе у тебя может крашнутся приложение с UndeliverableException
         addDisposables(moviesRepository.getActorFilms(id)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movies -> getViewState().showMovies(movies)));
+                .subscribe(movies -> getViewState().showMovies(movies), throwable -> {}));
     }
 }
 
