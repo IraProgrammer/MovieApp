@@ -14,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.data.models.MovieModel;
+import com.example.irishka.movieapp.domain.entity.Movie;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import butterknife.ButterKnife;
 
 public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHolder> {
 
-    private List<MovieModel> movies = new ArrayList<>();
+    private List<Movie> movies = new ArrayList<>();
 
     private OnItemClickListener onItemClickListener;
 
@@ -35,10 +36,10 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHo
     }
 
     public interface OnItemClickListener {
-        void onItemClick(MovieModel movie);
+        void onItemClick(Movie movie);
     }
 
-    public void setMoviesList(List<MovieModel> movies) {
+    public void setMoviesList(List<Movie> movies) {
         this.movies = movies;
         notifyDataSetChanged();
     }
@@ -83,7 +84,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHo
             this.onItemClickListener = onItemClickListener;
         }
 
-        void bind(MovieModel movie) {
+        void bind(Movie movie) {
 
             title.setText(movie.getTitle());
 
@@ -100,8 +101,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHo
             // TODO: стоит подумать о некой сущности, которая будет заниматься загрузкой картинок
             // т.к. похожий код встречается во многих местах
             Glide.with(itemView.getContext())
-                    // TODO: хардкод
-                    .load("http://image.tmdb.org/t/p/w500//" + movie.getPosterPath())
+                    .load(movie.getPosterUrl())
                     .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                             .placeholder(R.drawable.no_image)
                             .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))

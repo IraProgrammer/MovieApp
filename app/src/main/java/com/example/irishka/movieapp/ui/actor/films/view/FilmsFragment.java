@@ -13,6 +13,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.data.models.MovieModel;
+import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.actor.films.presenter.FilmsPresenter;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 
@@ -73,12 +74,12 @@ public class FilmsFragment extends MvpAppCompatFragment implements FilmsView, Fi
     }
 
     @Override
-    public void showMovies(List<MovieModel> movies) {
+    public void showMovies(List<Movie> movies) {
         filmsAdapter.setMoviesList(movies);
     }
 
     @Override
-    public void onItemClick(MovieModel movie) {
+    public void onItemClick(Movie movie) {
         Intent intent = new Intent(getActivity(), MovieActivity.class);
         intent.putExtra(MOVIE_ID, movie.getId());
         startActivity(intent);

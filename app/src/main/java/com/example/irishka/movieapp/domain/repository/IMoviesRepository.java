@@ -25,5 +25,5 @@ public interface IMoviesRepository {
 
     Single<List<Cast>> downloadCasts(long movieId);
 
-    Single<List<MovieModel>> getActorFilms(long movieId);
+    Single<List<Movie>> downloadActorFilms(long id);
 }

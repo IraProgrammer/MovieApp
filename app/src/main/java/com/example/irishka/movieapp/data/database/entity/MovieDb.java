@@ -3,10 +3,13 @@ package com.example.irishka.movieapp.data.database.entity;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverter;
 import android.arch.persistence.room.TypeConverters;
 
+import com.example.irishka.movieapp.data.database.converters.ActorFilmsConverter;
 import com.example.irishka.movieapp.data.database.converters.BackdropsConverter;
 import com.example.irishka.movieapp.data.database.converters.CountriesConverter;
+import com.example.irishka.movieapp.data.database.converters.RelatedConverter;
 
 import java.util.List;
 
@@ -15,14 +18,6 @@ public class MovieDb {
 
     @PrimaryKey
     private long id;
-
-    public long getRelatedId() {
-        return relatedId;
-    }
-
-    public void setRelatedId(long relatedId) {
-        this.relatedId = relatedId;
-    }
 
     private long relatedId;
 
@@ -126,4 +121,11 @@ public class MovieDb {
         this.backdrops = backdrops;
     }
 
+    public long getRelatedId() {
+        return relatedId;
+    }
+
+    public void setRelatedId(long relatedId) {
+        this.relatedId = relatedId;
+    }
 }

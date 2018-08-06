@@ -24,11 +24,9 @@
             android:parentActivityName=".ui.movies.view.MoviesListActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout">
         </activity>
-        <activity android:name=".ui.movie.creators.actor.ActorActivity"
+        <activity android:name=".ui.actor.view.ActorActivity"
             android:theme="@style/AppCompatDarkNoActionBar">
         </activity>
-
-        <activity  android:name=".ui.movie.description.view.ImageDialog" android:theme="@style/myDialogTheme" />
     </application>
 
 </manifest>

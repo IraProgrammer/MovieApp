@@ -203,22 +203,23 @@ public class MoviesRepository implements IMoviesRepository {
                 .onErrorResumeNext(getMovieFromDatabase(movieId));
     }
 
-//    @Override
-//    public Single<ActorPhotosModel> getActorPhotoModel(long id) {
-//        return networkSource
-//                .getActorPhotos(id);
-//    }
+    private Single<List<Movie>> getActorFilmsFromInternet(long id) {
+        return networkSource
+                .getActorFilms(id)
+                .map(movieModels -> moviesMapper.mapMovies(movieModels))
+                .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
+    }
 
-//    @Override
-//    public Single<ActorInfoModel> getActorInfoModel(long id) {
-//        return networkSource
-//                .getActorInfo(id);
+//    private Single<List<Movie>> getActorFilmsFromDatabase(long id) {
+//        return dbSource.getActorFilms(id)
+//                .map(moviesDb -> moviesMapper.mapMoviesListFromDb(moviesDb))
+//                .subscribeOn(Schedulers.io());
 //    }
 
     @Override
-    public Single<List<MovieModel>> getActorFilms(long id) {
-        return networkSource
-                .getActorFilms(id);
+    public Single<List<Movie>> downloadActorFilms(long id) {
+        return getActorFilmsFromInternet(id);
+             //   .onErrorResumeNext(getActorFilmsFromDatabase(id));
     }
 
     private Single<List<TrailerModel>> getTrailers(long movieId) {

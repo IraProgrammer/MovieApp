@@ -29,7 +29,7 @@ public class FilmsPresenter extends BasePresenter<FilmsView> {
 
     private void downloadFilms() {
 
-        addDisposables(moviesRepository.getActorFilms(id)
+        addDisposables(moviesRepository.downloadActorFilms(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(movies -> getViewState().showMovies(movies), throwable -> {}));
     }
