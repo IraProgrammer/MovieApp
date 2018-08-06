@@ -92,7 +92,7 @@ public class MoviesRepository implements IMoviesRepository {
                 .getRelated(movieId, page)
                 .doOnSuccess(movieModels -> insertRelatedOfMovie(movieId, movieModels))
                 .map(movies -> moviesMapper.mapMovies(movies))
-                .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies, movieId)));
+                .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
     }
 
     private Single<List<Movie>> getRelatedFromDatabase(long movieId) {
@@ -180,6 +180,11 @@ public class MoviesRepository implements IMoviesRepository {
         dbSource.insertAllCoM(castMapper.createCoMList(movieId, casts));
     }
 
+    private void insertMoviesOfCast(long id, List<Movie> movies) {
+
+        dbSource.insertAllCoM(castMapper.createMoCList(id, movies));
+    }
+
     private Single<Movie> getMovieFromInternet(long movieId) {
         return networkSource
                 .getDescription(movieId)
@@ -208,20 +213,23 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<List<Movie>> getActorFilmsFromInternet(long id) {
         return networkSource
                 .getActorFilms(id)
-                .map(movieModels -> moviesMapper.mapMovies(movieModels))
+                .map(movies -> moviesMapper.mapMovies(movies))
+                .doOnSuccess(movieModels -> insertMoviesOfCast(id, movieModels))
                 .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
     }
 
-//    private Single<List<Movie>> getActorFilmsFromDatabase(long id) {
-//        return dbSource.getActorFilms(id)
-//                .map(moviesDb -> moviesMapper.mapMoviesListFromDb(moviesDb))
-//                .subscribeOn(Schedulers.io());
-//    }
+    private Single<List<Movie>> getActorFilmsFromDatabase(long id) {
+        return dbSource.getMoviesOfCast(id)
+                .flattenAsObservable(list -> list)
+                .flatMapSingle(castOfMovie -> getMovieFromDatabase(castOfMovie.getMovieId()))
+                .toList()
+                .subscribeOn(Schedulers.io());
+    }
 
     @Override
     public Single<List<Movie>> downloadActorFilms(long id) {
-        return getActorFilmsFromInternet(id);
-             //   .onErrorResumeNext(getActorFilmsFromDatabase(id));
+        return getActorFilmsFromInternet(id)
+                .onErrorResumeNext(getActorFilmsFromDatabase(id));
     }
 
     private Single<List<TrailerModel>> getTrailers(long movieId) {

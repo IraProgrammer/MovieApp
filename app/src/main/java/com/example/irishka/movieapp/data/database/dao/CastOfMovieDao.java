@@ -35,4 +35,7 @@ public abstract class CastOfMovieDao {
     @Query("SELECT * FROM CastOfMovie WHERE movieId = :movieId")
     public abstract Single<List<CastOfMovie>> getCastOfMovie(long movieId);
 
+    @Query("SELECT * FROM CastOfMovie WHERE castId = :castId")
+    public abstract Single<List<CastOfMovie>> getMoviesOfCast(long castId);
+
 }

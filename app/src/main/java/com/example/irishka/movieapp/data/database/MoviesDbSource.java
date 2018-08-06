@@ -83,6 +83,10 @@ public class MoviesDbSource {
         return castOfMovieDao.getCastOfMovie(movieId);
     }
 
+    public Single<List<CastOfMovie>> getMoviesOfCast(long id) {
+        return castOfMovieDao.getMoviesOfCast(id);
+    }
+
     public Single<CastDb> getCast(long id) {
         return castDao.getCast(id);
     }

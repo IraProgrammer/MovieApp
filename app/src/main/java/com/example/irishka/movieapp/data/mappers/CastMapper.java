@@ -12,6 +12,7 @@ import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.data.models.GenreModel;
 import com.example.irishka.movieapp.domain.entity.ActorInfo;
 import com.example.irishka.movieapp.domain.entity.Cast;
+import com.example.irishka.movieapp.domain.entity.Movie;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -175,6 +176,17 @@ public class CastMapper {
         for (int i = 0; i < casts.size(); i++) {
 
             castsOfMovie.add(new CastOfMovie(movieId, casts.get(i).getId()));
+        }
+
+        return castsOfMovie;
+    }
+
+    public List<CastOfMovie> createMoCList(long id, List<Movie> movies) {
+        List<CastOfMovie> castsOfMovie = new ArrayList<>();
+
+        for (int i = 0; i < movies.size(); i++) {
+
+            castsOfMovie.add(new CastOfMovie(movies.get(i).getId(), id));
         }
 
         return castsOfMovie;
