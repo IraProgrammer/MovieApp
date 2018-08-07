@@ -33,7 +33,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     }
 
     public interface OnItemClickListener {
-        void onItemClick(List<Image> backdrop);
+        void onItemClick(List<Image> backdrop, int position);
     }
 
     public void setGalleryList(List<Image> backdrops) {
@@ -77,7 +77,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
         void bind(Image backdrop) {
 
-            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(backdrops));
+            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(backdrops, getAdapterPosition()));
 
             Glide.with(itemView.getContext())
                     .load(backdrop.getFileUrl())

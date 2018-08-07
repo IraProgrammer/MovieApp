@@ -22,8 +22,6 @@ public class SlideGalleryAdapter extends PagerAdapter {
 
     private GlideHelper glideHelper;
 
-    private ImagePagerActivity i;
-
     //TODO ButterKnife
 //    @BindView(R.id.image_in_viewpager)
 ////   ImageView imageView;

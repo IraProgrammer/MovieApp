@@ -34,7 +34,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
     }
 
     public interface OnItemClickListener {
-        void onItemClick(List<Image> photos);
+        void onItemClick(List<Image> photos, int position);
     }
 
     public void setPhotosList(List<Image> photos) {
@@ -81,7 +81,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
 
         void bind(Image photo) {
 
-            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(photos));
+            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(photos, getAdapterPosition()));
 
             glideHelper.downloadPictureWithCache(photo.getFileUrl(), image);
         }

@@ -19,11 +19,15 @@ public class ImagePagerActivity extends DaggerAppCompatActivity {
     @Inject
     SlideGalleryAdapter slideGalleryAdapter;
 
+    private int position;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_pager);
         ButterKnife.bind(this);
+
+        position = getIntent().getIntExtra("POSITION", 0);
 
         init();
     }
@@ -31,6 +35,9 @@ public class ImagePagerActivity extends DaggerAppCompatActivity {
     private void init() {
 
         pager.setAdapter(slideGalleryAdapter);
+
+        pager.setCurrentItem(position);
+
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override

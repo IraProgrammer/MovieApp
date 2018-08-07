@@ -203,9 +203,10 @@ public class DescriptionFragment extends MvpAppCompatFragment
     }
 
     @Override
-    public void onItemClick(List<Image> backdrops) {
+    public void onItemClick(List<Image> backdrops, int position) {
         Intent intent = new Intent(getContext(), ImagePagerActivity.class);
         intent.putExtra("ARRAYLIST", (ArrayList<Image>)backdrops);
+        intent.putExtra("POSITION", position);
         startActivity(intent);
     }
 }

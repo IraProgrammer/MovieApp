@@ -128,9 +128,10 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
     }
 
     @Override
-    public void onItemClick(List<Image> photos) {
+    public void onItemClick(List<Image> photos, int position) {
         Intent intent = new Intent(getContext(), ImagePagerActivity.class);
         intent.putExtra("ARRAYLIST", (ArrayList<Image>)photos);
+        intent.putExtra("POSITION", position);
         startActivity(intent);
     }
 }
