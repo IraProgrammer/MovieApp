@@ -2,8 +2,6 @@ package com.example.irishka.movieapp.data.database.converters;
 
 import android.arch.persistence.room.TypeConverter;
 
-import com.example.irishka.movieapp.data.database.entity.BackdropDb;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

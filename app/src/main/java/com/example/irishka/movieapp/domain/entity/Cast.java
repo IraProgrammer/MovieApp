@@ -1,13 +1,8 @@
 package com.example.irishka.movieapp.domain.entity;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 public class Cast {
-
-  //  private long castId;
 
     private long id;
 
@@ -21,7 +16,7 @@ public class Cast {
 
     private String placeOfBirth;
 
-    private List<String> photosUrl;
+    private List<Image> photos;
 
     public long getId() {
         return id;
@@ -31,12 +26,12 @@ public class Cast {
         this.id = id;
     }
 
-    public List<String> getPhotosUrl() {
-        return photosUrl;
+    public List<Image> getPhotos() {
+        return photos;
     }
 
-    public void setPhotosUrl(List<String> photosUrl) {
-        this.photosUrl = photosUrl;
+    public void setPhotos(List<Image> photos) {
+        this.photos = photos;
     }
 
     public String getBirthday() {

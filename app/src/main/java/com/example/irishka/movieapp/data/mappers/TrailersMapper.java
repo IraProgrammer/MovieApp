@@ -1,12 +1,8 @@
 package com.example.irishka.movieapp.data.mappers;
 
-import com.example.irishka.movieapp.data.database.entity.BackdropDb;
-import com.example.irishka.movieapp.data.models.BackdropModel;
 import com.example.irishka.movieapp.data.models.TrailerModel;
-import com.example.irishka.movieapp.domain.entity.Backdrop;
 import com.example.irishka.movieapp.domain.entity.Trailer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;

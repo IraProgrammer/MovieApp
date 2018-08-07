@@ -4,7 +4,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
-import com.example.irishka.movieapp.data.database.converters.PhotosUrlConverter;
+import com.example.irishka.movieapp.data.database.converters.PhotosConverter;
 
 import java.util.List;
 
@@ -24,8 +24,8 @@ public class CastDb {
 
     private String placeOfBirth;
 
-    @TypeConverters(PhotosUrlConverter.class)
-    private List<String> photosUrl;
+    @TypeConverters(PhotosConverter.class)
+    private List<ImageDb> photos;
 
     public long getId() {
         return id;
@@ -51,12 +51,12 @@ public class CastDb {
         this.profileUrl = profileUrl;
     }
 
-    public List<String> getPhotosUrl() {
-        return photosUrl;
+    public List<ImageDb> getPhotos() {
+        return photos;
     }
 
-    public void setPhotosUrl(List<String> photosUrl) {
-        this.photosUrl = photosUrl;
+    public void setPhotos(List<ImageDb> photos) {
+        this.photos = photos;
     }
 
     public String getBirthday() {

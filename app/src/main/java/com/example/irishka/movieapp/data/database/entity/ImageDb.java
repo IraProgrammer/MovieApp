@@ -5,18 +5,18 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity
-public class BackdropDb {
+public class ImageDb {
 
     @PrimaryKey(autoGenerate = true)
     public int id;
 
     private String fileUrl;
 
-    public BackdropDb(){
+    public ImageDb(){
     }
 
     @Ignore
-    public BackdropDb(String fileUrl){
+    public ImageDb(String fileUrl){
         this.fileUrl = fileUrl;
     }
 

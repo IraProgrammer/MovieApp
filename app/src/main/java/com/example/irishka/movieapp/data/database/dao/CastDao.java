@@ -5,9 +5,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.example.irishka.movieapp.data.database.entity.BackdropDb;
 import com.example.irishka.movieapp.data.database.entity.CastDb;
-import com.example.irishka.movieapp.data.database.entity.GenreDb;
 
 import java.util.List;
 

@@ -1,61 +1,40 @@
 package com.example.irishka.movieapp.ui.movie.description.view;
 
-import android.annotation.SuppressLint;
-import android.arch.lifecycle.Lifecycle;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.transition.TransitionManager;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
-import com.example.irishka.movieapp.data.models.GalleryModel;
-import com.example.irishka.movieapp.domain.entity.Backdrop;
+import com.example.irishka.movieapp.domain.entity.Image;
 import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.ui.SlideGallery.ImagePagerActivity;
 import com.example.irishka.movieapp.ui.movie.description.PrepareDescription;
 import com.example.irishka.movieapp.ui.movie.description.presenter.DescriptionPresenter;
 import com.example.irishka.movieapp.ui.movie.di.qualifiers.Gallery;
 import com.example.irishka.movieapp.ui.movie.di.qualifiers.Related;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerFullScreenListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.playerUtils.FullScreenHelper;
-import com.pierfrancescosoffritti.androidyoutubeplayer.ui.PlayerUIController;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Provider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOVIE_ID;
 
@@ -224,9 +203,9 @@ public class DescriptionFragment extends MvpAppCompatFragment
     }
 
     @Override
-    public void onItemClick(Backdrop backdrop) {
-        FragmentManager manager = getFragmentManager();
-        ImageDialog dialog = ImageDialog.newInstance(backdrop.getFileUrl());
-        dialog.show(manager, "dialog");
+    public void onItemClick(List<Image> backdrops) {
+        Intent intent = new Intent(getContext(), ImagePagerActivity.class);
+        intent.putExtra("ARRAYLIST", (ArrayList<Image>)backdrops);
+        startActivity(intent);
     }
 }

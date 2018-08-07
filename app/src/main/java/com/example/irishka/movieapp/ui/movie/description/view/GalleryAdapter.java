@@ -6,16 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
-import com.example.irishka.movieapp.data.models.BackdropModel;
-import com.example.irishka.movieapp.domain.entity.Backdrop;
-import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.domain.entity.Image;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +23,7 @@ import butterknife.ButterKnife;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder> {
 
-    private List<Backdrop> backdrops = new ArrayList<>();
+    private List<Image> backdrops = new ArrayList<>();
 
     private OnItemClickListener onItemClickListener;
 
@@ -37,10 +33,10 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Backdrop backdrop);
+        void onItemClick(List<Image> backdrop);
     }
 
-    public void setGalleryList(List<Backdrop> backdrops) {
+    public void setGalleryList(List<Image> backdrops) {
         this.backdrops = backdrops;
         notifyDataSetChanged();
     }
@@ -48,7 +44,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     @NonNull
     @Override
     public GalleryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new GalleryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.gallery_item, parent, false), onItemClickListener);
+        return new GalleryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.gallery_item, parent, false), onItemClickListener, backdrops);
     }
 
     @Override
@@ -65,20 +61,23 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
     static class GalleryViewHolder extends RecyclerView.ViewHolder {
 
+        List<Image> backdrops;
+
         OnItemClickListener onItemClickListener;
 
         @BindView(R.id.backdrop_image)
         ImageView image;
 
-        GalleryViewHolder(View itemView, OnItemClickListener onItemClickListener) {
+        GalleryViewHolder(View itemView, OnItemClickListener onItemClickListener, List<Image> backdrops) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.onItemClickListener = onItemClickListener;
+            this.backdrops = backdrops;
         }
 
-        void bind(Backdrop backdrop) {
+        void bind(Image backdrop) {
 
-            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(backdrop));
+            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(backdrops));
 
             Glide.with(itemView.getContext())
                     .load(backdrop.getFileUrl())

@@ -73,6 +73,8 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHo
 
     static class MoviesViewHolder extends RecyclerView.ViewHolder {
 
+        private GlideHelper glideHelper;
+
         private OnItemClickListener onItemClickListener;
 
         @BindView(R.id.movie_text)
@@ -86,8 +88,6 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHo
 
         @BindView(R.id.adult_text)
         TextView adultText;
-
-        private GlideHelper glideHelper;
 
         MoviesViewHolder(View itemView, OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
             super(itemView);

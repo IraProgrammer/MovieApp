@@ -1,6 +1,8 @@
 package com.example.irishka.movieapp.di.module;
 
 import com.example.irishka.movieapp.di.scopes.PerActivity;
+import com.example.irishka.movieapp.ui.SlideGallery.ImagePagerActivity;
+import com.example.irishka.movieapp.ui.SlideGallery.di.ImagePagerActivityModule;
 import com.example.irishka.movieapp.ui.actor.di.ActorActivityModule;
 import com.example.irishka.movieapp.ui.actor.view.ActorActivity;
 import com.example.irishka.movieapp.ui.movie.di.MovieActivityModule;
@@ -26,5 +28,9 @@ public abstract class BuilderModule {
     @PerActivity
     @ContributesAndroidInjector(modules = ActorActivityModule.class)
     abstract ActorActivity provideActorActivity();
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = ImagePagerActivityModule.class)
+    abstract ImagePagerActivity provideImagePagerActivity();
 
 }

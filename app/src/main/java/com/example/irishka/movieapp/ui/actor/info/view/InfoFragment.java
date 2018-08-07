@@ -1,5 +1,6 @@
 package com.example.irishka.movieapp.ui.actor.info.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,21 +13,18 @@ import android.widget.TextView;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
-import com.example.irishka.movieapp.data.models.ActorInfoModel;
-import com.example.irishka.movieapp.data.models.ActorPhotosModel;
-import com.example.irishka.movieapp.data.models.ActorProfileModel;
+import com.example.irishka.movieapp.domain.entity.Image;
 import com.example.irishka.movieapp.domain.entity.Cast;
 import com.example.irishka.movieapp.ui.GlideHelper;
+import com.example.irishka.movieapp.ui.SlideGallery.ImagePagerActivity;
 import com.example.irishka.movieapp.ui.actor.info.presenter.InfoPresenter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -109,7 +107,7 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
 
         glideHelper.downloadPictureWithCache(cast.getProfileUrl(), image);
 
-        photosAdapter.setPhotosList(cast.getPhotosUrl());
+        photosAdapter.setPhotosList(cast.getPhotos());
     }
 
     private String getBirthday(Cast cast) {
@@ -130,9 +128,9 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
     }
 
     @Override
-    public void onItemClick(String photoUrl) {
-//        FragmentManager manager = getFragmentManager();
-//        ImageDialog dialog = ImageDialog.newInstance(actorProfileModel.getFilePath());
-//        dialog.show(manager, "dialog");
+    public void onItemClick(List<Image> photos) {
+        Intent intent = new Intent(getContext(), ImagePagerActivity.class);
+        intent.putExtra("ARRAYLIST", (ArrayList<Image>)photos);
+        startActivity(intent);
     }
 }

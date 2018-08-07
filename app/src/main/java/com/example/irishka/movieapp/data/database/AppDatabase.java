@@ -9,7 +9,7 @@ import com.example.irishka.movieapp.data.database.dao.GenreDao;
 import com.example.irishka.movieapp.data.database.dao.GenreOfMovieDao;
 import com.example.irishka.movieapp.data.database.dao.MovieDao;
 import com.example.irishka.movieapp.data.database.dao.RelatedOfMovieDao;
-import com.example.irishka.movieapp.data.database.entity.BackdropDb;
+import com.example.irishka.movieapp.data.database.entity.ImageDb;
 import com.example.irishka.movieapp.data.database.entity.CastDb;
 import com.example.irishka.movieapp.data.database.entity.CastOfMovie;
 import com.example.irishka.movieapp.data.database.entity.GenreDb;
@@ -18,7 +18,7 @@ import com.example.irishka.movieapp.data.database.entity.MovieDb;
 import com.example.irishka.movieapp.data.database.entity.ProductionCountryDb;
 import com.example.irishka.movieapp.data.database.entity.RelatedOfMovie;
 
-@Database(entities = {MovieDb.class, BackdropDb.class, CastDb.class,
+@Database(entities = {MovieDb.class, ImageDb.class, CastDb.class,
         GenreDb.class, GenreOfMovie.class,
         ProductionCountryDb.class, CastOfMovie.class, RelatedOfMovie.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {

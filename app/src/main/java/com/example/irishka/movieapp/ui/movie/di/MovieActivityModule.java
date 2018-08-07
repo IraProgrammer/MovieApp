@@ -22,7 +22,7 @@ public abstract class MovieActivityModule {
         return movieActivity.getIntent().getLongExtra(MOVIE_ID, 0);
     }
 
-   @PerFragment
+    @PerFragment
     @ContributesAndroidInjector(modules = {DescriptionFragmentModule.class})
     abstract DescriptionFragment providesDescriptionFragment();
 
@@ -32,7 +32,7 @@ public abstract class MovieActivityModule {
 
     @Provides
     @PerActivity
-    static ViewPagerAdapter providesViewPagerAdapter(MovieActivity movieActivity){
+    static ViewPagerAdapter providesViewPagerAdapter(MovieActivity movieActivity) {
         return new ViewPagerAdapter(movieActivity);
     }
 }

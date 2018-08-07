@@ -27,6 +27,9 @@
         <activity android:name=".ui.actor.view.ActorActivity"
             android:theme="@style/AppCompatDarkNoActionBar">
         </activity>
+        <activity android:name=".ui.SlideGallery.ImagePagerActivity"
+            android:theme="@style/AppCompatDarkNoActionBar">
+        </activity>
     </application>
 
 </manifest>

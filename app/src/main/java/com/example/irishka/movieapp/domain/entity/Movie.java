@@ -41,7 +41,7 @@ public class Movie {
 
     private List<ProductionCountry> countries;
 
-    private List<Backdrop> backdrops;
+    private List<Image> backdrops;
 
     private Trailer trailer;
 
@@ -109,11 +109,11 @@ public class Movie {
         this.countries = countries;
     }
 
-    public List<Backdrop> getBackdrops() {
+    public List<Image> getBackdrops() {
         return backdrops;
     }
 
-    public void setBackdrops(List<Backdrop> backdrops) {
+    public void setBackdrops(List<Image> backdrops) {
         this.backdrops = backdrops;
     }
 

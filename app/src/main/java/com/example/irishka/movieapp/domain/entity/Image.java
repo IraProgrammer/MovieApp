@@ -1,6 +1,8 @@
 package com.example.irishka.movieapp.domain.entity;
 
-public class Backdrop {
+import java.io.Serializable;
+
+public class Image implements Serializable {
 
     private String fileUrl;
 

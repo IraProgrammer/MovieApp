@@ -7,12 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
-import com.example.irishka.movieapp.data.models.ActorProfileModel;
+import com.example.irishka.movieapp.domain.entity.Image;
 import com.example.irishka.movieapp.ui.GlideHelper;
 
 import java.util.ArrayList;
@@ -25,7 +21,7 @@ import butterknife.ButterKnife;
 
 public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosViewHolder> {
 
-    private List<String> photosUrl = new ArrayList<>();
+    private List<Image> photos = new ArrayList<>();
 
     private OnItemClickListener onItemClickListener;
 
@@ -38,30 +34,30 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
     }
 
     public interface OnItemClickListener {
-        void onItemClick(String photoUrl);
+        void onItemClick(List<Image> photos);
     }
 
-    public void setPhotosList(List<String> photosUrl) {
-        this.photosUrl = photosUrl;
+    public void setPhotosList(List<Image> photos) {
+        this.photos = photos;
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public PhotosViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new PhotosViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.actor_photo_item, parent, false), onItemClickListener, glideHelper);
+        return new PhotosViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.actor_photo_item, parent, false), onItemClickListener, glideHelper, photos);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PhotosViewHolder holder, int position) {
 
-        holder.bind(photosUrl.get(position));
+        holder.bind(photos.get(position));
 
     }
 
     @Override
     public int getItemCount() {
-        return photosUrl.size();
+        return photos.size();
     }
 
     static class PhotosViewHolder extends RecyclerView.ViewHolder {
@@ -73,18 +69,21 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
         @BindView(R.id.actor_image)
         ImageView image;
 
-        PhotosViewHolder(View itemView, OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
+        private List<Image> photos;
+
+        PhotosViewHolder(View itemView, OnItemClickListener onItemClickListener, GlideHelper glideHelper, List<Image> photos) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.onItemClickListener = onItemClickListener;
             this.glideHelper = glideHelper;
+            this.photos = photos;
         }
 
-        void bind(String photoUrl) {
+        void bind(Image photo) {
 
-            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(photoUrl));
+            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(photos));
 
-            glideHelper.downloadPictureWithCache(photoUrl, image);
+            glideHelper.downloadPictureWithCache(photo.getFileUrl(), image);
         }
     }
 }
