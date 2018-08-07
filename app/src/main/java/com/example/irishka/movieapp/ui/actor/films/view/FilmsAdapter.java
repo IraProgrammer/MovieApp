@@ -15,14 +15,20 @@ import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.data.models.MovieModel;
 import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.ui.GlideHelper;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.Provides;
 
 public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHolder> {
 
@@ -30,9 +36,12 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHo
 
     private OnItemClickListener onItemClickListener;
 
+    private GlideHelper glideHelper;
+
     @Inject
-    public FilmsAdapter(OnItemClickListener onItemClickListener) {
+    public FilmsAdapter(OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
         this.onItemClickListener = onItemClickListener;
+        this.glideHelper = glideHelper;
     }
 
     public interface OnItemClickListener {
@@ -47,7 +56,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHo
     @NonNull
     @Override
     public MoviesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MoviesViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.film_item, parent, false), onItemClickListener);
+        return new MoviesViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.film_item, parent, false), onItemClickListener, glideHelper);
     }
 
     @Override
@@ -64,7 +73,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHo
 
     static class MoviesViewHolder extends RecyclerView.ViewHolder {
 
-        OnItemClickListener onItemClickListener;
+        private OnItemClickListener onItemClickListener;
 
         @BindView(R.id.movie_text)
         TextView title;
@@ -78,19 +87,33 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHo
         @BindView(R.id.adult_text)
         TextView adultText;
 
-        MoviesViewHolder(View itemView, OnItemClickListener onItemClickListener) {
+        private GlideHelper glideHelper;
+
+        MoviesViewHolder(View itemView, OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.onItemClickListener = onItemClickListener;
+            this.glideHelper = glideHelper;
+        }
+
+        private String getDate() {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            return dateFormat.format(new Date());
+        }
+
+        private int getYear(String releaseDate) {
+            return Integer.parseInt(releaseDate.split("-")[0]);
         }
 
         void bind(Movie movie) {
 
             title.setText(movie.getTitle());
 
-            String voteAverage = String.format(itemView.getContext().getString(R.string.vote_average), (float) movie.getVoteAverage());
-
-            rateText.setText(voteAverage);
+            if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
+                rateText.setText(itemView.getContext().getString(R.string.see_soon));
+            } else {
+                rateText.setText(String.format(itemView.getContext().getString(R.string.vote_average), (float) movie.getVoteAverage()));
+            }
 
             String adult = "";
             if (movie.getAdult()) adult = itemView.getContext().getString(R.string.adult);
@@ -98,14 +121,7 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHo
 
             itemView.setOnClickListener(view -> onItemClickListener.onItemClick(movie));
 
-            // TODO: стоит подумать о некой сущности, которая будет заниматься загрузкой картинок
-            // т.к. похожий код встречается во многих местах
-            Glide.with(itemView.getContext())
-                    .load(movie.getPosterUrl())
-                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                            .placeholder(R.drawable.no_image)
-                            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
-                    .into(image);
+            glideHelper.downloadPictureWithCache(movie.getPosterUrl(), image);
         }
     }
 }

@@ -4,6 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.example.irishka.movieapp.di.scopes.PerFragment;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
+import com.example.irishka.movieapp.ui.GlideHelper;
 import com.example.irishka.movieapp.ui.movie.creators.presenter.CreatorsPresenter;
 import com.example.irishka.movieapp.ui.movie.creators.view.ActorsAdapter;
 import com.example.irishka.movieapp.ui.movie.description.PrepareDescription;
@@ -36,8 +37,8 @@ public abstract class DescriptionFragmentModule {
 
     @Provides
     @PerFragment
-    static PrepareDescription providesPrepareDescriptions(DescriptionFragment descriptionFragment) {
-        return new PrepareDescription(descriptionFragment);
+    static PrepareDescription providesPrepareDescriptions(DescriptionFragment descriptionFragment, GlideHelper glideHelper) {
+        return new PrepareDescription(descriptionFragment, glideHelper);
     }
 
     @Provides

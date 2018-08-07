@@ -19,4 +19,6 @@
     <string name="photos">PHOTOS</string>
     <string name="birth">Date of birth:</string>
     <string name="place">Place of birth:</string>
+
+    <string name="see_soon">See soon</string>
 </resources>

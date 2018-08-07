@@ -5,6 +5,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.example.irishka.movieapp.di.scopes.PerActivity;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
+import com.example.irishka.movieapp.ui.GlideHelper;
 import com.example.irishka.movieapp.ui.movies.presenter.MoviesListPresenter;
 import com.example.irishka.movieapp.ui.movies.view.MoviesListActivity;
 import com.example.irishka.movieapp.ui.movies.view.MoviesListAdapter;
@@ -18,8 +19,8 @@ public class MoviesListActivityModule {
 
     @Provides
     @PerActivity
-    static MoviesListAdapter providesMoviesAdapter(MoviesListActivity moviesActivity){
-        return new MoviesListAdapter(moviesActivity);
+    static MoviesListAdapter providesMoviesAdapter(MoviesListActivity moviesActivity, GlideHelper glideHelper){
+        return new MoviesListAdapter(moviesActivity, glideHelper);
     }
 
     @Provides

@@ -21,6 +21,7 @@ import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Genre;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.domain.entity.ProductionCountry;
+import com.example.irishka.movieapp.ui.GlideHelper;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
@@ -39,6 +40,8 @@ import static java.lang.String.format;
 
 public class PrepareDescription {
 
+    GlideHelper glideHelper;
+
     private Fragment fragment;
 
     private YouTubePlayerView youTubePlayerView;
@@ -46,18 +49,14 @@ public class PrepareDescription {
     private FullScreenHelper fullScreenHelper = new FullScreenHelper();
 
     @Inject
-    public PrepareDescription(Fragment fragment){
+    public PrepareDescription(Fragment fragment, GlideHelper glideHelper){
         this.fragment = fragment;
+        this.glideHelper = glideHelper;
     }
 
     public void getPicture(Movie movie, ImageView image) {
-        Glide.with(image.getContext())
-                .load(movie.getPosterUrl())
-                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                        .transform(new RoundedCorners(20))
-                        .placeholder(R.drawable.no_image)
-                        .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
-                .into(image);
+
+        glideHelper.downloadPictureWithCache(movie.getPosterUrl(), image);
     }
 
     public String getGenres(Movie movie) {

@@ -14,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.ui.GlideHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +30,12 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
 
     private OnItemClickListener onItemClickListener;
 
+    private GlideHelper glideHelper;
+
     @Inject
-    public MoviesListAdapter(OnItemClickListener onItemClickListener) {
+    public MoviesListAdapter(OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
         this.onItemClickListener = onItemClickListener;
+        this.glideHelper = glideHelper;
     }
 
     public interface OnItemClickListener {
@@ -48,7 +52,7 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
     @NonNull
     @Override
     public MoviesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MoviesViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false), onItemClickListener);
+        return new MoviesViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false), onItemClickListener, glideHelper);
     }
 
     @Override
@@ -65,7 +69,9 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
 
     static class MoviesViewHolder extends RecyclerView.ViewHolder {
 
-        OnItemClickListener onItemClickListener;
+        private OnItemClickListener onItemClickListener;
+
+        private GlideHelper glideHelper;
 
         @BindView(R.id.movie_text)
         TextView title;
@@ -73,10 +79,11 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
         @BindView(R.id.movie_image)
         ImageView image;
 
-        MoviesViewHolder(View itemView, OnItemClickListener onItemClickListener) {
+        MoviesViewHolder(View itemView, OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.onItemClickListener = onItemClickListener;
+            this.glideHelper = glideHelper;
         }
 
         void bind(Movie movie) {
@@ -85,12 +92,7 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
 
             itemView.setOnClickListener(view -> onItemClickListener.onItemClick(movie));
 
-            Glide.with(itemView.getContext())
-                    .load(movie.getPosterUrl())
-                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                            .placeholder(R.drawable.no_image)
-                            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
-                    .into(image);
+            glideHelper.downloadPictureWithCache(movie.getPosterUrl(), image);
         }
     }
 }

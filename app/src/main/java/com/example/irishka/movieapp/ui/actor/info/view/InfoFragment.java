@@ -21,6 +21,7 @@ import com.example.irishka.movieapp.data.models.ActorInfoModel;
 import com.example.irishka.movieapp.data.models.ActorPhotosModel;
 import com.example.irishka.movieapp.data.models.ActorProfileModel;
 import com.example.irishka.movieapp.domain.entity.Cast;
+import com.example.irishka.movieapp.ui.GlideHelper;
 import com.example.irishka.movieapp.ui.actor.info.presenter.InfoPresenter;
 
 import java.text.ParseException;
@@ -39,6 +40,9 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
 
     @Inject
     Provider<InfoPresenter> presenterProvider;
+
+    @Inject
+    GlideHelper glideHelper;
 
     @InjectPresenter
     InfoPresenter presenter;
@@ -103,12 +107,7 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
         place.setText(cast.getPlaceOfBirth());
         biography.setText(cast.getBiography());
 
-        Glide.with(this)
-                .load(cast.getProfileUrl())
-                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                        .placeholder(R.drawable.no_image)
-                        .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
-                .into(image);
+        glideHelper.downloadPictureWithCache(cast.getProfileUrl(), image);
 
         photosAdapter.setPhotosList(cast.getPhotosUrl());
     }

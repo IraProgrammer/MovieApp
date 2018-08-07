@@ -21,6 +21,7 @@ import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.data.models.CastModel;
 import com.example.irishka.movieapp.domain.entity.Cast;
 import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.ui.GlideHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +37,12 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.CreatorsVi
 
     private OnItemClickListener onItemClickListener;
 
+    private GlideHelper glideHelper;
+
     @Inject
-    public ActorsAdapter(OnItemClickListener onItemClickListener) {
+    public ActorsAdapter(OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
         this.onItemClickListener = onItemClickListener;
+        this.glideHelper = glideHelper;
     }
 
     public interface OnItemClickListener {
@@ -53,7 +57,7 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.CreatorsVi
     @NonNull
     @Override
     public CreatorsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new CreatorsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.actors_item, parent, false));
+        return new CreatorsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.actors_item, parent, false), onItemClickListener, glideHelper);
     }
 
     @Override
@@ -68,7 +72,11 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.CreatorsVi
         return actors.size();
     }
 
-    class CreatorsViewHolder extends RecyclerView.ViewHolder {
+    static class CreatorsViewHolder extends RecyclerView.ViewHolder {
+
+        private OnItemClickListener onItemClickListener;
+
+        private  GlideHelper glideHelper;
 
         @BindView(R.id.actor_name)
         TextView title;
@@ -76,9 +84,11 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.CreatorsVi
         @BindView(R.id.actor_image)
         ImageView image;
 
-        CreatorsViewHolder(View itemView) {
+        CreatorsViewHolder(View itemView, OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            this.onItemClickListener = onItemClickListener;
+            this.glideHelper = glideHelper;
         }
 
         void bind(Cast actor) {
@@ -87,16 +97,7 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.CreatorsVi
 
             itemView.setOnClickListener(itemView -> onItemClickListener.onItemClick(actor));
 
-            Glide.with(itemView.getContext())
-                    .load(actor.getProfileUrl())
-                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                            //    .optionalFitCenter()
-                            .placeholder(R.drawable.no_image)
-                            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                            //   .centerCrop()
-                            .error(R.drawable.no_image)
-                    )
-                    .into(image);
+            glideHelper.downloadPictureWithCache(actor.getProfileUrl(), image);
         }
     }
 }

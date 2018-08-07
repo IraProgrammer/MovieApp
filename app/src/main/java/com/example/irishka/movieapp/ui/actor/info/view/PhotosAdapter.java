@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.data.models.ActorProfileModel;
+import com.example.irishka.movieapp.ui.GlideHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +29,12 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
 
     private OnItemClickListener onItemClickListener;
 
+    private GlideHelper glideHelper;
+
     @Inject
-    public PhotosAdapter(OnItemClickListener onItemClickListener) {
+    public PhotosAdapter(OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
         this.onItemClickListener = onItemClickListener;
+        this.glideHelper = glideHelper;
     }
 
     public interface OnItemClickListener {
@@ -45,7 +49,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
     @NonNull
     @Override
     public PhotosViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new PhotosViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.actor_photo_item, parent, false), onItemClickListener);
+        return new PhotosViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.actor_photo_item, parent, false), onItemClickListener, glideHelper);
     }
 
     @Override
@@ -62,28 +66,25 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
 
     static class PhotosViewHolder extends RecyclerView.ViewHolder {
 
-        OnItemClickListener onItemClickListener;
+        private OnItemClickListener onItemClickListener;
+
+        private GlideHelper glideHelper;
 
         @BindView(R.id.actor_image)
         ImageView image;
 
-        PhotosViewHolder(View itemView, OnItemClickListener onItemClickListener) {
+        PhotosViewHolder(View itemView, OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.onItemClickListener = onItemClickListener;
+            this.glideHelper = glideHelper;
         }
 
         void bind(String photoUrl) {
 
             itemView.setOnClickListener(view -> onItemClickListener.onItemClick(photoUrl));
 
-            Glide.with(itemView.getContext())
-                    // TODO: хардкод
-                    .load(photoUrl)
-                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                            .placeholder(R.drawable.no_image)
-                            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
-                    .into(image);
+            glideHelper.downloadPictureWithCache(photoUrl, image);
         }
     }
 }

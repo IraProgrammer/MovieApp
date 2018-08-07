@@ -1,5 +1,9 @@
 package com.example.irishka.movieapp.data.mappers;
 
+import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
 import com.example.irishka.movieapp.data.database.entity.BackdropDb;
 import com.example.irishka.movieapp.data.database.entity.GenreOfMovie;
 import com.example.irishka.movieapp.data.database.entity.MovieDb;
@@ -19,6 +23,7 @@ import com.example.irishka.movieapp.ui.movie.di.qualifiers.Related;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -63,7 +68,6 @@ public class MoviesMapper {
     }
 
 
-
     public Movie applyForMovies(MovieModel movieModel) {
         Movie movie = new Movie();
         movie.setId(movieModel.getId());
@@ -89,11 +93,11 @@ public class MoviesMapper {
         movieDb.setAdult(movie.getAdult());
         movieDb.setRuntime(movie.getRuntime());
 
-        if (movie.getCountries() != null){
-        movieDb.setCountries(productionCountryMapper.mapProductionCountryListToDb(movie.getCountries()));}
-        else movieDb.setCountries(Collections.emptyList());
+        if (movie.getCountries() != null) {
+            movieDb.setCountries(productionCountryMapper.mapProductionCountryListToDb(movie.getCountries()));
+        } else movieDb.setCountries(Collections.emptyList());
         if (movie.getBackdrops() != null)
-        movieDb.setBackdrops(backdropMapper.mapBackdropsListToDb(movie.getBackdrops()));
+            movieDb.setBackdrops(backdropMapper.mapBackdropsListToDb(movie.getBackdrops()));
         else movieDb.setBackdrops(Collections.emptyList());
 
         return movieDb;
@@ -110,9 +114,9 @@ public class MoviesMapper {
         movieDb.setAdult(movie.getAdult());
         movieDb.setRuntime(movie.getRuntime());
 
-        if (movie.getCountries() != null){
-            movieDb.setCountries(productionCountryMapper.mapProductionCountryListToDb(movie.getCountries()));}
-        else movieDb.setCountries(Collections.emptyList());
+        if (movie.getCountries() != null) {
+            movieDb.setCountries(productionCountryMapper.mapProductionCountryListToDb(movie.getCountries()));
+        } else movieDb.setCountries(Collections.emptyList());
 
         if (movie.getBackdrops() != null)
             movieDb.setBackdrops(backdropMapper.mapBackdropsListToDb(movie.getBackdrops()));
@@ -152,7 +156,7 @@ public class MoviesMapper {
         return movie;
     }
 
-    public List<Movie> mapMovies(List<MovieModel> movieModels){
+    public List<Movie> mapMovies(List<MovieModel> movieModels) {
         List<Movie> movies = new ArrayList<>();
 
         for (int i = 0; i < movieModels.size(); i++) {
@@ -162,7 +166,30 @@ public class MoviesMapper {
         return movies;
     }
 
-    public List<MovieDb> mapMoviesListToDb(List<Movie> movies){
+    public List<Movie> mapMoviesWithSort(List<MovieModel> movieModels) {
+        List<Movie> movies = new ArrayList<>();
+
+        for (int i = 0; i < movieModels.size(); i++) {
+            movies.add(applyForMovies(movieModels.get(i)));
+        }
+
+        Collections.sort(movies, new Comparator<Movie>() {
+            public int compare(Movie first, Movie second) {
+              //  return first.getReleaseDate().compareTo(second.getReleaseDate());
+                return Integer.compare(getYear(first), getYear(second));
+            }
+        });
+
+        Collections.reverse(movies);
+
+        return movies;
+    }
+
+    private int getYear(Movie movie) {
+        return Integer.parseInt(movie.getReleaseDate().split("-")[0]);
+    }
+
+    public List<MovieDb> mapMoviesListToDb(List<Movie> movies) {
         List<MovieDb> moviesDb = new ArrayList<>();
 
         for (int i = 0; i < movies.size(); i++) {
@@ -172,7 +199,7 @@ public class MoviesMapper {
         return moviesDb;
     }
 
-    public List<MovieDb> mapMoviesListToDb(List<Movie> movies, long movieId){
+    public List<MovieDb> mapMoviesListToDb(List<Movie> movies, long movieId) {
         List<MovieDb> moviesDb = new ArrayList<>();
 
         for (int i = 0; i < movies.size(); i++) {
@@ -183,17 +210,17 @@ public class MoviesMapper {
     }
 
 
-    public List<Movie> mapMoviesListFromDb(List<MovieDb> moviesDb){
+    public List<Movie> mapMoviesListFromDb(List<MovieDb> moviesDb) {
         List<Movie> movies = new ArrayList<>();
 
-        for (MovieDb movieDb: moviesDb) {
+        for (MovieDb movieDb : moviesDb) {
             movies.add(applyFromDb(movieDb));
         }
 
         return movies;
     }
 
-    public List<RelatedOfMovie> createRoMList(long movieId, List<MovieModel> related){
+    public List<RelatedOfMovie> createRoMList(long movieId, List<MovieModel> related) {
         List<RelatedOfMovie> relatedOfMovie = new ArrayList<>();
 
         for (int i = 0; i < related.size(); i++) {

@@ -213,7 +213,7 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<List<Movie>> getActorFilmsFromInternet(long id) {
         return networkSource
                 .getActorFilms(id)
-                .map(movies -> moviesMapper.mapMovies(movies))
+                .map(movies -> moviesMapper.mapMoviesWithSort(movies))
                 .doOnSuccess(movieModels -> insertMoviesOfCast(id, movieModels))
                 .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
     }

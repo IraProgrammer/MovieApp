@@ -124,8 +124,6 @@ public class DescriptionFragment extends MvpAppCompatFragment
     @BindView(R.id.youtube_player_view)
     YouTubePlayerView youTubePlayerView;
 
-    private FullScreenHelper fullScreenHelper = new FullScreenHelper();
-
     @Inject
     @Related
     LinearLayoutManager linearLayoutManagerRelated;
