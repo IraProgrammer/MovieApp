@@ -132,5 +132,6 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
         Intent intent = new Intent(getContext(), ImagePagerActivity.class);
         intent.putExtra("ARRAYLIST", (ArrayList<Image>)photos);
         startActivity(intent);
+
     }
 }
