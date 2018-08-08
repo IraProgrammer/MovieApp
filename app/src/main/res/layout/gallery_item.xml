@@ -9,4 +9,5 @@
     android:scaleType="centerCrop"
     android:layout_marginStart="8dp"
     android:layout_marginBottom="4dp"
+    android:transitionName="@string/transition_name"
     app:riv_corner_radius="10dp"/>

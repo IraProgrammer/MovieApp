@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.ui.SlideGallery;
+package com.example.irishka.movieapp.ui.slideGallery;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -17,8 +17,8 @@ public class ImagePagerActivity extends DaggerAppCompatActivity {
     @BindView(R.id.pager)
     ViewPager pager;
 
-    @BindView(R.id.textView_position)
-    TextView textViewPosition;
+//    @BindView(R.id.textView_position)
+//    TextView textViewPosition;
 
     @Inject
     SlideGalleryAdapter slideGalleryAdapter;

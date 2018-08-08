@@ -8,7 +8,8 @@ android:layout_height="match_parent">
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true" />
+            android:layout_centerInParent="true"
+             />
 
         <com.rd.PageIndicatorView
             android:id="@+id/page_indicator_view"
@@ -26,10 +27,5 @@ android:layout_height="match_parent">
             app:piv_unselectedColor="@color/white"
             app:piv_viewPager="@id/pager" />
 
-        <TextView
-            android:id="@+id/textView_position"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true" />
+
 </RelativeLayout>

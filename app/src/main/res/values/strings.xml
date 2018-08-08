@@ -21,4 +21,6 @@
     <string name="place">Place of birth:</string>
 
     <string name="see_soon">See soon</string>
+
+    <string name="transition_name">image</string>
 </resources>

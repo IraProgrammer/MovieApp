@@ -3,6 +3,9 @@ package com.example.irishka.movieapp.ui.movie.description.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +21,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Image;
 import com.example.irishka.movieapp.domain.entity.Movie;
-import com.example.irishka.movieapp.ui.SlideGallery.ImagePagerActivity;
+import com.example.irishka.movieapp.ui.slideGallery.ImagePagerActivity;
 import com.example.irishka.movieapp.ui.movie.description.PrepareDescription;
 import com.example.irishka.movieapp.ui.movie.description.presenter.DescriptionPresenter;
 import com.example.irishka.movieapp.ui.movie.di.qualifiers.Gallery;
@@ -113,6 +116,8 @@ public class DescriptionFragment extends MvpAppCompatFragment
 
     private boolean isLoading;
 
+   // ImageView galleryItem;
+
     public static DescriptionFragment newInstance() {
         return new DescriptionFragment();
     }
@@ -129,6 +134,8 @@ public class DescriptionFragment extends MvpAppCompatFragment
 
         View v = inflater.inflate(R.layout.fragment_description, container, false);
         ButterKnife.bind(this, v);
+
+     //   galleryItem = v.findViewById(R.id.backdrop_image);
 
         relatedMovies.setLayoutManager(linearLayoutManagerRelated);
 
@@ -203,10 +210,21 @@ public class DescriptionFragment extends MvpAppCompatFragment
     }
 
     @Override
-    public void onItemClick(List<Image> backdrops, int position) {
+    public void onItemClick(List<Image> backdrops, int position, View item) {
         Intent intent = new Intent(getContext(), ImagePagerActivity.class);
         intent.putExtra("ARRAYLIST", (ArrayList<Image>)backdrops);
         intent.putExtra("POSITION", position);
-        startActivity(intent);
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                getActivity(),
+                new Pair<View, String>(item.findViewById(R.id.backdrop_image), getString(R.string.transition_name))
+        );
+
+      //  startActivity(intent);
+
+        ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
+
+
+
     }
 }

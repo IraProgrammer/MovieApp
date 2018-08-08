@@ -1,6 +1,5 @@
-package com.example.irishka.movieapp.ui.SlideGallery;
+package com.example.irishka.movieapp.ui.slideGallery;
 
-import android.content.Context;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
@@ -17,9 +16,6 @@ import com.example.irishka.movieapp.ui.GlideHelper;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class SlideGalleryAdapter extends PagerAdapter {
 

@@ -17,7 +17,7 @@ import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Image;
 import com.example.irishka.movieapp.domain.entity.Cast;
 import com.example.irishka.movieapp.ui.GlideHelper;
-import com.example.irishka.movieapp.ui.SlideGallery.ImagePagerActivity;
+import com.example.irishka.movieapp.ui.slideGallery.ImagePagerActivity;
 import com.example.irishka.movieapp.ui.actor.info.presenter.InfoPresenter;
 
 import java.text.ParseException;
