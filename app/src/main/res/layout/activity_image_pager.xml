@@ -25,4 +25,11 @@ android:layout_height="match_parent">
             app:piv_selectedColor="@color/accent_material_dark_1"
             app:piv_unselectedColor="@color/white"
             app:piv_viewPager="@id/pager" />
+
+        <TextView
+            android:id="@+id/textView_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true" />
 </RelativeLayout>
