@@ -1,5 +1,6 @@
 package com.example.irishka.movieapp.ui.movie.description.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -40,6 +41,7 @@ import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 
 import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOVIE_ID;
+import static com.example.irishka.movieapp.ui.slideGallery.ImagePagerActivity.RES;
 
 public class DescriptionFragment extends MvpAppCompatFragment
         implements DescriptionView, RelatedMoviesAdapter.OnItemClickListener, GalleryAdapter.OnItemClickListener {
@@ -116,7 +118,9 @@ public class DescriptionFragment extends MvpAppCompatFragment
 
     private boolean isLoading;
 
-   // ImageView galleryItem;
+    private int currentPosition = 0;
+
+    // ImageView galleryItem;
 
     public static DescriptionFragment newInstance() {
         return new DescriptionFragment();
@@ -135,7 +139,7 @@ public class DescriptionFragment extends MvpAppCompatFragment
         View v = inflater.inflate(R.layout.fragment_description, container, false);
         ButterKnife.bind(this, v);
 
-     //   galleryItem = v.findViewById(R.id.backdrop_image);
+        //   galleryItem = v.findViewById(R.id.backdrop_image);
 
         relatedMovies.setLayoutManager(linearLayoutManagerRelated);
 
@@ -210,21 +214,29 @@ public class DescriptionFragment extends MvpAppCompatFragment
     }
 
     @Override
-    public void onItemClick(List<Image> backdrops, int position, View item) {
+    public void onItemClick(List<Image> backdrops, int position, View item, ImageView image) {
         Intent intent = new Intent(getContext(), ImagePagerActivity.class);
-        intent.putExtra("ARRAYLIST", (ArrayList<Image>)backdrops);
+        intent.putExtra("ARRAYLIST", (ArrayList<Image>) backdrops);
         intent.putExtra("POSITION", position);
 
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 getActivity(),
-                new Pair<View, String>(item.findViewById(R.id.backdrop_image), getString(R.string.transition_name))
+                new Pair<View, String>(image, getString(R.string.transition_name))
         );
 
-      //  startActivity(intent);
+        startActivityForResult(intent, Activity.RESULT_OK, options.toBundle());
 
-        ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
+        //      startActivity(intent, options.toBundle());
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //if (requestCode != Activity.RESULT_OK) {
+          //  return;
+        //}
 
-
+        //if (resultCode == RES) {
+        //    gallery.scrollToPosition(8);
+        //}
     }
 }

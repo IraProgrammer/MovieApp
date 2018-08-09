@@ -22,7 +22,7 @@ public abstract class ImagePagerActivityModule {
 
     @Provides
     @PerActivity
-    static SlideGalleryAdapter providesSlideGalleryAdapter(ArrayList<Image> backdrops, GlideHelper glideHelper){
-        return new SlideGalleryAdapter(backdrops, glideHelper);
+    static SlideGalleryAdapter providesSlideGalleryAdapter(ArrayList<Image> backdrops, GlideHelper glideHelper, ImagePagerActivity i){
+        return new SlideGalleryAdapter(backdrops, glideHelper, i);
     }
 }

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Image;
 
@@ -33,7 +34,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     }
 
     public interface OnItemClickListener {
-        void onItemClick(List<Image> backdrop, int position, View v);
+        void onItemClick(List<Image> backdrop, int position, View v, ImageView image);
     }
 
     public void setGalleryList(List<Image> backdrops) {
@@ -77,13 +78,15 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
         void bind(Image backdrop) {
 
-            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(backdrops, getAdapterPosition(), itemView));
+            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(backdrops, getAdapterPosition(), itemView, image));
 
+            //TODO!!!
             Glide.with(itemView.getContext())
                     .load(backdrop.getFileUrl())
-                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                            .placeholder(R.drawable.no_image))
-                     //       .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
+                    .apply(new RequestOptions()
+                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                            .placeholder(R.drawable.no_image)
+                            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
                     .into(image);
         }
     }

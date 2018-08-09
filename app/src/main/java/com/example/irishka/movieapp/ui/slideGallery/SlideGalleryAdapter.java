@@ -23,18 +23,18 @@ public class SlideGalleryAdapter extends PagerAdapter {
 
     private GlideHelper glideHelper;
 
- //   ImagePagerActivity i;
+    ImagePagerActivity i;
 
     //TODO ButterKnife
 //    @BindView(R.id.image_in_viewpager)
 //    ImageView imageView;
 
     @Inject
-    public SlideGalleryAdapter(ArrayList<Image> backdrops, GlideHelper glideHelper) {
+    public SlideGalleryAdapter(ArrayList<Image> backdrops, GlideHelper glideHelper, ImagePagerActivity i) {
 
         this.backdrops = backdrops;
         this.glideHelper = glideHelper;
-     //   this.i = i;
+        this.i = i;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class SlideGalleryAdapter extends PagerAdapter {
 
         textViewPosition.setText(position + "/" + getCount());
 
-        glideHelper.downloadPictureWithCache(backdrops.get(position).getFileUrl(), imageView);
+        glideHelper.downloadPicture(backdrops.get(position).getFileUrl(), imageView, i);
 
         view.addView(imageLayout, 0);
 

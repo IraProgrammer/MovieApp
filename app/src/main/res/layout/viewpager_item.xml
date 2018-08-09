@@ -16,13 +16,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ImageView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/image_in_viewpager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="128dp"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
         android:transitionName="@string/transition_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
