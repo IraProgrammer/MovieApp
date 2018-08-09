@@ -1,7 +1,6 @@
 package com.example.irishka.movieapp.ui.movies.view;
 
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -56,7 +55,7 @@ public class MoviesListActivity extends MvpAppCompatActivity implements MoviesLi
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment_movies);
+        setContentView(R.layout.activity_movies);
         ButterKnife.bind(this);
 
         moviesRecyclerView.setLayoutManager(staggeredGridLayoutManager);
@@ -104,6 +103,7 @@ public class MoviesListActivity extends MvpAppCompatActivity implements MoviesLi
     public void onItemClick(Movie movie) {
         Intent intent = new Intent(this, MovieActivity.class);
         intent.putExtra(MOVIE_ID, movie.getId());
+        intent.putExtra("TITLE", movie.getTitle());
         startActivity(intent);
     }
 }

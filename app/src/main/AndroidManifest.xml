@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.movies.view.MoviesListActivity"
-            android:theme="@style/AppCompatDark">
+            android:theme="@style/AppCompatDarkNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +21,6 @@
         </activity>
         <activity android:name=".ui.movie.view.MovieActivity"
             android:theme="@style/AppCompatDarkNoActionBar"
-            android:parentActivityName=".ui.movies.view.MoviesListActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout">
         </activity>
         <activity android:name=".ui.actor.view.ActorActivity"

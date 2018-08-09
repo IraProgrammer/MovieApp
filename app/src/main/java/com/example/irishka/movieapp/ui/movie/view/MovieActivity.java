@@ -3,8 +3,9 @@ package com.example.irishka.movieapp.ui.movie.view;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.irishka.movieapp.R;
 
@@ -22,6 +23,12 @@ public class MovieActivity extends DaggerAppCompatActivity {
     @BindView(R.id.pager)
     ViewPager viewPager;
 
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitle;
+
+    @BindView(R.id.btn_home)
+    ImageView btnHome;
+
     @Inject
     ViewPagerAdapter adapter;
 
@@ -33,12 +40,13 @@ public class MovieActivity extends DaggerAppCompatActivity {
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.tabs, menu);
-        return true;
+        toolbarTitle.setText(getIntent().getStringExtra("TITLE"));
+        btnHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 }

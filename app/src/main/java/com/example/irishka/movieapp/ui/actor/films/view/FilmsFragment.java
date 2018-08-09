@@ -63,7 +63,7 @@ public class FilmsFragment extends MvpAppCompatFragment implements FilmsView, Fi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_fragment_movies, container, false);
+        View v = inflater.inflate(R.layout.fragment_movies, container, false);
         ButterKnife.bind(this, v);
 
         filmsRecyclerView.setLayoutManager(staggeredGridLayoutManager);

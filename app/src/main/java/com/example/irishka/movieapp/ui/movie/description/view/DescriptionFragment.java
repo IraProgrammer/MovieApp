@@ -1,11 +1,14 @@
 package com.example.irishka.movieapp.ui.movie.description.view;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +35,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -115,6 +119,12 @@ public class DescriptionFragment extends MvpAppCompatFragment
     @Inject
     @Gallery
     LinearLayoutManager linearLayoutManagerGallery;
+
+    RecyclerView.LayoutManager layoutManager;
+
+    View viewAtPosition;
+
+    private View[] sharedViews;
 
     private boolean isLoading;
 
@@ -224,19 +234,53 @@ public class DescriptionFragment extends MvpAppCompatFragment
                 new Pair<View, String>(image, getString(R.string.transition_name))
         );
 
-        startActivityForResult(intent, Activity.RESULT_OK, options.toBundle());
+        startActivityForResult(intent, 1, options.toBundle());
+
+        //  postponeEnterTransition();
 
         //      startActivity(intent, options.toBundle());
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        gallery.addOnLayoutChangeListener(
+//                new View.OnLayoutChangeListener() {
+//                    @Override
+//                    public void onLayoutChange(View view, int left, int top, int right, int bottom,
+//                                               int oldLeft, int oldTop, int oldRight, int oldBottom) {
+//                        gallery.removeOnLayoutChangeListener(this);
+//                        final RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
+//                        View viewAtPosition = layoutManager.findViewByPosition(currentPosition);
+//                            if (viewAtPosition == null || layoutManager.isViewPartiallyVisible(viewAtPosition, false, true)){
+//                         gallery.post(()
+//                            ->
+//                         layoutManager.scrollToPosition(currentPosition));
+//                            }
+//                    }
+//                });
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //    super.onActivityResult(requestCode, resultCode, data);
         //if (requestCode != Activity.RESULT_OK) {
-          //  return;
+        //  return;
         //}
+        if (data != null) {
+            currentPosition = data.getIntExtra("CUR", 7);
+        }
 
-        //if (resultCode == RES) {
-        //    gallery.scrollToPosition(8);
-        //}
+        layoutManager = gallery.getLayoutManager();
+
+
+
+//        viewAtPosition = layoutManager.findViewByPosition(currentPosition);
+//
+//        if (viewAtPosition == null || layoutManager.isViewPartiallyVisible(viewAtPosition, false, true))
+//            gallery.scrollToPosition(currentPosition);
+//         //   startPostponedEnterTransition();
+//        }
     }
 }

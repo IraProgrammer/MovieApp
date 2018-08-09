@@ -3,6 +3,7 @@ package com.example.irishka.movieapp.ui.slideGallery;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +31,9 @@ public class SlideGalleryAdapter extends PagerAdapter {
 //    ImageView imageView;
 
     @Inject
-    public SlideGalleryAdapter(ArrayList<Image> backdrops, GlideHelper glideHelper, ImagePagerActivity i) {
-
+    public SlideGalleryAdapter(ArrayList<Image> backdrops, GlideHelper glideHelper,
+                               ImagePagerActivity i
+    ) {
         this.backdrops = backdrops;
         this.glideHelper = glideHelper;
         this.i = i;
@@ -57,9 +59,11 @@ public class SlideGalleryAdapter extends PagerAdapter {
 
         ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image_in_viewpager);
 
-        TextView textViewPosition = imageLayout.findViewById(R.id.textView111);
+    //    TextView count = i.findViewById(R.id.count_photo);
 
-        textViewPosition.setText(position + "/" + getCount());
+     //   int pos = position + 1;
+
+     //   count.setText(pos + "/" + getCount());
 
         glideHelper.downloadPicture(backdrops.get(position).getFileUrl(), imageView, i);
 
