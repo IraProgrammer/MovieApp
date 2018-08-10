@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -13,6 +15,8 @@ import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 import com.example.irishka.movieapp.ui.movies.presenter.MoviesListPresenter;
+import com.example.irishka.movieapp.ui.search.view.SearchActivity;
+import com.example.irishka.movieapp.ui.search.view.SearchAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,6 +35,9 @@ public class MoviesListActivity extends MvpAppCompatActivity implements MoviesLi
 
     @BindView(R.id.movies_recycler_view)
     RecyclerView moviesRecyclerView;
+
+    @BindView(R.id.btn_search)
+    ImageButton btnSearch;
 
     @Inject
     Provider<MoviesListPresenter> moviesPresenterProvider;
@@ -77,6 +84,14 @@ public class MoviesListActivity extends MvpAppCompatActivity implements MoviesLi
         });
 
         moviesRecyclerView.setAdapter(moviesAdapter);
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MoviesListActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

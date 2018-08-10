@@ -1,11 +1,5 @@
 package com.example.irishka.movieapp.data.network;
 
-import com.example.irishka.movieapp.data.database.dao.CastDao;
-import com.example.irishka.movieapp.data.database.dao.CastOfMovieDao;
-import com.example.irishka.movieapp.data.database.dao.GenreDao;
-import com.example.irishka.movieapp.data.database.dao.GenreOfMovieDao;
-import com.example.irishka.movieapp.data.database.dao.MovieDao;
-import com.example.irishka.movieapp.data.database.entity.MovieDb;
 import com.example.irishka.movieapp.data.models.ActorInfoModel;
 import com.example.irishka.movieapp.data.models.ActorPhotosModel;
 import com.example.irishka.movieapp.data.models.BackdropModel;
@@ -18,7 +12,6 @@ import com.example.irishka.movieapp.data.models.MovieModel;
 import com.example.irishka.movieapp.data.models.MoviePageModel;
 import com.example.irishka.movieapp.data.models.TrailerListModel;
 import com.example.irishka.movieapp.data.models.TrailerModel;
-import com.example.irishka.movieapp.domain.entity.Cast;
 
 import java.util.List;
 
@@ -75,4 +68,8 @@ public class MoviesNetworkSource {
     public Single<List<TrailerModel>> getTrailers(long movieId) {
         return  moviesApi.getTrailers(movieId)
                 .map(TrailerListModel::getResults); }
+
+    public Single<List<MovieModel>> getMoviesFromSearch(String query, int page) {
+        return  moviesApi.getMoviesFromSearch(query, page)
+                .map(MoviePageModel::getResults); }
 }

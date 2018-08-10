@@ -3,17 +3,11 @@ package com.example.irishka.movieapp.data.repository;
 import android.util.Pair;
 
 import com.example.irishka.movieapp.data.database.MoviesDbSource;
-import com.example.irishka.movieapp.data.database.entity.CastDb;
-import com.example.irishka.movieapp.data.database.entity.CastOfMovie;
 import com.example.irishka.movieapp.data.mappers.CastMapper;
 import com.example.irishka.movieapp.data.mappers.GenreMapper;
 import com.example.irishka.movieapp.data.mappers.MoviesMapper;
-import com.example.irishka.movieapp.data.models.ActorInfoModel;
-import com.example.irishka.movieapp.data.models.ActorPhotosModel;
 import com.example.irishka.movieapp.data.models.BackdropModel;
-import com.example.irishka.movieapp.data.models.CastModel;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
-import com.example.irishka.movieapp.data.models.FilmsModel;
 import com.example.irishka.movieapp.data.models.MovieModel;
 import com.example.irishka.movieapp.data.models.TrailerModel;
 import com.example.irishka.movieapp.data.network.MoviesNetworkSource;
@@ -22,7 +16,6 @@ import com.example.irishka.movieapp.domain.entity.Genre;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -235,5 +228,11 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<List<TrailerModel>> getTrailers(long movieId) {
         return networkSource
                 .getTrailers(movieId);
+    }
+
+    @Override
+    public Single<List<Movie>> getMoviesFromSearchFromInternet(String query, int page){
+        return networkSource.getMoviesFromSearch(query, page)
+                .map(movieModels -> moviesMapper.mapMovies(movieModels));
     }
 }

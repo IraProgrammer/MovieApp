@@ -1,5 +1,6 @@
 package com.example.irishka.movieapp.domain.repository;
 
+import com.example.irishka.movieapp.data.models.MovieModel;
 import com.example.irishka.movieapp.domain.entity.Cast;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
@@ -19,4 +20,6 @@ public interface IMoviesRepository {
     Single<List<Cast>> downloadCasts(long movieId);
 
     Single<List<Movie>> downloadActorFilms(long id);
+
+    Single<List<Movie>> getMoviesFromSearchFromInternet(String query, int page);
 }

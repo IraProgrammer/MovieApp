@@ -14,7 +14,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Movie;
-import com.example.irishka.movieapp.ui.movies.view.MoviesListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -4,11 +4,10 @@ import android.graphics.Point;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.example.irishka.movieapp.di.scopes.PerActivity;
-import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.ui.GlideHelper;
-import com.example.irishka.movieapp.ui.movies.presenter.MoviesListPresenter;
 import com.example.irishka.movieapp.ui.movies.view.MoviesListActivity;
 import com.example.irishka.movieapp.ui.movies.view.MoviesListAdapter;
+import com.example.irishka.movieapp.ui.search.view.SearchAdapter;
 
 import dagger.Module;
 import dagger.Provides;

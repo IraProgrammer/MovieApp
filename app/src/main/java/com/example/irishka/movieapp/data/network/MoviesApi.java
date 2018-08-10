@@ -6,8 +6,11 @@ import com.example.irishka.movieapp.data.models.CreditsModel;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.data.models.FilmsModel;
 import com.example.irishka.movieapp.data.models.GalleryModel;
+import com.example.irishka.movieapp.data.models.MovieModel;
 import com.example.irishka.movieapp.data.models.MoviePageModel;
 import com.example.irishka.movieapp.data.models.TrailerListModel;
+
+import java.util.List;
 
 import io.reactivex.Single;
 import retrofit2.http.GET;
@@ -42,4 +45,8 @@ public interface MoviesApi {
 
     @GET("movie/{movie_id}/videos")
     Single<TrailerListModel> getTrailers(@Path("movie_id") long movieId);
+
+    @GET("search/movie/")
+    Single<MoviePageModel> getMoviesFromSearch(@Query("query") String query, @Query("page") int page);
+
 }
