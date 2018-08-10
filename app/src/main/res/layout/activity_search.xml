@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -30,64 +29,20 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="8dp"
+                    android:paddingEnd="8dp"
                     android:background="@color/background_holo_dark"
                     android:foregroundGravity="center_vertical"
                     android:src="@drawable/ic_home" />
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/search_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_margin="6dp"
-                    android:visibility="gone">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <ImageButton
-                            android:id="@+id/btn_close"
-                            android:layout_height="wrap_content"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginEnd="8dp"
-                            android:background="#00000000"
-                            android:foregroundGravity="center_vertical"
-                            android:src="@drawable/ic_home" />
-
-                        <EditText
-                            android:id="@+id/search_edit"
-                            android:layout_height="wrap_content"
-                            android:layout_width="0dp"
-                            android:layout_weight="7"
-                            android:layout_toRightOf="@+id/btn_close"
-                            android:hint="Search"
-                            android:lines="1" />
-
-                        <ImageButton
-                            android:id="@+id/btn_clear"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_margin="8dp"
-                            android:background="#00000000"
-                            android:src="@drawable/ic_close" />
-
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView>
-
-                <ImageButton
-                    android:id="@+id/btn_search"
+                <android.support.v7.widget.SearchView
+                    android:id="@+id/search_view"
+                    app:queryHint="Search"
+                    app:closeIcon="@drawable/ic_close"
+                    app:searchIcon="@drawable/ic_search"
+                    app:searchHintIcon="@null"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_margin="8dp"
                     android:background="#00000000"
                     android:foregroundGravity="center_vertical"
                     android:src="@drawable/ic_search" />

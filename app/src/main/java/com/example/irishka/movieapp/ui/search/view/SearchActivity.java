@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -38,20 +39,8 @@ import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOV
 public class SearchActivity extends MvpAppCompatActivity implements com.example.irishka.movieapp.ui.search.view.SearchView,
         com.example.irishka.movieapp.ui.search.view.SearchAdapter.OnItemClickListener {
 
-    @BindView(R.id.btn_clear)
-    ImageButton btnClear;
-
-    @BindView(R.id.btn_close)
-    ImageButton btnClose;
-
-    @BindView(R.id.search_edit)
-    EditText searchEdit;
-
-    @BindView(R.id.btn_search)
-    ImageButton btnSearch;
-
-    @BindView(R.id.search_card)
-    CardView searchCard;
+    @BindView(R.id.search_view)
+    SearchView searchView;
 
     @BindView(R.id.btn_home)
     ImageButton btnHome;
@@ -78,7 +67,7 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
 
     private boolean isLoading;
 
-    String query;
+    String query = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,17 +76,7 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
 
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                searchCard.setVisibility(View.VISIBLE);
-                searchEdit.requestFocus();
-                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.showSoftInput(searchEdit, 0);
-                }
-            }
-        });
+        searchView.setIconified(false);
 
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,58 +85,26 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
             }
         });
 
-        btnClose.setOnClickListener(new View.OnClickListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onClick(View view) {
-                    searchCard.setVisibility(View.GONE);
-//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    imm.hideSoftInputFromWindow(btnClose.getWindowToken(),
-//                            InputMethodManager.HIDE_NOT_ALWAYS);
+            public boolean onQueryTextSubmit(String s) {
+                if (!query.equals(s)) {
+                    query = s;
+                    searchAdapter.clearList();
+                    searchPresenter.downloadMoviesFromSearch(s);
 
-                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.hideSoftInputFromWindow(searchEdit.getWindowToken(), 0);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(searchView.getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
                 }
+
+                return true;
+            }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
             }
         });
-
-        btnClear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                searchEdit.setText("");
-            }
-        });
-
-        searchEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                searchPresenter.downloadMoviesFromSearch(editable.toString());
-                Toast.makeText(SearchActivity.this, "text", Toast.LENGTH_LONG).show();
-            }
-        });
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String s) {
-//                query = s;
-//                searchPresenter.downloadMoviesFromSearch(s);
-//                Toast.makeText(SearchActivity.this, "text", Toast.LENGTH_LONG).show();
-//                return true;
-//            }
-//            @Override
-//            public boolean onQueryTextChange(String s) {
-//                return false;
-//            }
-//        });
 
         searchRecyclerView.setLayoutManager(linearLayoutManager);
 
