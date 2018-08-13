@@ -100,27 +100,27 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
             }
         });
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                if (!query.equals(s)) {
-                    query = s;
-                    searchAdapter.clearList();
-                    searchPresenter.downloadMoviesFromSearch(s);
-
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(searchView.getWindowToken(),
-                            InputMethodManager.HIDE_NOT_ALWAYS);
-                }
-
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String s) {
+//                if (!query.equals(s)) {
+//                    query = s;
+//                    searchAdapter.clearList();
+//                    searchPresenter.downloadMoviesFromSearch(s);
+//
+//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.hideSoftInputFromWindow(searchView.getWindowToken(),
+//                            InputMethodManager.HIDE_NOT_ALWAYS);
+//                }
+//
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String s) {
+//                return false;
+//            }
+//        });
 
         searchRecyclerView.setLayoutManager(linearLayoutManager);
 
@@ -150,16 +150,26 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
 
             @Override
             public boolean onQueryTextSubmit(String s) {
-                return false;
+            //    items.add(query);
+            //    loadHistory(query);
+
+                query = s;
+                    searchAdapter.clearList();
+                    searchPresenter.downloadMoviesFromSearch(s);
+
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(searchView.getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+
+                    items.add(s);
+
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String query) {
-
                 loadHistory(query);
-
                 return true;
-
             }
 
         });
@@ -168,38 +178,28 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
         items.add("qwerty1");
         items.add("qwerty2");
 
-
     }
 
     // History
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void loadHistory(String query) {
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 
-            // Cursor
-            String[] columns = new String[] { "_id", "text" };
-            Object[] temp = new Object[] { 0, "default" };
+            String[] columns = new String[]{"_id", "text"};
+            Object[] temp = new Object[]{0, "default"};
 
             MatrixCursor cursor = new MatrixCursor(columns);
 
-            for(int i = 0; i < items.size(); i++) {
-
+            for (int i = 0; i < items.size(); i++) {
                 temp[0] = i;
                 temp[1] = items.get(i);
-
-                        cursor.addRow(temp);
+                cursor.addRow(temp);
 
             }
-
-            // SearchView
-            SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-
-            searchView.setSuggestionsAdapter(new ExampleAdapter(this, cursor, items));
+              searchView.setSuggestionsAdapter(new ExampleAdapter(this, cursor, items));
         }
-
-}
-
+    }
 
     @Override
     public void showMovies(List<Movie> movies) {
