@@ -23,4 +23,7 @@
     <string name="see_soon">See soon</string>
 
     <string name="transition_name">image</string>
+
+    <string name="app_label">MovieApp</string>
+    <string name="search_hint">Hint</string>
 </resources>

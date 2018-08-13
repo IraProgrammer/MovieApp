@@ -15,12 +15,13 @@ import com.example.irishka.movieapp.domain.entity.Image;
 import com.example.irishka.movieapp.ui.GlideHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 public class SlideGalleryAdapter extends PagerAdapter {
 
-    private ArrayList<Image> backdrops;
+    private List<Image> backdrops;
 
     private GlideHelper glideHelper;
 
@@ -31,7 +32,7 @@ public class SlideGalleryAdapter extends PagerAdapter {
 //    ImageView imageView;
 
     @Inject
-    public SlideGalleryAdapter(ArrayList<Image> backdrops, GlideHelper glideHelper,
+    public SlideGalleryAdapter(List<Image> backdrops, GlideHelper glideHelper,
                                ImagePagerActivity i
     ) {
         this.backdrops = backdrops;

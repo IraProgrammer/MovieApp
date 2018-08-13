@@ -86,7 +86,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
                     .apply(new RequestOptions()
                             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                             .placeholder(R.drawable.no_image)
-                            .override(120, Target.SIZE_ORIGINAL))
+                            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
                     .into(image);
         }
     }

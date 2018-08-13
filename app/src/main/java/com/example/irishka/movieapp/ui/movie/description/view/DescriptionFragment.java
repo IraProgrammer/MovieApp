@@ -50,6 +50,10 @@ import static com.example.irishka.movieapp.ui.slideGallery.ImagePagerActivity.RE
 public class DescriptionFragment extends MvpAppCompatFragment
         implements DescriptionView, RelatedMoviesAdapter.OnItemClickListener, GalleryAdapter.OnItemClickListener {
 
+    public static final String ARRAY_LIST = "ARRAYLIST";
+
+    public static final String POSITION = "POSITION";
+
     @Inject
     RelatedMoviesAdapter relatedMoviesAdapter;
 
@@ -226,8 +230,8 @@ public class DescriptionFragment extends MvpAppCompatFragment
     @Override
     public void onItemClick(List<Image> backdrops, int position, View item, ImageView image) {
         Intent intent = new Intent(getContext(), ImagePagerActivity.class);
-        intent.putExtra("ARRAYLIST", (ArrayList<Image>) backdrops);
-        intent.putExtra("POSITION", position);
+        intent.putExtra(ARRAY_LIST, (ArrayList<Image>) backdrops);
+        intent.putExtra(POSITION, position);
 
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 getActivity(),
@@ -239,27 +243,6 @@ public class DescriptionFragment extends MvpAppCompatFragment
         //  postponeEnterTransition();
 
         //      startActivity(intent, options.toBundle());
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-//        gallery.addOnLayoutChangeListener(
-//                new View.OnLayoutChangeListener() {
-//                    @Override
-//                    public void onLayoutChange(View view, int left, int top, int right, int bottom,
-//                                               int oldLeft, int oldTop, int oldRight, int oldBottom) {
-//                        gallery.removeOnLayoutChangeListener(this);
-//                        final RecyclerView.LayoutManager layoutManager = gallery.getLayoutManager();
-//                        View viewAtPosition = layoutManager.findViewByPosition(currentPosition);
-//                            if (viewAtPosition == null || layoutManager.isViewPartiallyVisible(viewAtPosition, false, true)){
-//                         gallery.post(()
-//                            ->
-//                         layoutManager.scrollToPosition(currentPosition));
-//                            }
-//                    }
-//                });
     }
 
     @Override

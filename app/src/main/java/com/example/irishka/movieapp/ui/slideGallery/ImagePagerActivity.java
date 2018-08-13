@@ -23,6 +23,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
 
+import static com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment.POSITION;
+
 public class ImagePagerActivity extends DaggerAppCompatActivity {
 
     public static final int RES = 1;
@@ -50,7 +52,7 @@ public class ImagePagerActivity extends DaggerAppCompatActivity {
 
         postponeEnterTransition();
 
-        currentPosition = getIntent().getIntExtra("POSITION", 0);
+        currentPosition = getIntent().getIntExtra(POSITION, 0);
 
         init();
 

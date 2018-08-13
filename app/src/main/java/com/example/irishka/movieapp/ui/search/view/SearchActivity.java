@@ -1,10 +1,19 @@
 package com.example.irishka.movieapp.ui.search.view;
 
+import android.annotation.TargetApi;
+import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.os.Build;
 import android.os.Bundle;
 
+import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +22,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -22,9 +33,11 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.ui.ExampleAdapter;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 import com.example.irishka.movieapp.ui.search.presenter.SearchPresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -69,6 +82,8 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
 
     String query = "";
 
+    ArrayList<String> items = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
@@ -81,7 +96,7 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    finish();
+                finish();
             }
         });
 
@@ -100,6 +115,7 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
 
                 return true;
             }
+
             @Override
             public boolean onQueryTextChange(String s) {
                 return false;
@@ -126,7 +142,64 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
 
         searchRecyclerView.setAdapter(searchAdapter);
 
+        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+        searchView.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+
+                loadHistory(query);
+
+                return true;
+
+            }
+
+        });
+
+        items.add("qwerty");
+        items.add("qwerty1");
+        items.add("qwerty2");
+
+
     }
+
+    // History
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void loadHistory(String query) {
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+
+            // Cursor
+            String[] columns = new String[] { "_id", "text" };
+            Object[] temp = new Object[] { 0, "default" };
+
+            MatrixCursor cursor = new MatrixCursor(columns);
+
+            for(int i = 0; i < items.size(); i++) {
+
+                temp[0] = i;
+                temp[1] = items.get(i);
+
+                        cursor.addRow(temp);
+
+            }
+
+            // SearchView
+            SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+            searchView.setSuggestionsAdapter(new ExampleAdapter(this, cursor, items));
+        }
+
+}
+
 
     @Override
     public void showMovies(List<Movie> movies) {
