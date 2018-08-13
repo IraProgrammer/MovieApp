@@ -8,6 +8,7 @@ import com.example.irishka.movieapp.data.database.dao.CastDao;
 import com.example.irishka.movieapp.data.database.dao.CastOfMovieDao;
 import com.example.irishka.movieapp.data.database.dao.GenreDao;
 import com.example.irishka.movieapp.data.database.dao.GenreOfMovieDao;
+import com.example.irishka.movieapp.data.database.dao.KeywordsDao;
 import com.example.irishka.movieapp.data.database.dao.MovieDao;
 import com.example.irishka.movieapp.data.database.dao.RelatedOfMovieDao;
 
@@ -60,5 +61,11 @@ public abstract class DatabaseModule {
     @Provides
     static RelatedOfMovieDao provideRelatedOfMovieDao(AppDatabase database){
         return database.getRelatedOfMovieDao();
+    }
+
+    @Singleton
+    @Provides
+    static KeywordsDao provideKeywordsDao(AppDatabase database){
+        return database.getKeywordsDao();
     }
 }

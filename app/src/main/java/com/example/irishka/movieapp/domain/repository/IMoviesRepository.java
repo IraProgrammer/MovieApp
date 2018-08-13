@@ -22,4 +22,8 @@ public interface IMoviesRepository {
     Single<List<Movie>> downloadActorFilms(long id);
 
     Single<List<Movie>> getMoviesFromSearchFromInternet(String query, int page);
+
+    Single<List<String>> getKeywordsFromInternet(String query);
+
+    Single<List<String>> getKeywordsFromDb();
 }

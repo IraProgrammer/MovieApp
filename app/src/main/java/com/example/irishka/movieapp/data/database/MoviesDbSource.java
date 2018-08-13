@@ -4,20 +4,17 @@ import com.example.irishka.movieapp.data.database.dao.CastDao;
 import com.example.irishka.movieapp.data.database.dao.CastOfMovieDao;
 import com.example.irishka.movieapp.data.database.dao.GenreDao;
 import com.example.irishka.movieapp.data.database.dao.GenreOfMovieDao;
+import com.example.irishka.movieapp.data.database.dao.KeywordsDao;
 import com.example.irishka.movieapp.data.database.dao.MovieDao;
 import com.example.irishka.movieapp.data.database.dao.RelatedOfMovieDao;
 import com.example.irishka.movieapp.data.database.entity.CastDb;
 import com.example.irishka.movieapp.data.database.entity.CastOfMovie;
 import com.example.irishka.movieapp.data.database.entity.GenreDb;
 import com.example.irishka.movieapp.data.database.entity.GenreOfMovie;
+import com.example.irishka.movieapp.data.database.entity.KeywordDb;
 import com.example.irishka.movieapp.data.database.entity.MovieDb;
 import com.example.irishka.movieapp.data.database.entity.RelatedOfMovie;
-import com.example.irishka.movieapp.data.mappers.CastMapper;
-import com.example.irishka.movieapp.data.mappers.GenreMapper;
-import com.example.irishka.movieapp.data.mappers.MoviesMapper;
-import com.example.irishka.movieapp.data.network.MoviesApi;
-import com.example.irishka.movieapp.domain.entity.Genre;
-import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.domain.entity.Keyword;
 
 import java.util.List;
 
@@ -39,16 +36,19 @@ public class MoviesDbSource {
 
     private RelatedOfMovieDao relatedOfMovieDao;
 
+    private KeywordsDao keywordsDao;
+
     @Inject
     public MoviesDbSource(MovieDao movieDao, CastDao castDao, GenreDao genreDao,
                           GenreOfMovieDao genreOfMovieDao, CastOfMovieDao castOfMovieDao,
-                          RelatedOfMovieDao relatedOfMovieDao) {
+                          RelatedOfMovieDao relatedOfMovieDao, KeywordsDao keywordsDao) {
         this.movieDao = movieDao;
         this.castDao = castDao;
         this.genreDao = genreDao;
         this.genreOfMovieDao = genreOfMovieDao;
         this.castOfMovieDao = castOfMovieDao;
         this.relatedOfMovieDao = relatedOfMovieDao;
+        this.keywordsDao = keywordsDao;
     }
 
     public void insertAllMovies(List<MovieDb> moviesDb) {
@@ -117,5 +117,13 @@ public class MoviesDbSource {
 
     public void insertAllRoM(List<RelatedOfMovie> relatedOfMovies) {
         relatedOfMovieDao.trans(relatedOfMovies);
+    }
+
+    public void insertKeyword(KeywordDb keywordDb) {
+        keywordsDao.insert(keywordDb);
+    }
+
+    public Single<List<KeywordDb>> getKeywords() {
+        return keywordsDao.getKeywords();
     }
 }

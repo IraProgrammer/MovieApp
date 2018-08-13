@@ -23,9 +23,6 @@ public interface MovieDao {
     @Query("SELECT * FROM MovieDb")
     Single<List<MovieDb>> getAllMovies();
 
-//    @Query("SELECT * FROM MovieDb WHERE relatedId = :movieId")
-//    Single<List<MovieDb>> getRelatedMovies(long movieId);
-
     @Query("SELECT * FROM MovieDb WHERE id = :movieId")
     Single<MovieDb> getMovie(long movieId);
 

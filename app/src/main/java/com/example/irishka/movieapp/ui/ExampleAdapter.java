@@ -29,6 +29,7 @@ public class ExampleAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
+        if (cursor.getPosition() < items.size())
         text.setText(items.get(cursor.getPosition()));
 
     }

@@ -8,6 +8,8 @@ import com.example.irishka.movieapp.data.models.CreditsModel;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.data.models.FilmsModel;
 import com.example.irishka.movieapp.data.models.GalleryModel;
+import com.example.irishka.movieapp.data.models.KeywordModel;
+import com.example.irishka.movieapp.data.models.KeywordsPageModel;
 import com.example.irishka.movieapp.data.models.MovieModel;
 import com.example.irishka.movieapp.data.models.MoviePageModel;
 import com.example.irishka.movieapp.data.models.TrailerListModel;
@@ -72,4 +74,8 @@ public class MoviesNetworkSource {
     public Single<List<MovieModel>> getMoviesFromSearch(String query, int page) {
         return  moviesApi.getMoviesFromSearch(query, page)
                 .map(MoviePageModel::getResults); }
+
+    public Single<List<KeywordModel>> getKeywords(String query) {
+        return  moviesApi.getKeywords(query)
+                .map(KeywordsPageModel::getResults); }
 }

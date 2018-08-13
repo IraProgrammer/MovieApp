@@ -21,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -82,6 +83,8 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
 
     String query = "";
 
+    ExampleAdapter exampleAdapter;
+
     ArrayList<String> items = new ArrayList<>();
 
     @Override
@@ -99,28 +102,6 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
                 finish();
             }
         });
-
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String s) {
-//                if (!query.equals(s)) {
-//                    query = s;
-//                    searchAdapter.clearList();
-//                    searchPresenter.downloadMoviesFromSearch(s);
-//
-//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    imm.hideSoftInputFromWindow(searchView.getWindowToken(),
-//                            InputMethodManager.HIDE_NOT_ALWAYS);
-//                }
-//
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String s) {
-//                return false;
-//            }
-//        });
 
         searchRecyclerView.setLayoutManager(linearLayoutManager);
 
@@ -150,55 +131,102 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
 
             @Override
             public boolean onQueryTextSubmit(String s) {
-            //    items.add(query);
-            //    loadHistory(query);
 
                 query = s;
-                    searchAdapter.clearList();
-                    searchPresenter.downloadMoviesFromSearch(s);
+                searchAdapter.clearList();
+                searchPresenter.downloadMoviesFromSearch(s);
 
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(searchView.getWindowToken(),
-                            InputMethodManager.HIDE_NOT_ALWAYS);
-
-                    items.add(s);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(searchView.getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
 
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String query) {
-                loadHistory(query);
+
+                if (query.length() < 1) {
+                    loadHistoryFromDb(query);
+                } else {
+                    loadFromInternet(query);
+                }
                 return true;
             }
 
         });
 
-        items.add("qwerty");
-        items.add("qwerty1");
-        items.add("qwerty2");
+        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+            @Override
+            public boolean onSuggestionSelect(int i) {
+                return false;
+            }
+
+            @Override
+            public boolean onSuggestionClick(int i) {
+
+                searchAdapter.clearList();
+                searchPresenter.downloadMoviesFromSearch(items.get(i));
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(searchView.getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+                //    searchPresenter.insertKeywordToDb(items.get(i));
+                return true;
+            }
+        });
+
+        loadHistoryFromDb(query);
 
     }
 
-    // History
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void loadHistory(String query) {
+    @Override
+    public void notifyItems(List<String> items) {
+        this.items = new ArrayList<>();
+        this.items.addAll(items);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+        //TODO не обновлять в главном потоке. запровайдить зависимости и обновлять в адвпткрк через сетЛист -> обновить
+//        if (exampleAdapter != null) {
+//            exampleAdapter.notifyDataSetChanged();
+//        }
+    }
 
-            String[] columns = new String[]{"_id", "text"};
-            Object[] temp = new Object[]{0, "default"};
+    private void loadHistoryFromDb(String query) {
 
-            MatrixCursor cursor = new MatrixCursor(columns);
+        searchPresenter.downloadKeywordsFromDb();
 
-            for (int i = 0; i < items.size(); i++) {
-                temp[0] = i;
-                temp[1] = items.get(i);
-                cursor.addRow(temp);
+        String[] columns = new String[]{"_id", "text"};
+        Object[] temp = new Object[]{0, "default"};
 
-            }
-              searchView.setSuggestionsAdapter(new ExampleAdapter(this, cursor, items));
+        MatrixCursor cursor = new MatrixCursor(columns);
+
+        for (int i = 0; i < items.size(); i++) {
+            temp[0] = i;
+            temp[1] = items.get(i);
+            cursor.addRow(temp);
         }
+
+        searchView.setSuggestionsAdapter(new ExampleAdapter(this, cursor, items));
+    }
+
+    private void loadFromInternet(String query) {
+
+        searchPresenter.downloadKeywords(query);
+
+        String[] columns = new String[]{"_id", "text"};
+        Object[] temp = new Object[]{0, "default"};
+
+        MatrixCursor cursor = new MatrixCursor(columns);
+
+        for (int i = 0; i < items.size(); i++) {
+            temp[0] = i;
+            temp[1] = items.get(i);
+            cursor.addRow(temp);
+        }
+
+        exampleAdapter = new ExampleAdapter(this, cursor, items);
+
+        searchView.setSuggestionsAdapter(exampleAdapter);
     }
 
     @Override

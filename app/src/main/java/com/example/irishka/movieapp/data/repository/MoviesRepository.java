@@ -3,8 +3,10 @@ package com.example.irishka.movieapp.data.repository;
 import android.util.Pair;
 
 import com.example.irishka.movieapp.data.database.MoviesDbSource;
+import com.example.irishka.movieapp.data.database.entity.KeywordDb;
 import com.example.irishka.movieapp.data.mappers.CastMapper;
 import com.example.irishka.movieapp.data.mappers.GenreMapper;
+import com.example.irishka.movieapp.data.mappers.KeywordsMapper;
 import com.example.irishka.movieapp.data.mappers.MoviesMapper;
 import com.example.irishka.movieapp.data.models.BackdropModel;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
@@ -13,6 +15,7 @@ import com.example.irishka.movieapp.data.models.TrailerModel;
 import com.example.irishka.movieapp.data.network.MoviesNetworkSource;
 import com.example.irishka.movieapp.domain.entity.Cast;
 import com.example.irishka.movieapp.domain.entity.Genre;
+import com.example.irishka.movieapp.domain.entity.Keyword;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
@@ -31,16 +34,19 @@ public class MoviesRepository implements IMoviesRepository {
 
     private GenreMapper genreMapper;
 
+    private KeywordsMapper keywordsMapper;
+
     private MoviesDbSource dbSource;
 
     private MoviesNetworkSource networkSource;
 
     @Inject
-    public MoviesRepository(MoviesMapper moviesMapper, CastMapper castMapper, GenreMapper genreMapper,
+    public MoviesRepository(MoviesMapper moviesMapper, CastMapper castMapper, GenreMapper genreMapper, KeywordsMapper keywordsMapper,
                             MoviesNetworkSource networkSource, MoviesDbSource dbSource) {
         this.moviesMapper = moviesMapper;
         this.castMapper = castMapper;
         this.genreMapper = genreMapper;
+        this.keywordsMapper = keywordsMapper;
         this.networkSource = networkSource;
         this.dbSource = dbSource;
     }
@@ -233,6 +239,25 @@ public class MoviesRepository implements IMoviesRepository {
     @Override
     public Single<List<Movie>> getMoviesFromSearchFromInternet(String query, int page){
         return networkSource.getMoviesFromSearch(query, page)
-                .map(movieModels -> moviesMapper.mapMovies(movieModels));
+                .map(movieModels -> moviesMapper.mapMovies(movieModels))
+                .doOnSuccess(movies -> insertKeyword(query));
+    }
+
+    @Override
+    public Single<List<String>> getKeywordsFromInternet(String query) {
+        return networkSource.getKeywords(query)
+                .map(keywordModels -> keywordsMapper.mapKeywordList(keywordModels));
+    }
+
+    private void insertKeyword(String keyword){
+
+        dbSource.insertKeyword(new KeywordDb(keyword));
+    }
+
+    @Override
+    public Single<List<String>> getKeywordsFromDb() {
+        return dbSource.getKeywords()
+                .map(keywordsDb -> keywordsMapper.mapKeywordListFromDb(keywordsDb))
+                .subscribeOn(Schedulers.io());
     }
 }
