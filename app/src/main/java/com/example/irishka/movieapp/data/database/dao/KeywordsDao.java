@@ -16,7 +16,7 @@ import io.reactivex.Single;
 @Dao
 public interface KeywordsDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(KeywordDb keywordDb);
 
     @Query("SELECT * FROM KeywordDb")

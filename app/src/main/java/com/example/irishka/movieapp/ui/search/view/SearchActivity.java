@@ -131,10 +131,10 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
             @Override
             public boolean onQueryTextChange(String query) {
 
-                if (query.length() < 1) {
-                    loadHistoryFromDb(query);
+                if (query.length() == 0) {
+                    searchPresenter.downloadKeywordsFromDb();
                 } else {
-                    loadFromInternet(query);
+                    searchPresenter.downloadKeywords(query);
                 }
                 return true;
             }
@@ -150,66 +150,29 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
             @Override
             public boolean onSuggestionClick(int i) {
 
-                searchAdapter.clearList();
-                searchPresenter.downloadMoviesFromSearch(items.get(i));
-
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(searchView.getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-                //    searchPresenter.insertKeywordToDb(items.get(i));
+                searchView.setQuery(items.get(i), true);
                 return true;
             }
         });
 
-        loadHistoryFromDb(query);
-
     }
 
     @Override
-    public void notifyItems(List<String> items) {
+    public void load(String query, List<String> items) {
+
+        String[] columns = new String[]{"_id", "text"};
+        Object[] temp = new Object[]{0, "default"};
+
+        MatrixCursor cursor = new MatrixCursor(columns);
+
+        for (int i = 0; i < items.size(); i++) {
+            temp[0] = i;
+            temp[1] = items.get(i);
+            cursor.addRow(temp);
+        }
+
         this.items = new ArrayList<>();
         this.items.addAll(items);
-
-        //TODO не обновлять в главном потоке. запровайдить зависимости и обновлять в адвпткрк через сетЛист -> обновить
-        //убрать айтемс из конструктора
-
-//        if (exampleAdapter != null) {
-//            exampleAdapter.notifyDataSetChanged();
-//        }
-    }
-
-    private void loadHistoryFromDb(String query) {
-
-        searchPresenter.downloadKeywordsFromDb();
-
-        String[] columns = new String[]{"_id", "text"};
-        Object[] temp = new Object[]{0, "default"};
-
-        MatrixCursor cursor = new MatrixCursor(columns);
-
-        for (int i = 0; i < items.size(); i++) {
-            temp[0] = i;
-            temp[1] = items.get(i);
-            cursor.addRow(temp);
-        }
-
-        searchView.setSuggestionsAdapter(new ExampleAdapter(this, cursor, items));
-    }
-
-    private void loadFromInternet(String query) {
-
-        searchPresenter.downloadKeywords(query);
-
-        String[] columns = new String[]{"_id", "text"};
-        Object[] temp = new Object[]{0, "default"};
-
-        MatrixCursor cursor = new MatrixCursor(columns);
-
-        for (int i = 0; i < items.size(); i++) {
-            temp[0] = i;
-            temp[1] = items.get(i);
-            cursor.addRow(temp);
-        }
 
         exampleAdapter = new ExampleAdapter(this, cursor, items);
 

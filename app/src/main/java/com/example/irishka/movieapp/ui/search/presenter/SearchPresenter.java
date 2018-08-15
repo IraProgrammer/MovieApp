@@ -26,6 +26,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
+        downloadKeywordsFromDb();
     }
 
     public void downloadMoviesFromSearch(String query) {
@@ -46,14 +47,16 @@ public class SearchPresenter extends BasePresenter<SearchView> {
     public void downloadKeywords(String query) {
 
         addDisposables(moviesRepository.getKeywordsFromInternet(query)
-                .subscribe(keywords -> getViewState().notifyItems(keywords), throwable -> {
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(keywords -> getViewState().load(query, keywords), throwable -> {
                 }));
     }
 
     public void downloadKeywordsFromDb() {
 
         addDisposables(moviesRepository.getKeywordsFromDb()
-                .subscribe(keywords -> getViewState().notifyItems(keywords), throwable -> {
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(keywords -> getViewState().load(query, keywords), throwable -> {
                 }));
     }
 

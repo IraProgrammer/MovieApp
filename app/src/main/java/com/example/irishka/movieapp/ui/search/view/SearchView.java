@@ -9,7 +9,9 @@ public interface SearchView extends MvpView {
 
     void finishLoading();
 
-    void notifyItems(List<String> items);
+  //  void setItems(List<String> items);
+
+    void load(String query, List<String> items);
 
     void showMovies(List<Movie> movies);
 
