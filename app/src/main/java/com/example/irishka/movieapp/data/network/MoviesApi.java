@@ -53,9 +53,6 @@ public interface MoviesApi {
     @GET("search/keyword")
     Single<KeywordsPageModel> getKeywords(@Query("query") String query);
 
-    @GET("movie/latest/")
-    Single<MoviePageModel> getLatest(@Query("page") int page);
-
     @GET("movie/now_playing/")
     Single<MoviePageModel> getNowPlaying(@Query("page") int page);
 

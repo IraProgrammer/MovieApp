@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.ui.actor.films.view.FilmsFragment;
 import com.example.irishka.movieapp.ui.actor.info.view.InfoFragment;
 import com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment;
@@ -12,9 +13,12 @@ import javax.inject.Inject;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    private MoviesListActivity moviesListActivity;
+    public static final String NOW_PLAYING = "now_playing";
+    public static final String POPULAR = "popular";
+    public static final String TOP_RATED = "top_rated";
+    public static final String UPCOMING = "upcoming";
 
-    private MainFilmsFragment latest;
+    private MoviesListActivity moviesListActivity;
 
     private MainFilmsFragment nowPlaying;
 
@@ -34,28 +38,23 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                if (latest == null) {
-                    latest = MainFilmsFragment.newInstance();
-                }
-                return latest;
-            case 1:
                 if (nowPlaying == null) {
-                    nowPlaying = MainFilmsFragment.newInstance();
+                    nowPlaying = MainFilmsFragment.newInstance(NOW_PLAYING);
                 }
                 return nowPlaying;
-            case 2:
+            case 1:
                 if (popular == null) {
-                    popular = MainFilmsFragment.newInstance();
+                    popular = MainFilmsFragment.newInstance(POPULAR);
                 }
                 return popular;
-            case 3:
+            case 2:
                 if (topRated == null) {
-                    topRated = MainFilmsFragment.newInstance();
+                    topRated = MainFilmsFragment.newInstance(TOP_RATED);
                 }
                 return topRated;
-            case 4:
+            case 3:
                 if (upcoming == null) {
-                    upcoming = MainFilmsFragment.newInstance();
+                    upcoming = MainFilmsFragment.newInstance(UPCOMING);
                 }
                 return upcoming;
             default:
@@ -65,22 +64,20 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 5;
+        return 4;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "1";
+                return moviesListActivity.getString(R.string.now_playing_fragment);
             case 1:
-                return "2";
+                return moviesListActivity.getString(R.string.popular_fragment);
             case 2:
-                return "3";
+                return moviesListActivity.getString(R.string.top_rated_fragment);
             case 3:
-                return "4";
-            case 4:
-                return "5";
+                return moviesListActivity.getString(R.string.upcoming_fragment);
             default:
                 return "";
         }

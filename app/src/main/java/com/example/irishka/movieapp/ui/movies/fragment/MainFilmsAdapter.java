@@ -12,8 +12,12 @@ import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.GlideHelper;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -48,7 +52,7 @@ public class MainFilmsAdapter extends RecyclerView.Adapter<MainFilmsAdapter.Main
     @NonNull
     @Override
     public MainFilmsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MainFilmsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false), onItemClickListener, glideHelper);
+        return new MainFilmsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.film_item, parent, false), onItemClickListener, glideHelper);
     }
 
     @Override
@@ -72,6 +76,12 @@ public class MainFilmsAdapter extends RecyclerView.Adapter<MainFilmsAdapter.Main
         @BindView(R.id.movie_text)
         TextView title;
 
+        @BindView(R.id.rate_text)
+        TextView rateText;
+
+        @BindView(R.id.adult_text)
+        TextView adultText;
+
         @BindView(R.id.movie_image)
         ImageView image;
 
@@ -82,9 +92,28 @@ public class MainFilmsAdapter extends RecyclerView.Adapter<MainFilmsAdapter.Main
             this.glideHelper = glideHelper;
         }
 
+        private String getDate() {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            return dateFormat.format(new Date());
+        }
+
+        private int getYear(String releaseDate) {
+            return Integer.parseInt(releaseDate.split("-")[0]);
+        }
+
         void bind(Movie movie) {
 
             title.setText(movie.getTitle());
+
+            if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
+                rateText.setText(itemView.getContext().getString(R.string.see_soon));
+            } else {
+                rateText.setText(String.format(itemView.getContext().getString(R.string.vote_average), (float) movie.getVoteAverage()));
+            }
+
+            String adult = "";
+            if (movie.getAdult()) adult = itemView.getContext().getString(R.string.adult);
+            adultText.setText(adult);
 
             itemView.setOnClickListener(view -> onItemClickListener.onItemClick(movie));
 

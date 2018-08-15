@@ -79,12 +79,6 @@ public class MoviesNetworkSource {
         return  moviesApi.getKeywords(query)
                 .map(KeywordsPageModel::getResults); }
 
-
-    public Single<List<MovieModel>> getLatest(int page){
-        return moviesApi.getLatest(page)
-                .map(MoviePageModel::getResults);
-    }
-
     public Single<List<MovieModel>> getNowPlaying(int page){
         return moviesApi.getNowPlaying(page)
                 .map(MoviePageModel::getResults);

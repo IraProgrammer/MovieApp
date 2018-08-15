@@ -262,14 +262,6 @@ public class MoviesRepository implements IMoviesRepository {
     }
 
     @Override
-    public Single<List<Movie>> getLatestFromInternet(int page) {
-        return networkSource
-                .getLatest(page)
-                .map(movieModels -> moviesMapper.mapMovies(movieModels));
-           //     .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
-    }
-
-    @Override
     public Single<List<Movie>> getNowPlayingFromInternet(int page) {
         return networkSource
                 .getNowPlaying(page)

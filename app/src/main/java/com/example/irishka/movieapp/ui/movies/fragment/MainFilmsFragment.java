@@ -27,6 +27,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 
+import static com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter.NOW_PLAYING;
+import static com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter.POPULAR;
+
 public class MainFilmsFragment extends MvpAppCompatFragment
         implements MainFilmsView, MainFilmsAdapter.OnItemClickListener {
 
@@ -54,8 +57,15 @@ public class MainFilmsFragment extends MvpAppCompatFragment
 
     private boolean isLoading;
 
-    public static MainFilmsFragment newInstance() {
-        return new MainFilmsFragment();
+    public static MainFilmsFragment newInstance(String type) {
+
+        Bundle bundle = new Bundle();
+        bundle.putString("TYPE", type);
+
+        MainFilmsFragment mainFilmsFragment = new MainFilmsFragment();
+        mainFilmsFragment.setArguments(bundle);
+
+        return mainFilmsFragment;
     }
 
     @Override

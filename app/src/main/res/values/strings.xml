@@ -26,4 +26,10 @@
 
     <string name="app_label">MovieApp</string>
     <string name="search_hint">Hint</string>
+
+    <string name="latest_fragment">Latest</string>
+    <string name="now_playing_fragment">Now playing</string>
+    <string name="popular_fragment">Popular</string>
+    <string name="top_rated_fragment">Top Rated</string>
+    <string name="upcoming_fragment">Upcoming</string>
 </resources>
