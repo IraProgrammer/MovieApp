@@ -15,6 +15,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
 
+import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.TITLE;
+
 public class MovieActivity extends DaggerAppCompatActivity {
 
     @BindView(R.id.tabs)
@@ -42,7 +44,7 @@ public class MovieActivity extends DaggerAppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         //TODO title?
-        toolbarTitle.setText(getIntent().getStringExtra("TITLE"));
+        toolbarTitle.setText(getIntent().getStringExtra(TITLE));
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

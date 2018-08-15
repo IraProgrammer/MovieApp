@@ -34,6 +34,7 @@ import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 
 import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.MOVIE_ID;
+import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.TITLE;
 
 public class SearchActivity extends MvpAppCompatActivity implements com.example.irishka.movieapp.ui.search.view.SearchView,
         com.example.irishka.movieapp.ui.search.view.SearchAdapter.OnItemClickListener {
@@ -101,7 +102,7 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
                 if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
                         && lastVisibleItemPosition >= 0) {
                     isLoading = true;
-                    searchPresenter.downloadMoviesFromSearch(query);
+                    searchPresenter.downloadMoviesFromSearch(query, true);
                 }
             }
         });
@@ -119,7 +120,7 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
 
                 query = s;
                 searchAdapter.clearList();
-                searchPresenter.downloadMoviesFromSearch(s);
+                searchPresenter.downloadMoviesFromSearch(s, false);
 
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(searchView.getWindowToken(),
@@ -193,7 +194,7 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
     public void onItemClick(Movie movie) {
         Intent intent = new Intent(this, MovieActivity.class);
         intent.putExtra(MOVIE_ID, movie.getId());
-        intent.putExtra("TITLE", movie.getTitle());
+        intent.putExtra(TITLE, movie.getTitle());
         startActivity(intent);
     }
 }

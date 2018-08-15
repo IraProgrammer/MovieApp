@@ -18,6 +18,7 @@ import dagger.Module;
 import dagger.Provides;
 
 import static com.example.irishka.movieapp.ui.movie.creators.view.CreatorsFragment.PERSON_ID;
+import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.TYPE;
 
 @Module
 public class MainFilmsFragmentModule {
@@ -25,7 +26,7 @@ public class MainFilmsFragmentModule {
     @Provides
     @PerFragment
     static String provideType(MainFilmsFragment mainFilmsFragment) {
-        return mainFilmsFragment.getArguments().getString("TYPE");
+        return mainFilmsFragment.getArguments().getString(TYPE);
     }
 
     @Provides

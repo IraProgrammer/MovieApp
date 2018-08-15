@@ -35,6 +35,10 @@ public class MainFilmsFragment extends MvpAppCompatFragment
 
     public static final String MOVIE_ID = "movie_id";
 
+    public static final String TYPE = "type";
+
+    public static final String TITLE = "title";
+
     @Inject
     MainFilmsAdapter filmsAdapter;
 
@@ -60,7 +64,7 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     public static MainFilmsFragment newInstance(String type) {
 
         Bundle bundle = new Bundle();
-        bundle.putString("TYPE", type);
+        bundle.putString(TYPE, type);
 
         MainFilmsFragment mainFilmsFragment = new MainFilmsFragment();
         mainFilmsFragment.setArguments(bundle);
@@ -128,7 +132,7 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     public void onItemClick(Movie movie) {
         Intent intent = new Intent(getActivity(), MovieActivity.class);
         intent.putExtra(MOVIE_ID, movie.getId());
-        intent.putExtra("TITLE", movie.getTitle());
+        intent.putExtra(TITLE, movie.getTitle());
         startActivity(intent);
     }
 }

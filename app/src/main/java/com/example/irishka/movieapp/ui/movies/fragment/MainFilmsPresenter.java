@@ -20,7 +20,7 @@ public class MainFilmsPresenter extends BasePresenter<MainFilmsView> {
 
     private int page = 1;
 
-    String type;
+    private String type;
 
     @Inject
     public MainFilmsPresenter(IMoviesRepository repository, String type) {
@@ -50,7 +50,7 @@ public class MainFilmsPresenter extends BasePresenter<MainFilmsView> {
         }
     }
 
-    public void downloadNowPlaying() {
+    private void downloadNowPlaying() {
 
         addDisposables(moviesRepository.getNowPlayingFromInternet(page)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -60,7 +60,7 @@ public class MainFilmsPresenter extends BasePresenter<MainFilmsView> {
                 .subscribe(movies -> getViewState().showMovies(movies), throwable -> {}));
     }
 
-    public void downloadPopular() {
+    private void downloadPopular() {
 
         addDisposables(moviesRepository.getPopularFromInternet(page)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -70,7 +70,7 @@ public class MainFilmsPresenter extends BasePresenter<MainFilmsView> {
                 .subscribe(movies -> getViewState().showMovies(movies), throwable -> {}));
     }
 
-    public void downloadTopRated() {
+    private void downloadTopRated() {
 
         addDisposables(moviesRepository.getTopRatedFromInternet(page)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -80,7 +80,7 @@ public class MainFilmsPresenter extends BasePresenter<MainFilmsView> {
                 .subscribe(movies -> getViewState().showMovies(movies), throwable -> {}));
     }
 
-    public void downloadUpcoming() {
+    private void downloadUpcoming() {
 
         addDisposables(moviesRepository.getUpcomingFromInternet(page)
                 .observeOn(AndroidSchedulers.mainThread())

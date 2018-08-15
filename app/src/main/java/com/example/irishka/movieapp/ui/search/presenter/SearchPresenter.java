@@ -29,12 +29,16 @@ public class SearchPresenter extends BasePresenter<SearchView> {
         downloadKeywordsFromDb();
     }
 
-    public void downloadMoviesFromSearch(String query) {
+    public void downloadMoviesFromSearch(String query, Boolean isNext) {
 
         if (!this.query.equals(query)) {
             this.query = query;
             this.page = 1;
         }
+        else if (this.query.equals(query) && !isNext){
+            this.page = 1;
+        }
+
             addDisposables(moviesRepository.getMoviesFromSearchFromInternet(query, page)
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnSuccess(movies -> getViewState().finishLoading())
@@ -59,10 +63,5 @@ public class SearchPresenter extends BasePresenter<SearchView> {
                 .subscribe(keywords -> getViewState().load(query, keywords), throwable -> {
                 }));
     }
-
-//    public void insertKeywordToDb(String keyword) {
-//
-//        moviesRepository.insertKeyword(keyword);
-//    }
 }
 
