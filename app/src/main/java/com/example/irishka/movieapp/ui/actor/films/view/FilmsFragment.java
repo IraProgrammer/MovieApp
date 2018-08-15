@@ -12,7 +12,6 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
-import com.example.irishka.movieapp.data.models.MovieModel;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.actor.films.presenter.FilmsPresenter;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
@@ -26,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 
-import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOVIE_ID;
+import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.MOVIE_ID;
 
 public class FilmsFragment extends MvpAppCompatFragment implements FilmsView, FilmsAdapter.OnItemClickListener {
 

@@ -78,4 +78,30 @@ public class MoviesNetworkSource {
     public Single<List<KeywordModel>> getKeywords(String query) {
         return  moviesApi.getKeywords(query)
                 .map(KeywordsPageModel::getResults); }
+
+
+    public Single<List<MovieModel>> getLatest(int page){
+        return moviesApi.getLatest(page)
+                .map(MoviePageModel::getResults);
+    }
+
+    public Single<List<MovieModel>> getNowPlaying(int page){
+        return moviesApi.getNowPlaying(page)
+                .map(MoviePageModel::getResults);
+    }
+
+    public Single<List<MovieModel>> getPopular(int page){
+        return moviesApi.getPopular(page)
+                .map(MoviePageModel::getResults);
+    }
+
+    public Single<List<MovieModel>> getTopRated(int page){
+        return moviesApi.getTopRated(page)
+                .map(MoviePageModel::getResults);
+    }
+
+    public Single<List<MovieModel>> getUpcoming(int page){
+        return moviesApi.getUpcoming(page)
+                .map(MoviePageModel::getResults);
+    }
 }

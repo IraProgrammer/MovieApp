@@ -1,14 +1,9 @@
 package com.example.irishka.movieapp.ui.movie.description.view;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.SharedElementCallback;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,7 +30,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -44,8 +38,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 
-import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOVIE_ID;
-import static com.example.irishka.movieapp.ui.slideGallery.ImagePagerActivity.RES;
+import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.MOVIE_ID;
 
 public class DescriptionFragment extends MvpAppCompatFragment
         implements DescriptionView, RelatedMoviesAdapter.OnItemClickListener, GalleryAdapter.OnItemClickListener {

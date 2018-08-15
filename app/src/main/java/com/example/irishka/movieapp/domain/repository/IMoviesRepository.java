@@ -26,4 +26,14 @@ public interface IMoviesRepository {
     Single<List<String>> getKeywordsFromInternet(String query);
 
     Single<List<String>> getKeywordsFromDb();
+
+    Single<List<Movie>> getLatestFromInternet(int page);
+
+    Single<List<Movie>> getNowPlayingFromInternet(int page);
+
+    Single<List<Movie>> getPopularFromInternet(int page);
+
+    Single<List<Movie>> getTopRatedFromInternet(int page);
+
+    Single<List<Movie>> getUpcomingFromInternet(int page);
 }

@@ -1,33 +1,18 @@
 package com.example.irishka.movieapp.ui.search.view;
 
-import android.annotation.TargetApi;
 import android.app.SearchManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.os.Build;
 import android.os.Bundle;
 
-import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -48,7 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 
-import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOVIE_ID;
+import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.MOVIE_ID;
 
 public class SearchActivity extends MvpAppCompatActivity implements com.example.irishka.movieapp.ui.search.view.SearchView,
         com.example.irishka.movieapp.ui.search.view.SearchAdapter.OnItemClickListener {
@@ -186,6 +171,8 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
         this.items.addAll(items);
 
         //TODO не обновлять в главном потоке. запровайдить зависимости и обновлять в адвпткрк через сетЛист -> обновить
+        //убрать айтемс из конструктора
+
 //        if (exampleAdapter != null) {
 //            exampleAdapter.notifyDataSetChanged();
 //        }

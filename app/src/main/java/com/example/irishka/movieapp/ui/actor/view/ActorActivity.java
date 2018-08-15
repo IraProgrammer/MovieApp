@@ -3,12 +3,9 @@ package com.example.irishka.movieapp.ui.actor.view;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.example.irishka.movieapp.R;
 
@@ -23,7 +20,7 @@ public class ActorActivity extends DaggerAppCompatActivity {
     @BindView(R.id.tabs)
     TabLayout tabLayout;
 
-    @BindView(R.id.pager)
+    @BindView(R.id.main_pager)
     ViewPager viewPager;
 
     @BindView(R.id.toolbar_title)

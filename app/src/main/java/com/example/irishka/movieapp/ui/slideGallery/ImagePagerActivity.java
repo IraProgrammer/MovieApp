@@ -1,21 +1,15 @@
 package com.example.irishka.movieapp.ui.slideGallery;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.irishka.movieapp.R;
-
-import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -29,7 +23,7 @@ public class ImagePagerActivity extends DaggerAppCompatActivity {
 
     public static final int RES = 1;
 
-    @BindView(R.id.pager)
+    @BindView(R.id.main_pager)
     ViewPager pager;
 
     @BindView(R.id.count_photo)

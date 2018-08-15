@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.ui.movies.view;
+package com.example.irishka.movieapp.ui.search.view;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +20,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.MoviesViewHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MoviesViewHolder> {
 
     private List<Movie> movies = new ArrayList<>();
 
@@ -29,7 +29,7 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
     private GlideHelper glideHelper;
 
     @Inject
-    public MoviesListAdapter(OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
+    public SearchAdapter(OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
         this.onItemClickListener = onItemClickListener;
         this.glideHelper = glideHelper;
     }
@@ -45,10 +45,15 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
         notifyItemRangeInserted(idStart, idEnd);
     }
 
+    public void clearList() {
+        this.movies = new ArrayList<>();
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public MoviesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MoviesViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false), onItemClickListener, glideHelper);
+        return new MoviesViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.search_item, parent, false), onItemClickListener, glideHelper);
     }
 
     @Override
@@ -69,11 +74,20 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
 
         private GlideHelper glideHelper;
 
-        @BindView(R.id.movie_text)
-        TextView title;
-
         @BindView(R.id.movie_image)
         ImageView image;
+
+        @BindView(R.id.title)
+        TextView title;
+
+        @BindView(R.id.overview)
+        TextView overview;
+
+        @BindView(R.id.rate)
+        TextView rate;
+
+        @BindView(R.id.adult)
+        TextView adult;
 
         MoviesViewHolder(View itemView, OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
             super(itemView);
@@ -85,6 +99,16 @@ public class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.Mo
         void bind(Movie movie) {
 
             title.setText(movie.getTitle());
+
+            overview.setText(movie.getOverview());
+
+            String voteAverage = String.format(itemView.getContext().getString(R.string.vote_average), (float) movie.getVoteAverage());
+
+            rate.setText(voteAverage);
+
+            String adultStr = "";
+            if (movie.getAdult()) adultStr = itemView.getContext().getString(R.string.adult);
+            adult.setText(adultStr);
 
             itemView.setOnClickListener(view -> onItemClickListener.onItemClick(movie));
 

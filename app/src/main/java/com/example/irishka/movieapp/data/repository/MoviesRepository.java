@@ -260,4 +260,47 @@ public class MoviesRepository implements IMoviesRepository {
                 .map(keywordsDb -> keywordsMapper.mapKeywordListFromDb(keywordsDb))
                 .subscribeOn(Schedulers.io());
     }
+
+    @Override
+    public Single<List<Movie>> getLatestFromInternet(int page) {
+        return networkSource
+                .getLatest(page)
+                .map(movieModels -> moviesMapper.mapMovies(movieModels));
+           //     .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
+    }
+
+    @Override
+    public Single<List<Movie>> getNowPlayingFromInternet(int page) {
+        return networkSource
+                .getNowPlaying(page)
+                .map(movieModels -> moviesMapper.mapMovies(movieModels));
+            //    .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
+    }
+
+    @Override
+    public Single<List<Movie>> getPopularFromInternet(int page) {
+        return networkSource
+                .getPopular(page)
+                .map(movieModels -> moviesMapper.mapMovies(movieModels));
+          //      .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
+    }
+
+    @Override
+    public Single<List<Movie>> getTopRatedFromInternet(int page) {
+        return networkSource
+                .getTopRated(page)
+                .map(movieModels -> moviesMapper.mapMovies(movieModels));
+           //     .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
+    }
+
+    @Override
+    public Single<List<Movie>> getUpcomingFromInternet(int page) {
+        return networkSource
+                .getUpcoming(page)
+                .map(movieModels -> moviesMapper.mapMovies(movieModels));
+             //   .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
+    }
+
+
+
 }

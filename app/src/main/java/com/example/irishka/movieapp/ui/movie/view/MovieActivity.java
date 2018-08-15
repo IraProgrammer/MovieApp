@@ -20,7 +20,7 @@ public class MovieActivity extends DaggerAppCompatActivity {
     @BindView(R.id.tabs)
     TabLayout tabLayout;
 
-    @BindView(R.id.pager)
+    @BindView(R.id.main_pager)
     ViewPager viewPager;
 
     @BindView(R.id.toolbar_title)
@@ -30,7 +30,7 @@ public class MovieActivity extends DaggerAppCompatActivity {
     ImageView btnHome;
 
     @Inject
-    ViewPagerAdapter adapter;
+    MovieViewPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,7 @@ public class MovieActivity extends DaggerAppCompatActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
+        //TODO title?
         toolbarTitle.setText(getIntent().getStringExtra("TITLE"));
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override

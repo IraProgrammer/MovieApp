@@ -5,13 +5,13 @@ import com.example.irishka.movieapp.di.scopes.PerFragment;
 import com.example.irishka.movieapp.ui.movie.creators.view.CreatorsFragment;
 import com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
-import com.example.irishka.movieapp.ui.movie.view.ViewPagerAdapter;
+import com.example.irishka.movieapp.ui.movie.view.MovieViewPagerAdapter;
 
 import dagger.Module;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 
-import static com.example.irishka.movieapp.ui.movies.view.MoviesListActivity.MOVIE_ID;
+import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.MOVIE_ID;
 
 @Module
 public abstract class MovieActivityModule {
@@ -32,7 +32,7 @@ public abstract class MovieActivityModule {
 
     @Provides
     @PerActivity
-    static ViewPagerAdapter providesViewPagerAdapter(MovieActivity movieActivity) {
-        return new ViewPagerAdapter(movieActivity);
+    static MovieViewPagerAdapter providesViewPagerAdapter(MovieActivity movieActivity) {
+        return new MovieViewPagerAdapter(movieActivity);
     }
 }

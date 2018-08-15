@@ -14,12 +14,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class ViewPagerAdapter extends FragmentPagerAdapter {
+public class MovieViewPagerAdapter extends FragmentPagerAdapter {
 
     private MovieActivity movieActivity;
 
     @Inject
-    public ViewPagerAdapter(MovieActivity movieActivity) {
+    public MovieViewPagerAdapter(MovieActivity movieActivity) {
         super(movieActivity.getSupportFragmentManager());
         this.movieActivity = movieActivity;
     }
