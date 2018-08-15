@@ -71,6 +71,7 @@ public class MainFilmsFragment extends MvpAppCompatFragment
         View v = inflater.inflate(R.layout.fragment_main_screen, container, false);
         ButterKnife.bind(this, v);
 
+        if (!staggeredGridLayoutManager.isAttachedToWindow())
         moviesRecyclerView.setLayoutManager(staggeredGridLayoutManager);
 
         moviesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
