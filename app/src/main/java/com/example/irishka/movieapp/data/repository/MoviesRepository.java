@@ -4,6 +4,8 @@ import android.util.Pair;
 
 import com.example.irishka.movieapp.data.database.MoviesDbSource;
 import com.example.irishka.movieapp.data.database.entity.KeywordDb;
+import com.example.irishka.movieapp.data.database.entity.MovieDb;
+import com.example.irishka.movieapp.data.database.entity.MovieWithCategory;
 import com.example.irishka.movieapp.data.mappers.CastMapper;
 import com.example.irishka.movieapp.data.mappers.GenreMapper;
 import com.example.irishka.movieapp.data.mappers.KeywordsMapper;
@@ -19,12 +21,18 @@ import com.example.irishka.movieapp.domain.entity.Keyword;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter.NOW_PLAYING;
+import static com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter.POPULAR;
+import static com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter.TOP_RATED;
+import static com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter.UPCOMING;
 
 public class MoviesRepository implements IMoviesRepository {
 
@@ -89,7 +97,7 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<List<Movie>> getRelatedFromInternet(long movieId, int page) {
         return networkSource
                 .getRelated(movieId, page)
-                .doOnSuccess(movieModels -> insertRelatedOfMovie(movieId, movieModels))
+                .doOnSuccess(movieModels -> dbSource.insertAllRoM(moviesMapper.createRoMList(movieId, movieModels)))
                 .map(movies -> moviesMapper.mapMovies(movies))
                 .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
     }
@@ -99,7 +107,7 @@ public class MoviesRepository implements IMoviesRepository {
                 .flattenAsObservable(list -> list)
                 .flatMapSingle(relatedOfMovie -> getMovieFromDatabase(relatedOfMovie.getRelatedId()))
                 .toList()
-              //  .map(movies -> moviesMapper.mapMoviesListFromDb(moviesDb))
+                //  .map(movies -> moviesMapper.mapMoviesListFromDb(moviesDb))
                 .subscribeOn(Schedulers.io());
     }
 
@@ -117,7 +125,7 @@ public class MoviesRepository implements IMoviesRepository {
                 .getCasts(movieId)
                 .map(castModels -> castMapper.mapCastsList(castModels))
                 .doOnSuccess(casts -> dbSource.insertAllCasts(castMapper.mapCastsListToDb(casts)))
-                .doOnSuccess(castModels -> insertCastsOfMovie(movieId, castModels));
+                .doOnSuccess(castModels -> dbSource.insertAllCoM(castMapper.createCoMList(movieId, castModels)));
 
     }
 
@@ -135,7 +143,7 @@ public class MoviesRepository implements IMoviesRepository {
         return networkSource
                 .getActorInfo(id)
                 .flatMap(actorInfoModel -> networkSource.getActorPhotos(id)
-                .map(actorPhotosModel -> castMapper.apply(actorInfoModel, actorPhotosModel)))
+                        .map(actorPhotosModel -> castMapper.apply(actorInfoModel, actorPhotosModel)))
                 .doOnSuccess(cast -> dbSource.insertCast(castMapper.applyToDb(cast)));
     }
 
@@ -157,40 +165,15 @@ public class MoviesRepository implements IMoviesRepository {
                 .onErrorResumeNext(getConcreteCastFromDatabase(id));
     }
 
-    private Single<List<BackdropModel>> getBackdropsFromInternet(long movieId) {
-        return networkSource
-                .getBackdrops(movieId);
-    }
-
-    private void insertGenresOfMovie(DescriptionModel description) {
-
-        dbSource.insertAllGoM(genreMapper.createGoMList(description));
-
-    }
-
-    private void insertRelatedOfMovie(long movieId, List<MovieModel> relatedMovies) {
-
-        dbSource.insertAllRoM(moviesMapper.createRoMList(movieId, relatedMovies));
-
-    }
-
-    private void insertCastsOfMovie(long movieId, List<Cast> casts) {
-
-        dbSource.insertAllCoM(castMapper.createCoMList(movieId, casts));
-    }
-
-    private void insertMoviesOfCast(long id, List<Movie> movies) {
-
-        dbSource.insertAllCoM(castMapper.createMoCList(id, movies));
-    }
-
     private Single<Movie> getMovieFromInternet(long movieId) {
         return networkSource
                 .getDescription(movieId)
                 .doOnSuccess(descriptionModel -> dbSource.insertAllGenres(genreMapper.mapGenresListToDb(descriptionModel.getGenres())))
-                .doOnSuccess(descriptionModel -> insertGenresOfMovie(descriptionModel))
-                .flatMap(descriptionModel -> getBackdropsFromInternet(descriptionModel.getId())
-                        .flatMap(backdrops -> getTrailers(descriptionModel.getId())
+                .doOnSuccess(descriptionModel -> dbSource.insertAllGoM(genreMapper.createGoMList(descriptionModel)))
+                .flatMap(descriptionModel -> networkSource
+                        .getBackdrops(descriptionModel.getId())
+                        .flatMap(backdrops -> networkSource
+                                .getTrailers(descriptionModel.getId())
                                 .map(trailers -> moviesMapper.apply(descriptionModel, backdrops, trailers))))
                 .doOnSuccess(movie -> dbSource.insertMovie(moviesMapper.applyToDb(movie)));
     }
@@ -213,7 +196,7 @@ public class MoviesRepository implements IMoviesRepository {
         return networkSource
                 .getActorFilms(id)
                 .map(movies -> moviesMapper.mapMoviesWithSort(movies))
-                .doOnSuccess(movieModels -> insertMoviesOfCast(id, movieModels))
+                .doOnSuccess(movieModels -> dbSource.insertAllCoM(castMapper.createMoCList(id, movieModels)))
                 .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
     }
 
@@ -231,27 +214,17 @@ public class MoviesRepository implements IMoviesRepository {
                 .onErrorResumeNext(getActorFilmsFromDatabase(id));
     }
 
-    private Single<List<TrailerModel>> getTrailers(long movieId) {
-        return networkSource
-                .getTrailers(movieId);
-    }
-
     @Override
-    public Single<List<Movie>> getMoviesFromSearchFromInternet(String query, int page){
+    public Single<List<Movie>> getMoviesFromSearchFromInternet(String query, int page) {
         return networkSource.getMoviesFromSearch(query, page)
                 .map(movieModels -> moviesMapper.mapMovies(movieModels))
-                .doOnSuccess(movies -> insertKeyword(query));
+                .doOnSuccess(movies -> dbSource.insertKeyword(new KeywordDb(query)));
     }
 
     @Override
     public Single<List<String>> getKeywordsFromInternet(String query) {
         return networkSource.getKeywords(query)
                 .map(keywordModels -> keywordsMapper.mapKeywordList(keywordModels));
-    }
-
-    private void insertKeyword(String keyword){
-
-        dbSource.insertKeyword(new KeywordDb(keyword));
     }
 
     @Override
@@ -261,38 +234,89 @@ public class MoviesRepository implements IMoviesRepository {
                 .subscribeOn(Schedulers.io());
     }
 
-    @Override
-    public Single<List<Movie>> getNowPlayingFromInternet(int page) {
+    private Single<List<Movie>> getNowPlayingFromInternet(int page) {
         return networkSource
                 .getNowPlaying(page)
-                .map(movieModels -> moviesMapper.mapMovies(movieModels));
-            //    .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
+                .doOnSuccess(movies -> dbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(NOW_PLAYING, movies)))
+                .map(movieModels -> moviesMapper.mapMovies(movieModels))
+                .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
+
     }
 
-    @Override
-    public Single<List<Movie>> getPopularFromInternet(int page) {
+//    private Single<List<Movie>> getNowPlayingFromDatabase() {
+//        return dbSource.getMovieWithCategory(NOW_PLAYING)
+//                .flattenAsObservable(list -> list)
+//                .flatMapSingle(movieWithCategory -> getMovieFromDatabase(movieWithCategory.getMovieId()))
+//                .toList()
+//                .subscribeOn(Schedulers.io());
+//    }
+
+    private Single<List<Movie>> getPopularFromInternet(int page) {
         return networkSource
                 .getPopular(page)
-                .map(movieModels -> moviesMapper.mapMovies(movieModels));
-          //      .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
+                .doOnSuccess(movies -> dbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(POPULAR, movies)))
+                .map(movieModels -> moviesMapper.mapMovies(movieModels))
+                .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
+
     }
 
-    @Override
-    public Single<List<Movie>> getTopRatedFromInternet(int page) {
+//    private Single<List<Movie>> getPopularFromDatabase() {
+//        return dbSource.getMovieWithCategory(POPULAR)
+//                .flattenAsObservable(list -> list)
+//                .flatMapSingle(movieWithCategory -> getMovieFromDatabase(movieWithCategory.getMovieId()))
+//                .toList()
+//                .subscribeOn(Schedulers.io());
+//    }
+
+    private Single<List<Movie>> getTopRatedFromInternet(int page) {
         return networkSource
                 .getTopRated(page)
-                .map(movieModels -> moviesMapper.mapMovies(movieModels));
-           //     .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
+                .doOnSuccess(movies -> dbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(TOP_RATED, movies)))
+                .map(movieModels -> moviesMapper.mapMovies(movieModels))
+                .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
+
+    }
+
+//    private Single<List<Movie>> getTopRatedFromDatabase() {
+//        return dbSource.getMovieWithCategory(TOP_RATED)
+//                .flattenAsObservable(list -> list)
+//                .flatMapSingle(movieWithCategory -> getMovieFromDatabase(movieWithCategory.getMovieId()))
+//                .toList()
+//                .subscribeOn(Schedulers.io());
+//    }
+
+    private Single<List<Movie>> getUpcomingFromInternet(int page) {
+        return networkSource
+                .getUpcoming(page)
+                .doOnSuccess(movies -> dbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(UPCOMING, movies)))
+                .map(movieModels -> moviesMapper.mapMovies(movieModels))
+                .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
+
+    }
+
+    private Single<List<Movie>> getMainScreenFromDatabase(String type) {
+        return dbSource.getMovieWithCategory(type)
+                .flattenAsObservable(list -> list)
+                .flatMapSingle(movieWithCategory -> getMovieFromDatabase(movieWithCategory.getMovieId()))
+                .toList()
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Single<List<Movie>> getUpcomingFromInternet(int page) {
-        return networkSource
-                .getUpcoming(page)
-                .map(movieModels -> moviesMapper.mapMovies(movieModels));
-             //   .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
+    public Single<List<Movie>> downloadMoviesForMainScreen(int page, String type) {
+
+        if (type.equals(NOW_PLAYING)) {
+            return getNowPlayingFromInternet(page)
+                    .onErrorResumeNext(getMainScreenFromDatabase(type));
+        } else if (type.equals(POPULAR)) {
+            return getPopularFromInternet(page)
+                    .onErrorResumeNext(getMainScreenFromDatabase(type));
+        } else if (type.equals(TOP_RATED)) {
+            return getTopRatedFromInternet(page)
+                    .onErrorResumeNext(getMainScreenFromDatabase(type));
+        } else if (type.equals(UPCOMING)) {
+            return getUpcomingFromInternet(page)
+                    .onErrorResumeNext(getMainScreenFromDatabase(type));
+        } else return null;
     }
-
-
-
 }

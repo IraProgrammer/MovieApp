@@ -10,7 +10,10 @@ import com.example.irishka.movieapp.data.database.dao.GenreDao;
 import com.example.irishka.movieapp.data.database.dao.GenreOfMovieDao;
 import com.example.irishka.movieapp.data.database.dao.KeywordsDao;
 import com.example.irishka.movieapp.data.database.dao.MovieDao;
+import com.example.irishka.movieapp.data.database.dao.MovieWithCategoryDao;
 import com.example.irishka.movieapp.data.database.dao.RelatedOfMovieDao;
+
+import java.util.Locale;
 
 import javax.inject.Singleton;
 
@@ -67,5 +70,11 @@ public abstract class DatabaseModule {
     @Provides
     static KeywordsDao provideKeywordsDao(AppDatabase database){
         return database.getKeywordsDao();
+    }
+
+    @Singleton
+    @Provides
+    static MovieWithCategoryDao provideMovieWithCategoryDao(AppDatabase database){
+        return database.getMovieWithCategoryDao();
     }
 }

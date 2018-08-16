@@ -6,6 +6,7 @@ import com.example.irishka.movieapp.data.database.dao.GenreDao;
 import com.example.irishka.movieapp.data.database.dao.GenreOfMovieDao;
 import com.example.irishka.movieapp.data.database.dao.KeywordsDao;
 import com.example.irishka.movieapp.data.database.dao.MovieDao;
+import com.example.irishka.movieapp.data.database.dao.MovieWithCategoryDao;
 import com.example.irishka.movieapp.data.database.dao.RelatedOfMovieDao;
 import com.example.irishka.movieapp.data.database.entity.CastDb;
 import com.example.irishka.movieapp.data.database.entity.CastOfMovie;
@@ -13,6 +14,7 @@ import com.example.irishka.movieapp.data.database.entity.GenreDb;
 import com.example.irishka.movieapp.data.database.entity.GenreOfMovie;
 import com.example.irishka.movieapp.data.database.entity.KeywordDb;
 import com.example.irishka.movieapp.data.database.entity.MovieDb;
+import com.example.irishka.movieapp.data.database.entity.MovieWithCategory;
 import com.example.irishka.movieapp.data.database.entity.RelatedOfMovie;
 import com.example.irishka.movieapp.domain.entity.Keyword;
 
@@ -38,10 +40,13 @@ public class MoviesDbSource {
 
     private KeywordsDao keywordsDao;
 
+    private MovieWithCategoryDao movieWithCategoryDao;
+
     @Inject
     public MoviesDbSource(MovieDao movieDao, CastDao castDao, GenreDao genreDao,
                           GenreOfMovieDao genreOfMovieDao, CastOfMovieDao castOfMovieDao,
-                          RelatedOfMovieDao relatedOfMovieDao, KeywordsDao keywordsDao) {
+                          RelatedOfMovieDao relatedOfMovieDao, KeywordsDao keywordsDao,
+                          MovieWithCategoryDao movieWithCategoryDao) {
         this.movieDao = movieDao;
         this.castDao = castDao;
         this.genreDao = genreDao;
@@ -49,6 +54,7 @@ public class MoviesDbSource {
         this.castOfMovieDao = castOfMovieDao;
         this.relatedOfMovieDao = relatedOfMovieDao;
         this.keywordsDao = keywordsDao;
+        this.movieWithCategoryDao = movieWithCategoryDao;
     }
 
     public void insertAllMovies(List<MovieDb> moviesDb) {
@@ -125,5 +131,13 @@ public class MoviesDbSource {
 
     public Single<List<KeywordDb>> getKeywords() {
         return keywordsDao.getKeywords();
+    }
+
+    public Single<List<MovieWithCategory>> getMovieWithCategory(String type){
+        return movieWithCategoryDao.getMoviesWithCategory(type);
+    }
+
+    public void insertMoviesWithCategory(List<MovieWithCategory> moviesWithCategoriy){
+        movieWithCategoryDao.trans(moviesWithCategoriy);
     }
 }

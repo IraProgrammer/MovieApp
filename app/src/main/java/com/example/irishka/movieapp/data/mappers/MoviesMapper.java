@@ -1,6 +1,7 @@
 package com.example.irishka.movieapp.data.mappers;
 
 import com.example.irishka.movieapp.data.database.entity.MovieDb;
+import com.example.irishka.movieapp.data.database.entity.MovieWithCategory;
 import com.example.irishka.movieapp.data.database.entity.RelatedOfMovie;
 import com.example.irishka.movieapp.data.models.BackdropModel;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
@@ -219,4 +220,17 @@ public class MoviesMapper {
         return relatedOfMovie;
 
     }
+
+    public List<MovieWithCategory> createMovieWithCategoryList(String type, List<MovieModel> movies){
+
+        List<MovieWithCategory> moviesWithCategory = new ArrayList<>();
+
+        for (MovieModel movie: movies) {
+            moviesWithCategory.add(new MovieWithCategory(type, movie.getId()));
+        }
+
+        return moviesWithCategory;
+
+    }
+
 }
