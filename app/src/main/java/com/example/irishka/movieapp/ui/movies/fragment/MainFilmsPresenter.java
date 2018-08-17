@@ -36,18 +36,6 @@ public class MainFilmsPresenter extends BasePresenter<MainFilmsView> {
     }
 
     public void downloadMovies(){
-//        if (type.equals(NOW_PLAYING)){
-//            downloadNowPlaying();
-//        }
-//        else if (type.equals(POPULAR)){
-//            downloadPopular();
-//        }
-//        if (type.equals(TOP_RATED)){
-//            downloadTopRated();
-//        }
-//        if (type.equals(UPCOMING)){
-//            downloadUpcoming();
-//        }
 
 
         addDisposables(moviesRepository.downloadMoviesForMainScreen(page, type)
@@ -56,47 +44,5 @@ public class MainFilmsPresenter extends BasePresenter<MainFilmsView> {
                 .doOnSuccess(movies -> page++)
                 .doOnError(movies -> getViewState().finishLoading())
                 .subscribe(movies -> getViewState().showMovies(movies), throwable -> {}));
-
-
     }
-
-//    private void downloadNowPlaying() {
-//
-//        addDisposables(moviesRepository.getNowPlayingFromInternet(page)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .doOnSuccess(movies -> getViewState().finishLoading())
-//                .doOnSuccess(movies -> page++)
-//                .doOnError(movies -> getViewState().finishLoading())
-//                .subscribe(movies -> getViewState().showMovies(movies), throwable -> {}));
-//    }
-//
-//    private void downloadPopular() {
-//
-//        addDisposables(moviesRepository.getPopularFromInternet(page)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .doOnSuccess(movies -> getViewState().finishLoading())
-//                .doOnSuccess(movies -> page++)
-//                .doOnError(movies -> getViewState().finishLoading())
-//                .subscribe(movies -> getViewState().showMovies(movies), throwable -> {}));
-//    }
-//
-//    private void downloadTopRated() {
-//
-//        addDisposables(moviesRepository.getTopRatedFromInternet(page)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .doOnSuccess(movies -> getViewState().finishLoading())
-//                .doOnSuccess(movies -> page++)
-//                .doOnError(movies -> getViewState().finishLoading())
-//                .subscribe(movies -> getViewState().showMovies(movies), throwable -> {}));
-//    }
-//
-//    private void downloadUpcoming() {
-//
-//        addDisposables(moviesRepository.getUpcomingFromInternet(page)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .doOnSuccess(movies -> getViewState().finishLoading())
-//                .doOnSuccess(movies -> page++)
-//                .doOnError(movies -> getViewState().finishLoading())
-//                .subscribe(movies -> getViewState().showMovies(movies), throwable -> {}));
-//    }
 }

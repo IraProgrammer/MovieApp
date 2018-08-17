@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.ui.search.view;
+package com.example.irishka.movieapp.ui.filters.view;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +20,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MoviesViewHolder> {
+public class FiltersAdapter extends RecyclerView.Adapter<FiltersAdapter.FilteresViewHolder> {
 
     private List<Movie> movies = new ArrayList<>();
 
@@ -29,7 +29,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MoviesView
     private GlideHelper glideHelper;
 
     @Inject
-    public SearchAdapter(OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
+    public FiltersAdapter(OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
         this.onItemClickListener = onItemClickListener;
         this.glideHelper = glideHelper;
     }
@@ -38,26 +38,28 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MoviesView
         void onItemClick(Movie movie);
     }
 
-    public void addMoviesList(List<Movie> movies) {
-        int idStart = this.movies.size();
-        int idEnd = movies.size();
-        this.movies.addAll(movies);
-        notifyItemRangeInserted(idStart, idEnd);
+    public void addMoviesList(List<Movie> movies, boolean isFiltered) {
+        if (isFiltered) {
+            clearList(); }
+            int idStart = this.movies.size();
+            int idEnd = movies.size();
+            this.movies.addAll(movies);
+            notifyItemRangeInserted(idStart, idEnd);
     }
 
-    public void clearList() {
+    private void clearList() {
         this.movies = new ArrayList<>();
-      //  notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public MoviesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MoviesViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.search_item, parent, false), onItemClickListener, glideHelper);
+    public FilteresViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new FilteresViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.search_item, parent, false), onItemClickListener, glideHelper);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MoviesViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FilteresViewHolder holder, int position) {
 
         holder.bind(movies.get(position));
 
@@ -68,7 +70,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MoviesView
         return movies.size();
     }
 
-    static class MoviesViewHolder extends RecyclerView.ViewHolder {
+    static class FilteresViewHolder extends RecyclerView.ViewHolder {
 
         private OnItemClickListener onItemClickListener;
 
@@ -89,7 +91,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MoviesView
         @BindView(R.id.adult)
         TextView adult;
 
-        MoviesViewHolder(View itemView, OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
+        FilteresViewHolder(View itemView, OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.onItemClickListener = onItemClickListener;

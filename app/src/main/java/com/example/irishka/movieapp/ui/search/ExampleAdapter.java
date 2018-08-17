@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.ui;
+package com.example.irishka.movieapp.ui.search;
 
 import android.content.Context;
 import android.database.Cursor;

@@ -33,7 +33,4 @@ public class SearchActivityModule {
     static LinearLayoutManager providesLinearLayoutManager(SearchActivity searchActivity){
         return new LinearLayoutManager(searchActivity.getApplicationContext(), LinearLayoutManager.VERTICAL, false);
     }
-
-
-
 }

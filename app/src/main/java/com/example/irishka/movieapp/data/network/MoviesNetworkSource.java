@@ -98,4 +98,9 @@ public class MoviesNetworkSource {
         return moviesApi.getUpcoming(page)
                 .map(MoviePageModel::getResults);
     }
+
+    public Single<List<MovieModel>> getWithFilters(String filters){
+        return moviesApi.getWithFilters(filters)
+                .map(MoviePageModel::getResults);
+    }
 }

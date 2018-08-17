@@ -28,4 +28,6 @@ public interface IMoviesRepository {
     Single<List<String>> getKeywordsFromDb();
 
     Single<List<Movie>> downloadMoviesForMainScreen(int page, String type);
+
+    Single<List<Movie>> getWithFilters(String filters);
 }

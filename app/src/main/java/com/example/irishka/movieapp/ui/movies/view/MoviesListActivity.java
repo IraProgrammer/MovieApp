@@ -1,5 +1,6 @@
 package com.example.irishka.movieapp.ui.movies.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -9,6 +10,7 @@ import android.widget.ImageButton;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.example.irishka.movieapp.R;
+import com.example.irishka.movieapp.ui.filters.view.FiltersActivity;
 import com.example.irishka.movieapp.ui.search.view.SearchActivity;
 
 import javax.inject.Inject;
@@ -30,6 +32,9 @@ public class MoviesListActivity extends DaggerAppCompatActivity{
     @BindView(R.id.btn_search)
     ImageButton btnSearch;
 
+    @BindView(R.id.btn_filters)
+    ImageButton btnFilters;
+
     @Inject
     ViewPagerAdapter adapter;
 
@@ -46,6 +51,14 @@ public class MoviesListActivity extends DaggerAppCompatActivity{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MoviesListActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnFilters.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MoviesListActivity.this, FiltersActivity.class);
                 startActivity(intent);
             }
         });

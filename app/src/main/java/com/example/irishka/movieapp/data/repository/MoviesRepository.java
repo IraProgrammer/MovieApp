@@ -243,14 +243,6 @@ public class MoviesRepository implements IMoviesRepository {
 
     }
 
-//    private Single<List<Movie>> getNowPlayingFromDatabase() {
-//        return dbSource.getMovieWithCategory(NOW_PLAYING)
-//                .flattenAsObservable(list -> list)
-//                .flatMapSingle(movieWithCategory -> getMovieFromDatabase(movieWithCategory.getMovieId()))
-//                .toList()
-//                .subscribeOn(Schedulers.io());
-//    }
-
     private Single<List<Movie>> getPopularFromInternet(int page) {
         return networkSource
                 .getPopular(page)
@@ -260,14 +252,6 @@ public class MoviesRepository implements IMoviesRepository {
 
     }
 
-//    private Single<List<Movie>> getPopularFromDatabase() {
-//        return dbSource.getMovieWithCategory(POPULAR)
-//                .flattenAsObservable(list -> list)
-//                .flatMapSingle(movieWithCategory -> getMovieFromDatabase(movieWithCategory.getMovieId()))
-//                .toList()
-//                .subscribeOn(Schedulers.io());
-//    }
-
     private Single<List<Movie>> getTopRatedFromInternet(int page) {
         return networkSource
                 .getTopRated(page)
@@ -276,14 +260,6 @@ public class MoviesRepository implements IMoviesRepository {
                 .doOnSuccess(movies -> dbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
 
     }
-
-//    private Single<List<Movie>> getTopRatedFromDatabase() {
-//        return dbSource.getMovieWithCategory(TOP_RATED)
-//                .flattenAsObservable(list -> list)
-//                .flatMapSingle(movieWithCategory -> getMovieFromDatabase(movieWithCategory.getMovieId()))
-//                .toList()
-//                .subscribeOn(Schedulers.io());
-//    }
 
     private Single<List<Movie>> getUpcomingFromInternet(int page) {
         return networkSource
@@ -319,4 +295,13 @@ public class MoviesRepository implements IMoviesRepository {
                     .onErrorResumeNext(getMainScreenFromDatabase(type));
         } else return null;
     }
+
+    @Override
+    public Single<List<Movie>> getWithFilters(String filters) {
+        return networkSource
+                .getWithFilters(filters)
+                .map(movieModels -> moviesMapper.mapMovies(movieModels));
+
+    }
+
 }
