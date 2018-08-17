@@ -297,9 +297,9 @@ public class MoviesRepository implements IMoviesRepository {
     }
 
     @Override
-    public Single<List<Movie>> getWithFilters(String filters) {
+    public Single<List<Movie>> getWithFilters(int page, String sort, String genres) {
         return networkSource
-                .getWithFilters(filters)
+                .getWithFilters(page, sort, genres)
                 .map(movieModels -> moviesMapper.mapMovies(movieModels));
 
     }

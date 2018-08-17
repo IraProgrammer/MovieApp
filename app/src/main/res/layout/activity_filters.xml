@@ -78,9 +78,9 @@
                     android:id="@+id/expandableLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:ael_expanded="true"
                     app:ael_duration="500"
-                    app:ael_interpolator="bounce"
+                    app:ael_expanded="true"
+                    app:ael_interpolator="linear"
                     app:ael_orientation="vertical">
 
                     <TextView
@@ -126,12 +126,28 @@
                             android:text="vote" />
                     </RadioGroup>
 
+                    <TextView
+                        android:id="@+id/text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/sortRadioGroup"
+                        android:text="GENRES" />
+
+                    <android.support.design.chip.ChipGroup
+                        android:id="@+id/chipGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/text">
+
+                    </android.support.design.chip.ChipGroup>
+
                 </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/filters_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                 </android.support.v7.widget.RecyclerView>
 
             </LinearLayout>

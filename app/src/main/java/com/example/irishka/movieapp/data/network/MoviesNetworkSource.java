@@ -99,8 +99,8 @@ public class MoviesNetworkSource {
                 .map(MoviePageModel::getResults);
     }
 
-    public Single<List<MovieModel>> getWithFilters(String filters){
-        return moviesApi.getWithFilters(filters)
+    public Single<List<MovieModel>> getWithFilters(int page, String sort, String genres){
+        return moviesApi.getWithFilters(page, sort, genres)
                 .map(MoviePageModel::getResults);
     }
 }

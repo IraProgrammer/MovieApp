@@ -1,11 +1,16 @@
 package com.example.irishka.movieapp.ui.filters.view;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.chip.Chip;
+import android.support.design.chip.ChipGroup;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -18,11 +23,12 @@ import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.filters.presenter.FiltersPresenter;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
-import com.github.aakira.expandablelayout.ExpandableLayout;
-import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -36,13 +42,25 @@ import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.
 
 public class FiltersActivity extends MvpAppCompatActivity implements FiltersView, FiltersAdapter.OnItemClickListener {
 
-    //  public static final String FILTERS = "FILTERS";
+    private String[] genreNames = new String[]{"Action", "Adventure", "Animation", "Comedy", "Crime", "Documentary",
+            "Drama", "Family", "Fantasy", "History", "Horror", "Music", "Mystery", "Romance", "Science Fiction",
+            "TV Movie", "Thriller", "War", "Western"};
+
+    private int[] genreIds = new int[]{28, 12, 16, 35, 80, 99, 18, 10751, 14, 36, 27, 10402, 9648, 10749, 878, 10770,
+            53, 10752, 37};
+
+    private Map<String, Integer> genres;
+
+    List<Chip> chipList = new ArrayList<>();
 
     @BindView(R.id.expandableLayout)
     ExpandableRelativeLayout expandableLayout;
 
     @BindView(R.id.mmmmm)
     TextView mmmmm;
+
+    @BindView(R.id.chipGroup)
+    ChipGroup chipGroup;
 
     @BindView(R.id.btn_home)
     ImageButton btnHome;
@@ -89,6 +107,8 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
 
     private String sort = "";
 
+    private String genresStr = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
@@ -116,7 +136,7 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
                 if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
                         && lastVisibleItemPosition >= 0) {
                     isLoading = true;
-                    filtersPresenter.downloadMovies(sort);
+                    filtersPresenter.downloadForScroll(sort, genresStr);
                 }
             }
         });
@@ -144,8 +164,9 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
                         break;
                 }
 
-                filtersPresenter.downloadMovies(sort);
-            }
+                filteredWithGenres();
+                filtersPresenter.downloadMovies(sort, genresStr);
+        }
         });
 
         mmmmm.setOnClickListener(new View.OnClickListener() {
@@ -156,6 +177,10 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
                 else expandableLayout.expand();
             }
         });
+
+        genres = createGenresMap();
+
+        addChips();
 
     }
 
@@ -176,6 +201,66 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
         intent.putExtra(TITLE, movie.getTitle());
         startActivity(intent);
     }
+
+    private Map<String, Integer> createGenresMap() {
+
+        Map<String, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < genreIds.length; i++) {
+            map.put(genreNames[i], genreIds[i]);
+        }
+        return map;
+    }
+
+    private void addChips() {
+
+        int[][] states = new int[][]{
+                new int[]{android.R.attr.state_enabled}, // enabled
+                new int[]{-android.R.attr.state_enabled}, // disabled
+                new int[]{-android.R.attr.state_checked}, // unchecked
+                new int[]{android.R.attr.state_pressed}  // pressed
+        };
+
+        int[] colors = new int[]{
+                Color.BLACK,
+                Color.RED,
+                Color.GREEN,
+                Color.BLUE
+        };
+
+        ColorStateList myList = new ColorStateList(states, colors);
+
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        for (int i = 0; i < genreNames.length; i++) {
+            Chip chip = new Chip(this);
+            chip.setFocusable(true);
+            chip.setCheckable(true);
+            chip.setClickable(true);
+            chip.setLayoutParams(layoutParams);
+            chip.setText(genreNames[i]);
+            chip.setChipCornerRadius(16);
+            chip.setTextColor(getResources().getColor(R.color.white));
+         //   chip.setChipBackgroundColor(myList);
+
+            chip.setRippleColorResource(R.color.colorAccent);
+            chip.setChipStrokeColorResource(R.color.light_gray);
+
+            chipList.add(chip);
+
+            chipGroup.addView(chip);
+        }
+    }
+
+    private void filteredWithGenres() {
+
+        for (int i = 0; i < chipList.size(); i++) {
+            if (chipList.get(i).isChecked()) {
+                genresStr += genres.get(chipList.get(i).getText()) + ",";
+            }
+        }
+    }
+
 }
 
 

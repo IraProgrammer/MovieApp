@@ -29,5 +29,5 @@ public interface IMoviesRepository {
 
     Single<List<Movie>> downloadMoviesForMainScreen(int page, String type);
 
-    Single<List<Movie>> getWithFilters(String filters);
+    Single<List<Movie>> getWithFilters(int page, String sort, String genres);
 }

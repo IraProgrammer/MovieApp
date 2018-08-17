@@ -16,9 +16,9 @@ public class FiltersPresenter extends BasePresenter<FiltersView> {
 
     private int page = 1;
 
-    private String sort = "popularity.desc";
-
-    private boolean isFiltred;
+//    private String sort = "popularity.desc";
+//
+//    private boolean isFiltred;
 
     @Inject
     public FiltersPresenter(IMoviesRepository repository) {
@@ -29,25 +29,30 @@ public class FiltersPresenter extends BasePresenter<FiltersView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
 
-        downloadMovies(sort);
+        downloadForScroll("", "");
     }
 
-    public void downloadMovies(String sort) {
+    public void downloadForScroll(String sort, String genres) {
 
-        if (!this.sort.equals(sort)) {
-            this.sort = sort;
-            page = 1;
-            isFiltred = true;
-        } else {
-            isFiltred = false;
-        }
-
-        addDisposables(moviesRepository.getWithFilters(sort)
+        addDisposables(moviesRepository.getWithFilters(page, sort, genres)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(movies -> getViewState().finishLoading())
                 .doOnSuccess(movies -> page++)
                 .doOnError(movies -> getViewState().finishLoading())
-                .subscribe(movies -> getViewState().showMovies(movies, isFiltred), throwable -> {
+                .subscribe(movies -> getViewState().showMovies(movies, false), throwable -> {
+                }));
+    }
+
+    public void downloadMovies(String sort, String genres) {
+
+        page = 1;
+
+        addDisposables(moviesRepository.getWithFilters(page, sort, genres)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(movies -> getViewState().finishLoading())
+              //  .doOnSuccess(movies -> page++)
+                .doOnError(movies -> getViewState().finishLoading())
+                .subscribe(movies -> getViewState().showMovies(movies, true), throwable -> {
                 }));
     }
 }
