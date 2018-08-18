@@ -72,14 +72,17 @@
                     android:id="@+id/mmmmm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:padding="8dp"
                     android:text="Filters" />
 
                 <com.github.aakira.expandablelayout.ExpandableRelativeLayout
                     android:id="@+id/expandableLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:ael_duration="500"
-                    app:ael_expanded="true"
+                    app:ael_duration="250"
+                    app:ael_expanded="false"
                     app:ael_interpolator="linear"
                     app:ael_orientation="vertical">
 
@@ -87,56 +90,31 @@
                         android:id="@+id/mmmmm2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:padding="8dp"
                         android:text="SORT BY" />
 
-                    <RadioGroup
-                        android:id="@+id/sortRadioGroup"
+                    <android.support.design.chip.ChipGroup
+                        android:id="@+id/sort_chipGroup"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/mmmmm2"
-                        android:orientation="horizontal">
+                        android:padding="8dp"
+                        android:layout_below="@+id/mmmmm2">
 
-                        <RadioButton
-                            android:id="@+id/rb_popularity"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="24dp"
-                            android:checked="true"
-                            android:text="pop" />
-
-                        <RadioButton
-                            android:id="@+id/rb_releaseDate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="24dp"
-                            android:text="rel" />
-
-                        <RadioButton
-                            android:id="@+id/rb_revenue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="24dp"
-                            android:text="rev" />
-
-                        <RadioButton
-                            android:id="@+id/rb_voteAverage"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="24dp"
-                            android:text="vote" />
-                    </RadioGroup>
+                    </android.support.design.chip.ChipGroup>
 
                     <TextView
                         android:id="@+id/text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/sortRadioGroup"
+                        android:padding="8dp"
+                        android:layout_below="@+id/sort_chipGroup"
                         android:text="GENRES" />
 
                     <android.support.design.chip.ChipGroup
-                        android:id="@+id/chipGroup"
+                        android:id="@+id/genres_chipGroup"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:padding="8dp"
                         android:layout_below="@+id/text">
 
                     </android.support.design.chip.ChipGroup>

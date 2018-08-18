@@ -2,7 +2,6 @@ package com.example.irishka.movieapp.ui.filters.view;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.chip.Chip;
@@ -12,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -49,9 +49,22 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
     private int[] genreIds = new int[]{28, 12, 16, 35, 80, 99, 18, 10751, 14, 36, 27, 10402, 9648, 10749, 878, 10770,
             53, 10752, 37};
 
+    final boolean[] flagsForGenres = {true, true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true, true, true, true};
+
+    private String[] sortTypes = new String[]{"Popularity", "Release date", "Revenue", "Vote average"};
+
+    private String[] sortQueries = new String[]{"popularity.desc", "release_date.desc", "revenue.desc", "vote_average.desc"};
+
+    final boolean[] flagsForSort = {true, true, true, true};
+
     private Map<String, Integer> genres;
 
-    List<Chip> chipList = new ArrayList<>();
+    private Map<String, String> sorts;
+
+    List<Chip> genresChipList = new ArrayList<>();
+
+    List<Chip> sortChipList = new ArrayList<>();
 
     @BindView(R.id.expandableLayout)
     ExpandableRelativeLayout expandableLayout;
@@ -59,29 +72,17 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
     @BindView(R.id.mmmmm)
     TextView mmmmm;
 
-    @BindView(R.id.chipGroup)
-    ChipGroup chipGroup;
+    @BindView(R.id.genres_chipGroup)
+    ChipGroup genresChipGroup;
+
+    @BindView(R.id.sort_chipGroup)
+    ChipGroup sortChipGroup;
 
     @BindView(R.id.btn_home)
     ImageButton btnHome;
 
     @BindView(R.id.btn_ok)
     ImageButton btnOk;
-
-    @BindView(R.id.sortRadioGroup)
-    RadioGroup radioGroupSort;
-
-    @BindView(R.id.rb_releaseDate)
-    RadioButton radio1;
-
-    @BindView(R.id.rb_voteAverage)
-    RadioButton radio2;
-
-    @BindView(R.id.rb_revenue)
-    RadioButton radio3;
-
-    @BindView(R.id.rb_popularity)
-    RadioButton radio4;
 
     @BindView(R.id.filters_recycler_view)
     RecyclerView filtersRecyclerView;
@@ -105,7 +106,7 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
 
     private boolean isLoading;
 
-    private String sort = "";
+    private String sortStr = "";
 
     private String genresStr = "";
 
@@ -136,7 +137,7 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
                 if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
                         && lastVisibleItemPosition >= 0) {
                     isLoading = true;
-                    filtersPresenter.downloadForScroll(sort, genresStr);
+                    filtersPresenter.downloadForScroll(sortStr, genresStr);
                 }
             }
         });
@@ -147,26 +148,10 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
             @Override
             public void onClick(View view) {
 
-                switch (radioGroupSort.getCheckedRadioButtonId()) {
-                    case R.id.rb_popularity:
-                        sort = "popularity.desc";
-                        break;
-                    case R.id.rb_revenue:
-                        sort = "release_date.desc";
-                        break;
-                    case R.id.rb_releaseDate:
-                        sort = "revenue.desc";
-                        break;
-                    case R.id.rb_voteAverage:
-                        sort = "vote_average.desc";
-                        break;
-                    default:
-                        break;
-                }
-
+                filteredWithSort();
                 filteredWithGenres();
-                filtersPresenter.downloadMovies(sort, genresStr);
-        }
+                filtersPresenter.downloadMovies(sortStr, genresStr);
+            }
         });
 
         mmmmm.setOnClickListener(new View.OnClickListener() {
@@ -179,8 +164,13 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
         });
 
         genres = createGenresMap();
+        sorts = createSortsMap();
 
-        addChips();
+        sortChipList = createChipList(sortTypes);
+        genresChipList = createChipList(genreNames);
+
+        addAllChips(sortChipList, sortChipGroup);
+        addAllChips(genresChipList, genresChipGroup);
 
     }
 
@@ -202,6 +192,12 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
         startActivity(intent);
     }
 
+    private void addAllChips(List<Chip> chips, ChipGroup chipGroup) {
+        for (Chip chip : chips) {
+            chipGroup.addView(chip);
+        }
+    }
+
     private Map<String, Integer> createGenresMap() {
 
         Map<String, Integer> map = new HashMap<>();
@@ -212,51 +208,107 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
         return map;
     }
 
-    private void addChips() {
+    private Map<String, String> createSortsMap() {
+
+        Map<String, String> map = new HashMap<>();
+
+        for (int i = 0; i < sortTypes.length; i++) {
+            map.put(sortTypes[i], sortQueries[i]);
+        }
+
+        return map;
+    }
+
+    private List<Chip> createChipList(String[] titles) {
+
+        List<Chip> chips = new ArrayList<>();
 
         int[][] states = new int[][]{
-                new int[]{android.R.attr.state_enabled}, // enabled
-                new int[]{-android.R.attr.state_enabled}, // disabled
-                new int[]{-android.R.attr.state_checked}, // unchecked
-                new int[]{android.R.attr.state_pressed}  // pressed
+                new int[]{android.R.attr.state_checked},
+                new int[]{-android.R.attr.state_checked}
         };
 
         int[] colors = new int[]{
-                Color.BLACK,
-                Color.RED,
-                Color.GREEN,
-                Color.BLUE
+                getResources().getColor(R.color.accent_material_dark_1),
+                getResources().getColor(R.color.holo_primary_dark)
         };
 
         ColorStateList myList = new ColorStateList(states, colors);
 
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(8, 0, 0, 8);
 
-        for (int i = 0; i < genreNames.length; i++) {
+        for (int i = 0; i < titles.length; i++) {
             Chip chip = new Chip(this);
             chip.setFocusable(true);
+
+
+               // chip.setSelected(true);
+
+
             chip.setCheckable(true);
             chip.setClickable(true);
             chip.setLayoutParams(layoutParams);
-            chip.setText(genreNames[i]);
-            chip.setChipCornerRadius(16);
+            chip.setText(titles[i]);
+            chip.setChipCornerRadius(32);
+            chip.setCheckedIcon(null);
             chip.setTextColor(getResources().getColor(R.color.white));
-         //   chip.setChipBackgroundColor(myList);
+            chip.setChipBackgroundColor(myList);
 
-            chip.setRippleColorResource(R.color.colorAccent);
-            chip.setChipStrokeColorResource(R.color.light_gray);
+            int finalI = i;
 
-            chipList.add(chip);
+            if (titles[0].equals("Action")) {
+                chip.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        chip.setChecked(flagsForGenres[finalI]);
+                        flagsForGenres[finalI] = !flagsForGenres[finalI];
+                    }
+                });
+            }
 
-            chipGroup.addView(chip);
+                else {
+                    chip.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                                chip.setChecked(flagsForSort[finalI]);
+                                flagsForGenres[finalI] = !flagsForGenres[finalI];
+
+                                if (chip.isChecked()) {
+
+                                    for (int i = 0; i < flagsForSort.length; i++) {
+                                        if (i != finalI) {
+                                            flagsForSort[i] = true;
+                                            sortChipList.get(i).setChecked(false);
+                                        }
+                                    }
+                                }
+                            }
+                    });
+                }
+
+            chips.add(chip);
         }
+
+        return chips;
     }
 
     private void filteredWithGenres() {
 
-        for (int i = 0; i < chipList.size(); i++) {
-            if (chipList.get(i).isChecked()) {
-                genresStr += genres.get(chipList.get(i).getText()) + ",";
+        genresStr = "";
+
+        for (int i = 0; i < genresChipList.size(); i++) {
+            if (genresChipList.get(i).isChecked()) {
+                genresStr += genres.get(genresChipList.get(i).getText()) + ",";
+            }
+        }
+    }
+
+    private void filteredWithSort() {
+
+        for (int i = 0; i < sortChipList.size(); i++) {
+            if (sortChipList.get(i).isChecked()) {
+                sortStr = sorts.get(sortChipList.get(i).getText());
             }
         }
     }
