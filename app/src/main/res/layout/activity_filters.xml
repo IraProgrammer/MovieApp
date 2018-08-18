@@ -68,21 +68,38 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:id="@+id/mmmmm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="@color/white"
-                    android:padding="8dp"
-                    android:text="Filters" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textColor="@color/white"
+                        android:padding="8dp"
+                        android:text="Filters" />
+
+                    <ImageButton
+                        android:id="@+id/btn_expand"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginTop="9dp"
+                        android:background="#00000000"
+                        android:src="@drawable/ic_expand" />
+
+                </LinearLayout>
 
                 <com.github.aakira.expandablelayout.ExpandableRelativeLayout
                     android:id="@+id/expandableLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:ael_duration="250"
-                    app:ael_expanded="false"
+                    app:ael_duration="700"
+                    app:ael_expanded="true"
                     app:ael_interpolator="linear"
                     app:ael_orientation="vertical">
 
@@ -118,6 +135,12 @@
                         android:layout_below="@+id/text">
 
                     </android.support.design.chip.ChipGroup>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1000dp">
+
+                    </FrameLayout>
 
                 </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
@@ -157,7 +180,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_gravity="end"
                     android:layout_margin="8dp"
-                    android:background="@color/background_holo_dark"
+                    android:background="#00000000"
                     android:src="@drawable/ic_check" />
 
             </RelativeLayout>

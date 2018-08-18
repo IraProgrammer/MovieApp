@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -21,6 +22,8 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.ui.filters.di.qualifiers.Genres;
+import com.example.irishka.movieapp.ui.filters.di.qualifiers.Sort;
 import com.example.irishka.movieapp.ui.filters.presenter.FiltersPresenter;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
@@ -42,35 +45,30 @@ import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.
 
 public class FiltersActivity extends MvpAppCompatActivity implements FiltersView, FiltersAdapter.OnItemClickListener {
 
-    private String[] genreNames = new String[]{"Action", "Adventure", "Animation", "Comedy", "Crime", "Documentary",
-            "Drama", "Family", "Fantasy", "History", "Horror", "Music", "Mystery", "Romance", "Science Fiction",
-            "TV Movie", "Thriller", "War", "Western"};
-
-    private int[] genreIds = new int[]{28, 12, 16, 35, 80, 99, 18, 10751, 14, 36, 27, 10402, 9648, 10749, 878, 10770,
-            53, 10752, 37};
-
-    final boolean[] flagsForGenres = {true, true, true, true, true, true, true, true,
+    final static boolean[] flagsForGenres = {true, true, true, true, true, true, true, true,
             true, true, true, true, true, true, true, true, true, true, true};
 
-    private String[] sortTypes = new String[]{"Popularity", "Release date", "Revenue", "Vote average"};
+    final static boolean[] flagsForSort = {true, true, true, true};
 
-    private String[] sortQueries = new String[]{"popularity.desc", "release_date.desc", "revenue.desc", "vote_average.desc"};
+    @Inject
+    Map<String, Integer> genres;
 
-    final boolean[] flagsForSort = {true, true, true, true};
+    @Inject
+    Map<String, String> sorts;
 
-    private Map<String, Integer> genres;
+    @Inject
+    @Genres
+    List<Chip> genresChipList;
 
-    private Map<String, String> sorts;
-
-    List<Chip> genresChipList = new ArrayList<>();
-
-    List<Chip> sortChipList = new ArrayList<>();
+    @Inject
+    @Sort
+    List<Chip> sortChipList;
 
     @BindView(R.id.expandableLayout)
     ExpandableRelativeLayout expandableLayout;
 
     @BindView(R.id.mmmmm)
-    TextView mmmmm;
+    LinearLayout mmmmm;
 
     @BindView(R.id.genres_chipGroup)
     ChipGroup genresChipGroup;
@@ -84,8 +82,14 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
     @BindView(R.id.btn_ok)
     ImageButton btnOk;
 
+    @BindView(R.id.btn_expand)
+    ImageButton btnExpand;
+
     @BindView(R.id.filters_recycler_view)
     RecyclerView filtersRecyclerView;
+
+    @BindView(R.id.appbar2)
+    AppBarLayout appBarLayout;
 
     @Inject
     Provider<FiltersPresenter> filtersPresenterProvider;
@@ -148,29 +152,31 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
             @Override
             public void onClick(View view) {
 
+                btnExpand.setVisibility(View.VISIBLE);
+                appBarLayout.setVisibility(View.GONE);
+                expandableLayout.collapse();
                 filteredWithSort();
                 filteredWithGenres();
                 filtersPresenter.downloadMovies(sortStr, genresStr);
             }
         });
 
-        mmmmm.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (expandableLayout.isExpanded())
-                    expandableLayout.collapse();
-                else expandableLayout.expand();
+                expandableLayout.expand();
+                btnExpand.setVisibility(View.GONE);
+                appBarLayout.setVisibility(View.VISIBLE);
             }
-        });
+        };
 
-        genres = createGenresMap();
-        sorts = createSortsMap();
-
-        sortChipList = createChipList(sortTypes);
-        genresChipList = createChipList(genreNames);
+        mmmmm.setOnClickListener(listener);
+        btnExpand.setOnClickListener(listener);
 
         addAllChips(sortChipList, sortChipGroup);
         addAllChips(genresChipList, genresChipGroup);
+        setSortListeners();
+        setGenresListeners();
 
     }
 
@@ -198,101 +204,6 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
         }
     }
 
-    private Map<String, Integer> createGenresMap() {
-
-        Map<String, Integer> map = new HashMap<>();
-
-        for (int i = 0; i < genreIds.length; i++) {
-            map.put(genreNames[i], genreIds[i]);
-        }
-        return map;
-    }
-
-    private Map<String, String> createSortsMap() {
-
-        Map<String, String> map = new HashMap<>();
-
-        for (int i = 0; i < sortTypes.length; i++) {
-            map.put(sortTypes[i], sortQueries[i]);
-        }
-
-        return map;
-    }
-
-    private List<Chip> createChipList(String[] titles) {
-
-        List<Chip> chips = new ArrayList<>();
-
-        int[][] states = new int[][]{
-                new int[]{android.R.attr.state_checked},
-                new int[]{-android.R.attr.state_checked}
-        };
-
-        int[] colors = new int[]{
-                getResources().getColor(R.color.accent_material_dark_1),
-                getResources().getColor(R.color.holo_primary_dark)
-        };
-
-        ColorStateList myList = new ColorStateList(states, colors);
-
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(8, 0, 0, 8);
-
-        for (int i = 0; i < titles.length; i++) {
-            Chip chip = new Chip(this);
-            chip.setFocusable(true);
-
-
-               // chip.setSelected(true);
-
-
-            chip.setCheckable(true);
-            chip.setClickable(true);
-            chip.setLayoutParams(layoutParams);
-            chip.setText(titles[i]);
-            chip.setChipCornerRadius(32);
-            chip.setCheckedIcon(null);
-            chip.setTextColor(getResources().getColor(R.color.white));
-            chip.setChipBackgroundColor(myList);
-
-            int finalI = i;
-
-            if (titles[0].equals("Action")) {
-                chip.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        chip.setChecked(flagsForGenres[finalI]);
-                        flagsForGenres[finalI] = !flagsForGenres[finalI];
-                    }
-                });
-            }
-
-                else {
-                    chip.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                                chip.setChecked(flagsForSort[finalI]);
-                                flagsForGenres[finalI] = !flagsForGenres[finalI];
-
-                                if (chip.isChecked()) {
-
-                                    for (int i = 0; i < flagsForSort.length; i++) {
-                                        if (i != finalI) {
-                                            flagsForSort[i] = true;
-                                            sortChipList.get(i).setChecked(false);
-                                        }
-                                    }
-                                }
-                            }
-                    });
-                }
-
-            chips.add(chip);
-        }
-
-        return chips;
-    }
-
     private void filteredWithGenres() {
 
         genresStr = "";
@@ -313,6 +224,41 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
         }
     }
 
+    private void setSortListeners(){
+        for (int i = 0; i < sortChipList.size(); i++) {
+            int finalI = i;
+            sortChipList.get(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    sortChipList.get(finalI).setChecked(flagsForSort[finalI]);
+                    flagsForSort[finalI] = !flagsForSort[finalI];
+
+                    if (sortChipList.get(finalI).isChecked()) {
+
+                        for (int j = 0; j < flagsForSort.length; j++) {
+                            if (!sortChipList.get(finalI).equals(sortChipList.get(j))) {
+                                flagsForSort[j] = true;
+                                sortChipList.get(j).setChecked(false);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    private void setGenresListeners(){
+        for (int i = 0; i < genresChipList.size(); i++) {
+            int finalI = i;
+            genresChipList.get(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    genresChipList.get(finalI).setChecked(flagsForGenres[finalI]);
+                    flagsForGenres[finalI] = !flagsForGenres[finalI];
+                }
+            });
+        }
+    }
 }
 
 
