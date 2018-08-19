@@ -1,21 +1,16 @@
 package com.example.irishka.movieapp.ui.filters.view;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
-import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -28,8 +23,6 @@ import com.example.irishka.movieapp.ui.filters.presenter.FiltersPresenter;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,8 +33,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 
+import static com.example.irishka.movieapp.ui.movie.view.MovieActivity.TITLE;
 import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.MOVIE_ID;
-import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.TITLE;
 
 public class FiltersActivity extends MvpAppCompatActivity implements FiltersView, FiltersAdapter.OnItemClickListener {
 
@@ -88,8 +81,8 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
     @BindView(R.id.filters_recycler_view)
     RecyclerView filtersRecyclerView;
 
-    @BindView(R.id.appbar2)
-    AppBarLayout appBarLayout;
+    @BindView(R.id.bottomAppBar)
+    BottomAppBar bottomAppBar;
 
     @Inject
     Provider<FiltersPresenter> filtersPresenterProvider;
@@ -153,7 +146,7 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
             public void onClick(View view) {
 
                 btnExpand.setVisibility(View.VISIBLE);
-                appBarLayout.setVisibility(View.GONE);
+                bottomAppBar.setVisibility(View.GONE);
                 expandableLayout.collapse();
                 filteredWithSort();
                 filteredWithGenres();
@@ -166,7 +159,7 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
             public void onClick(View view) {
                 expandableLayout.expand();
                 btnExpand.setVisibility(View.GONE);
-                appBarLayout.setVisibility(View.VISIBLE);
+                bottomAppBar.setVisibility(View.VISIBLE);
             }
         };
 

@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.movies.view.MoviesListActivity"
-            android:theme="@style/AppCompatDarkNoActionBar">
+            android:theme="@style/AppCompatDarkNoActionBar.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

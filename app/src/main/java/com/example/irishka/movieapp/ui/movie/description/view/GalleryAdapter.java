@@ -34,7 +34,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     }
 
     public interface OnItemClickListener {
-        void onItemClick(List<Image> backdrop, int position, View v, ImageView image);
+        void onItemClick(int position, View v, ImageView image);
     }
 
     public void setGalleryList(List<Image> backdrops) {
@@ -42,10 +42,14 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
         notifyDataSetChanged();
     }
 
+    public List<Image> getGalleryList() {
+        return backdrops;
+    }
+
     @NonNull
     @Override
     public GalleryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new GalleryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.gallery_item, parent, false), onItemClickListener, backdrops);
+        return new GalleryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.gallery_item, parent, false), onItemClickListener);
     }
 
     @Override
@@ -62,23 +66,20 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
     static class GalleryViewHolder extends RecyclerView.ViewHolder {
 
-        List<Image> backdrops;
-
         OnItemClickListener onItemClickListener;
 
         @BindView(R.id.backdrop_image)
         ImageView image;
 
-        GalleryViewHolder(View itemView, OnItemClickListener onItemClickListener, List<Image> backdrops) {
+        GalleryViewHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.onItemClickListener = onItemClickListener;
-            this.backdrops = backdrops;
         }
 
         void bind(Image backdrop) {
 
-            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(backdrops, getAdapterPosition(), itemView, image));
+            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(getAdapterPosition(), itemView, image));
 
             //TODO!!!
             Glide.with(itemView.getContext())

@@ -102,9 +102,7 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
     public void showInfo(Cast cast) {
         name.setText(cast.getName());
 
-        if (cast.getBirthday().length() > 0) {
-            birth.setText(getBirthday(cast));
-        }
+        birth.setText(getBirthday(cast));
 
         place.setText(cast.getPlaceOfBirth());
         biography.setText(cast.getBiography());
@@ -115,6 +113,8 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
     }
 
     private String getBirthday(Cast cast) {
+
+        if (cast.getBirthday() == null) return null;
 
         String oldDateString = cast.getBirthday();
         SimpleDateFormat oldDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -134,7 +134,7 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
     @Override
     public void onItemClick(List<Image> photos, int position) {
         Intent intent = new Intent(getContext(), ImagePagerActivity.class);
-        intent.putExtra("ARRAYLIST", (ArrayList<Image>)photos);
+        intent.putExtra("ARRAYLIST", (ArrayList<Image>) photos);
         intent.putExtra("POSITION", position);
         startActivity(intent);
     }

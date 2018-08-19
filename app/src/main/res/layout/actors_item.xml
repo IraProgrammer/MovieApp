@@ -7,14 +7,10 @@
     android:orientation="horizontal"
     android:padding="8dp">
 
-    <com.makeramen.roundedimageview.RoundedImageView
+    <com.github.siyamed.shapeimageview.CircularImageView
         android:id="@+id/actor_image"
         android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:scaleType="centerCrop"
-        app:riv_corner_radius="100dp"
-        app:riv_mutate_background="true"
-        app:riv_tile_mode="clamp"/>
+        android:layout_height="60dp"/>
 
     <TextView
         android:id="@+id/actor_name"

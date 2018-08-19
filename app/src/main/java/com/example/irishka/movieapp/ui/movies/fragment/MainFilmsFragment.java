@@ -27,6 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 
+import static com.example.irishka.movieapp.ui.movie.view.MovieActivity.TITLE;
 import static com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter.NOW_PLAYING;
 import static com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter.POPULAR;
 
@@ -36,8 +37,6 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     public static final String MOVIE_ID = "movie_id";
 
     public static final String TYPE = "type";
-
-    public static final String TITLE = "title";
 
     @Inject
     MainFilmsAdapter filmsAdapter;

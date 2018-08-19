@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBarLayout"
+        android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background_holo_dark"
@@ -13,15 +13,11 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
+            android:layout_height="?attr/actionBarSize"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            app:contentInsetStart="8dp"
             android:background="@color/background_holo_dark"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            app:layout_scrollFlags="scroll|enterAlways">
 
                 <ImageButton
                     android:id="@+id/btn_home"
@@ -46,8 +42,6 @@
                     android:background="#00000000"
                     android:foregroundGravity="center_vertical"
                     android:src="@drawable/ic_search" />
-
-            </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
 

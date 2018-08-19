@@ -63,7 +63,7 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.16'
     implementation 'com.google.dagger:dagger-android-support:2.16'
     //RoundedImageView
-    implementation 'com.makeramen:roundedimageview:2.3.0'
+    implementation 'com.github.siyamed:android-shape-imageview:0.9.3@aar'
     //AndroidYouTubePlayer
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:8.0.1'
     //indicator

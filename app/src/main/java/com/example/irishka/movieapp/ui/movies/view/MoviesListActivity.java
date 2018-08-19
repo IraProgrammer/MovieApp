@@ -40,6 +40,7 @@ public class MoviesListActivity extends DaggerAppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppCompatDarkNoActionBar);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
         ButterKnife.bind(this);

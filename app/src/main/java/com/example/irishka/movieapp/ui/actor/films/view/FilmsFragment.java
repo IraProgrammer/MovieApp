@@ -25,6 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 
+import static com.example.irishka.movieapp.ui.movie.view.MovieActivity.TITLE;
 import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.MOVIE_ID;
 
 public class FilmsFragment extends MvpAppCompatFragment implements FilmsView, FilmsAdapter.OnItemClickListener {
@@ -81,6 +82,7 @@ public class FilmsFragment extends MvpAppCompatFragment implements FilmsView, Fi
     public void onItemClick(Movie movie) {
         Intent intent = new Intent(getActivity(), MovieActivity.class);
         intent.putExtra(MOVIE_ID, movie.getId());
+        intent.putExtra(TITLE, movie.getTitle());
         startActivity(intent);
     }
 }

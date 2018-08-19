@@ -38,6 +38,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 
+import static com.example.irishka.movieapp.ui.movie.view.MovieActivity.TITLE;
 import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.MOVIE_ID;
 
 public class DescriptionFragment extends MvpAppCompatFragment
@@ -217,13 +218,14 @@ public class DescriptionFragment extends MvpAppCompatFragment
     public void onItemClick(Movie movie) {
         Intent intent = new Intent(getActivity(), MovieActivity.class);
         intent.putExtra(MOVIE_ID, movie.getId());
+        intent.putExtra(TITLE, movie.getTitle());
         startActivity(intent);
     }
 
     @Override
-    public void onItemClick(List<Image> backdrops, int position, View item, ImageView image) {
+    public void onItemClick(int position, View item, ImageView image) {
         Intent intent = new Intent(getContext(), ImagePagerActivity.class);
-        intent.putExtra(ARRAY_LIST, (ArrayList<Image>) backdrops);
+        intent.putExtra(ARRAY_LIST, (ArrayList<Image>) galleryAdapter.getGalleryList());
         intent.putExtra(POSITION, position);
 
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(

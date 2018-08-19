@@ -15,9 +15,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
 
-import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.TITLE;
-
 public class MovieActivity extends DaggerAppCompatActivity {
+
+    public static final String TITLE = "title";
 
     @BindView(R.id.tabs)
     TabLayout tabLayout;

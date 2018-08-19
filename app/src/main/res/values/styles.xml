@@ -19,16 +19,10 @@
         <item name="colorAccent">@color/accent_material_dark_1</item>
     </style>
 
-
-    <style  name="myDialogTheme" parent="@android:style/Theme.Dialog">
-        <item name ="android:windowNoTitle">true</item>
-        <item name ="android:windowFrame">@null</item>
-        <item name ="android:background">@android:color/transparent</item>
-        <item name ="android:windowBackground">@android:color/transparent</item>
-    </style>
-
-    <style name="MyActionBarTabStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="elevation">0dp</item>
+    <style name="AppCompatDarkNoActionBar.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <!-- для Android 5+ вы можете поменять цвет colorPrimaryDark, чтобы соответствовать цвету windowBackground -->
+        <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
     </style>
 
 </resources>

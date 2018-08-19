@@ -31,7 +31,7 @@
             android:orientation="horizontal"
             android:padding="8dp">
 
-            <com.makeramen.roundedimageview.RoundedImageView
+            <com.github.siyamed.shapeimageview.RoundedImageView
                 android:id="@+id/film_image"
                 android:layout_width="130dp"
                 android:layout_height="170dp"
@@ -39,7 +39,7 @@
                 android:layout_marginBottom="4dp"
                 android:layout_marginTop="6dp"
                 android:scaleType="centerCrop"
-                app:riv_corner_radius="10dp" />
+                app:siRadius="10dp" />
 
             <LinearLayout
                 android:id="@+id/lin"
