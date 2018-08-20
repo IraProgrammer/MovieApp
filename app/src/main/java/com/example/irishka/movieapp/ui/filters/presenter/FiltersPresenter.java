@@ -47,11 +47,14 @@ public class FiltersPresenter extends BasePresenter<FiltersView> {
 
         page = 1;
 
+        getViewState().clearList();
+        getViewState().showProgress();
+
         addDisposables(moviesRepository.getWithFilters(page, sort, genres)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(movies -> getViewState().finishLoading())
-              //  .doOnSuccess(movies -> page++)
                 .doOnError(movies -> getViewState().finishLoading())
+                .doOnSuccess(movies -> getViewState().hideProgress())
                 .subscribe(movies -> getViewState().showMovies(movies, true), throwable -> {
                 }));
     }

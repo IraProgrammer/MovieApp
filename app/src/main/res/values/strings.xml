@@ -32,4 +32,10 @@
     <string name="popular_fragment">Popular</string>
     <string name="top_rated_fragment">Top Rated</string>
     <string name="upcoming_fragment">Upcoming</string>
+
+    <string name="sorry">Sorry, no information about this movie.</string>
+
+    <string name="sorry_actor">Sorry, no information about this person.</string>
+
+    <string name="sorry_search">Sorry, no results were found.</string>
 </resources>

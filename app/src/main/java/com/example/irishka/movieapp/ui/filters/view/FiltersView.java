@@ -7,6 +7,12 @@ import java.util.List;
 
 public interface FiltersView extends MvpView{
 
+    void showProgress();
+
+    void hideProgress();
+
+    void clearList();
+
     void showMovies(List<Movie> movies, boolean isFiltred);
 
     void finishLoading();

@@ -1,16 +1,21 @@
 package com.example.irishka.movieapp.ui.movie.description.view;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -102,6 +107,9 @@ public class DescriptionFragment extends MvpAppCompatFragment
     @BindView(R.id.overview)
     TextView overview;
 
+    @BindView(R.id.gallery)
+    TextView galleryTextView;
+
     @BindView(R.id.see_also)
     TextView seeAlso;
 
@@ -111,8 +119,14 @@ public class DescriptionFragment extends MvpAppCompatFragment
     @BindView(R.id.youtube_player_view)
     YouTubePlayerView youTubePlayerView;
 
-    @BindView(R.id.progress)
-    MaterialProgressBar progressBar;
+    @BindView(R.id.progressBar)
+    MaterialProgressBar progress;
+
+    @BindView(R.id.video_card)
+    CardView videoCard;
+
+    @BindView(R.id.sorry)
+    TextView sorry;
 
     @Inject
     @Related
@@ -158,15 +172,17 @@ public class DescriptionFragment extends MvpAppCompatFragment
         relatedMovies.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                int visibleItemCount = recyclerView.getLayoutManager().getChildCount();
-                int totalItemCount = recyclerView.getLayoutManager().getItemCount();
-                int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                if (isOnline()) {
+                    int visibleItemCount = recyclerView.getLayoutManager().getChildCount();
+                    int totalItemCount = recyclerView.getLayoutManager().getItemCount();
+                    int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
 
-                if (isLoading) return;
-                if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
-                        && lastVisibleItemPosition >= 0) {
-                    isLoading = true;
-                    presenter.downloadRelatedMovies();
+                    if (isLoading) return;
+                    if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
+                            && lastVisibleItemPosition >= 0) {
+                        isLoading = true;
+                        presenter.downloadRelatedMovies();
+                    }
                 }
             }
         });
@@ -180,16 +196,39 @@ public class DescriptionFragment extends MvpAppCompatFragment
     }
 
     @Override
+    public void hideProgress() {
+        progress.setVisibility(View.GONE);
+
+        relatedMovies.setVisibility(View.VISIBLE);
+        if (relatedMovies.getAdapter().getItemCount() > 0) seeAlso.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void finishLoading() {
         isLoading = false;
     }
 
     @Override
+    public void onDownloadError() {
+        ratingBar.setVisibility(View.GONE);
+        galleryTextView.setVisibility(View.GONE);
+        videoCard.setVisibility(View.GONE);
+        seeAlso.setVisibility(View.GONE);
+
+        sorry.setVisibility(View.VISIBLE);
+        progress.setVisibility(View.GONE);
+    }
+
+    @Override
     public void showDescription(Movie movie) {
 
-        if (movie.getVoteAverage() > 0)
-        ratingBar.setProgress((int) movie.getVoteAverage());
-        else ratingBar.setProgress(0);
+        if (movie.getVoteAverage() > 0) {
+            ratingBar.setProgress((int) movie.getVoteAverage());
+            ratingBar.setVisibility(View.VISIBLE);
+        } else {
+            ratingBar.setProgress(0);
+            ratingBar.setVisibility(View.VISIBLE);
+        }
 
         filmTitle.setText(movie.getTitle());
 
@@ -209,16 +248,23 @@ public class DescriptionFragment extends MvpAppCompatFragment
 
         overview.setText(movie.getOverview());
 
-        galleryAdapter.setGalleryList(movie.getBackdrops());
+        if (movie.getBackdrops().size() > 0) {
+            galleryAdapter.setGalleryList(movie.getBackdrops());
+            galleryTextView.setVisibility(View.VISIBLE);
+        }
 
-        prepareDescription.initializeYouTubePlayer(movie, youTubePlayerView);
+        if (movie.getTrailer() != null) {
+            prepareDescription.initializeYouTubePlayer(movie, youTubePlayerView);
+            videoCard.setVisibility(View.VISIBLE);
+        } else {
+            videoCard.setVisibility(View.GONE);
+        }
 
     }
 
     @Override
     public void showRelatedMovies(List<Movie> movies) {
         relatedMoviesAdapter.setRelatedList(movies);
-        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -260,12 +306,21 @@ public class DescriptionFragment extends MvpAppCompatFragment
         layoutManager = gallery.getLayoutManager();
 
 
-
 //        viewAtPosition = layoutManager.findViewByPosition(currentPosition);
 //
 //        if (viewAtPosition == null || layoutManager.isViewPartiallyVisible(viewAtPosition, false, true))
 //            gallery.scrollToPosition(currentPosition);
 //         //   startPostponedEnterTransition();
 //        }
+    }
+
+    protected boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnected()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

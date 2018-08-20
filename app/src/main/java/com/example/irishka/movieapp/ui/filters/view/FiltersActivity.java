@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -32,6 +33,7 @@ import javax.inject.Provider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 import static com.example.irishka.movieapp.ui.movie.view.MovieActivity.TITLE;
 import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.MOVIE_ID;
@@ -83,6 +85,12 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
 
     @BindView(R.id.bottomAppBar)
     BottomAppBar bottomAppBar;
+
+    @BindView(R.id.progressBar)
+    MaterialProgressBar progress;
+
+    @BindView(R.id.sorry)
+    TextView sorry;
 
     @Inject
     Provider<FiltersPresenter> filtersPresenterProvider;
@@ -174,7 +182,26 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
     }
 
     @Override
+    public void showProgress(){
+        sorry.setVisibility(View.GONE);
+        progress.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress(){
+        progress.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void clearList(){
+        filtersAdapter.clearList();
+    }
+
+    @Override
     public void showMovies(List<Movie> movies, boolean isFiltred) {
+        if (movies.size() == 0) {
+            sorry.setVisibility(View.VISIBLE);
+        }
         filtersAdapter.addMoviesList(movies, isFiltred);
     }
 
@@ -217,7 +244,7 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
         }
     }
 
-    private void setSortListeners(){
+    private void setSortListeners() {
         for (int i = 0; i < sortChipList.size(); i++) {
             int finalI = i;
             sortChipList.get(i).setOnClickListener(new View.OnClickListener() {
@@ -236,8 +263,7 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
                                 sortChipList.get(j).setChecked(false);
                             }
                         }
-                    }
-                    else {
+                    } else {
                         sortChipList.get(finalI).setTextColor(getResources().getColor(R.color.white));
                     }
                 }
@@ -245,7 +271,7 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
         }
     }
 
-    private void setGenresListeners(){
+    private void setGenresListeners() {
         for (int i = 0; i < genresChipList.size(); i++) {
             int finalI = i;
             genresChipList.get(i).setOnClickListener(new View.OnClickListener() {
@@ -256,8 +282,7 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
 
                     if (genresChipList.get(finalI).isChecked()) {
                         genresChipList.get(finalI).setTextColor(getResources().getColor(R.color.black));
-                    }
-                    else {
+                    } else {
                         genresChipList.get(finalI).setTextColor(getResources().getColor(R.color.white));
                     }
                 }

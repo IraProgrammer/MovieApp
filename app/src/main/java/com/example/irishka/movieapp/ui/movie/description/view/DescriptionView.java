@@ -7,7 +7,11 @@ import java.util.List;
 
 public interface DescriptionView extends MvpView{
 
+    void hideProgress();
+
     void finishLoading();
+
+    void onDownloadError();
 
     void showDescription(Movie movie);
 

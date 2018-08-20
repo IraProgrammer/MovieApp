@@ -21,14 +21,17 @@ public abstract class RelatedOfMovieDao {
 
     @Query("SELECT * " +
             "FROM RelatedOfMovie " +
-            "WHERE movieId = :movieId")
-    public abstract List<RelatedOfMovie> getRoMifExist(long movieId);
+            "WHERE movieId = :movieId " +
+            "AND relatedId =:relatedId")
+    public abstract List<RelatedOfMovie> getRoMifExist(long movieId, long relatedId);
 
     @Transaction
-    public void trans( List<RelatedOfMovie> relatedOfMovie) {
-        List<RelatedOfMovie> rOm = getRoMifExist(relatedOfMovie.get(0).getMovieId());
+    public void trans(List<RelatedOfMovie> relatedOfMovie) {
+        if (relatedOfMovie.size() != 0) {
+            List<RelatedOfMovie> rOm = getRoMifExist(relatedOfMovie.get(0).getMovieId(), relatedOfMovie.get(0).getRelatedId());
 
-        if (rOm.size() == 0) insertRelatedOfMovie(relatedOfMovie);
+            if (rOm.size() == 0) insertRelatedOfMovie(relatedOfMovie);
+        }
     }
 
     @Query("SELECT * FROM RelatedOfMovie WHERE movieId = :movieId")

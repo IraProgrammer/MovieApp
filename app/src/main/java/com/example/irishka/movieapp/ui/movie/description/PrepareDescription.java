@@ -111,21 +111,22 @@ public class PrepareDescription {
     }
 
     public void initializeYouTubePlayer(Movie movie, YouTubePlayerView youTubePlayerView) {
-        this.youTubePlayerView = youTubePlayerView;
-        fragment.getLifecycle().addObserver(youTubePlayerView);
 
-        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
-            @Override
-            public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
-                initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
-                    @Override
-                    public void onReady() {
-                        initializedYouTubePlayer.cueVideo(movie.getTrailer().getKey(), 0);
-                    }
-                });
-                addFullScreenListenerToPlayer(initializedYouTubePlayer);
-            }
-        }, true);
+            this.youTubePlayerView = youTubePlayerView;
+            fragment.getLifecycle().addObserver(youTubePlayerView);
+
+            youTubePlayerView.initialize(new YouTubePlayerInitListener() {
+                @Override
+                public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
+                    initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
+                        @Override
+                        public void onReady() {
+                            initializedYouTubePlayer.cueVideo(movie.getTrailer().getKey(), 0);
+                        }
+                    });
+                    addFullScreenListenerToPlayer(initializedYouTubePlayer);
+                }
+            }, true);
     }
 
     private void addFullScreenListenerToPlayer(final YouTubePlayer youTubePlayer) {

@@ -20,12 +20,13 @@ public abstract class MovieWithCategoryDao {
 
     @Query("SELECT * " +
             "FROM MovieWithCategory " +
-            "WHERE type = :type")
-    abstract List<MovieWithCategory> getMwCifExist(String type);
+            "WHERE type = :type " +
+            "AND movieId = :movieId")
+    abstract List<MovieWithCategory> getMwCifExist(String type, long movieId);
 
     @Transaction
     public void trans(List<MovieWithCategory> moviesWithCategory) {
-        List<MovieWithCategory> mWc = getMwCifExist(moviesWithCategory.get(0).getType());
+        List<MovieWithCategory> mWc = getMwCifExist(moviesWithCategory.get(0).getType(), moviesWithCategory.get(0).getMovieId());
 
         if (mWc.size() == 0) insertMoviesWithCategory(moviesWithCategory);
     }

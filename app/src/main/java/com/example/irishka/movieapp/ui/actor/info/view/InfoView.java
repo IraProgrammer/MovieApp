@@ -7,6 +7,8 @@ import com.example.irishka.movieapp.domain.entity.Cast;
 
 public interface InfoView extends MvpView {
 
+    void hideProgress();
+
     void showInfo(Cast cast);
 
 }

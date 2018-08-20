@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface MainFilmsView extends MvpView{
 
+    void hideProgress();
+
     void showMovies(List<Movie> movie);
 
     void finishLoading();

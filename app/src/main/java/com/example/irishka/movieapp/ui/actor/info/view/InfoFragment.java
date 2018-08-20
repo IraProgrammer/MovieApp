@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -76,8 +77,20 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
     @BindView(R.id.actor_image)
     ImageView image;
 
-    @BindView(R.id.progress)
-    MaterialProgressBar progressBar;
+    @BindView(R.id.progressBar)
+    MaterialProgressBar progress;
+
+    @BindView(R.id.birth_txt)
+    TextView birthTxt;
+
+    @BindView(R.id.place_txt)
+    TextView placeTxt;
+
+    @BindView(R.id.photos)
+    TextView photosTxt;
+
+    @BindView(R.id.sorry)
+    TextView sorry;
 
     public static InfoFragment newInstance() {
         return new InfoFragment();
@@ -103,9 +116,20 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
     }
 
     @Override
+    public void hideProgress(){
+        birthTxt.setVisibility(View.VISIBLE);
+        placeTxt.setVisibility(View.VISIBLE);
+        photosTxt.setVisibility(View.VISIBLE);
+
+        progress.setVisibility(View.GONE);
+    }
+
+    @Override
     public void showInfo(Cast cast) {
 
-        progressBar.setVisibility(View.GONE);
+        if (cast.getBirthday() == null){
+            sorry.setVisibility(View.VISIBLE);
+        }
 
         name.setText(cast.getName());
 

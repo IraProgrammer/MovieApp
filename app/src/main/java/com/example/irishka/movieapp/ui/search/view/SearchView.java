@@ -11,6 +11,10 @@ public interface SearchView extends MvpView {
 
     void load(String query, List<String> items);
 
+    void showProgress();
+
+    void hideProgress();
+
     void showMovies(List<Movie> movies);
 
 }

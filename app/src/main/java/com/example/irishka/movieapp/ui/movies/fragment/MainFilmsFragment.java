@@ -1,6 +1,9 @@
 package com.example.irishka.movieapp.ui.movies.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -94,6 +97,8 @@ public class MainFilmsFragment extends MvpAppCompatFragment
         moviesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+
+                if(isOnline()){
                 int visibleItemCount = recyclerView.getLayoutManager().getChildCount();
                 int totalItemCount = recyclerView.getLayoutManager().getItemCount();
                 int lastVisibleItemPosition = getLastVisibleItemPosition();
@@ -105,7 +110,7 @@ public class MainFilmsFragment extends MvpAppCompatFragment
                     presenter.downloadMovies();
                 }
             }
-        });
+        }});
 
         moviesRecyclerView.setAdapter(filmsAdapter);
 
@@ -113,9 +118,13 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     }
 
     @Override
+    public void hideProgress(){
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
     public void showMovies(List<Movie> movies) {
         filmsAdapter.addMoviesList(movies);
-        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -138,5 +147,15 @@ public class MainFilmsFragment extends MvpAppCompatFragment
         intent.putExtra(MOVIE_ID, movie.getId());
         intent.putExtra(TITLE, movie.getTitle());
         startActivity(intent);
+    }
+
+    protected boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnected()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

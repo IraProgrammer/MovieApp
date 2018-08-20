@@ -31,10 +31,7 @@ public class TrailersMapper {
             return apply(trailerModel);
         }
 
-        Trailer t = new Trailer();
-        t.setKey("SUXWAEX2jlg");
-
-        return t;
+        return null;
 
     }
 

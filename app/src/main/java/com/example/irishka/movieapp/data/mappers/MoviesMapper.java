@@ -1,5 +1,6 @@
 package com.example.irishka.movieapp.data.mappers;
 
+import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.data.database.entity.MovieDb;
 import com.example.irishka.movieapp.data.database.entity.MovieWithCategory;
 import com.example.irishka.movieapp.data.database.entity.RelatedOfMovie;
@@ -10,10 +11,14 @@ import com.example.irishka.movieapp.data.models.TrailerModel;
 import com.example.irishka.movieapp.domain.entity.Genre;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -49,9 +54,11 @@ public class MoviesMapper {
         movie.setReleaseDate(descriptionModel.getReleaseDate());
         movie.setTitle(descriptionModel.getTitle());
 
-        if (descriptionModel.getVoteAverage() > 0)
-        movie.setVoteAverageStr(TMDB + String.valueOf(descriptionModel.getVoteAverage()));
-        else movie.setVoteAverageStr(SEE_SOON);
+        if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
+            movie.setVoteAverageStr(SEE_SOON);
+        } else {
+            movie.setVoteAverageStr(TMDB + String.valueOf(descriptionModel.getVoteAverage()));
+        }
 
         movie.setVoteAverage(descriptionModel.getVoteAverage());
         movie.setOverview(descriptionModel.getOverview());
@@ -73,9 +80,11 @@ public class MoviesMapper {
         movie.setReleaseDate(movieModel.getReleaseDate());
         movie.setTitle(movieModel.getTitle());
 
-        if (movieModel.getVoteAverage() > 0)
+        if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
+            movie.setVoteAverageStr(SEE_SOON);
+        } else {
             movie.setVoteAverageStr(TMDB + String.valueOf(movieModel.getVoteAverage()));
-        else movie.setVoteAverageStr(SEE_SOON);
+        }
 
         movie.setVoteAverage(movieModel.getVoteAverage());
         movie.setOverview(movieModel.getOverview());
@@ -247,4 +256,14 @@ public class MoviesMapper {
 
     }
 
-}
+    private String getDate() {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            return dateFormat.format(new Date());
+        }
+
+        private int getYear(String releaseDate) {
+            return Integer.parseInt(releaseDate.split("-")[0]);
+        }
+
+
+    }

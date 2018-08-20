@@ -42,6 +42,7 @@ public class MainFilmsPresenter extends BasePresenter<MainFilmsView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(movies -> getViewState().finishLoading())
                 .doOnSuccess(movies -> page++)
+                .doOnSuccess(movies -> getViewState().hideProgress())
                 .doOnError(movies -> getViewState().finishLoading())
                 .subscribe(movies -> getViewState().showMovies(movies), throwable -> {}));
     }

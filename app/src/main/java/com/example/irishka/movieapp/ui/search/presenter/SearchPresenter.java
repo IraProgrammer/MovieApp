@@ -31,6 +31,8 @@ public class SearchPresenter extends BasePresenter<SearchView> {
 
     public void downloadMoviesFromSearch(String query, Boolean isNext) {
 
+        getViewState().showProgress();
+
         if (!this.query.equals(query)) {
             this.query = query;
             this.page = 1;
@@ -43,6 +45,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnSuccess(movies -> getViewState().finishLoading())
                     .doOnSuccess(movies -> page++)
+                    .doOnSuccess(movies -> getViewState().hideProgress())
                     .doOnError(movies -> getViewState().finishLoading())
                     .subscribe(movies -> getViewState().showMovies(movies), throwable -> {
                     }));

@@ -47,7 +47,7 @@ public class FiltersAdapter extends RecyclerView.Adapter<FiltersAdapter.Filteres
             notifyItemRangeInserted(idStart, idEnd);
     }
 
-    private void clearList() {
+    public void clearList() {
         this.movies = new ArrayList<>();
         notifyDataSetChanged();
     }

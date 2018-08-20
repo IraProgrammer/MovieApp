@@ -31,6 +31,7 @@ public class InfoPresenter extends BasePresenter<InfoView> {
 
         addDisposables(moviesRepository.downloadConcreteCast(id)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(cast -> getViewState().hideProgress())
                 .subscribe(cast -> getViewState().showInfo(cast), throwable -> {}));
     }
 }

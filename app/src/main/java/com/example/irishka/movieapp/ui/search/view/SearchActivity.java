@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -51,6 +52,9 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
 
     @BindView(R.id.progress)
     MaterialProgressBar progressBar;
+
+    @BindView(R.id.sorry)
+    TextView sorry;
 
     @Inject
     Provider<SearchPresenter> searchPresenterProvider;
@@ -185,9 +189,23 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
     }
 
     @Override
-    public void showMovies(List<Movie> movies) {
-        searchAdapter.addMoviesList(movies);
+    public void showProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
         progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showMovies(List<Movie> movies) {
+        if (movies.size() == 0) {
+            sorry.setVisibility(View.VISIBLE);
+        } else {
+            sorry.setVisibility(View.GONE);
+        }
+        searchAdapter.addMoviesList(movies);
     }
 
     @Override
@@ -201,6 +219,10 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
         intent.putExtra(MOVIE_ID, movie.getId());
         intent.putExtra(TITLE, movie.getTitle());
         startActivity(intent);
+
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(searchView.getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 }
 
