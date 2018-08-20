@@ -8,27 +8,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
-import com.example.irishka.movieapp.data.models.MovieModel;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.GlideHelper;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.Provides;
 
 public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHolder> {
 
@@ -96,24 +86,26 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHo
             this.glideHelper = glideHelper;
         }
 
-        private String getDate() {
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            return dateFormat.format(new Date());
-        }
-
-        private int getYear(String releaseDate) {
-            return Integer.parseInt(releaseDate.split("-")[0]);
-        }
+//        private String getDate() {
+//            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+//            return dateFormat.format(new Date());
+//        }
+//
+//        private int getYear(String releaseDate) {
+//            return Integer.parseInt(releaseDate.split("-")[0]);
+//        }
 
         void bind(Movie movie) {
 
             title.setText(movie.getTitle());
 
-            if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
-                rateText.setText(itemView.getContext().getString(R.string.see_soon));
-            } else {
-                rateText.setText(String.format(itemView.getContext().getString(R.string.vote_average), (float) movie.getVoteAverage()));
-            }
+            rateText.setText(movie.getVoteAverageStr());
+
+//            if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
+//                rateText.setText(itemView.getContext().getString(R.string.see_soon));
+//            } else {
+//                rateText.setText(String.format(itemView.getContext().getString(R.string.vote_average), (float) movie.getVoteAverageStr()));
+//            }
 
             String adult = "";
             if (movie.getAdult()) adult = itemView.getContext().getString(R.string.adult);

@@ -32,6 +32,7 @@ import javax.inject.Provider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 import static com.example.irishka.movieapp.ui.movie.view.MovieActivity.TITLE;
 import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.MOVIE_ID;
@@ -47,6 +48,9 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
 
     @BindView(R.id.search_recycler_view)
     RecyclerView searchRecyclerView;
+
+    @BindView(R.id.progress)
+    MaterialProgressBar progressBar;
 
     @Inject
     Provider<SearchPresenter> searchPresenterProvider;
@@ -183,6 +187,7 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
     @Override
     public void showMovies(List<Movie> movies) {
         searchAdapter.addMoviesList(movies);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

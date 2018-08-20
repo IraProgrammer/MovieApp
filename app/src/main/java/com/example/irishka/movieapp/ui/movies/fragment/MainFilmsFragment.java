@@ -26,6 +26,7 @@ import javax.inject.Provider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 import static com.example.irishka.movieapp.ui.movie.view.MovieActivity.TITLE;
 import static com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter.NOW_PLAYING;
@@ -54,6 +55,9 @@ public class MainFilmsFragment extends MvpAppCompatFragment
 
     @BindView(R.id.movies_recycler_view)
     RecyclerView moviesRecyclerView;
+
+    @BindView(R.id.progress)
+    MaterialProgressBar progressBar;
 
     @Inject
     StaggeredGridLayoutManager staggeredGridLayoutManager;
@@ -111,6 +115,7 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     @Override
     public void showMovies(List<Movie> movies) {
         filmsAdapter.addMoviesList(movies);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

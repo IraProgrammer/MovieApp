@@ -37,6 +37,7 @@ import javax.inject.Provider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 import static com.example.irishka.movieapp.ui.movie.view.MovieActivity.TITLE;
 import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.MOVIE_ID;
@@ -109,6 +110,9 @@ public class DescriptionFragment extends MvpAppCompatFragment
 
     @BindView(R.id.youtube_player_view)
     YouTubePlayerView youTubePlayerView;
+
+    @BindView(R.id.progress)
+    MaterialProgressBar progressBar;
 
     @Inject
     @Related
@@ -183,7 +187,9 @@ public class DescriptionFragment extends MvpAppCompatFragment
     @Override
     public void showDescription(Movie movie) {
 
+        if (movie.getVoteAverage() > 0)
         ratingBar.setProgress((int) movie.getVoteAverage());
+        else ratingBar.setProgress(0);
 
         filmTitle.setText(movie.getTitle());
 
@@ -197,7 +203,7 @@ public class DescriptionFragment extends MvpAppCompatFragment
 
         adult.setText(prepareDescription.getAdult(movie));
 
-        rate.setText(String.valueOf(movie.getVoteAverage()));
+        rate.setText(String.valueOf(movie.getVoteAverageStr()));
 
         country.setText(prepareDescription.getCountries(movie));
 
@@ -212,6 +218,7 @@ public class DescriptionFragment extends MvpAppCompatFragment
     @Override
     public void showRelatedMovies(List<Movie> movies) {
         relatedMoviesAdapter.setRelatedList(movies);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

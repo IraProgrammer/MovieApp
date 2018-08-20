@@ -228,12 +228,17 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
 
                     if (sortChipList.get(finalI).isChecked()) {
 
+                        sortChipList.get(finalI).setTextColor(getResources().getColor(R.color.black));
+
                         for (int j = 0; j < flagsForSort.length; j++) {
                             if (!sortChipList.get(finalI).equals(sortChipList.get(j))) {
                                 flagsForSort[j] = true;
                                 sortChipList.get(j).setChecked(false);
                             }
                         }
+                    }
+                    else {
+                        sortChipList.get(finalI).setTextColor(getResources().getColor(R.color.white));
                     }
                 }
             });
@@ -248,6 +253,13 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
                 public void onClick(View view) {
                     genresChipList.get(finalI).setChecked(flagsForGenres[finalI]);
                     flagsForGenres[finalI] = !flagsForGenres[finalI];
+
+                    if (genresChipList.get(finalI).isChecked()) {
+                        genresChipList.get(finalI).setTextColor(getResources().getColor(R.color.black));
+                    }
+                    else {
+                        genresChipList.get(finalI).setTextColor(getResources().getColor(R.color.white));
+                    }
                 }
             });
         }

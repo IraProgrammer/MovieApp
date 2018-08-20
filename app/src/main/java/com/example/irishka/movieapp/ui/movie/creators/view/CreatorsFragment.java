@@ -24,6 +24,7 @@ import javax.inject.Provider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class CreatorsFragment extends MvpAppCompatFragment implements CreatorsView, ActorsAdapter.OnItemClickListener {
 
@@ -45,6 +46,9 @@ public class CreatorsFragment extends MvpAppCompatFragment implements CreatorsVi
 
     @BindView(R.id.actors_recycler_view)
     RecyclerView actorsRecyclerView;
+
+    @BindView(R.id.progress)
+    MaterialProgressBar progressBar;
 
     public static CreatorsFragment newInstance(){
         return new CreatorsFragment();
@@ -72,7 +76,7 @@ public class CreatorsFragment extends MvpAppCompatFragment implements CreatorsVi
     @Override
     public void showCasts(List<Cast> cast) {
         actorsAdapter.setList(cast);
-
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

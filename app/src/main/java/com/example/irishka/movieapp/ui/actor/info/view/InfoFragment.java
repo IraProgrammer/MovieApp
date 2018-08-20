@@ -37,6 +37,7 @@ import javax.inject.Provider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class InfoFragment extends MvpAppCompatFragment implements InfoView, PhotosAdapter.OnItemClickListener {
 
@@ -75,6 +76,9 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
     @BindView(R.id.actor_image)
     ImageView image;
 
+    @BindView(R.id.progress)
+    MaterialProgressBar progressBar;
+
     public static InfoFragment newInstance() {
         return new InfoFragment();
     }
@@ -100,6 +104,9 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
 
     @Override
     public void showInfo(Cast cast) {
+
+        progressBar.setVisibility(View.GONE);
+
         name.setText(cast.getName());
 
         birth.setText(getBirthday(cast));

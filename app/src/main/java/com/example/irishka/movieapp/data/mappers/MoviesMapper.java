@@ -19,6 +19,10 @@ import javax.inject.Inject;
 
 public class MoviesMapper {
 
+    private static final String SEE_SOON = "See soon";
+
+    private static final String TMDB = "TMDB ";
+
     private static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w500//";
 
     private ImageMapper backdropMapper;
@@ -44,6 +48,11 @@ public class MoviesMapper {
         movie.setPosterUrl(BASE_IMAGE_URL + descriptionModel.getPosterPath());
         movie.setReleaseDate(descriptionModel.getReleaseDate());
         movie.setTitle(descriptionModel.getTitle());
+
+        if (descriptionModel.getVoteAverage() > 0)
+        movie.setVoteAverageStr(TMDB + String.valueOf(descriptionModel.getVoteAverage()));
+        else movie.setVoteAverageStr(SEE_SOON);
+
         movie.setVoteAverage(descriptionModel.getVoteAverage());
         movie.setOverview(descriptionModel.getOverview());
         movie.setAdult(descriptionModel.getAdult());
@@ -63,6 +72,11 @@ public class MoviesMapper {
         movie.setPosterUrl(BASE_IMAGE_URL + movieModel.getPosterPath());
         movie.setReleaseDate(movieModel.getReleaseDate());
         movie.setTitle(movieModel.getTitle());
+
+        if (movieModel.getVoteAverage() > 0)
+            movie.setVoteAverageStr(TMDB + String.valueOf(movieModel.getVoteAverage()));
+        else movie.setVoteAverageStr(SEE_SOON);
+
         movie.setVoteAverage(movieModel.getVoteAverage());
         movie.setOverview(movieModel.getOverview());
         movie.setAdult(movieModel.getAdult());
@@ -78,7 +92,7 @@ public class MoviesMapper {
         movieDb.setReleaseDate(movie.getReleaseDate());
         movieDb.setTitle(movie.getTitle());
         movieDb.setOverview(movie.getOverview());
-        movieDb.setVoteAverage(movie.getVoteAverage());
+        movieDb.setVoteAverageStr(movie.getVoteAverageStr());
         movieDb.setAdult(movie.getAdult());
         movieDb.setRuntime(movie.getRuntime());
 
@@ -99,7 +113,7 @@ public class MoviesMapper {
         movieDb.setReleaseDate(movie.getReleaseDate());
         movieDb.setTitle(movie.getTitle());
         movieDb.setOverview(movie.getOverview());
-        movieDb.setVoteAverage(movie.getVoteAverage());
+        movieDb.setVoteAverageStr(movie.getVoteAverageStr());
         movieDb.setAdult(movie.getAdult());
         movieDb.setRuntime(movie.getRuntime());
 
@@ -121,7 +135,7 @@ public class MoviesMapper {
         movie.setReleaseDate(movieDb.getReleaseDate());
         movie.setTitle(movieDb.getTitle());
         movie.setOverview(movieDb.getOverview());
-        movie.setVoteAverage(movieDb.getVoteAverage());
+        movie.setVoteAverageStr(movieDb.getVoteAverageStr());
         movie.setAdult(movieDb.getAdult());
         movie.setGenres(genres);
         movie.setRuntime(movieDb.getRuntime());
@@ -138,7 +152,7 @@ public class MoviesMapper {
         movie.setReleaseDate(movieDb.getReleaseDate());
         movie.setTitle(movieDb.getTitle());
         movie.setOverview(movieDb.getOverview());
-        movie.setVoteAverage(movieDb.getVoteAverage());
+        movie.setVoteAverageStr(movieDb.getVoteAverageStr());
         movie.setAdult(movieDb.getAdult());
         movie.setRuntime(movieDb.getRuntime());
 

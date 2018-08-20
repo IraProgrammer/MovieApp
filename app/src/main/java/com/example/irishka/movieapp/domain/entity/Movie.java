@@ -15,6 +15,16 @@ public class Movie {
 
     private boolean adult;
 
+    private String voteAverageStr;
+
+    public double getVoteAverage() {
+        return voteAverage;
+    }
+
+    public void setVoteAverage(double voteAverage) {
+        this.voteAverage = voteAverage;
+    }
+
     private double voteAverage;
 
     public String getOverview() {
@@ -81,16 +91,16 @@ public class Movie {
         return adult;
     }
 
-    public void setAdult(Boolean adult) {
+    public void setAdult(boolean adult) {
         this.adult = adult;
     }
 
-    public double getVoteAverage() {
-        return voteAverage;
+    public String getVoteAverageStr() {
+        return voteAverageStr;
     }
 
-    public void setVoteAverage(double voteAverage) {
-        this.voteAverage = voteAverage;
+    public void setVoteAverageStr(String voteAverageStr) {
+        this.voteAverageStr = voteAverageStr;
     }
 
     public int getRuntime() {
