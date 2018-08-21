@@ -6,11 +6,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -32,8 +36,6 @@ import dagger.android.support.AndroidSupportInjection;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 import static com.example.irishka.movieapp.ui.movie.view.MovieActivity.TITLE;
-import static com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter.NOW_PLAYING;
-import static com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter.POPULAR;
 
 public class MainFilmsFragment extends MvpAppCompatFragment
         implements MainFilmsView, MainFilmsAdapter.OnItemClickListener {
@@ -61,6 +63,15 @@ public class MainFilmsFragment extends MvpAppCompatFragment
 
     @BindView(R.id.progress)
     MaterialProgressBar progressBar;
+
+    @BindView(R.id.error)
+    LinearLayout error;
+
+    @BindView(R.id.error_btn2)
+    Button errorBtn;
+
+    @BindView(R.id.root)
+    RelativeLayout root;
 
     @Inject
     StaggeredGridLayoutManager staggeredGridLayoutManager;
@@ -92,33 +103,56 @@ public class MainFilmsFragment extends MvpAppCompatFragment
         ButterKnife.bind(this, v);
 
         if (!staggeredGridLayoutManager.isAttachedToWindow())
-        moviesRecyclerView.setLayoutManager(staggeredGridLayoutManager);
+            moviesRecyclerView.setLayoutManager(staggeredGridLayoutManager);
 
         moviesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
 
-                if(isOnline()){
                 int visibleItemCount = recyclerView.getLayoutManager().getChildCount();
                 int totalItemCount = recyclerView.getLayoutManager().getItemCount();
                 int lastVisibleItemPosition = getLastVisibleItemPosition();
 
-                if (isLoading) return;
-                if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
-                        && lastVisibleItemPosition >= 0) {
-                    isLoading = true;
-                    presenter.downloadMovies();
+                if (isOnline()) {
+
+                    //   errorScroll.setVisibility(View.GONE);
+
+                    if (isLoading) return;
+                    if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
+                            && lastVisibleItemPosition >= 0) {
+                        isLoading = true;
+                        presenter.downloadMovies(true);
+                    }
+                } else {
+
+                    Snackbar snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_LONG);
+                    if (totalItemCount == lastVisibleItemPosition + 1) {
+                        snackbar.show();
+                    }
                 }
             }
-        }});
+        });
 
         moviesRecyclerView.setAdapter(filmsAdapter);
+
+        errorBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.downloadMovies(false);
+            }
+        });
 
         return v;
     }
 
     @Override
-    public void hideProgress(){
+    public void showProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+        error.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideProgress() {
         progressBar.setVisibility(View.GONE);
     }
 
@@ -130,6 +164,11 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     @Override
     public void finishLoading() {
         isLoading = false;
+    }
+
+    @Override
+    public void noInternetAndEmptyDb() {
+        error.setVisibility(View.VISIBLE);
     }
 
     private int getLastVisibleItemPosition() {
@@ -149,7 +188,7 @@ public class MainFilmsFragment extends MvpAppCompatFragment
         startActivity(intent);
     }
 
-    protected boolean isOnline() {
+    private boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {

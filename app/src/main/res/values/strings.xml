@@ -38,4 +38,10 @@
     <string name="sorry_actor">Sorry, no information about this person.</string>
 
     <string name="sorry_search">Sorry, no results were found.</string>
+
+    <string name="error_main_screen">An error has occurred. Check your Internet connection and try again.</string>
+
+    <string name="error_button">Try again</string>
+
+    <string name="snack">Please, check the Internet connection.</string>
 </resources>

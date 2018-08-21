@@ -4,15 +4,21 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.MatrixCursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
@@ -41,6 +47,9 @@ import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.
 public class SearchActivity extends MvpAppCompatActivity implements com.example.irishka.movieapp.ui.search.view.SearchView,
         com.example.irishka.movieapp.ui.search.view.SearchAdapter.OnItemClickListener {
 
+    @BindView(R.id.root)
+    RelativeLayout root;
+
     @BindView(R.id.search_view)
     SearchView searchView;
 
@@ -52,6 +61,12 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
 
     @BindView(R.id.progress)
     MaterialProgressBar progressBar;
+
+    @BindView(R.id.error)
+    LinearLayout error;
+
+    @BindView(R.id.error_btn)
+    Button errorBtn;
 
     @BindView(R.id.sorry)
     TextView sorry;
@@ -102,15 +117,23 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
         searchRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+
                 int visibleItemCount = recyclerView.getLayoutManager().getChildCount();
                 int totalItemCount = recyclerView.getLayoutManager().getItemCount();
                 int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
 
-                if (isLoading) return;
-                if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
-                        && lastVisibleItemPosition >= 0) {
-                    isLoading = true;
-                    searchPresenter.downloadMoviesFromSearch(query, true);
+                if (isOnline()) {
+                    if (isLoading) return;
+                    if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
+                            && lastVisibleItemPosition >= 0) {
+                        isLoading = true;
+                        searchPresenter.downloadMoviesFromSearch(query, true);
+                    }
+                } else {
+                    Snackbar snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_LONG);
+                    if (totalItemCount == lastVisibleItemPosition + 1) {
+                        snackbar.show();
+                    }
                 }
             }
         });
@@ -164,6 +187,13 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
             }
         });
 
+        errorBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchPresenter.downloadMoviesFromSearch(query, false);
+            }
+        });
+
     }
 
     @Override
@@ -191,6 +221,8 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
+        error.setVisibility(View.GONE);
+        sorry.setVisibility(View.GONE);
     }
 
     @Override
@@ -199,12 +231,21 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
     }
 
     @Override
+    public void noFound() {
+        sorry.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void noInternet() {
+        progressBar.setVisibility(View.GONE);
+
+        if (!isOnline())
+            error.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void showMovies(List<Movie> movies) {
-        if (movies.size() == 0) {
-            sorry.setVisibility(View.VISIBLE);
-        } else {
-            sorry.setVisibility(View.GONE);
-        }
+
         searchAdapter.addMoviesList(movies);
     }
 
@@ -223,6 +264,16 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchView.getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    protected boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnected()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 

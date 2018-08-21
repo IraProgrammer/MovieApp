@@ -1,47 +1,48 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/bottomAppBar"
+        android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:background="@color/background_holo_dark"
         app:elevation="4dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_height="?attr/actionBarSize"
             android:layout_width="match_parent"
-            app:contentInsetStart="8dp"
+            android:layout_height="?attr/actionBarSize"
             android:background="@color/background_holo_dark"
+            app:contentInsetStart="8dp"
             app:layout_scrollFlags="scroll|enterAlways">
 
-                <ImageButton
-                    android:id="@+id/btn_home"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:paddingEnd="8dp"
-                    android:background="@color/background_holo_dark"
-                    android:foregroundGravity="center_vertical"
-                    android:src="@drawable/ic_home" />
+            <ImageButton
+                android:id="@+id/btn_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="@color/background_holo_dark"
+                android:foregroundGravity="center_vertical"
+                android:paddingEnd="8dp"
+                android:src="@drawable/ic_home" />
 
-                <android.support.v7.widget.SearchView
-                    android:id="@+id/search_view"
-                    app:queryHint="Search"
-                    app:closeIcon="@drawable/ic_close"
-                    app:searchIcon="@drawable/ic_search"
-                    app:searchHintIcon="@null"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:background="#00000000"
-                    android:foregroundGravity="center_vertical"
-                    android:src="@drawable/ic_search" />
+            <android.support.v7.widget.SearchView
+                android:id="@+id/search_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="#00000000"
+                android:foregroundGravity="center_vertical"
+                android:src="@drawable/ic_search"
+                app:closeIcon="@drawable/ic_close"
+                app:queryHint="Search"
+                app:searchHintIcon="@null"
+                app:searchIcon="@drawable/ic_search" />
 
         </android.support.v7.widget.Toolbar>
 
@@ -51,27 +52,53 @@
         android:id="@+id/sorry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:gravity="center_horizontal"
         android:layout_margin="8dp"
+        android:layout_below="@id/appBar"
         android:text="@string/sorry_search"
         android:visibility="gone" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/search_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/sorry" />
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
         android:id="@+id/progress"
         style="@style/Widget.MaterialProgressBar.ProgressBar.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:indeterminate="true"
-        android:layout_gravity="center"
         android:visibility="gone"
         app:mpb_determinateCircularProgressStyle="dynamic"
         app:mpb_progressTint="@color/accent_material_dark_1" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/search_recycler_view"
+    <LinearLayout
+        android:id="@+id/error"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-    </android.support.v7.widget.RecyclerView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:text="@string/error_main_screen" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/error_btn"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/error_button"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
+</RelativeLayout>

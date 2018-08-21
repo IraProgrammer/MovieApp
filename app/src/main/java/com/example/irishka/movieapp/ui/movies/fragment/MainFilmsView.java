@@ -7,10 +7,13 @@ import java.util.List;
 
 public interface MainFilmsView extends MvpView{
 
+    void showProgress();
+
     void hideProgress();
 
     void showMovies(List<Movie> movie);
 
     void finishLoading();
 
+    void noInternetAndEmptyDb();
 }

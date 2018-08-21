@@ -31,24 +31,31 @@ public class SearchPresenter extends BasePresenter<SearchView> {
 
     public void downloadMoviesFromSearch(String query, Boolean isNext) {
 
-        getViewState().showProgress();
+        if (!isNext) {
+            getViewState().showProgress();
+        }
 
         if (!this.query.equals(query)) {
             this.query = query;
             this.page = 1;
-        }
-        else if (this.query.equals(query) && !isNext){
+        } else if (this.query.equals(query) && !isNext) {
             this.page = 1;
         }
 
-            addDisposables(moviesRepository.getMoviesFromSearchFromInternet(query, page)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnSuccess(movies -> getViewState().finishLoading())
-                    .doOnSuccess(movies -> page++)
-                    .doOnSuccess(movies -> getViewState().hideProgress())
-                    .doOnError(movies -> getViewState().finishLoading())
-                    .subscribe(movies -> getViewState().showMovies(movies), throwable -> {
-                    }));
+        addDisposables(moviesRepository.getMoviesFromSearchFromInternet(query, page)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess(movies -> getViewState().finishLoading())
+                .doOnSuccess(movies -> page++)
+                .doOnSuccess(movies -> getViewState().hideProgress())
+                .doOnSuccess(movies -> {
+                    if (movies.size() == 0) getViewState().noFound();
+                })
+                .doOnError(movies -> {
+                    if (!isNext) getViewState().noInternet();
+                })
+                .doOnError(movies -> getViewState().finishLoading())
+                .subscribe(movies -> getViewState().showMovies(movies), throwable -> {
+                }));
     }
 
     public void downloadKeywords(String query) {

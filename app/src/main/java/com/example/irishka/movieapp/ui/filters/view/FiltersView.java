@@ -11,6 +11,10 @@ public interface FiltersView extends MvpView{
 
     void hideProgress();
 
+    void noFound();
+
+    void noInternet();
+
     void clearList();
 
     void showMovies(List<Movie> movies, boolean isFiltred);

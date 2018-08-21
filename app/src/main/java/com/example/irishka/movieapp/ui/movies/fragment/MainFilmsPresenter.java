@@ -1,17 +1,16 @@
 package com.example.irishka.movieapp.ui.movies.fragment;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.ui.BasePresenter;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-
-import static com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter.NOW_PLAYING;
-import static com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter.POPULAR;
-import static com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter.TOP_RATED;
-import static com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter.UPCOMING;
+import io.reactivex.functions.Consumer;
 
 @InjectViewState
 public class MainFilmsPresenter extends BasePresenter<MainFilmsView> {
@@ -32,18 +31,27 @@ public class MainFilmsPresenter extends BasePresenter<MainFilmsView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
 
-        downloadMovies();
+        downloadMovies(false);
     }
 
-    public void downloadMovies(){
+    public void downloadMovies(boolean isScroll) {
 
+        if (!isScroll) {
+            getViewState().showProgress();
+        }
 
         addDisposables(moviesRepository.downloadMoviesForMainScreen(page, type)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(movies -> getViewState().finishLoading())
+                .doOnSuccess(movies -> {
+                    if (movies.size() == 0) {
+                        getViewState().noInternetAndEmptyDb();
+                    }
+                })
                 .doOnSuccess(movies -> page++)
                 .doOnSuccess(movies -> getViewState().hideProgress())
                 .doOnError(movies -> getViewState().finishLoading())
-                .subscribe(movies -> getViewState().showMovies(movies), throwable -> {}));
+                .subscribe(movies -> getViewState().showMovies(movies), throwable -> {
+                }));
     }
 }

@@ -1,14 +1,20 @@
 package com.example.irishka.movieapp.ui.filters.view;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -59,6 +65,9 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
     @Sort
     List<Chip> sortChipList;
 
+    @BindView(R.id.root)
+    CoordinatorLayout root;
+
     @BindView(R.id.expandableLayout)
     ExpandableRelativeLayout expandableLayout;
 
@@ -83,7 +92,7 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
     @BindView(R.id.filters_recycler_view)
     RecyclerView filtersRecyclerView;
 
-    @BindView(R.id.bottomAppBar)
+    @BindView(R.id.appBar)
     BottomAppBar bottomAppBar;
 
     @BindView(R.id.progressBar)
@@ -91,6 +100,12 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
 
     @BindView(R.id.sorry)
     TextView sorry;
+
+    @BindView(R.id.error)
+    LinearLayout error;
+
+    @BindView(R.id.error_btn)
+    Button errorBtn;
 
     @Inject
     Provider<FiltersPresenter> filtersPresenterProvider;
@@ -138,11 +153,18 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
                 int totalItemCount = recyclerView.getLayoutManager().getItemCount();
                 int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
 
-                if (isLoading) return;
-                if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
-                        && lastVisibleItemPosition >= 0) {
-                    isLoading = true;
-                    filtersPresenter.downloadForScroll(sortStr, genresStr);
+                if (isOnline()) {
+                    if (isLoading) return;
+                    if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
+                            && lastVisibleItemPosition >= 0) {
+                        isLoading = true;
+                        filtersPresenter.downloadForScroll(sortStr, genresStr);
+                    }
+                } else {
+                    Snackbar snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_LONG);
+                    if (totalItemCount == lastVisibleItemPosition + 1) {
+                        snackbar.show();
+                    }
                 }
             }
         });
@@ -179,29 +201,47 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
         setSortListeners();
         setGenresListeners();
 
+        errorBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                filtersPresenter.downloadMovies(sortStr, genresStr);
+            }
+        });
+
     }
 
     @Override
-    public void showProgress(){
+    public void showProgress() {
         sorry.setVisibility(View.GONE);
         progress.setVisibility(View.VISIBLE);
+        error.setVisibility(View.GONE);
     }
 
     @Override
-    public void hideProgress(){
+    public void hideProgress() {
         progress.setVisibility(View.GONE);
     }
 
     @Override
-    public void clearList(){
+    public void noFound() {
+        sorry.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void noInternet() {
+        progress.setVisibility(View.GONE);
+
+        if (!isOnline())
+            error.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void clearList() {
         filtersAdapter.clearList();
     }
 
     @Override
     public void showMovies(List<Movie> movies, boolean isFiltred) {
-        if (movies.size() == 0) {
-            sorry.setVisibility(View.VISIBLE);
-        }
         filtersAdapter.addMoviesList(movies, isFiltred);
     }
 
@@ -287,6 +327,16 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
                     }
                 }
             });
+        }
+    }
+
+    protected boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnected()) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

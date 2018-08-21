@@ -15,6 +15,10 @@ public interface SearchView extends MvpView {
 
     void hideProgress();
 
+    void noFound();
+
+    void noInternet();
+
     void showMovies(List<Movie> movies);
 
 }
