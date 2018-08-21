@@ -30,25 +30,33 @@ public class DescriptionPresenter extends BasePresenter<DescriptionView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         downloadDescription();
-        downloadRelatedMovies();
+        downloadRelatedMovies(false);
     }
 
     public void downloadDescription() {
+
+        getViewState().showProgress();
 
         addDisposables(moviesRepository.downloadMovie(movieId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(movies -> getViewState().onDownloadError())
                 .doOnSuccess(movie -> getViewState().hideProgress())
-                .subscribe(movie -> getViewState().showDescription(movie), throwable -> {}));
+                .subscribe(movie -> getViewState().showDescription(movie), throwable -> {
+                }));
     }
 
-    public void downloadRelatedMovies() {
+    public void downloadRelatedMovies(boolean isScroll) {
+
+        if (!isScroll) {
+            page = 1;
+        }
 
         addDisposables(moviesRepository.downloadRelatedMovies(movieId, page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(movies -> getViewState().finishLoading())
                 .doOnSuccess(movies -> page++)
                 .doOnError(movies -> getViewState().finishLoading())
-                .subscribe(movies -> getViewState().showRelatedMovies(movies), throwable -> {}));
+                .subscribe(movies -> getViewState().showRelatedMovies(movies), throwable -> {
+                }));
     }
 }

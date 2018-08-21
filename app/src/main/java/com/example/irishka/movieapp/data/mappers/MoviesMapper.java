@@ -144,7 +144,14 @@ public class MoviesMapper {
         movie.setReleaseDate(movieDb.getReleaseDate());
         movie.setTitle(movieDb.getTitle());
         movie.setOverview(movieDb.getOverview());
-        movie.setVoteAverageStr(movieDb.getVoteAverageStr());
+
+        if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
+            movie.setVoteAverageStr(SEE_SOON);
+        } else {
+            movie.setVoteAverageStr(TMDB + String.valueOf(movieDb.getVoteAverage()));
+        }
+
+        movie.setVoteAverage(movieDb.getVoteAverage());
         movie.setAdult(movieDb.getAdult());
         movie.setGenres(genres);
         movie.setRuntime(movieDb.getRuntime());
@@ -159,6 +166,14 @@ public class MoviesMapper {
         movie.setId(movieDb.getId());
         movie.setPosterUrl(movieDb.getPosterUrl());
         movie.setReleaseDate(movieDb.getReleaseDate());
+
+        if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
+            movie.setVoteAverageStr(SEE_SOON);
+        } else {
+            movie.setVoteAverageStr(TMDB + String.valueOf(movieDb.getVoteAverage()));
+        }
+
+        movie.setVoteAverage(movieDb.getVoteAverage());
         movie.setTitle(movieDb.getTitle());
         movie.setOverview(movieDb.getOverview());
         movie.setVoteAverageStr(movieDb.getVoteAverageStr());

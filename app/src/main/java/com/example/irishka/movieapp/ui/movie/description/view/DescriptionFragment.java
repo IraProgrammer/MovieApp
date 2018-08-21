@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.CardView;
@@ -14,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -128,6 +131,12 @@ public class DescriptionFragment extends MvpAppCompatFragment
     @BindView(R.id.sorry)
     TextView sorry;
 
+    @BindView(R.id.error)
+    LinearLayout error;
+
+    @BindView(R.id.error_btn)
+    Button errorBtn;
+
     @Inject
     @Related
     LinearLayoutManager linearLayoutManagerRelated;
@@ -181,7 +190,7 @@ public class DescriptionFragment extends MvpAppCompatFragment
                     if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
                             && lastVisibleItemPosition >= 0) {
                         isLoading = true;
-                        presenter.downloadRelatedMovies();
+                        presenter.downloadRelatedMovies(true);
                     }
                 }
             }
@@ -192,7 +201,23 @@ public class DescriptionFragment extends MvpAppCompatFragment
         gallery.setLayoutManager(linearLayoutManagerGallery);
         gallery.setAdapter(galleryAdapter);
 
+        errorBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.downloadDescription();
+                presenter.downloadRelatedMovies(false);
+                if (isOnline()) {
+                    error.setVisibility(View.GONE);
+                }
+            }
+        });
+
         return v;
+    }
+
+    @Override
+    public void showProgress() {
+        progress.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -200,7 +225,13 @@ public class DescriptionFragment extends MvpAppCompatFragment
         progress.setVisibility(View.GONE);
 
         relatedMovies.setVisibility(View.VISIBLE);
-        if (relatedMovies.getAdapter().getItemCount() > 0) seeAlso.setVisibility(View.VISIBLE);
+        if (relatedMovies.getAdapter().getItemCount() != 0) {
+            seeAlso.setVisibility(View.VISIBLE);
+        }
+
+        if (!isOnline()) {
+            error.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -214,7 +245,6 @@ public class DescriptionFragment extends MvpAppCompatFragment
         galleryTextView.setVisibility(View.GONE);
         videoCard.setVisibility(View.GONE);
         seeAlso.setVisibility(View.GONE);
-
         sorry.setVisibility(View.VISIBLE);
         progress.setVisibility(View.GONE);
     }
@@ -233,19 +263,12 @@ public class DescriptionFragment extends MvpAppCompatFragment
         filmTitle.setText(movie.getTitle());
 
         year.setText(prepareDescription.getYear(movie));
-
         prepareDescription.getPicture(movie, image);
-
         genre.setText(prepareDescription.getGenres(movie));
-
         duration.setText(prepareDescription.getDuration(movie));
-
         adult.setText(prepareDescription.getAdult(movie));
-
         rate.setText(String.valueOf(movie.getVoteAverageStr()));
-
         country.setText(prepareDescription.getCountries(movie));
-
         overview.setText(movie.getOverview());
 
         if (movie.getBackdrops().size() > 0) {
@@ -253,7 +276,7 @@ public class DescriptionFragment extends MvpAppCompatFragment
             galleryTextView.setVisibility(View.VISIBLE);
         }
 
-        if (movie.getTrailer() != null) {
+        if (movie.getTrailer() != null && isOnline()) {
             prepareDescription.initializeYouTubePlayer(movie, youTubePlayerView);
             videoCard.setVisibility(View.VISIBLE);
         } else {
@@ -264,6 +287,11 @@ public class DescriptionFragment extends MvpAppCompatFragment
 
     @Override
     public void showRelatedMovies(List<Movie> movies) {
+
+        if (!isOnline() && movies.size() != 0) {
+            seeAlso.setVisibility(View.VISIBLE);
+        }
+
         relatedMoviesAdapter.setRelatedList(movies);
     }
 
@@ -275,15 +303,18 @@ public class DescriptionFragment extends MvpAppCompatFragment
         startActivity(intent);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onItemClick(int position, View item, ImageView image) {
         Intent intent = new Intent(getContext(), ImagePagerActivity.class);
         intent.putExtra(ARRAY_LIST, (ArrayList<Image>) galleryAdapter.getGalleryList());
         intent.putExtra(POSITION, position);
 
+        image.setTransitionName(getString(R.string.transition_name).concat(String.valueOf(position)));
+
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 getActivity(),
-                new Pair<View, String>(image, getString(R.string.transition_name))
+                new Pair<View, String>(image, image.getTransitionName())
         );
 
         startActivityForResult(intent, 1, options.toBundle());

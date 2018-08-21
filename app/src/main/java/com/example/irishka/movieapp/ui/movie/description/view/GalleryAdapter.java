@@ -1,6 +1,8 @@
 package com.example.irishka.movieapp.ui.movie.description.view;
 
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +54,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
         return new GalleryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.gallery_item, parent, false), onItemClickListener);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NonNull GalleryViewHolder holder, int position) {
 
@@ -77,7 +80,11 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
             this.onItemClickListener = onItemClickListener;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         void bind(Image backdrop) {
+
+          //  itemView.setTransitionName(itemView.getContext().getString(R.string.transition_name).concat(String.valueOf(position)));
+            image.setTransitionName(itemView.getContext().getString(R.string.transition_name).concat(String.valueOf(getAdapterPosition())));
 
             itemView.setOnClickListener(view -> onItemClickListener.onItemClick(getAdapterPosition(), itemView, image));
 

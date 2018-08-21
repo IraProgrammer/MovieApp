@@ -24,6 +24,8 @@
 
     <string name="transition_name">image</string>
 
+    <string name="transition_movie">movie</string>
+
     <string name="app_label">MovieApp</string>
     <string name="search_hint">Hint</string>
 
@@ -40,6 +42,8 @@
     <string name="sorry_search">Sorry, no results were found.</string>
 
     <string name="error_main_screen">An error has occurred. Check your Internet connection and try again.</string>
+
+    <string name="error_description">Please check the Internet connection and try again to see more.</string>
 
     <string name="error_button">Try again</string>
 

@@ -1,6 +1,9 @@
 package com.example.irishka.movieapp.ui.actor.info.view;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -11,8 +14,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -92,6 +97,12 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
     @BindView(R.id.sorry)
     TextView sorry;
 
+    @BindView(R.id.error)
+    LinearLayout error;
+
+    @BindView(R.id.error_btn)
+    Button errorBtn;
+
     public static InfoFragment newInstance() {
         return new InfoFragment();
     }
@@ -112,22 +123,41 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
 
         photosRecyclerView.setAdapter(photosAdapter);
 
+        errorBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.downloadInfo();
+                if (isOnline()) {
+                    error.setVisibility(View.GONE);
+                }
+            }
+        });
+
         return v;
     }
 
     @Override
-    public void hideProgress(){
+    public void showProgress() {
+        progress.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
         birthTxt.setVisibility(View.VISIBLE);
         placeTxt.setVisibility(View.VISIBLE);
         photosTxt.setVisibility(View.VISIBLE);
 
         progress.setVisibility(View.GONE);
+
+        if (!isOnline()) {
+            error.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void showInfo(Cast cast) {
 
-        if (cast.getBirthday() == null){
+        if (cast.getBirthday() == null) {
             sorry.setVisibility(View.VISIBLE);
         }
 
@@ -145,7 +175,7 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
 
     private String getBirthday(Cast cast) {
 
-        if (cast.getBirthday() == null) return null;
+        if (cast.getBirthday() == null || cast.getBirthday().length() == 0) return null;
 
         String oldDateString = cast.getBirthday();
         SimpleDateFormat oldDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -168,5 +198,15 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
         intent.putExtra("ARRAYLIST", (ArrayList<Image>) photos);
         intent.putExtra("POSITION", position);
         startActivity(intent);
+    }
+
+    protected boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnected()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

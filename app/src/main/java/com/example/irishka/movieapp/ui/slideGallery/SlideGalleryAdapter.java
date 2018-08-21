@@ -1,5 +1,7 @@
 package com.example.irishka.movieapp.ui.slideGallery;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
@@ -47,6 +49,7 @@ public class SlideGalleryAdapter extends PagerAdapter {
         return backdrops.size();
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup view, int position) {
@@ -56,6 +59,8 @@ public class SlideGalleryAdapter extends PagerAdapter {
       //  ButterKnife.bind(imageLayout, imagePagerActivity);
 
         ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image_in_viewpager);
+
+        imageView.setTransitionName(imagePagerActivity.getString(R.string.transition_name).concat(String.valueOf(position)));
 
         glideHelper.downloadPicture(backdrops.get(position).getFileUrl(), imageView, imagePagerActivity);
 

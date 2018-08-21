@@ -24,10 +24,12 @@ public class InfoPresenter extends BasePresenter<InfoView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        downloadInfo(id);
+        downloadInfo();
     }
 
-    private void downloadInfo(long id) {
+    public void downloadInfo() {
+
+        getViewState().showProgress();
 
         addDisposables(moviesRepository.downloadConcreteCast(id)
                 .observeOn(AndroidSchedulers.mainThread())

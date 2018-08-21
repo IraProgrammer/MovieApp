@@ -115,8 +115,6 @@ public class MainFilmsFragment extends MvpAppCompatFragment
 
                 if (isOnline()) {
 
-                    //   errorScroll.setVisibility(View.GONE);
-
                     if (isLoading) return;
                     if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
                             && lastVisibleItemPosition >= 0) {
@@ -125,8 +123,20 @@ public class MainFilmsFragment extends MvpAppCompatFragment
                     }
                 } else {
 
-                    Snackbar snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_LONG);
-                    if (totalItemCount == lastVisibleItemPosition + 1) {
+                    //TODO
+                    Snackbar snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_INDEFINITE);
+
+                    snackbar.setAction(getString(R.string.error_button), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (isOnline()) {
+                                presenter.downloadMovies(true);
+                                snackbar.dismiss();
+                            }
+                            else snackbar.show();
+                        }
+                    });
+                    if (totalItemCount == lastVisibleItemPosition + 1 && !snackbar.isShownOrQueued()) {
                         snackbar.show();
                     }
                 }

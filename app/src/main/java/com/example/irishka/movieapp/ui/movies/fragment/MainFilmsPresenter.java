@@ -50,7 +50,7 @@ public class MainFilmsPresenter extends BasePresenter<MainFilmsView> {
                 })
                 .doOnSuccess(movies -> page++)
                 .doOnSuccess(movies -> getViewState().hideProgress())
-                .doOnError(movies -> getViewState().finishLoading())
+             //   .doOnError(movies -> getViewState().finishLoading())
                 .subscribe(movies -> getViewState().showMovies(movies), throwable -> {
                 }));
     }
