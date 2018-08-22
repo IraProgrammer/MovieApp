@@ -184,6 +184,7 @@ public class MoviesMapper {
     }
 
     public List<Movie> mapMoviesWithSort(List<MovieModel> movieModels) {
+
         List<Movie> movies = new ArrayList<>();
 
         for (int i = 0; i < movieModels.size(); i++) {
@@ -193,6 +194,9 @@ public class MoviesMapper {
         Collections.sort(movies, (first, second) -> Integer.compare(getYear(first), getYear(second)));
 
         Collections.reverse(movies);
+
+        int size = movies.size();
+        int f = size;
 
         return movies;
     }
@@ -212,15 +216,15 @@ public class MoviesMapper {
     }
 
 
-    public List<Movie> mapMoviesListFromDb(List<MovieDb> moviesDb) {
-        List<Movie> movies = new ArrayList<>();
-
-        for (MovieDb movieDb : moviesDb) {
-            movies.add(applyFromDb(movieDb));
-        }
-
-        return movies;
-    }
+//    public List<Movie> mapMoviesListFromDb(List<MovieDb> moviesDb) {
+////        List<Movie> movies = new ArrayList<>();
+////
+////        for (MovieDb movieDb : moviesDb) {
+////            movies.add(applyFromDb(movieDb));
+////        }
+////
+////        return movies;
+////    }
 
     public List<RelatedOfMovie> createRoMList(long movieId, List<MovieModel> related) {
         List<RelatedOfMovie> relatedOfMovie = new ArrayList<>();

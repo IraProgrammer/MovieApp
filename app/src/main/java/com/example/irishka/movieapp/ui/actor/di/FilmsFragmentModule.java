@@ -4,7 +4,8 @@ import android.graphics.Point;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.example.irishka.movieapp.di.scopes.PerFragment;
-import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
+import com.example.irishka.movieapp.domain.interactors.IActorFilmsInteractor;
+import com.example.irishka.movieapp.domain.repositories.IMoviesRepository;
 import com.example.irishka.movieapp.ui.GlideHelper;
 import com.example.irishka.movieapp.ui.actor.films.presenter.FilmsPresenter;
 import com.example.irishka.movieapp.ui.actor.films.view.FilmsAdapter;
@@ -18,8 +19,8 @@ public class FilmsFragmentModule {
 
     @Provides
     @PerFragment
-    static FilmsPresenter providesFilmsPresenter(IMoviesRepository moviesRepository, long id) {
-        return new FilmsPresenter(moviesRepository, id);
+    static FilmsPresenter providesFilmsPresenter(IActorFilmsInteractor actorFilmsInteractor, long id) {
+        return new FilmsPresenter(actorFilmsInteractor, id);
     }
 
     @Provides

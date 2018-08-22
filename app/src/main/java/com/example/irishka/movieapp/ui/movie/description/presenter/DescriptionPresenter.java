@@ -1,15 +1,13 @@
 package com.example.irishka.movieapp.ui.movie.description.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
-import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
+import com.example.irishka.movieapp.domain.repositories.IMoviesRepository;
 import com.example.irishka.movieapp.ui.BasePresenter;
 import com.example.irishka.movieapp.ui.movie.description.view.DescriptionView;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 
 @InjectViewState
 public class DescriptionPresenter extends BasePresenter<DescriptionView> {

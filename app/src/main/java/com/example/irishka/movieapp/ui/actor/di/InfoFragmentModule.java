@@ -1,7 +1,8 @@
 package com.example.irishka.movieapp.ui.actor.di;
 
 import com.example.irishka.movieapp.di.scopes.PerFragment;
-import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
+import com.example.irishka.movieapp.domain.repositories.ICastsRepository;
+import com.example.irishka.movieapp.domain.repositories.IMoviesRepository;
 import com.example.irishka.movieapp.ui.GlideHelper;
 import com.example.irishka.movieapp.ui.actor.info.presenter.InfoPresenter;
 import com.example.irishka.movieapp.ui.actor.info.view.InfoFragment;
@@ -15,8 +16,8 @@ public abstract class InfoFragmentModule {
 
     @Provides
     @PerFragment
-    static InfoPresenter providesInfoPresenter(IMoviesRepository moviesRepository, long id) {
-        return new InfoPresenter(moviesRepository, id);
+    static InfoPresenter providesInfoPresenter(ICastsRepository castsRepository, long id) {
+        return new InfoPresenter(castsRepository, id);
     }
 
     @Provides

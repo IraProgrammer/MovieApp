@@ -76,4 +76,9 @@ public class MoviesNetworkSource {
         return moviesApi.getWithFilters(page, sort, genres)
                 .map(MoviePageModel::getResults);
     }
+
+    public Single<List<MovieModel>> getActorFilms(long id){
+        return moviesApi.getActorFilms(id)
+                .map(FilmsModel::getMovies);
+    }
 }

@@ -4,7 +4,7 @@ import android.graphics.Point;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.example.irishka.movieapp.di.scopes.PerFragment;
-import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
+import com.example.irishka.movieapp.domain.repositories.IMoviesRepository;
 import com.example.irishka.movieapp.ui.GlideHelper;
 import com.example.irishka.movieapp.ui.movies.fragment.view.MainFilmsAdapter;
 import com.example.irishka.movieapp.ui.movies.fragment.view.MainFilmsFragment;

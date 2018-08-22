@@ -34,9 +34,4 @@ public class CastsNetworkSource {
     public Single<ActorInfoModel> getActorInfo(long id){
         return moviesApi.getActorInfo(id);
     }
-
-    public Single<List<MovieModel>> getActorFilms(long id){
-        return moviesApi.getActorFilms(id)
-                .map(FilmsModel::getMovies);
-    }
 }

@@ -1,7 +1,8 @@
 package com.example.irishka.movieapp.ui.search.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
+import com.example.irishka.movieapp.domain.interactors.ISearchInteractor;
+import com.example.irishka.movieapp.domain.repositories.IKeywordsRepository;
 import com.example.irishka.movieapp.ui.BasePresenter;
 import com.example.irishka.movieapp.ui.search.view.SearchView;
 
@@ -12,15 +13,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 @InjectViewState
 public class SearchPresenter extends BasePresenter<SearchView> {
 
-    private IMoviesRepository moviesRepository;
+    private ISearchInteractor searchInteractor;
 
     private int page = 1;
 
     private String query = "";
 
     @Inject
-    public SearchPresenter(IMoviesRepository repository) {
-        this.moviesRepository = repository;
+    public SearchPresenter(ISearchInteractor searchInteractor) {
+        this.searchInteractor = searchInteractor;
     }
 
     @Override
@@ -42,7 +43,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
             this.page = 1;
         }
 
-        addDisposables(moviesRepository.getMoviesFromSearchFromInternet(query, page)
+        addDisposables(searchInteractor.getMoviesFromSearchFromInternet(query, page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(movies -> getViewState().finishLoading())
                 .doOnSuccess(movies -> page++)
@@ -60,7 +61,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
 
     public void downloadKeywords(String query) {
 
-        addDisposables(moviesRepository.getKeywordsFromInternet(query)
+        addDisposables(searchInteractor.getKeywordsFromInternet(query)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(keywords -> getViewState().load(query, keywords), throwable -> {
                 }));
@@ -68,7 +69,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
 
     public void downloadKeywordsFromDb() {
 
-        addDisposables(moviesRepository.getKeywordsFromDb()
+        addDisposables(searchInteractor.getKeywordsFromDb()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(keywords -> getViewState().load(query, keywords), throwable -> {
                 }));
