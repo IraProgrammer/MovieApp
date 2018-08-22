@@ -49,6 +49,8 @@
 
     <string name="snack">Please, check the Internet connection.</string>
 
+    <string name="TMDb">"TMDb "</string>
+
     <string-array name="genresNames">
         <item>Action</item>
         <item>Adventure</item>

@@ -24,6 +24,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.ui.filters.ChipsHelper;
 import com.example.irishka.movieapp.ui.filters.di.qualifiers.Genres;
 import com.example.irishka.movieapp.ui.filters.di.qualifiers.Sort;
 import com.example.irishka.movieapp.ui.filters.presenter.FiltersPresenter;
@@ -42,23 +43,9 @@ import dagger.android.AndroidInjection;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 import static com.example.irishka.movieapp.ui.movie.view.MovieActivity.TITLE;
-import static com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment.MOVIE_ID;
+import static com.example.irishka.movieapp.ui.movies.fragment.view.MainFilmsFragment.MOVIE_ID;
 
 public class FiltersActivity extends MvpAppCompatActivity implements FiltersView, FiltersAdapter.OnItemClickListener {
-
-    @Inject
-    Map<String, Integer> genres;
-
-    @Inject
-    Map<String, String> sorts;
-
-    @Inject
-    @Genres
-    List<Chip> genresChipList;
-
-    @Inject
-    @Sort
-    List<Chip> sortChipList;
 
     @BindView(R.id.root)
     CoordinatorLayout root;
@@ -103,6 +90,9 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
     Button errorBtn;
 
     @Inject
+    ChipsHelper chipsHelper;
+
+    @Inject
     Provider<FiltersPresenter> filtersPresenterProvider;
 
     @InjectPresenter
@@ -120,10 +110,6 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
     LinearLayoutManager linearLayoutManager;
 
     private boolean isLoading;
-
-    private String sortStr = "";
-
-    private String genresStr = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,20 +131,20 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
             btnExpand.setVisibility(View.VISIBLE);
             bottomAppBar.setVisibility(View.GONE);
             expandableLayout.collapse();
-            filteredWithSort();
-            filteredWithGenres();
-            filtersPresenter.downloadMovies(sortStr, genresStr, false);
+            chipsHelper.filteredWithSort();
+            chipsHelper.filteredWithGenres();
+            filtersPresenter.downloadMovies(chipsHelper.filteredWithSort(), chipsHelper.filteredWithGenres(), false);
         });
 
         layoutFilters.setOnClickListener(getClickListener());
         btnExpand.setOnClickListener(getClickListener());
 
-        addAllChips(sortChipList, sortChipGroup);
-        addAllChips(genresChipList, genresChipGroup);
-        setSortListeners();
-        setGenresListeners();
+        chipsHelper.addAllSortChips(sortChipGroup);
+        chipsHelper.addAllGenresChips(genresChipGroup);
+        chipsHelper.setSortListeners();
+        chipsHelper.setGenresListeners();
 
-        errorBtn.setOnClickListener(view -> filtersPresenter.downloadMovies(sortStr, genresStr, false));
+        errorBtn.setOnClickListener(view -> filtersPresenter.downloadMovies(chipsHelper.filteredWithSort(), chipsHelper.filteredWithGenres(), false));
 
     }
 
@@ -210,70 +196,6 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
         startActivity(intent);
     }
 
-    private void addAllChips(List<Chip> chips, ChipGroup chipGroup) {
-        for (Chip chip : chips) {
-            chipGroup.addView(chip);
-        }
-    }
-
-    private void filteredWithGenres() {
-
-        genresStr = "";
-
-        for (int i = 0; i < genresChipList.size(); i++) {
-            if (genresChipList.get(i).isChecked()) {
-                genresStr += genres.get(genresChipList.get(i).getText()) + ",";
-            }
-        }
-    }
-
-    private void filteredWithSort() {
-
-        for (int i = 0; i < sortChipList.size(); i++) {
-            if (sortChipList.get(i).isChecked()) {
-                sortStr = sorts.get(sortChipList.get(i).getText());
-            }
-        }
-    }
-
-    private void setSortListeners() {
-        for (int i = 0; i < sortChipList.size(); i++) {
-            int finalI = i;
-            sortChipList.get(i).setOnClickListener(view -> {
-                sortChipList.get(finalI).setChecked(sortChipList.get(finalI).isChecked());
-
-                if (sortChipList.get(finalI).isChecked()) {
-
-                    sortChipList.get(finalI).setTextColor(getResources().getColor(R.color.black));
-
-                    for (int j = 0; j < sortChipList.size(); j++) {
-                        if (!sortChipList.get(finalI).equals(sortChipList.get(j))) {
-                            sortChipList.get(j).setChecked(false);
-                            sortChipList.get(j).setTextColor(getResources().getColor(R.color.white));
-                        }
-                    }
-                } else {
-                    sortChipList.get(finalI).setTextColor(getResources().getColor(R.color.white));
-                }
-            });
-        }
-    }
-
-    private void setGenresListeners() {
-        for (int i = 0; i < genresChipList.size(); i++) {
-            int finalI = i;
-            genresChipList.get(i).setOnClickListener(view -> {
-                genresChipList.get(finalI).setChecked(genresChipList.get(finalI).isChecked());
-
-                if (genresChipList.get(finalI).isChecked()) {
-                    genresChipList.get(finalI).setTextColor(getResources().getColor(R.color.black));
-                } else {
-                    genresChipList.get(finalI).setTextColor(getResources().getColor(R.color.white));
-                }
-            });
-        }
-    }
-
     protected boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -297,7 +219,7 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
                     if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
                             && lastVisibleItemPosition >= 0) {
                         isLoading = true;
-                        filtersPresenter.downloadMovies(sortStr, genresStr, true);
+                        filtersPresenter.downloadMovies(chipsHelper.filteredWithSort(), chipsHelper.filteredWithGenres(), true);
                     }
                 } else {
                     Snackbar snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_LONG);

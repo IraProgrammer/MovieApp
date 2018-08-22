@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.ui.movies.fragment;
+package com.example.irishka.movieapp.ui.movies.fragment.view;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -12,12 +12,8 @@ import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.GlideHelper;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 

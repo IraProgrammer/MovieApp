@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.di.scopes.PerActivity;
 import com.example.irishka.movieapp.ui.GlideHelper;
+import com.example.irishka.movieapp.ui.filters.ChipsHelper;
 import com.example.irishka.movieapp.ui.filters.di.qualifiers.Genres;
 import com.example.irishka.movieapp.ui.filters.di.qualifiers.Sort;
 import com.example.irishka.movieapp.ui.filters.view.FiltersActivity;
@@ -129,6 +130,13 @@ public class FiltersActivityModule {
     @Genres
     static List<Chip> providesGenresChipList(FiltersActivity filtersActivity){
         return createChipList(filtersActivity, providesGenresNamesArray(filtersActivity));
+    }
+
+    @Provides
+    @PerActivity
+    static ChipsHelper providesChipsHelper(FiltersActivity filtersActivity){
+        return new ChipsHelper(filtersActivity, providesGenresChipList(filtersActivity),
+                providesSortChipList(filtersActivity), providesGenresMap(filtersActivity), providesSortMap(filtersActivity));
     }
 
 }

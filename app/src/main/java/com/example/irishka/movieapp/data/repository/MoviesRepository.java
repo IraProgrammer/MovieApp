@@ -6,6 +6,7 @@ import com.example.irishka.movieapp.data.database.CastsDbSource;
 import com.example.irishka.movieapp.data.database.GenresDbSource;
 import com.example.irishka.movieapp.data.database.KeywordsDbSource;
 import com.example.irishka.movieapp.data.database.MoviesDbSource;
+import com.example.irishka.movieapp.data.database.entity.CastOfMovie;
 import com.example.irishka.movieapp.data.database.entity.KeywordDb;
 import com.example.irishka.movieapp.data.mappers.CastMapper;
 import com.example.irishka.movieapp.data.mappers.GenreMapper;
@@ -14,6 +15,7 @@ import com.example.irishka.movieapp.data.mappers.MoviesMapper;
 import com.example.irishka.movieapp.data.network.CastsNetworkSource;
 import com.example.irishka.movieapp.data.network.KeywordsNetworkSource;
 import com.example.irishka.movieapp.data.network.MoviesNetworkSource;
+import com.example.irishka.movieapp.domain.Tabs;
 import com.example.irishka.movieapp.domain.entity.Cast;
 import com.example.irishka.movieapp.domain.entity.Genre;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
@@ -124,7 +126,7 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<List<Cast>> getCastsFromDatabase(long movieId) {
         return castsDbSource.getCastsOfMovie(movieId)
                 .flattenAsObservable(list -> list)
-                .map(castOfMovie -> castOfMovie.getCastId())
+                .map(CastOfMovie::getCastId)
                 .flatMapSingle(id -> castsDbSource.getCast(id))
                 .toList()
                 .map(list -> castMapper.mapCastsListFromDb(list))
@@ -229,7 +231,7 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<List<Movie>> getNowPlayingFromInternet(int page) {
         return networkSource
                 .getNowPlaying(page)
-                .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(Tabs.NOW_PLAYING.name(), movies)))
+                .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(Tabs.NOW_PLAYING.getTitle(), movies)))
                 .map(movieModels -> moviesMapper.mapMovies(movieModels))
                 .doOnSuccess(movies -> moviesDbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
 
@@ -238,7 +240,7 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<List<Movie>> getPopularFromInternet(int page) {
         return networkSource
                 .getPopular(page)
-                .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(Tabs.POPULAR.name(), movies)))
+                .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(Tabs.POPULAR.getTitle(), movies)))
                 .map(movieModels -> moviesMapper.mapMovies(movieModels))
                 .doOnSuccess(movies -> moviesDbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
 
@@ -247,7 +249,7 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<List<Movie>> getTopRatedFromInternet(int page) {
         return networkSource
                 .getTopRated(page)
-                .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(Tabs.TOP_RATED.name(), movies)))
+                .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(Tabs.TOP_RATED.getTitle(), movies)))
                 .map(movieModels -> moviesMapper.mapMovies(movieModels))
                 .doOnSuccess(movies -> moviesDbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
 
@@ -256,7 +258,7 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<List<Movie>> getUpcomingFromInternet(int page) {
         return networkSource
                 .getUpcoming(page)
-                .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(Tabs.UPCOMING.name(), movies)))
+                .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(Tabs.UPCOMING.getTitle(), movies)))
                 .map(movieModels -> moviesMapper.mapMovies(movieModels))
                 .doOnSuccess(movies -> moviesDbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
 
@@ -273,19 +275,19 @@ public class MoviesRepository implements IMoviesRepository {
     @Override
     public Single<List<Movie>> downloadMovies(int page, String type) {
 
-        if (type.equals(Tabs.NOW_PLAYING.name())) {
-            return getNowPlayingFromInternet(page)
-                    .onErrorResumeNext(getMainScreenFromDatabase(type));
-        } else if (type.equals(Tabs.POPULAR.name())) {
-            return getPopularFromInternet(page)
-                    .onErrorResumeNext(getMainScreenFromDatabase(type));
-        } else if (type.equals(Tabs.TOP_RATED.name())) {
-            return getTopRatedFromInternet(page)
-                    .onErrorResumeNext(getMainScreenFromDatabase(type));
-        } else if (type.equals(Tabs.UPCOMING.name())) {
-            return getUpcomingFromInternet(page)
-                    .onErrorResumeNext(getMainScreenFromDatabase(type));
-        } else return null;
+            if (type.equals(Tabs.NOW_PLAYING.getTitle())) {
+                return getNowPlayingFromInternet(page)
+                        .onErrorResumeNext(getMainScreenFromDatabase(type));
+            } else if (type.equals(Tabs.POPULAR.getTitle())) {
+                return getPopularFromInternet(page)
+                        .onErrorResumeNext(getMainScreenFromDatabase(type));
+            } else if (type.equals(Tabs.TOP_RATED.getTitle())) {
+                return getTopRatedFromInternet(page)
+                        .onErrorResumeNext(getMainScreenFromDatabase(type));
+            } else if (type.equals(Tabs.UPCOMING.getTitle())) {
+                return getUpcomingFromInternet(page)
+                        .onErrorResumeNext(getMainScreenFromDatabase(type));
+            } else return null;
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Image;
+import com.example.irishka.movieapp.ui.GlideHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +31,12 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
     private OnItemClickListener onItemClickListener;
 
+    private GlideHelper glideHelper;
+
     @Inject
-    public GalleryAdapter(OnItemClickListener onItemClickListener) {
+    public GalleryAdapter(OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
         this.onItemClickListener = onItemClickListener;
+        this.glideHelper = glideHelper;
     }
 
     public interface OnItemClickListener {
@@ -51,7 +55,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     @NonNull
     @Override
     public GalleryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new GalleryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.gallery_item, parent, false), onItemClickListener);
+        return new GalleryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.gallery_item, parent, false), onItemClickListener, glideHelper);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -69,33 +73,29 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
     static class GalleryViewHolder extends RecyclerView.ViewHolder {
 
-        OnItemClickListener onItemClickListener;
+        private GlideHelper glideHelper;
+
+        private OnItemClickListener onItemClickListener;
 
         @BindView(R.id.backdrop_image)
         ImageView image;
 
-        GalleryViewHolder(View itemView, OnItemClickListener onItemClickListener) {
+        GalleryViewHolder(View itemView, OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.onItemClickListener = onItemClickListener;
+            this.glideHelper = glideHelper;
         }
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         void bind(Image backdrop) {
 
-          //  itemView.setTransitionName(itemView.getContext().getString(R.string.transition_name).concat(String.valueOf(position)));
+            //  itemView.setTransitionName(itemView.getContext().getString(R.string.transition_name).concat(String.valueOf(position)));
             image.setTransitionName(itemView.getContext().getString(R.string.transition_name).concat(String.valueOf(getAdapterPosition())));
 
             itemView.setOnClickListener(view -> onItemClickListener.onItemClick(getAdapterPosition(), itemView, image));
 
-            //TODO!!!
-            Glide.with(itemView.getContext())
-                    .load(backdrop.getFileUrl())
-                    .apply(new RequestOptions()
-                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                            .placeholder(R.drawable.no_image)
-                            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
-                    .into(image);
+            glideHelper.downloadPictureWithCacheWithoutPlaceholder(backdrop.getFileUrl(), image);
         }
     }
 }

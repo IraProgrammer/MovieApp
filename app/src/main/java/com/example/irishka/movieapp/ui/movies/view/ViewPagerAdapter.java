@@ -1,41 +1,23 @@
 package com.example.irishka.movieapp.ui.movies.view;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.SparseArray;
 
 import com.example.irishka.movieapp.R;
-import com.example.irishka.movieapp.ui.actor.films.view.FilmsFragment;
-import com.example.irishka.movieapp.ui.actor.info.view.InfoFragment;
-import com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment;
+import com.example.irishka.movieapp.domain.Tabs;
+import com.example.irishka.movieapp.ui.movies.fragment.view.MainFilmsFragment;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    public enum Tabs {
-        NOW_PLAYING("now_playing"),
-        POPULAR("popular"),
-        TOP_RATED("top_rated"),
-        UPCOMING("upcoming");
-
-        private String title;
-
-        private Tabs(String title) {
-            this.title = title;
-        }
-
-    }
-
     private MoviesListActivity moviesListActivity;
 
-    private MainFilmsFragment nowPlaying;
-
-    private MainFilmsFragment popular;
-
-    private MainFilmsFragment topRated;
-
-    private MainFilmsFragment upcoming;
+    private SparseArray<Fragment> map = new SparseArray<Fragment>();
 
     @Inject
     public ViewPagerAdapter(MoviesListActivity moviesListActivity) {
@@ -47,25 +29,25 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                if (nowPlaying == null) {
-                    nowPlaying = MainFilmsFragment.newInstance(Tabs.NOW_PLAYING);
+                if (map.get(0) == null) {
+                    map.put(0, MainFilmsFragment.newInstance(Tabs.NOW_PLAYING));
                 }
-                return nowPlaying;
+                return map.get(0);
             case 1:
-                if (popular == null) {
-                    popular = MainFilmsFragment.newInstance(Tabs.POPULAR);
+                if (map.get(1) == null) {
+                    map.put(1, MainFilmsFragment.newInstance(Tabs.POPULAR));
                 }
-                return popular;
+                return map.get(1);
             case 2:
-                if (topRated == null) {
-                    topRated = MainFilmsFragment.newInstance(Tabs.TOP_RATED);
+                if (map.get(2) == null) {
+                    map.put(2, MainFilmsFragment.newInstance(Tabs.TOP_RATED));
                 }
-                return topRated;
+                return map.get(2);
             case 3:
-                if (upcoming == null) {
-                    upcoming = MainFilmsFragment.newInstance(Tabs.UPCOMING);
+                if (map.get(3) == null) {
+                    map.put(3, MainFilmsFragment.newInstance(Tabs.UPCOMING));
                 }
-                return upcoming;
+                return map.get(3);
             default:
                 return null;
         }

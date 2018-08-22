@@ -2,7 +2,7 @@ package com.example.irishka.movieapp.ui.movies.di;
 
 import com.example.irishka.movieapp.di.scopes.PerActivity;
 import com.example.irishka.movieapp.di.scopes.PerFragment;
-import com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment;
+import com.example.irishka.movieapp.ui.movies.fragment.view.MainFilmsFragment;
 import com.example.irishka.movieapp.ui.movies.view.MoviesListActivity;
 import com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter;
 

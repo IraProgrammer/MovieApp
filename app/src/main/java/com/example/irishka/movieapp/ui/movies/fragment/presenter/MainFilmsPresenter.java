@@ -1,8 +1,9 @@
-package com.example.irishka.movieapp.ui.movies.fragment;
+package com.example.irishka.movieapp.ui.movies.fragment.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.ui.BasePresenter;
+import com.example.irishka.movieapp.ui.movies.fragment.view.MainFilmsView;
 
 import javax.inject.Inject;
 

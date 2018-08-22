@@ -1,5 +1,7 @@
 package com.example.irishka.movieapp.data.mappers;
 
+import android.content.Context;
+
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.data.database.entity.MovieDb;
 import com.example.irishka.movieapp.data.database.entity.MovieWithCategory;
@@ -24,9 +26,9 @@ import javax.inject.Inject;
 
 public class MoviesMapper {
 
-    private static final String SEE_SOON = "See soon";
+    private String seeSoon;
 
-    private static final String TMDB = "TMDb ";
+    private String TMDb;
 
     private static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w500//";
 
@@ -39,12 +41,15 @@ public class MoviesMapper {
     private TrailersMapper trailersMapper;
 
     @Inject
-    public MoviesMapper(ImageMapper backdropMapper, GenreMapper genreMapper,
-                        ProductionCountryMapper productionCountryMapper, TrailersMapper trailersMapper) {
+    MoviesMapper(ImageMapper backdropMapper, GenreMapper genreMapper,
+                        ProductionCountryMapper productionCountryMapper, TrailersMapper trailersMapper, Context context) {
         this.backdropMapper = backdropMapper;
         this.genreMapper = genreMapper;
         this.productionCountryMapper = productionCountryMapper;
         this.trailersMapper = trailersMapper;
+
+        seeSoon = context.getString(R.string.see_soon);
+        TMDb = context.getString(R.string.TMDb);
     }
 
     public Movie apply(DescriptionModel descriptionModel, List<BackdropModel> backdrops, List<TrailerModel> trailers) {
@@ -55,9 +60,9 @@ public class MoviesMapper {
         movie.setTitle(descriptionModel.getTitle());
 
         if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
-            movie.setVoteAverageStr(SEE_SOON);
+            movie.setVoteAverageStr(seeSoon);
         } else {
-            movie.setVoteAverageStr(TMDB + String.valueOf(descriptionModel.getVoteAverage()));
+            movie.setVoteAverageStr(TMDb + String.valueOf(descriptionModel.getVoteAverage()));
         }
 
         movie.setVoteAverage(descriptionModel.getVoteAverage());
@@ -73,7 +78,7 @@ public class MoviesMapper {
     }
 
 
-    public Movie applyForMovies(MovieModel movieModel) {
+    private Movie applyForMovies(MovieModel movieModel) {
         Movie movie = new Movie();
         movie.setId(movieModel.getId());
         movie.setPosterUrl(BASE_IMAGE_URL + movieModel.getPosterPath());
@@ -81,9 +86,9 @@ public class MoviesMapper {
         movie.setTitle(movieModel.getTitle());
 
         if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
-            movie.setVoteAverageStr(SEE_SOON);
+            movie.setVoteAverageStr(seeSoon);
         } else {
-            movie.setVoteAverageStr(TMDB + String.valueOf(movieModel.getVoteAverage()));
+            movie.setVoteAverageStr(TMDb + String.valueOf(movieModel.getVoteAverage()));
         }
 
         movie.setVoteAverage(movieModel.getVoteAverage());
@@ -103,12 +108,12 @@ public class MoviesMapper {
         movieDb.setOverview(movie.getOverview());
 
         if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
-            movie.setVoteAverageStr(SEE_SOON);
+            movieDb.setVoteAverageStr(seeSoon);
         } else {
-            movie.setVoteAverageStr(TMDB + String.valueOf(movie.getVoteAverage()));
+            movieDb.setVoteAverageStr(TMDb + String.valueOf(movie.getVoteAverage()));
         }
 
-        movie.setVoteAverage(movie.getVoteAverage());
+        movieDb.setVoteAverage(movie.getVoteAverage());
         movieDb.setAdult(movie.getAdult());
         movieDb.setRuntime(movie.getRuntime());
 
@@ -131,9 +136,9 @@ public class MoviesMapper {
         movie.setOverview(movieDb.getOverview());
 
         if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
-            movie.setVoteAverageStr(SEE_SOON);
+            movie.setVoteAverageStr(seeSoon);
         } else {
-            movie.setVoteAverageStr(TMDB + String.valueOf(movieDb.getVoteAverage()));
+            movie.setVoteAverageStr(TMDb + String.valueOf(movieDb.getVoteAverage()));
         }
 
         movie.setVoteAverage(movieDb.getVoteAverage());
@@ -146,16 +151,16 @@ public class MoviesMapper {
         return movie;
     }
 
-    public Movie applyFromDb(MovieDb movieDb) {
+    private Movie applyFromDb(MovieDb movieDb) {
         Movie movie = new Movie();
         movie.setId(movieDb.getId());
         movie.setPosterUrl(movieDb.getPosterUrl());
         movie.setReleaseDate(movieDb.getReleaseDate());
 
         if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
-            movie.setVoteAverageStr(SEE_SOON);
+            movie.setVoteAverageStr(seeSoon);
         } else {
-            movie.setVoteAverageStr(TMDB + String.valueOf(movieDb.getVoteAverage()));
+            movie.setVoteAverageStr(TMDb + String.valueOf(movieDb.getVoteAverage()));
         }
 
         movie.setVoteAverage(movieDb.getVoteAverage());
@@ -185,9 +190,7 @@ public class MoviesMapper {
             movies.add(applyForMovies(movieModels.get(i)));
         }
 
-        Collections.sort(movies, (first, second) -> {
-            return Integer.compare(getYear(first), getYear(second));
-        });
+        Collections.sort(movies, (first, second) -> Integer.compare(getYear(first), getYear(second)));
 
         Collections.reverse(movies);
 

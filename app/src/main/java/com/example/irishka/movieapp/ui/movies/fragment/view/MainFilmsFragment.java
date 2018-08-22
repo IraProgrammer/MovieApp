@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp.ui.movies.fragment;
+package com.example.irishka.movieapp.ui.movies.fragment.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,8 +20,10 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
+import com.example.irishka.movieapp.domain.Tabs;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
+import com.example.irishka.movieapp.ui.movies.fragment.presenter.MainFilmsPresenter;
 import com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter;
 
 import java.util.ArrayList;
@@ -79,10 +81,10 @@ public class MainFilmsFragment extends MvpAppCompatFragment
 
     private boolean isLoading;
 
-    public static MainFilmsFragment newInstance(ViewPagerAdapter.Tabs tab) {
+    public static MainFilmsFragment newInstance(Tabs tab) {
 
         Bundle bundle = new Bundle();
-        bundle.putString(TYPE, tab.name());
+        bundle.putString(TYPE, tab.getTitle());
 
         MainFilmsFragment mainFilmsFragment = new MainFilmsFragment();
         mainFilmsFragment.setArguments(bundle);
@@ -106,43 +108,7 @@ public class MainFilmsFragment extends MvpAppCompatFragment
         if (!staggeredGridLayoutManager.isAttachedToWindow())
             moviesRecyclerView.setLayoutManager(staggeredGridLayoutManager);
 
-        moviesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-
-                int visibleItemCount = recyclerView.getLayoutManager().getChildCount();
-                int totalItemCount = recyclerView.getLayoutManager().getItemCount();
-                int lastVisibleItemPosition = getLastVisibleItemPosition();
-
-                if (isOnline()) {
-
-                    if (isLoading) return;
-                    if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
-                            && lastVisibleItemPosition >= 0) {
-                        isLoading = true;
-                        presenter.downloadMovies(true);
-                    }
-                } else {
-
-                    //TODO
-                    Snackbar snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_INDEFINITE);
-
-                    snackbar.setAction(getString(R.string.error_button), new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (isOnline()) {
-                                presenter.downloadMovies(true);
-                                snackbar.dismiss();
-                            }
-                            else snackbar.show();
-                        }
-                    });
-                    if (totalItemCount == lastVisibleItemPosition + 1 && !snackbar.isShownOrQueued()) {
-                        snackbar.show();
-                    }
-                }
-            }
-        });
+        moviesRecyclerView.addOnScrollListener(getOnScrollListener());
 
         moviesRecyclerView.setAdapter(filmsAdapter);
 
@@ -207,5 +173,46 @@ public class MainFilmsFragment extends MvpAppCompatFragment
         } else {
             return false;
         }
+    }
+
+    private RecyclerView.OnScrollListener getOnScrollListener(){
+        return new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+
+                Snackbar snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_INDEFINITE);
+
+                int visibleItemCount = recyclerView.getLayoutManager().getChildCount();
+                int totalItemCount = recyclerView.getLayoutManager().getItemCount();
+                int lastVisibleItemPosition = getLastVisibleItemPosition();
+
+                if (isOnline()) {
+
+                    if (isLoading || snackbar.isShownOrQueued()) return;
+                    if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
+                            && lastVisibleItemPosition >= 0) {
+                        isLoading = true;
+                        presenter.downloadMovies(true);
+                    }
+                } else {
+
+                    //TODO
+
+                    snackbar.setAction(getString(R.string.error_button), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (isOnline()) {
+                                presenter.downloadMovies(true);
+                                snackbar.dismiss();
+                            }
+                            else snackbar.show();
+                        }
+                    });
+                    if (totalItemCount == lastVisibleItemPosition + 1 && !snackbar.isShownOrQueued()) {
+                        snackbar.show();
+                    }
+                }
+            }
+        };
     }
 }

@@ -32,7 +32,7 @@ public abstract class DescriptionFragmentModule {
     @Provides
     @PerFragment
     static GalleryAdapter providesGalleryAdapter(DescriptionFragment descriptionFragment) {
-        return new GalleryAdapter(descriptionFragment);
+        return new GalleryAdapter(descriptionFragment, new GlideHelper());
     }
 
     @Provides

@@ -39,6 +39,15 @@ public class GlideHelper {
                 .into(image);
     }
 
+    public void downloadPictureWithCacheWithoutPlaceholder(String url, ImageView image) {
+        Glide.with(image.getContext())
+                .load(url)
+                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                        .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                )
+                .into(image);
+    }
+
     public void downloadPicture(String url, ImageView image, Activity activity) {
         Glide.with(image.getContext())
                 .load(url)
