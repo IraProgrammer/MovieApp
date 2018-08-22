@@ -185,11 +185,8 @@ public class MoviesMapper {
             movies.add(applyForMovies(movieModels.get(i)));
         }
 
-        Collections.sort(movies, new Comparator<Movie>() {
-            public int compare(Movie first, Movie second) {
-              //  return first.getReleaseDate().compareTo(second.getReleaseDate());
-                return Integer.compare(getYear(first), getYear(second));
-            }
+        Collections.sort(movies, (first, second) -> {
+            return Integer.compare(getYear(first), getYear(second));
         });
 
         Collections.reverse(movies);
