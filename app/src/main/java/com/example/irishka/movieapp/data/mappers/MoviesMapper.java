@@ -26,7 +26,7 @@ public class MoviesMapper {
 
     private static final String SEE_SOON = "See soon";
 
-    private static final String TMDB = "TMDB ";
+    private static final String TMDB = "TMDb ";
 
     private static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/w500//";
 
@@ -101,35 +101,20 @@ public class MoviesMapper {
         movieDb.setReleaseDate(movie.getReleaseDate());
         movieDb.setTitle(movie.getTitle());
         movieDb.setOverview(movie.getOverview());
-        movieDb.setVoteAverageStr(movie.getVoteAverageStr());
+
+        if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
+            movie.setVoteAverageStr(SEE_SOON);
+        } else {
+            movie.setVoteAverageStr(TMDB + String.valueOf(movie.getVoteAverage()));
+        }
+
+        movie.setVoteAverage(movie.getVoteAverage());
         movieDb.setAdult(movie.getAdult());
         movieDb.setRuntime(movie.getRuntime());
 
         if (movie.getCountries() != null) {
             movieDb.setCountries(productionCountryMapper.mapProductionCountryListToDb(movie.getCountries()));
         } else movieDb.setCountries(Collections.emptyList());
-        if (movie.getBackdrops() != null)
-            movieDb.setBackdrops(backdropMapper.mapBackdropsListToDb(movie.getBackdrops()));
-        else movieDb.setBackdrops(Collections.emptyList());
-
-        return movieDb;
-    }
-
-    public MovieDb applyToDb(Movie movie, long movieId) {
-        MovieDb movieDb = new MovieDb();
-        movieDb.setId(movie.getId());
-        movieDb.setPosterUrl(movie.getPosterUrl());
-        movieDb.setReleaseDate(movie.getReleaseDate());
-        movieDb.setTitle(movie.getTitle());
-        movieDb.setOverview(movie.getOverview());
-        movieDb.setVoteAverageStr(movie.getVoteAverageStr());
-        movieDb.setAdult(movie.getAdult());
-        movieDb.setRuntime(movie.getRuntime());
-
-        if (movie.getCountries() != null) {
-            movieDb.setCountries(productionCountryMapper.mapProductionCountryListToDb(movie.getCountries()));
-        } else movieDb.setCountries(Collections.emptyList());
-
         if (movie.getBackdrops() != null)
             movieDb.setBackdrops(backdropMapper.mapBackdropsListToDb(movie.getBackdrops()));
         else movieDb.setBackdrops(Collections.emptyList());
@@ -221,16 +206,6 @@ public class MoviesMapper {
 
         for (int i = 0; i < movies.size(); i++) {
             moviesDb.add(applyToDb(movies.get(i)));
-        }
-
-        return moviesDb;
-    }
-
-    public List<MovieDb> mapMoviesListToDb(List<Movie> movies, long movieId) {
-        List<MovieDb> moviesDb = new ArrayList<>();
-
-        for (int i = 0; i < movies.size(); i++) {
-            moviesDb.add(applyToDb(movies.get(i), movieId));
         }
 
         return moviesDb;

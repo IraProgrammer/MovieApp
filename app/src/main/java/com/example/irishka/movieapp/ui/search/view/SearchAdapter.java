@@ -104,9 +104,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MoviesView
 
             rate.setText(movie.getVoteAverageStr());
 
-            String adultStr = "";
-            if (movie.getAdult()) adultStr = itemView.getContext().getString(R.string.adult);
-            adult.setText(adultStr);
+            if (movie.getAdult()) adult.setText(itemView.getContext().getString(R.string.adult));
 
             itemView.setOnClickListener(view -> onItemClickListener.onItemClick(movie));
 

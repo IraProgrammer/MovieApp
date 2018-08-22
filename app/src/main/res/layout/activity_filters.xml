@@ -64,7 +64,7 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/mmmmm"
+                android:id="@+id/layout_filters"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">

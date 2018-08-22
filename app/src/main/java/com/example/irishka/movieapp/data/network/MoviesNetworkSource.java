@@ -30,19 +30,9 @@ public class MoviesNetworkSource {
         this.moviesApi = moviesApi;
     }
 
-    public Single<List<MovieModel>> getMovies(int page){
-        return moviesApi.getMovies(page)
-                .map(MoviePageModel::getResults);
-    }
-
     public Single<List<MovieModel>> getRelated(long movieId, int page){
         return moviesApi.getRelated(movieId, page)
                 .map(MoviePageModel::getResults);
-    }
-
-    public Single<List<CastModel>> getCasts(long movieId){
-        return moviesApi.getCreators(movieId)
-                .map(CreditsModel::getCast);
     }
 
     public Single<List<BackdropModel>> getBackdrops(long movieId){
@@ -54,19 +44,6 @@ public class MoviesNetworkSource {
         return moviesApi.getDescription(movieId);
     }
 
-    public Single<ActorPhotosModel> getActorPhotos(long id){
-        return moviesApi.getActorPhotos(id);
-    }
-
-    public Single<ActorInfoModel> getActorInfo(long id){
-        return moviesApi.getActorInfo(id);
-    }
-
-    public Single<List<MovieModel>> getActorFilms(long id){
-        return moviesApi.getActorFilms(id)
-                .map(FilmsModel::getMovies);
-    }
-
     public Single<List<TrailerModel>> getTrailers(long movieId) {
         return  moviesApi.getTrailers(movieId)
                 .map(TrailerListModel::getResults); }
@@ -74,10 +51,6 @@ public class MoviesNetworkSource {
     public Single<List<MovieModel>> getMoviesFromSearch(String query, int page) {
         return  moviesApi.getMoviesFromSearch(query, page)
                 .map(MoviePageModel::getResults); }
-
-    public Single<List<KeywordModel>> getKeywords(String query) {
-        return  moviesApi.getKeywords(query)
-                .map(KeywordsPageModel::getResults); }
 
     public Single<List<MovieModel>> getNowPlaying(int page){
         return moviesApi.getNowPlaying(page)

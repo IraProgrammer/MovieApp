@@ -123,13 +123,10 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
 
         photosRecyclerView.setAdapter(photosAdapter);
 
-        errorBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.downloadInfo();
-                if (isOnline()) {
-                    error.setVisibility(View.GONE);
-                }
+        errorBtn.setOnClickListener(view -> {
+            presenter.downloadInfo();
+            if (isOnline()) {
+                error.setVisibility(View.GONE);
             }
         });
 

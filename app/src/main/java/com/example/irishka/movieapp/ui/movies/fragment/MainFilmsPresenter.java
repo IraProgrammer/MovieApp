@@ -1,16 +1,12 @@
 package com.example.irishka.movieapp.ui.movies.fragment;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.domain.repository.IMoviesRepository;
 import com.example.irishka.movieapp.ui.BasePresenter;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 
 @InjectViewState
 public class MainFilmsPresenter extends BasePresenter<MainFilmsView> {
@@ -40,7 +36,7 @@ public class MainFilmsPresenter extends BasePresenter<MainFilmsView> {
             getViewState().showProgress();
         }
 
-        addDisposables(moviesRepository.downloadMoviesForMainScreen(page, type)
+        addDisposables(moviesRepository.downloadMovies(page, type)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(movies -> getViewState().finishLoading())
                 .doOnSuccess(movies -> {

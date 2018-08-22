@@ -72,6 +72,9 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
     TextView sorry;
 
     @Inject
+    SearchManager manager;
+
+    @Inject
     Provider<SearchPresenter> searchPresenterProvider;
 
     @InjectPresenter
@@ -105,94 +108,21 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
 
         searchView.setIconified(false);
 
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        btnHome.setOnClickListener(view -> finish());
 
         searchRecyclerView.setLayoutManager(linearLayoutManager);
 
-        searchRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-
-                int visibleItemCount = recyclerView.getLayoutManager().getChildCount();
-                int totalItemCount = recyclerView.getLayoutManager().getItemCount();
-                int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-
-                if (isOnline()) {
-                    if (isLoading) return;
-                    if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
-                            && lastVisibleItemPosition >= 0) {
-                        isLoading = true;
-                        searchPresenter.downloadMoviesFromSearch(query, true);
-                    }
-                } else {
-                    Snackbar snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_LONG);
-                    if (totalItemCount == lastVisibleItemPosition + 1) {
-                        snackbar.show();
-                    }
-                }
-            }
-        });
+        searchRecyclerView.addOnScrollListener(getOnScrollListener());
 
         searchRecyclerView.setAdapter(searchAdapter);
 
-        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-
         searchView.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(getOnQueryTextListener());
 
-            @Override
-            public boolean onQueryTextSubmit(String s) {
+        searchView.setOnSuggestionListener(getOnSuggestionListener());
 
-                query = s;
-                searchAdapter.clearList();
-                searchPresenter.downloadMoviesFromSearch(s, false);
-
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(searchView.getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-
-                if (query.length() == 0) {
-                    searchPresenter.downloadKeywordsFromDb();
-                } else {
-                    searchPresenter.downloadKeywords(query);
-                }
-                return true;
-            }
-
-        });
-
-        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
-            @Override
-            public boolean onSuggestionSelect(int i) {
-                return false;
-            }
-
-            @Override
-            public boolean onSuggestionClick(int i) {
-
-                searchView.setQuery(items.get(i), true);
-                return true;
-            }
-        });
-
-        errorBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                searchPresenter.downloadMoviesFromSearch(query, false);
-            }
-        });
+        errorBtn.setOnClickListener(view -> searchPresenter.downloadMoviesFromSearch(query, false));
 
     }
 
@@ -274,6 +204,79 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
         } else {
             return false;
         }
+    }
+
+    private RecyclerView.OnScrollListener getOnScrollListener(){
+        return new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+
+                int visibleItemCount = recyclerView.getLayoutManager().getChildCount();
+                int totalItemCount = recyclerView.getLayoutManager().getItemCount();
+                int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+
+                if (isOnline()) {
+                    if (isLoading) return;
+                    if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
+                            && lastVisibleItemPosition >= 0) {
+                        isLoading = true;
+                        searchPresenter.downloadMoviesFromSearch(query, true);
+                    }
+                } else {
+                    Snackbar snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_LONG);
+                    if (totalItemCount == lastVisibleItemPosition + 1) {
+                        snackbar.show();
+                    }
+                }
+            }
+        };
+    }
+
+    private SearchView.OnQueryTextListener getOnQueryTextListener(){
+        return new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+
+                query = s;
+                searchAdapter.clearList();
+                searchPresenter.downloadMoviesFromSearch(s, false);
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(searchView.getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+
+                if (query.length() == 0) {
+                    searchPresenter.downloadKeywordsFromDb();
+                } else {
+                    searchPresenter.downloadKeywords(query);
+                }
+                return true;
+            }
+
+        };
+    }
+
+    private SearchView.OnSuggestionListener getOnSuggestionListener(){
+        return new SearchView.OnSuggestionListener() {
+            @Override
+            public boolean onSuggestionSelect(int i) {
+                return false;
+            }
+
+            @Override
+            public boolean onSuggestionClick(int i) {
+
+                searchView.setQuery(items.get(i), true);
+                return true;
+            }
+        };
     }
 }
 

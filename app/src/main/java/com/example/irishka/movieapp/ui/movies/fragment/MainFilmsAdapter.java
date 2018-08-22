@@ -98,9 +98,7 @@ public class MainFilmsAdapter extends RecyclerView.Adapter<MainFilmsAdapter.Main
 
             rateText.setText(movie.getVoteAverageStr());
 
-            String adult = "";
-            if (movie.getAdult()) adult = itemView.getContext().getString(R.string.adult);
-            adultText.setText(adult);
+            if (movie.getAdult()) adultText.setText(itemView.getContext().getString(R.string.adult));
 
             itemView.setOnClickListener(view -> onItemClickListener.onItemClick(movie));
 

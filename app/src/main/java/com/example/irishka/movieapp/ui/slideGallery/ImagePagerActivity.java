@@ -50,12 +50,7 @@ public class ImagePagerActivity extends DaggerAppCompatActivity {
 
         init();
 
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        btnHome.setOnClickListener(view -> finish());
     }
 
     private void init() {

@@ -19,8 +19,6 @@ public class ExampleAdapter extends CursorAdapter {
 
     private TextView text;
 
-//    private MatrixCursor cursor;
-
     public ExampleAdapter(Context context, Cursor cursor, List<String> items) {
 
         super(context, cursor, false);
@@ -28,24 +26,12 @@ public class ExampleAdapter extends CursorAdapter {
 
     }
 
-//    public void setCursor(MatrixCursor cursor){
-//        this.cursor = cursor;
-//    }
-
-//    public void setItems(List<String> items){
-//        this.items = items;
-//        notifyDataSetChanged();
-//    }
-
-//    public List<String> getItems(){
-//        return items;
-//    }
-
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        if (cursor.getPosition() < items.size())
-        text.setText(items.get(cursor.getPosition()));
+        if (cursor.getPosition() < items.size()) {
+            text.setText(items.get(cursor.getPosition()));
+        }
 
     }
 

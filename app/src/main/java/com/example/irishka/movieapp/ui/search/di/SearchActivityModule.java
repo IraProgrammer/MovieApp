@@ -1,5 +1,7 @@
 package com.example.irishka.movieapp.ui.search.di;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.example.irishka.movieapp.di.scopes.PerActivity;
@@ -32,5 +34,11 @@ public class SearchActivityModule {
     @PerActivity
     static LinearLayoutManager providesLinearLayoutManager(SearchActivity searchActivity){
         return new LinearLayoutManager(searchActivity.getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+    }
+
+    @Provides
+    @PerActivity
+    static SearchManager providesSearchManager(SearchActivity searchActivity){
+        return (SearchManager) searchActivity.getSystemService(Context.SEARCH_SERVICE);
     }
 }

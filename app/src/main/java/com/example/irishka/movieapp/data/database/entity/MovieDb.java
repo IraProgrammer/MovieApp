@@ -5,7 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
-import com.example.irishka.movieapp.data.database.converters.BackdropsConverter;
+import com.example.irishka.movieapp.data.database.converters.ImagesConverter;
 import com.example.irishka.movieapp.data.database.converters.CountriesConverter;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public class MovieDb {
     @TypeConverters(CountriesConverter.class)
     private List<ProductionCountryDb> countries;
 
-    @TypeConverters(BackdropsConverter.class)
+    @TypeConverters(ImagesConverter.class)
     private List<ImageDb> backdrops;
 
     public long getId() {

@@ -9,7 +9,6 @@ import java.util.List;
 import io.reactivex.Single;
 
 public interface IMoviesRepository {
-    Single<List<Movie>> downloadMovies(int page);
 
     Single<Cast> downloadConcreteCast(long movieId);
 
@@ -27,7 +26,7 @@ public interface IMoviesRepository {
 
     Single<List<String>> getKeywordsFromDb();
 
-    Single<List<Movie>> downloadMoviesForMainScreen(int page, String type);
+    Single<List<Movie>> downloadMovies(int page, String type);
 
     Single<List<Movie>> getWithFilters(int page, String sort, String genres);
 }

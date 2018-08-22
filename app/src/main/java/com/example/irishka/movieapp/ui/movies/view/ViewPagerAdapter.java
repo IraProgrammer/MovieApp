@@ -13,10 +13,19 @@ import javax.inject.Inject;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    public static final String NOW_PLAYING = "now_playing";
-    public static final String POPULAR = "popular";
-    public static final String TOP_RATED = "top_rated";
-    public static final String UPCOMING = "upcoming";
+    public enum Tabs {
+        NOW_PLAYING("now_playing"),
+        POPULAR("popular"),
+        TOP_RATED("top_rated"),
+        UPCOMING("upcoming");
+
+        private String title;
+
+        private Tabs(String title) {
+            this.title = title;
+        }
+
+    }
 
     private MoviesListActivity moviesListActivity;
 
@@ -39,22 +48,22 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
                 if (nowPlaying == null) {
-                    nowPlaying = MainFilmsFragment.newInstance(NOW_PLAYING);
+                    nowPlaying = MainFilmsFragment.newInstance(Tabs.NOW_PLAYING);
                 }
                 return nowPlaying;
             case 1:
                 if (popular == null) {
-                    popular = MainFilmsFragment.newInstance(POPULAR);
+                    popular = MainFilmsFragment.newInstance(Tabs.POPULAR);
                 }
                 return popular;
             case 2:
                 if (topRated == null) {
-                    topRated = MainFilmsFragment.newInstance(TOP_RATED);
+                    topRated = MainFilmsFragment.newInstance(Tabs.TOP_RATED);
                 }
                 return topRated;
             case 3:
                 if (upcoming == null) {
-                    upcoming = MainFilmsFragment.newInstance(UPCOMING);
+                    upcoming = MainFilmsFragment.newInstance(Tabs.UPCOMING);
                 }
                 return upcoming;
             default:

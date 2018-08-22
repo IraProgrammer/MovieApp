@@ -16,9 +16,9 @@ public class FiltersPresenter extends BasePresenter<FiltersView> {
 
     private int page = 1;
 
-//    private String sort = "popularity.desc";
-//
-//    private boolean isFiltred;
+    private String sort = "";
+
+    private String genres = "";
 
     @Inject
     public FiltersPresenter(IMoviesRepository repository) {
@@ -29,26 +29,19 @@ public class FiltersPresenter extends BasePresenter<FiltersView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
 
-        downloadForScroll("", "");
+        downloadMovies(sort, genres, true);
     }
 
-    public void downloadForScroll(String sort, String genres) {
+    public void downloadMovies(String sort, String genres, boolean isNext) {
 
-        addDisposables(moviesRepository.getWithFilters(page, sort, genres)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess(movies -> getViewState().finishLoading())
-                .doOnSuccess(movies -> page++)
-                .doOnError(movies -> getViewState().finishLoading())
-                .subscribe(movies -> getViewState().showMovies(movies, false), throwable -> {
-                }));
-    }
+        if (!isNext && (!this.sort.equals(sort) || !this.genres.equals(genres))) {
 
-    public void downloadMovies(String sort, String genres) {
-
-        page = 1;
-
-        getViewState().clearList();
-        getViewState().showProgress();
+            this.sort = sort;
+            this.genres = genres;
+            page = 1;
+            getViewState().clearList();
+            getViewState().showProgress();
+        }
 
         addDisposables(moviesRepository.getWithFilters(page, sort, genres)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -56,10 +49,11 @@ public class FiltersPresenter extends BasePresenter<FiltersView> {
                 .doOnSuccess(movies -> {
                     if (movies.size() == 0) getViewState().noFound();
                 })
+                .doOnSuccess(movies -> page++)
                 .doOnError(movies -> getViewState().finishLoading())
                 .doOnError(movies -> getViewState().noInternet())
                 .doOnSuccess(movies -> getViewState().hideProgress())
-                .subscribe(movies -> getViewState().showMovies(movies, true), throwable -> {
+                .subscribe(movies -> getViewState().showMovies(movies), throwable -> {
                 }));
     }
 }

@@ -15,6 +15,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
 
+import static com.example.irishka.movieapp.ui.movie.creators.view.CreatorsFragment.ACTOR;
+
 public class ActorActivity extends DaggerAppCompatActivity {
 
     @BindView(R.id.tabs)
@@ -41,12 +43,7 @@ public class ActorActivity extends DaggerAppCompatActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        toolbarTitle.setText(getIntent().getStringExtra("ACTOR"));
-        btnHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        toolbarTitle.setText(getIntent().getStringExtra(ACTOR));
+        btnHome.setOnClickListener(view -> finish());
     }
 }

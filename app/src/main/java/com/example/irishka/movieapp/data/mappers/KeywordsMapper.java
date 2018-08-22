@@ -37,11 +37,11 @@ public class KeywordsMapper {
 
         List<String> keywords = new ArrayList<>();
 
-        for (KeywordDb keywordDb: keywordsDb) {
-            keywords.add(keywordDb.getName());
+        for (int i = 0; i < keywordsDb.size(); i++) {
+            if (i == 15) break;
+            keywords.add(keywordsDb.get(i).getName());
         }
 
-        if (keywords.size() > 15) return keywords.subList(0, 14);
         return keywords;
 
     }

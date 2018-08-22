@@ -22,6 +22,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
+import com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -78,10 +79,10 @@ public class MainFilmsFragment extends MvpAppCompatFragment
 
     private boolean isLoading;
 
-    public static MainFilmsFragment newInstance(String type) {
+    public static MainFilmsFragment newInstance(ViewPagerAdapter.Tabs tab) {
 
         Bundle bundle = new Bundle();
-        bundle.putString(TYPE, type);
+        bundle.putString(TYPE, tab.name());
 
         MainFilmsFragment mainFilmsFragment = new MainFilmsFragment();
         mainFilmsFragment.setArguments(bundle);

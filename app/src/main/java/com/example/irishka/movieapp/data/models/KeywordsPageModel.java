@@ -11,13 +11,7 @@ public class KeywordsPageModel {
     private long page;
     @SerializedName("results")
     @Expose
-    private List<KeywordModel> results = null;
-    @SerializedName("total_pages")
-    @Expose
-    private long totalPages;
-    @SerializedName("total_results")
-    @Expose
-    private long totalResults;
+    private List<KeywordModel> results;
 
     public long getPage() {
         return page;
@@ -33,22 +27,6 @@ public class KeywordsPageModel {
 
     public void setResults(List<KeywordModel> results) {
         this.results = results;
-    }
-
-    public long getTotalPages() {
-        return totalPages;
-    }
-
-    public void setTotalPages(long totalPages) {
-        this.totalPages = totalPages;
-    }
-
-    public long getTotalResults() {
-        return totalResults;
-    }
-
-    public void setTotalResults(long totalResults) {
-        this.totalResults = totalResults;
     }
 
 }

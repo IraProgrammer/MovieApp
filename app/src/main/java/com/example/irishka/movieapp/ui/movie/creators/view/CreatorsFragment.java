@@ -30,6 +30,8 @@ public class CreatorsFragment extends MvpAppCompatFragment implements CreatorsVi
 
     public static final String PERSON_ID = "id_of_cast";
 
+    public static final String ACTOR = "ACTOR";
+
     @Inject
     Provider<CreatorsPresenter> presenterProvider;
 
@@ -83,7 +85,7 @@ public class CreatorsFragment extends MvpAppCompatFragment implements CreatorsVi
     public void onItemClick(Cast cast) {
         Intent intent = new Intent(getActivity(), ActorActivity.class);
         intent.putExtra(PERSON_ID, cast.getId());
-        intent.putExtra("ACTOR", cast.getName());
+        intent.putExtra(ACTOR, cast.getName());
         startActivity(intent);
     }
 }

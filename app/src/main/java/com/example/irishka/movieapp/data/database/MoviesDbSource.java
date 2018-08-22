@@ -28,32 +28,15 @@ public class MoviesDbSource {
 
     private MovieDao movieDao;
 
-    private CastDao castDao;
-
-    private GenreDao genreDao;
-
-    private GenreOfMovieDao genreOfMovieDao;
-
-    private CastOfMovieDao castOfMovieDao;
-
     private RelatedOfMovieDao relatedOfMovieDao;
-
-    private KeywordsDao keywordsDao;
 
     private MovieWithCategoryDao movieWithCategoryDao;
 
     @Inject
-    public MoviesDbSource(MovieDao movieDao, CastDao castDao, GenreDao genreDao,
-                          GenreOfMovieDao genreOfMovieDao, CastOfMovieDao castOfMovieDao,
-                          RelatedOfMovieDao relatedOfMovieDao, KeywordsDao keywordsDao,
+    public MoviesDbSource(MovieDao movieDao, RelatedOfMovieDao relatedOfMovieDao,
                           MovieWithCategoryDao movieWithCategoryDao) {
         this.movieDao = movieDao;
-        this.castDao = castDao;
-        this.genreDao = genreDao;
-        this.genreOfMovieDao = genreOfMovieDao;
-        this.castOfMovieDao = castOfMovieDao;
         this.relatedOfMovieDao = relatedOfMovieDao;
-        this.keywordsDao = keywordsDao;
         this.movieWithCategoryDao = movieWithCategoryDao;
     }
 
@@ -63,50 +46,6 @@ public class MoviesDbSource {
 
     public Single<List<MovieDb>> getAllMovies() {
         return movieDao.getAllMovies();
-    }
-
-//    public Single<List<MovieDb>> getRelatedMovies(long movieId) {
-//        return movieDao.getRelatedMovies(movieId);
-//    }
-
-    public Single<List<GenreOfMovie>> getGenresOfMovie(long movieId) {
-        return genreOfMovieDao.getGenresOfMovie(movieId);
-    }
-
-    public Single<GenreDb> getGenre(long genreId) {
-        return genreDao.getGenre(genreId);
-    }
-
-    public void insertAllCasts(List<CastDb> castsDb) {
-        castDao.insertAll(castsDb);
-    }
-
-    public void insertCast(CastDb castDb) {
-        castDao.insert(castDb);
-    }
-
-    public Single<List<CastOfMovie>> getCastsOfMovie(long movieId) {
-        return castOfMovieDao.getCastOfMovie(movieId);
-    }
-
-    public Single<List<CastOfMovie>> getMoviesOfCast(long id) {
-        return castOfMovieDao.getMoviesOfCast(id);
-    }
-
-    public Single<CastDb> getCast(long id) {
-        return castDao.getCast(id);
-    }
-
-    public void insertAllGenres(List<GenreDb> genresDb) {
-        genreDao.insert(genresDb);
-    }
-
-    public void insertAllGoM(List<GenreOfMovie> genresOfMovie) {
-        genreOfMovieDao.trans(genresOfMovie);
-    }
-
-    public void insertAllCoM(List<CastOfMovie> castsOfMovie) {
-        castOfMovieDao.trans(castsOfMovie);
     }
 
     public void insertMovie(MovieDb movieDb) {
@@ -123,14 +62,6 @@ public class MoviesDbSource {
 
     public void insertAllRoM(List<RelatedOfMovie> relatedOfMovies) {
         relatedOfMovieDao.trans(relatedOfMovies);
-    }
-
-    public void insertKeyword(KeywordDb keywordDb) {
-        keywordsDao.insert(keywordDb);
-    }
-
-    public Single<List<KeywordDb>> getKeywords() {
-        return keywordsDao.getKeywords();
     }
 
     public Single<List<MovieWithCategory>> getMovieWithCategory(String type){

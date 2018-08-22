@@ -13,6 +13,7 @@ import com.example.irishka.movieapp.ui.movies.fragment.MainFilmsAdapter;
 import com.example.irishka.movieapp.ui.movies.fragment.MainFilmsFragment;
 import com.example.irishka.movieapp.ui.movies.fragment.MainFilmsPresenter;
 import com.example.irishka.movieapp.ui.movies.view.MoviesListActivity;
+import com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -26,6 +27,7 @@ public class MainFilmsFragmentModule {
     @Provides
     @PerFragment
     static String provideType(MainFilmsFragment mainFilmsFragment) {
+        
         return mainFilmsFragment.getArguments().getString(TYPE);
     }
 

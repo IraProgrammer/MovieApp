@@ -17,7 +17,7 @@ public interface FiltersView extends MvpView{
 
     void clearList();
 
-    void showMovies(List<Movie> movies, boolean isFiltred);
+    void showMovies(List<Movie> movies);
 
     void finishLoading();
 }

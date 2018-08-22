@@ -86,30 +86,13 @@ public class FilmsAdapter extends RecyclerView.Adapter<FilmsAdapter.MoviesViewHo
             this.glideHelper = glideHelper;
         }
 
-//        private String getDate() {
-//            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-//            return dateFormat.format(new Date());
-//        }
-//
-//        private int getYear(String releaseDate) {
-//            return Integer.parseInt(releaseDate.split("-")[0]);
-//        }
-
         void bind(Movie movie) {
 
             title.setText(movie.getTitle());
 
             rateText.setText(movie.getVoteAverageStr());
 
-//            if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
-//                rateText.setText(itemView.getContext().getString(R.string.see_soon));
-//            } else {
-//                rateText.setText(String.format(itemView.getContext().getString(R.string.vote_average), (float) movie.getVoteAverageStr()));
-//            }
-
-            String adult = "";
-            if (movie.getAdult()) adult = itemView.getContext().getString(R.string.adult);
-            adultText.setText(adult);
+            if (movie.getAdult()) adultText.setText(itemView.getContext().getString(R.string.adult));
 
             itemView.setOnClickListener(view -> onItemClickListener.onItemClick(movie));
 

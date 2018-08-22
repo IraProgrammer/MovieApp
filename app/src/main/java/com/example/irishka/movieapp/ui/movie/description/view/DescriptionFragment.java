@@ -145,11 +145,11 @@ public class DescriptionFragment extends MvpAppCompatFragment
     @Gallery
     LinearLayoutManager linearLayoutManagerGallery;
 
-    RecyclerView.LayoutManager layoutManager;
+  //  RecyclerView.LayoutManager layoutManager;
 
-    View viewAtPosition;
-
-    private View[] sharedViews;
+//    View viewAtPosition;
+//
+//    private View[] sharedViews;
 
     private boolean isLoading;
 
@@ -201,14 +201,11 @@ public class DescriptionFragment extends MvpAppCompatFragment
         gallery.setLayoutManager(linearLayoutManagerGallery);
         gallery.setAdapter(galleryAdapter);
 
-        errorBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.downloadDescription();
-                presenter.downloadRelatedMovies(false);
-                if (isOnline()) {
-                    error.setVisibility(View.GONE);
-                }
+        errorBtn.setOnClickListener(view -> {
+            presenter.downloadDescription();
+            presenter.downloadRelatedMovies(false);
+            if (isOnline()) {
+                error.setVisibility(View.GONE);
             }
         });
 
@@ -319,6 +316,8 @@ public class DescriptionFragment extends MvpAppCompatFragment
 
         startActivityForResult(intent, 1, options.toBundle());
 
+        //НЕ СМОТРИ))))))
+
         //  postponeEnterTransition();
 
         //      startActivity(intent, options.toBundle());
@@ -326,6 +325,9 @@ public class DescriptionFragment extends MvpAppCompatFragment
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        //И ЭТО НЕ СМОТРИ))))))
+
         //    super.onActivityResult(requestCode, resultCode, data);
         //if (requestCode != Activity.RESULT_OK) {
         //  return;
@@ -334,8 +336,9 @@ public class DescriptionFragment extends MvpAppCompatFragment
             currentPosition = data.getIntExtra("CUR", 7);
         }
 
-        layoutManager = gallery.getLayoutManager();
+       // layoutManager = gallery.getLayoutManager();
 
+         //И ЭТО НЕ СМОТРИ))))))
 
 //        viewAtPosition = layoutManager.findViewByPosition(currentPosition);
 //

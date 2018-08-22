@@ -38,9 +38,7 @@ public class FiltersAdapter extends RecyclerView.Adapter<FiltersAdapter.Filteres
         void onItemClick(Movie movie);
     }
 
-    public void addMoviesList(List<Movie> movies, boolean isFiltered) {
-        if (isFiltered) {
-            clearList(); }
+    public void addMoviesList(List<Movie> movies) {
             int idStart = this.movies.size();
             int idEnd = movies.size();
             this.movies.addAll(movies);
@@ -106,9 +104,7 @@ public class FiltersAdapter extends RecyclerView.Adapter<FiltersAdapter.Filteres
 
             rate.setText(movie.getVoteAverageStr());
 
-            String adultStr = "";
-            if (movie.getAdult()) adultStr = itemView.getContext().getString(R.string.adult);
-            adult.setText(adultStr);
+            if (movie.getAdult()) adult.setText(itemView.getContext().getString(R.string.adult));
 
             itemView.setOnClickListener(view -> onItemClickListener.onItemClick(movie));
 

@@ -20,11 +20,8 @@ import retrofit2.http.Query;
 
 public interface MoviesApi {
 
-    @GET("discover/movie/")
+    @GET("discover/movie")
     Single<MoviePageModel> getWithFilters(@Query("page") int page, @Query("sort_by") String sortBy, @Query("with_genres") String genres);
-
-    @GET("discover/movie/")
-    Single<MoviePageModel> getMovies(@Query("page") int page);
 
     @GET("movie/{movie_id}")
     Single<DescriptionModel> getDescription(@Path("movie_id") long movieId);
