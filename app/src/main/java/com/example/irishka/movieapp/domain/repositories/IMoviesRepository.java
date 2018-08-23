@@ -2,6 +2,7 @@ package com.example.irishka.movieapp.domain.repositories;
 
 import com.example.irishka.movieapp.domain.entity.Cast;
 import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.domain.entity.MovieWithError;
 import com.example.irishka.movieapp.domain.entity.MoviesListWithError;
 
 import java.util.List;
@@ -10,9 +11,9 @@ import io.reactivex.Single;
 
 public interface IMoviesRepository {
 
-    Single<Movie> getMovieFromDatabase(long movieId);
+    Single<MovieWithError> getMovieFromDatabase(long movieId);
 
-    Single<Movie> downloadMovie(long movieId);
+    Single<MovieWithError> downloadMovie(long movieId);
 
     Single<List<Movie>> downloadRelatedMovies(long movieId, int page);
 

@@ -13,6 +13,8 @@ import com.example.irishka.movieapp.data.network.CastsNetworkSource;
 import com.example.irishka.movieapp.data.network.MoviesNetworkSource;
 import com.example.irishka.movieapp.domain.Tabs;
 import com.example.irishka.movieapp.domain.entity.Cast;
+import com.example.irishka.movieapp.domain.entity.CastListWithError;
+import com.example.irishka.movieapp.domain.entity.CastWithError;
 import com.example.irishka.movieapp.domain.entity.Genre;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.domain.repositories.ICastsRepository;
@@ -40,47 +42,51 @@ public class CastsRepository implements ICastsRepository {
         this.castsNetworkSource = castsNetworkSource;
     }
 
-    private Single<List<Cast>> getCastsFromInternet(long movieId) {
+    private Single<CastListWithError> getCastsFromInternet(long movieId) {
         return castsNetworkSource
                 .getCasts(movieId)
                 .map(castModels -> castMapper.mapCastsList(castModels))
                 .doOnSuccess(casts -> castsDbSource.insertAllCasts(castMapper.mapCastsListToDb(casts)))
-                .doOnSuccess(castModels -> castsDbSource.insertAllCoM(castMapper.createCoMList(movieId, castModels)));
+                .doOnSuccess(castModels -> castsDbSource.insertAllCoM(castMapper.createCoMList(movieId, castModels)))
+                .map(casts -> new CastListWithError(casts, false));
 
     }
 
-    private Single<List<Cast>> getCastsFromDatabase(long movieId) {
+    private Single<CastListWithError> getCastsFromDatabase(long movieId) {
         return castsDbSource.getCastsOfMovie(movieId)
                 .flattenAsObservable(list -> list)
                 .map(CastOfMovie::getCastId)
                 .flatMapSingle(id -> castsDbSource.getCast(id))
                 .toList()
-                .map(list -> castMapper.mapCastsListFromDb(list))
+                .map(castsDb -> castMapper.mapCastsListFromDb(castsDb))
+                .map(casts -> new CastListWithError(casts, true))
                 .subscribeOn(Schedulers.io());
     }
 
-    private Single<Cast> getMoreAboutActorFromInternet(long id) {
+    private Single<CastWithError> getMoreAboutActorFromInternet(long id) {
         return castsNetworkSource
                 .getActorInfo(id)
                 .flatMap(actorInfoModel -> castsNetworkSource.getActorPhotos(id)
                         .map(actorPhotosModel -> castMapper.apply(actorInfoModel, actorPhotosModel)))
-                .doOnSuccess(cast -> castsDbSource.insertCast(castMapper.applyToDb(cast)));
+                .doOnSuccess(cast -> castsDbSource.insertCast(castMapper.applyToDb(cast)))
+                .map(cast -> new CastWithError(cast, false));
     }
 
-    private Single<Cast> getConcreteCastFromDatabase(long id) {
+    private Single<CastWithError> getConcreteCastFromDatabase(long id) {
         return castsDbSource.getCast(id)
                 .map(castDb -> castMapper.applyFromDb(castDb))
+                .map(cast -> new CastWithError(cast, true))
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Single<List<Cast>> downloadCasts(long movieId) {
+    public Single<CastListWithError> downloadCasts(long movieId) {
         return getCastsFromInternet(movieId)
                 .onErrorResumeNext(getCastsFromDatabase(movieId));
     }
 
     @Override
-    public Single<Cast> downloadConcreteCast(long id) {
+    public Single<CastWithError> downloadConcreteCast(long id) {
         return getMoreAboutActorFromInternet(id)
                 .onErrorResumeNext(getConcreteCastFromDatabase(id));
     }

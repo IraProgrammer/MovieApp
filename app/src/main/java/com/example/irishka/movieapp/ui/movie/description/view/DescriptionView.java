@@ -9,6 +9,10 @@ public interface DescriptionView extends MvpView{
 
     void showProgress();
 
+    void showError();
+
+    void hideError();
+
     void hideProgress();
 
     void finishLoading();

@@ -5,19 +5,14 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -94,8 +89,8 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
     @BindView(R.id.photos)
     TextView photosTxt;
 
-    @BindView(R.id.sorry)
-    TextView sorry;
+    @BindView(R.id.tv_sorry)
+    TextView sorryTv;
 
     @BindView(R.id.error)
     LinearLayout error;
@@ -125,9 +120,6 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
 
         errorBtn.setOnClickListener(view -> {
             presenter.downloadInfo();
-            if (isOnline()) {
-                error.setVisibility(View.GONE);
-            }
         });
 
         return v;
@@ -139,23 +131,29 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
     }
 
     @Override
+    public void showError() {
+        error.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideError() {
+        error.setVisibility(View.GONE);
+    }
+
+    @Override
     public void hideProgress() {
         birthTxt.setVisibility(View.VISIBLE);
         placeTxt.setVisibility(View.VISIBLE);
         photosTxt.setVisibility(View.VISIBLE);
 
         progress.setVisibility(View.GONE);
-
-        if (!isOnline()) {
-            error.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
     public void showInfo(Cast cast) {
 
         if (cast.getBirthday() == null) {
-            sorry.setVisibility(View.VISIBLE);
+            sorryTv.setVisibility(View.VISIBLE);
         }
 
         name.setText(cast.getName());
@@ -195,15 +193,5 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
         intent.putExtra("ARRAYLIST", (ArrayList<Image>) photos);
         intent.putExtra("POSITION", position);
         startActivity(intent);
-    }
-
-    protected boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnected()) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

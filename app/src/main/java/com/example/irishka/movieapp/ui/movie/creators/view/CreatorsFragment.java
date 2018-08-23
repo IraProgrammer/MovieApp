@@ -2,11 +2,15 @@ package com.example.irishka.movieapp.ui.movie.creators.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -52,7 +56,16 @@ public class CreatorsFragment extends MvpAppCompatFragment implements CreatorsVi
     @BindView(R.id.progress)
     MaterialProgressBar progressBar;
 
-    public static CreatorsFragment newInstance(){
+//    @BindView(R.id.root)
+//    RelativeLayout root;
+
+    @BindView(R.id.error)
+    LinearLayout error;
+
+    @BindView(R.id.error_btn)
+    Button errorBtn;
+
+    public static CreatorsFragment newInstance() {
         return new CreatorsFragment();
     }
 
@@ -72,13 +85,36 @@ public class CreatorsFragment extends MvpAppCompatFragment implements CreatorsVi
 
         actorsRecyclerView.setAdapter(actorsAdapter);
 
+        errorBtn.setOnClickListener(view -> {
+            presenter.downloadCasts();
+        });
+
         return v;
+    }
+
+    @Override
+    public void showProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideError() {
+        error.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showError() {
+        error.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showCasts(List<Cast> cast) {
         actorsAdapter.setList(cast);
-        progressBar.setVisibility(View.GONE);
     }
 
     @Override

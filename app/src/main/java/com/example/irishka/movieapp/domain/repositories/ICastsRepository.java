@@ -2,6 +2,8 @@ package com.example.irishka.movieapp.domain.repositories;
 
 import com.example.irishka.movieapp.data.database.entity.CastOfMovie;
 import com.example.irishka.movieapp.domain.entity.Cast;
+import com.example.irishka.movieapp.domain.entity.CastListWithError;
+import com.example.irishka.movieapp.domain.entity.CastWithError;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
 import java.util.List;
@@ -10,9 +12,9 @@ import io.reactivex.Single;
 
 public interface ICastsRepository {
 
-    Single<Cast> downloadConcreteCast(long movieId);
+    Single<CastListWithError> downloadCasts(long movieId);
 
-    Single<List<Cast>> downloadCasts(long movieId);
+    Single<CastWithError> downloadConcreteCast(long movieId);
 
     void insertAllCoM(long id, List<Movie> movies);
 

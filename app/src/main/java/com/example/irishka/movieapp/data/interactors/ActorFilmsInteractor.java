@@ -8,6 +8,7 @@ import com.example.irishka.movieapp.data.mappers.MoviesMapper;
 import com.example.irishka.movieapp.data.network.CastsNetworkSource;
 import com.example.irishka.movieapp.data.network.MoviesNetworkSource;
 import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.domain.entity.MovieWithError;
 import com.example.irishka.movieapp.domain.interactors.IActorFilmsInteractor;
 import com.example.irishka.movieapp.domain.interactors.ISearchInteractor;
 import com.example.irishka.movieapp.domain.repositories.ICastsRepository;
@@ -43,6 +44,7 @@ public class ActorFilmsInteractor implements IActorFilmsInteractor {
         return castsRepository.getMoviesOfCast(id)
                 .flattenAsObservable(list -> list)
                 .flatMapSingle(castOfMovie -> moviesRepository.getMovieFromDatabase(castOfMovie.getMovieId()))
+                .map(MovieWithError::getMovie)
                 .toList()
                 .subscribeOn(Schedulers.io());
     }

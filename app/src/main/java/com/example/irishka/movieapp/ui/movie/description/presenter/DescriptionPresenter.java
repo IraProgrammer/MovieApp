@@ -38,8 +38,18 @@ public class DescriptionPresenter extends BasePresenter<DescriptionView> {
         addDisposables(moviesRepository.downloadMovie(movieId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(movies -> getViewState().onDownloadError())
-                .doOnSuccess(movie -> getViewState().hideProgress())
-                .subscribe(movie -> getViewState().showDescription(movie), throwable -> {
+                .doOnSuccess(movieWithError -> {
+                    if (movieWithError.isError()) {
+                        getViewState().showError();
+                    }
+                })
+                .doOnSuccess(movieWithError -> getViewState().hideProgress())
+                .doOnSuccess(movieWithError -> {
+                    if (!movieWithError.isError()){
+                        getViewState().hideError();
+                    }
+                })
+                .subscribe(movieWithError -> getViewState().showDescription(movieWithError.getMovie()), throwable -> {
                 }));
     }
 

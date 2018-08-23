@@ -2,7 +2,6 @@ package com.example.irishka.movieapp.ui.movie.creators.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.example.irishka.movieapp.domain.repositories.ICastsRepository;
-import com.example.irishka.movieapp.domain.repositories.IMoviesRepository;
 import com.example.irishka.movieapp.ui.BasePresenter;
 import com.example.irishka.movieapp.ui.movie.creators.view.CreatorsView;
 
@@ -26,14 +25,28 @@ public class CreatorsPresenter extends BasePresenter<CreatorsView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        downloadCasts(movieId);
+        downloadCasts();
     }
 
-    private void downloadCasts(long movieId) {
+    public void downloadCasts() {
+
+        getViewState().showProgress();
 
         addDisposables(castsRepository.downloadCasts(movieId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(casts -> getViewState().showCasts(casts), throwable -> {}));
+                .doOnSuccess(castListWithError -> {
+                    if (castListWithError.getCasts().size() == 0 && castListWithError.isError()) {
+                        getViewState().showError();
+                    }
+                })
+                .doOnSuccess(castListWithError -> getViewState().hideProgress())
+                .doOnSuccess(castListWithError -> {
+                    if (!castListWithError.isError()){
+                        getViewState().hideError();
+                    }
+                })
+                .subscribe(castListWithError -> getViewState().showCasts(castListWithError.getCasts()), throwable -> {
+                }));
     }
 }
 

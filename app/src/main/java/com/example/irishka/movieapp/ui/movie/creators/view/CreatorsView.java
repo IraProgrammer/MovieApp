@@ -8,6 +8,14 @@ import java.util.List;
 
 public interface CreatorsView extends MvpView {
 
+    void showProgress();
+
+    void hideProgress();
+
+    void hideError();
+
+    void showError();
+
     void showCasts(List<Cast> casts);
 
 }

@@ -35,8 +35,18 @@ public class InfoPresenter extends BasePresenter<InfoView> {
 
         addDisposables(castsRepository.downloadConcreteCast(id)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess(cast -> getViewState().hideProgress())
-                .subscribe(cast -> getViewState().showInfo(cast), throwable -> {}));
+                .doOnSuccess(castWithError -> {
+                    if (castWithError.isError()) {
+                        getViewState().showError();
+                    }
+                })
+                .doOnSuccess(castWithError -> getViewState().hideProgress())
+                .doOnSuccess(castWithError -> {
+                    if (!castWithError.isError()){
+                        getViewState().hideError();
+                    }
+                })
+                .subscribe(castWithError -> getViewState().showInfo(castWithError.getCast()), throwable -> {}));
     }
 }
 

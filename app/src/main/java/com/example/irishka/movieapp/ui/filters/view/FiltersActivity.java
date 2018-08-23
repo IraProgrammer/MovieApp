@@ -1,13 +1,9 @@
 package com.example.irishka.movieapp.ui.filters.view;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.bottomappbar.BottomAppBar;
-import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -25,14 +21,11 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.filters.ChipsHelper;
-import com.example.irishka.movieapp.ui.filters.di.qualifiers.Genres;
-import com.example.irishka.movieapp.ui.filters.di.qualifiers.Sort;
 import com.example.irishka.movieapp.ui.filters.presenter.FiltersPresenter;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -80,8 +73,8 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
     @BindView(R.id.progressBar)
     MaterialProgressBar progress;
 
-    @BindView(R.id.sorry)
-    TextView sorry;
+    @BindView(R.id.tv_sorry)
+    TextView sorryTv;
 
     @BindView(R.id.error_btn)
     Button errorBtn;
@@ -149,7 +142,7 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
 
     @Override
     public void showProgress() {
-        sorry.setVisibility(View.GONE);
+        sorryTv.setVisibility(View.GONE);
         progress.setVisibility(View.VISIBLE);
     }
 
@@ -160,7 +153,7 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
 
     @Override
     public void noFound() {
-        sorry.setVisibility(View.VISIBLE);
+        sorryTv.setVisibility(View.VISIBLE);
     }
 
     @Override

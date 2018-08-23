@@ -7,6 +7,7 @@ import com.example.irishka.movieapp.data.mappers.MoviesMapper;
 import com.example.irishka.movieapp.data.network.MoviesNetworkSource;
 import com.example.irishka.movieapp.domain.Tabs;
 import com.example.irishka.movieapp.domain.entity.Genre;
+import com.example.irishka.movieapp.domain.entity.MovieWithError;
 import com.example.irishka.movieapp.domain.entity.MoviesListWithError;
 import com.example.irishka.movieapp.domain.repositories.IMoviesRepository;
 import com.example.irishka.movieapp.domain.entity.Movie;
@@ -65,6 +66,7 @@ public class MoviesRepository implements IMoviesRepository {
         return moviesDbSource.getRelatedOfMovie(movieId)
                 .flattenAsObservable(list -> list)
                 .flatMapSingle(relatedOfMovie -> getMovieFromDatabase(relatedOfMovie.getRelatedId()))
+                .map(MovieWithError::getMovie)
                 .toList()
                 //  .map(movies -> moviesMapper.mapMoviesListFromDb(moviesDb))
                 .subscribeOn(Schedulers.io());
@@ -79,7 +81,7 @@ public class MoviesRepository implements IMoviesRepository {
                 });
     }
 
-    private Single<Movie> getMovieFromInternet(long movieId) {
+    private Single<MovieWithError> getMovieFromInternet(long movieId) {
         return moviesNetworkSource
                 .getDescription(movieId)
                 .doOnSuccess(descriptionModel -> genresDbSource.insertAllGenres(genreMapper.mapGenresListToDb(descriptionModel.getGenres())))
@@ -89,19 +91,21 @@ public class MoviesRepository implements IMoviesRepository {
                         .flatMap(backdrops -> moviesNetworkSource
                                 .getTrailers(descriptionModel.getId())
                                 .map(trailers -> moviesMapper.apply(descriptionModel, backdrops, trailers))))
-                .doOnSuccess(movie -> moviesDbSource.insertMovie(moviesMapper.applyToDb(movie)));
+                .doOnSuccess(movie -> moviesDbSource.insertMovie(moviesMapper.applyToDb(movie)))
+                .map(movie -> new MovieWithError(movie, false));
     }
 
     @Override
-    public Single<Movie> getMovieFromDatabase(long movieId) {
+    public Single<MovieWithError> getMovieFromDatabase(long movieId) {
         return moviesDbSource.getMovie(movieId)
                 .flatMap(movieDb -> getGenres(movieId)
                         .map(genres -> moviesMapper.applyFromDb(movieDb, genres)))
+                .map(movie -> new MovieWithError(movie, true))
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Single<Movie> downloadMovie(long movieId) {
+    public Single<MovieWithError> downloadMovie(long movieId) {
         return getMovieFromInternet(movieId)
                 .onErrorResumeNext(getMovieFromDatabase(movieId));
     }
@@ -150,11 +154,11 @@ public class MoviesRepository implements IMoviesRepository {
         return moviesDbSource.getMovieWithCategory(type)
                 .flattenAsObservable(list -> list)
                 .flatMapSingle(movieWithCategory -> getMovieFromDatabase(movieWithCategory.getMovieId()))
+                .map(MovieWithError::getMovie)
                 .toList()
                 .map(movies -> {
                     if (page > 1) {
-                        List<Movie> m = new ArrayList<>();
-                        return new MoviesListWithError(m, true);
+                        return new MoviesListWithError(new ArrayList<Movie>(), true);
                     }
                     return new MoviesListWithError(movies, true);
                 })
@@ -196,7 +200,7 @@ public class MoviesRepository implements IMoviesRepository {
                 .onErrorResumeNext(getEmptyListWithError());
     }
 
-    Single<MoviesListWithError> getEmptyListWithError(){
+    private Single<MoviesListWithError> getEmptyListWithError(){
         return new Single<MoviesListWithError>() {
             @Override
             protected void subscribeActual(SingleObserver<? super MoviesListWithError> observer) {

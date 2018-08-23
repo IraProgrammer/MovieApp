@@ -9,6 +9,10 @@ public interface InfoView extends MvpView {
 
     void showProgress();
 
+    void showError();
+
+    void hideError();
+
     void hideProgress();
 
     void showInfo(Cast cast);

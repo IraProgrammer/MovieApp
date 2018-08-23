@@ -4,8 +4,6 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.MatrixCursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import android.support.annotation.NonNull;
@@ -17,7 +15,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -68,8 +65,8 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
     @BindView(R.id.error_btn)
     Button errorBtn;
 
-    @BindView(R.id.sorry)
-    TextView sorry;
+    @BindView(R.id.tv_sorry)
+    TextView sorryTv;
 
     @Inject
     SearchManager manager;
@@ -151,7 +148,7 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
-        sorry.setVisibility(View.GONE);
+        sorryTv.setVisibility(View.GONE);
     }
 
     @Override
@@ -161,7 +158,7 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
 
     @Override
     public void noFound() {
-        sorry.setVisibility(View.VISIBLE);
+        sorryTv.setVisibility(View.VISIBLE);
     }
 
     @Override

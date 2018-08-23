@@ -140,7 +140,7 @@
             </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
             <TextView
-                android:id="@+id/sorry"
+                android:id="@+id/tv_sorry"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
