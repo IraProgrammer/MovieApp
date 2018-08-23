@@ -83,9 +83,6 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
     @BindView(R.id.sorry)
     TextView sorry;
 
-    @BindView(R.id.error)
-    LinearLayout error;
-
     @BindView(R.id.error_btn)
     Button errorBtn;
 
@@ -110,6 +107,8 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
     LinearLayoutManager linearLayoutManager;
 
     private boolean isLoading;
+
+    Snackbar snackbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +151,6 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
     public void showProgress() {
         sorry.setVisibility(View.GONE);
         progress.setVisibility(View.VISIBLE);
-        error.setVisibility(View.GONE);
     }
 
     @Override
@@ -166,11 +164,10 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
     }
 
     @Override
-    public void noInternet() {
-        progress.setVisibility(View.GONE);
-
-        if (!isOnline())
-            error.setVisibility(View.VISIBLE);
+    public void showSnack() {
+        snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction(getString(R.string.error_button), view -> filtersPresenter.downloadMovies(chipsHelper.filteredWithSort(), chipsHelper.filteredWithGenres(), true));
+        snackbar.show();
     }
 
     @Override
@@ -196,17 +193,7 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
         startActivity(intent);
     }
 
-    protected boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnected()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private RecyclerView.OnScrollListener getOnScrollListener(){
+    private RecyclerView.OnScrollListener getOnScrollListener() {
         return new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -214,26 +201,22 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
                 int totalItemCount = recyclerView.getLayoutManager().getItemCount();
                 int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
 
-                if (isOnline()) {
-                    if (isLoading) return;
-                    if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
-                            && lastVisibleItemPosition >= 0) {
-                        isLoading = true;
-                        filtersPresenter.downloadMovies(chipsHelper.filteredWithSort(), chipsHelper.filteredWithGenres(), true);
-                    }
-                } else {
-                    Snackbar snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_LONG);
-                    if (totalItemCount == lastVisibleItemPosition + 1) {
-                        snackbar.show();
-                    }
+                if (isLoading) return;
+                if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
+                        && lastVisibleItemPosition >= 0) {
+                    isLoading = true;
+                    filtersPresenter.downloadMovies(chipsHelper.filteredWithSort(), chipsHelper.filteredWithGenres(), true);
                 }
             }
         };
     }
 
-    private View.OnClickListener getClickListener(){
+    private View.OnClickListener getClickListener() {
         return view -> {
             expandableLayout.expand();
+            if (snackbar != null) {
+                snackbar.dismiss();
+            }
             btnExpand.setVisibility(View.GONE);
             bottomAppBar.setVisibility(View.VISIBLE);
         };

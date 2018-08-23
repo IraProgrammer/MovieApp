@@ -2,7 +2,6 @@ package com.example.irishka.movieapp.ui.search.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.example.irishka.movieapp.domain.interactors.ISearchInteractor;
-import com.example.irishka.movieapp.domain.repositories.IKeywordsRepository;
 import com.example.irishka.movieapp.ui.BasePresenter;
 import com.example.irishka.movieapp.ui.search.view.SearchView;
 
@@ -32,7 +31,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
 
     public void downloadMoviesFromSearch(String query, Boolean isNext) {
 
-        if (!isNext) {
+        if (!isNext || page == 1) {
             getViewState().showProgress();
         }
 
@@ -45,17 +44,27 @@ public class SearchPresenter extends BasePresenter<SearchView> {
 
         addDisposables(searchInteractor.getMoviesFromSearchFromInternet(query, page)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess(movies -> getViewState().finishLoading())
-                .doOnSuccess(movies -> {
-                    if (movies.size() == 0 && page == 1) getViewState().noFound();
+                .doOnSuccess(moviesListWithError -> {
+                    if (!moviesListWithError.isError()) {
+                        getViewState().finishLoading();
+                    }
                 })
-                .doOnSuccess(movies -> page++)
+                .doOnSuccess(moviesListWithError -> {
+                    if (moviesListWithError.getMovies().size() == 0 && page == 1 && !moviesListWithError.isError())
+                        getViewState().noFound();
+                })
+                .doOnSuccess(moviesListWithError -> {
+                    if (moviesListWithError.isError()) {
+                        getViewState().showSnack();
+                    }
+                })
+                .doOnSuccess(moviesListWithError -> {
+                    if (!moviesListWithError.isError()) {
+                        page++;
+                    }
+                })
                 .doOnSuccess(movies -> getViewState().hideProgress())
-                .doOnError(movies -> {
-                    if (!isNext) getViewState().noInternet();
-                })
-                .doOnError(movies -> getViewState().finishLoading())
-                .subscribe(movies -> getViewState().showMovies(movies), throwable -> {
+                .subscribe(moviesListWithError -> getViewState().showMovies(moviesListWithError.getMovies()), throwable -> {
                 }));
     }
 

@@ -67,9 +67,6 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     @BindView(R.id.progress)
     MaterialProgressBar progressBar;
 
-    @BindView(R.id.error)
-    LinearLayout error;
-
     @BindView(R.id.error_btn2)
     Button errorBtn;
 
@@ -125,7 +122,6 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
-        error.setVisibility(View.GONE);
     }
 
     @Override
@@ -143,11 +139,6 @@ public class MainFilmsFragment extends MvpAppCompatFragment
         isLoading = false;
     }
 
-    @Override
-    public void noInternetAndEmptyDb() {
-        error.setVisibility(View.VISIBLE);
-    }
-
     private int getLastVisibleItemPosition() {
         int[] into = staggeredGridLayoutManager.findLastVisibleItemPositions(null);
         List<Integer> intoList = new ArrayList<>();
@@ -158,6 +149,13 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     }
 
     @Override
+    public void showSnack() {
+        Snackbar snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction(getString(R.string.error_button), view -> presenter.downloadMovies(true));
+        snackbar.show();
+    }
+
+    @Override
     public void onItemClick(Movie movie) {
         Intent intent = new Intent(getActivity(), MovieActivity.class);
         intent.putExtra(MOVIE_ID, movie.getId());
@@ -165,53 +163,21 @@ public class MainFilmsFragment extends MvpAppCompatFragment
         startActivity(intent);
     }
 
-    private boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnected()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     private RecyclerView.OnScrollListener getOnScrollListener(){
         return new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
 
-                Snackbar snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_INDEFINITE);
-
                 int visibleItemCount = recyclerView.getLayoutManager().getChildCount();
                 int totalItemCount = recyclerView.getLayoutManager().getItemCount();
                 int lastVisibleItemPosition = getLastVisibleItemPosition();
 
-                if (isOnline()) {
-
-                    if (isLoading || snackbar.isShownOrQueued()) return;
+                    if (isLoading) return;
                     if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
                             && lastVisibleItemPosition >= 0) {
                         isLoading = true;
                         presenter.downloadMovies(true);
                     }
-                } else {
-
-                    //TODO
-
-                    snackbar.setAction(getString(R.string.error_button), new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (isOnline()) {
-                                presenter.downloadMovies(true);
-                                snackbar.dismiss();
-                            }
-                            else snackbar.show();
-                        }
-                    });
-                    if (totalItemCount == lastVisibleItemPosition + 1 && !snackbar.isShownOrQueued()) {
-                        snackbar.show();
-                    }
-                }
             }
         };
     }

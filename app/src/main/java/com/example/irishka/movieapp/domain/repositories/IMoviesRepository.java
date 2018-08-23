@@ -2,6 +2,7 @@ package com.example.irishka.movieapp.domain.repositories;
 
 import com.example.irishka.movieapp.domain.entity.Cast;
 import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.domain.entity.MoviesListWithError;
 
 import java.util.List;
 
@@ -15,11 +16,11 @@ public interface IMoviesRepository {
 
     Single<List<Movie>> downloadRelatedMovies(long movieId, int page);
 
-    Single<List<Movie>> downloadMovies(int page, String type);
+    Single<MoviesListWithError> downloadMovies(int page, String type);
 
-    Single<List<Movie>> getWithFilters(int page, String sort, String genres);
+    Single<MoviesListWithError> getWithFilters(int page, String sort, String genres);
 
-    Single<List<Movie>> getMoviesFromSearchFromInternet(String query, int page);
+    Single<MoviesListWithError> getMoviesFromSearchFromInternet(String query, int page);
 
     Single<List<Movie>> getActorFilmsFromInternet(long id);
 

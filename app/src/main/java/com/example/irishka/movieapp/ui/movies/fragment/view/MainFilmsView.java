@@ -15,5 +15,5 @@ public interface MainFilmsView extends MvpView{
 
     void finishLoading();
 
-    void noInternetAndEmptyDb();
+    void showSnack();
 }

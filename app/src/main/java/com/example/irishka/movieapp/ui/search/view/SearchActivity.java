@@ -62,8 +62,8 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
     @BindView(R.id.progress)
     MaterialProgressBar progressBar;
 
-    @BindView(R.id.error)
-    LinearLayout error;
+//    @BindView(R.id.error)
+//    LinearLayout error;
 
     @BindView(R.id.error_btn)
     Button errorBtn;
@@ -151,7 +151,6 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
-        error.setVisibility(View.GONE);
         sorry.setVisibility(View.GONE);
     }
 
@@ -166,11 +165,10 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
     }
 
     @Override
-    public void noInternet() {
-        progressBar.setVisibility(View.GONE);
-
-        if (!isOnline())
-            error.setVisibility(View.VISIBLE);
+    public void showSnack() {
+        Snackbar snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction(getString(R.string.error_button), view -> searchPresenter.downloadMoviesFromSearch(query, true));
+        snackbar.show();
     }
 
     @Override
@@ -196,17 +194,7 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-    protected boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnected()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private RecyclerView.OnScrollListener getOnScrollListener(){
+    private RecyclerView.OnScrollListener getOnScrollListener() {
         return new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -215,24 +203,17 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
                 int totalItemCount = recyclerView.getLayoutManager().getItemCount();
                 int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
 
-                if (isOnline()) {
                     if (isLoading) return;
                     if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
                             && lastVisibleItemPosition >= 0) {
                         isLoading = true;
                         searchPresenter.downloadMoviesFromSearch(query, true);
                     }
-                } else {
-                    Snackbar snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_LONG);
-                    if (totalItemCount == lastVisibleItemPosition + 1) {
-                        snackbar.show();
-                    }
-                }
             }
         };
     }
 
-    private SearchView.OnQueryTextListener getOnQueryTextListener(){
+    private SearchView.OnQueryTextListener getOnQueryTextListener() {
         return new SearchView.OnQueryTextListener() {
 
             @Override
@@ -263,7 +244,7 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
         };
     }
 
-    private SearchView.OnSuggestionListener getOnSuggestionListener(){
+    private SearchView.OnSuggestionListener getOnSuggestionListener() {
         return new SearchView.OnSuggestionListener() {
             @Override
             public boolean onSuggestionSelect(int i) {

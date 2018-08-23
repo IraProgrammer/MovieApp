@@ -39,16 +39,23 @@ public class MainFilmsPresenter extends BasePresenter<MainFilmsView> {
 
         addDisposables(moviesRepository.downloadMovies(page, type)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess(movies -> getViewState().finishLoading())
-                .doOnSuccess(movies -> {
-                    if (movies.size() == 0) {
-                        getViewState().noInternetAndEmptyDb();
+                .doOnSuccess(moviesListWithError -> {
+                    if (!moviesListWithError.isError()) {
+                        getViewState().finishLoading();
                     }
                 })
-                .doOnSuccess(movies -> page++)
+                .doOnSuccess(moviesListWithError -> {
+                    if (moviesListWithError.getMovies().size() == 0 && moviesListWithError.isError()) {
+                        getViewState().showSnack();
+                    }
+                })
+                .doOnSuccess(moviesListWithError -> {
+                    if (!moviesListWithError.isError()) {
+                        page++;
+                    }
+                })
                 .doOnSuccess(movies -> getViewState().hideProgress())
-             //   .doOnError(movies -> getViewState().finishLoading())
-                .subscribe(movies -> getViewState().showMovies(movies), throwable -> {
+                .subscribe(moviesListWithError -> getViewState().showMovies(moviesListWithError.getMovies()), throwable -> {
                 }));
     }
 }

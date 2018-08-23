@@ -17,7 +17,7 @@ public interface SearchView extends MvpView {
 
     void noFound();
 
-    void noInternet();
+    void showSnack();
 
     void showMovies(List<Movie> movies);
 

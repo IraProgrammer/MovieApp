@@ -13,7 +13,7 @@ public interface FiltersView extends MvpView{
 
     void noFound();
 
-    void noInternet();
+    void showSnack();
 
     void clearList();
 

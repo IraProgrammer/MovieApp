@@ -1,6 +1,7 @@
 package com.example.irishka.movieapp.domain.interactors;
 
 import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.domain.entity.MoviesListWithError;
 
 import java.util.List;
 
@@ -12,6 +13,6 @@ public interface ISearchInteractor {
 
     Single<List<String>> getKeywordsFromDb();
 
-    Single<List<Movie>> getMoviesFromSearchFromInternet(String query, int page);
+    Single<MoviesListWithError> getMoviesFromSearchFromInternet(String query, int page);
 
 }

@@ -1,27 +1,23 @@
 package com.example.irishka.movieapp.data.repositories;
 
-import android.util.Pair;
-
-import com.example.irishka.movieapp.data.database.CastsDbSource;
 import com.example.irishka.movieapp.data.database.GenresDbSource;
 import com.example.irishka.movieapp.data.database.MoviesDbSource;
-import com.example.irishka.movieapp.data.database.entity.CastOfMovie;
-import com.example.irishka.movieapp.data.mappers.CastMapper;
 import com.example.irishka.movieapp.data.mappers.GenreMapper;
 import com.example.irishka.movieapp.data.mappers.MoviesMapper;
-import com.example.irishka.movieapp.data.network.CastsNetworkSource;
 import com.example.irishka.movieapp.data.network.MoviesNetworkSource;
 import com.example.irishka.movieapp.domain.Tabs;
-import com.example.irishka.movieapp.domain.entity.Cast;
 import com.example.irishka.movieapp.domain.entity.Genre;
+import com.example.irishka.movieapp.domain.entity.MoviesListWithError;
 import com.example.irishka.movieapp.domain.repositories.IMoviesRepository;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.Single;
+import io.reactivex.SingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public class MoviesRepository implements IMoviesRepository {
@@ -96,7 +92,6 @@ public class MoviesRepository implements IMoviesRepository {
                 .doOnSuccess(movie -> moviesDbSource.insertMovie(moviesMapper.applyToDb(movie)));
     }
 
-    //TODO
     @Override
     public Single<Movie> getMovieFromDatabase(long movieId) {
         return moviesDbSource.getMovie(movieId)
@@ -111,80 +106,103 @@ public class MoviesRepository implements IMoviesRepository {
                 .onErrorResumeNext(getMovieFromDatabase(movieId));
     }
 
-    private Single<List<Movie>> getNowPlayingFromInternet(int page) {
+    private Single<MoviesListWithError> getNowPlayingFromInternet(int page) {
         return moviesNetworkSource
                 .getNowPlaying(page)
                 .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(Tabs.NOW_PLAYING.getTitle(), movies)))
                 .map(movieModels -> moviesMapper.mapMovies(movieModels))
-                .doOnSuccess(movies -> moviesDbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
+                .doOnSuccess(movies -> moviesDbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)))
+                .map(movies -> new MoviesListWithError(movies, false));
 
     }
 
-    private Single<List<Movie>> getPopularFromInternet(int page) {
+    private Single<MoviesListWithError> getPopularFromInternet(int page) {
         return moviesNetworkSource
                 .getPopular(page)
                 .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(Tabs.POPULAR.getTitle(), movies)))
                 .map(movieModels -> moviesMapper.mapMovies(movieModels))
-                .doOnSuccess(movies -> moviesDbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
+                .doOnSuccess(movies -> moviesDbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)))
+                .map(movies -> new MoviesListWithError(movies, false));
 
     }
 
-    private Single<List<Movie>> getTopRatedFromInternet(int page) {
+    private Single<MoviesListWithError> getTopRatedFromInternet(int page) {
         return moviesNetworkSource
                 .getTopRated(page)
                 .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(Tabs.TOP_RATED.getTitle(), movies)))
                 .map(movieModels -> moviesMapper.mapMovies(movieModels))
-                .doOnSuccess(movies -> moviesDbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
+                .doOnSuccess(movies -> moviesDbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)))
+                .map(movies -> new MoviesListWithError(movies, false));
 
     }
 
-    private Single<List<Movie>> getUpcomingFromInternet(int page) {
+    private Single<MoviesListWithError> getUpcomingFromInternet(int page) {
         return moviesNetworkSource
                 .getUpcoming(page)
                 .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(Tabs.UPCOMING.getTitle(), movies)))
                 .map(movieModels -> moviesMapper.mapMovies(movieModels))
-                .doOnSuccess(movies -> moviesDbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)));
+                .doOnSuccess(movies -> moviesDbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)))
+                .map(movies -> new MoviesListWithError(movies, false));
 
     }
 
-    private Single<List<Movie>> getMainScreenFromDatabase(String type) {
+    private Single<MoviesListWithError> getMainScreenFromDatabase(String type, int page) {
         return moviesDbSource.getMovieWithCategory(type)
                 .flattenAsObservable(list -> list)
                 .flatMapSingle(movieWithCategory -> getMovieFromDatabase(movieWithCategory.getMovieId()))
                 .toList()
+                .map(movies -> {
+                    if (page > 1) {
+                        List<Movie> m = new ArrayList<>();
+                        return new MoviesListWithError(m, true);
+                    }
+                    return new MoviesListWithError(movies, true);
+                })
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Single<List<Movie>> downloadMovies(int page, String type) {
-
+    public Single<MoviesListWithError> downloadMovies(int page, String type) {
         if (type.equals(Tabs.NOW_PLAYING.getTitle())) {
             return getNowPlayingFromInternet(page)
-                    .onErrorResumeNext(getMainScreenFromDatabase(type));
+                    .onErrorResumeNext(getMainScreenFromDatabase(type, page));
         } else if (type.equals(Tabs.POPULAR.getTitle())) {
             return getPopularFromInternet(page)
-                    .onErrorResumeNext(getMainScreenFromDatabase(type));
+                    .onErrorResumeNext(getMainScreenFromDatabase(type, page));
         } else if (type.equals(Tabs.TOP_RATED.getTitle())) {
             return getTopRatedFromInternet(page)
-                    .onErrorResumeNext(getMainScreenFromDatabase(type));
+                    .onErrorResumeNext(getMainScreenFromDatabase(type, page));
         } else if (type.equals(Tabs.UPCOMING.getTitle())) {
             return getUpcomingFromInternet(page)
-                    .onErrorResumeNext(getMainScreenFromDatabase(type));
+                    .onErrorResumeNext(getMainScreenFromDatabase(type, page));
         } else return null;
     }
 
     @Override
-    public Single<List<Movie>> getWithFilters(int page, String sort, String genres) {
+    public Single<MoviesListWithError> getWithFilters(int page, String sort, String genres) {
         return moviesNetworkSource
                 .getWithFilters(page, sort, genres)
-                .map(movieModels -> moviesMapper.mapMovies(movieModels));
+                .map(movieModels -> moviesMapper.mapMovies(movieModels))
+                .map(movies -> new MoviesListWithError(movies, false))
+                .onErrorResumeNext(getEmptyListWithError());
 
     }
 
     @Override
-    public Single<List<Movie>> getMoviesFromSearchFromInternet(String query, int page) {
+    public Single<MoviesListWithError> getMoviesFromSearchFromInternet(String query, int page) {
         return moviesNetworkSource.getMoviesFromSearch(query, page)
-                .map(movieModels -> moviesMapper.mapMovies(movieModels));
+                .map(movieModels -> moviesMapper.mapMovies(movieModels))
+                .map(movies -> new MoviesListWithError(movies, false))
+                .onErrorResumeNext(getEmptyListWithError());
+    }
+
+    Single<MoviesListWithError> getEmptyListWithError(){
+        return new Single<MoviesListWithError>() {
+            @Override
+            protected void subscribeActual(SingleObserver<? super MoviesListWithError> observer) {
+                observer.onSuccess(new MoviesListWithError(new ArrayList<Movie>(), true));
+            }
+        };
     }
 
     @Override
