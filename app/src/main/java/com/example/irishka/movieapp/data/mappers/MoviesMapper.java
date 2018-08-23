@@ -59,10 +59,13 @@ public class MoviesMapper {
         movie.setReleaseDate(descriptionModel.getReleaseDate());
         movie.setTitle(descriptionModel.getTitle());
 
-        if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
-            movie.setVoteAverageStr(seeSoon);
-        } else {
-            movie.setVoteAverageStr(TMDb + String.valueOf(descriptionModel.getVoteAverage()));
+        if (!descriptionModel.getReleaseDate().equals("")) {
+
+            if (Integer.compare(getYear(descriptionModel.getReleaseDate()), getYear(getDate())) == 1) {
+                movie.setVoteAverageStr(seeSoon);
+            } else {
+                movie.setVoteAverageStr(TMDb + String.valueOf(descriptionModel.getVoteAverage()));
+            }
         }
 
         movie.setVoteAverage(descriptionModel.getVoteAverage());
@@ -144,6 +147,7 @@ public class MoviesMapper {
         movie.setOverview(movieDb.getOverview());
 
         if (!movieDb.getReleaseDate().equals("")) {
+
             if (Integer.compare(getYear(movieDb.getReleaseDate()), getYear(getDate())) == 1) {
                 movie.setVoteAverageStr(seeSoon);
             } else {
@@ -179,12 +183,9 @@ public class MoviesMapper {
             movies.add(applyForMovies(movieModels.get(i)));
         }
 
-        //  Collections.sort(movies, (first, second) -> Integer.compare(getYear(first), getYear(second)));
+     //   Collections.sort(movies, (first, second) -> Integer.compare(getYear(first), getYear(second)));
 
-        //  Collections.reverse(movies);
-
-        int size = movies.size();
-        int f = size;
+     //   Collections.reverse(movies);
 
         return movies;
     }

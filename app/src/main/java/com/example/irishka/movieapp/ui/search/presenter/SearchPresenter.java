@@ -46,11 +46,11 @@ public class SearchPresenter extends BasePresenter<SearchView> {
         addDisposables(searchInteractor.getMoviesFromSearchFromInternet(query, page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(movies -> getViewState().finishLoading())
-                .doOnSuccess(movies -> page++)
-                .doOnSuccess(movies -> getViewState().hideProgress())
                 .doOnSuccess(movies -> {
                     if (movies.size() == 0 && page == 1) getViewState().noFound();
                 })
+                .doOnSuccess(movies -> page++)
+                .doOnSuccess(movies -> getViewState().hideProgress())
                 .doOnError(movies -> {
                     if (!isNext) getViewState().noInternet();
                 })
