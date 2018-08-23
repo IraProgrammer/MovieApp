@@ -49,7 +49,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
                 .doOnSuccess(movies -> page++)
                 .doOnSuccess(movies -> getViewState().hideProgress())
                 .doOnSuccess(movies -> {
-                    if (movies.size() == 0) getViewState().noFound();
+                    if (movies.size() == 0 && page == 1) getViewState().noFound();
                 })
                 .doOnError(movies -> {
                     if (!isNext) getViewState().noInternet();

@@ -10,14 +10,11 @@ public class CastOfMovie {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    private long movieId;
-    private long castId;
+    public long movieId;
+    public long castId;
 
-    public CastOfMovie(){}
-
-    @Ignore
-    public CastOfMovie(long descriptionId, long castId){
-        this.movieId = descriptionId;
+    public CastOfMovie(long movieId, long castId){
+        this.movieId = movieId;
         this.castId = castId;
     }
 

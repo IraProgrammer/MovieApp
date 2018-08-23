@@ -96,12 +96,12 @@ public class MoviesRepository implements IMoviesRepository {
                 .doOnSuccess(movie -> moviesDbSource.insertMovie(moviesMapper.applyToDb(movie)));
     }
 
+    //TODO
     @Override
     public Single<Movie> getMovieFromDatabase(long movieId) {
         return moviesDbSource.getMovie(movieId)
                 .flatMap(movieDb -> getGenres(movieId)
-                        .map(genres -> new Pair<>(movieDb, genres)))
-                .map(pair -> moviesMapper.applyFromDb(pair.first, pair.second))
+                        .map(genres -> moviesMapper.applyFromDb(movieDb, genres)))
                 .subscribeOn(Schedulers.io());
     }
 
@@ -195,7 +195,7 @@ public class MoviesRepository implements IMoviesRepository {
     }
 
     @Override
-    public void insertAllMovies(List<Movie> movies){
+    public void insertAllMovies(List<Movie> movies) {
         moviesDbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies));
     }
 }

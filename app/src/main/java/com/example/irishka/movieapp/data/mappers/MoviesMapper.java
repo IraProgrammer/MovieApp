@@ -42,7 +42,7 @@ public class MoviesMapper {
 
     @Inject
     MoviesMapper(ImageMapper backdropMapper, GenreMapper genreMapper,
-                        ProductionCountryMapper productionCountryMapper, TrailersMapper trailersMapper, Context context) {
+                 ProductionCountryMapper productionCountryMapper, TrailersMapper trailersMapper, Context context) {
         this.backdropMapper = backdropMapper;
         this.genreMapper = genreMapper;
         this.productionCountryMapper = productionCountryMapper;
@@ -85,10 +85,15 @@ public class MoviesMapper {
         movie.setReleaseDate(movieModel.getReleaseDate());
         movie.setTitle(movieModel.getTitle());
 
-        if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
-            movie.setVoteAverageStr(seeSoon);
-        } else {
-            movie.setVoteAverageStr(TMDb + String.valueOf(movieModel.getVoteAverage()));
+
+        if (!movieModel.getReleaseDate().equals("")) {
+
+            if (Integer.compare(getYear(movieModel.getReleaseDate()), getYear(getDate())) == 1) {
+                movie.setVoteAverageStr(seeSoon);
+            } else {
+                movie.setVoteAverageStr(TMDb + String.valueOf(movieModel.getVoteAverage()));
+            }
+
         }
 
         movie.setVoteAverage(movieModel.getVoteAverage());
@@ -107,10 +112,13 @@ public class MoviesMapper {
         movieDb.setTitle(movie.getTitle());
         movieDb.setOverview(movie.getOverview());
 
-        if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
-            movieDb.setVoteAverageStr(seeSoon);
-        } else {
-            movieDb.setVoteAverageStr(TMDb + String.valueOf(movie.getVoteAverage()));
+        if (!movie.getReleaseDate().equals("")) {
+
+            if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
+                movieDb.setVoteAverageStr(seeSoon);
+            } else {
+                movieDb.setVoteAverageStr(TMDb + String.valueOf(movie.getVoteAverage()));
+            }
         }
 
         movieDb.setVoteAverage(movie.getVoteAverage());
@@ -135,10 +143,12 @@ public class MoviesMapper {
         movie.setTitle(movieDb.getTitle());
         movie.setOverview(movieDb.getOverview());
 
-        if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
-            movie.setVoteAverageStr(seeSoon);
-        } else {
-            movie.setVoteAverageStr(TMDb + String.valueOf(movieDb.getVoteAverage()));
+        if (!movieDb.getReleaseDate().equals("")) {
+            if (Integer.compare(getYear(movieDb.getReleaseDate()), getYear(getDate())) == 1) {
+                movie.setVoteAverageStr(seeSoon);
+            } else {
+                movie.setVoteAverageStr(TMDb + String.valueOf(movieDb.getVoteAverage()));
+            }
         }
 
         movie.setVoteAverage(movieDb.getVoteAverage());
@@ -147,28 +157,6 @@ public class MoviesMapper {
         movie.setRuntime(movieDb.getRuntime());
         movie.setBackdrops(backdropMapper.mapBackdropsListFromDb(movieDb.getBackdrops()));
         movie.setCountries(productionCountryMapper.mapProductionCountryListFromDb(movieDb.getCountries()));
-
-        return movie;
-    }
-
-    private Movie applyFromDb(MovieDb movieDb) {
-        Movie movie = new Movie();
-        movie.setId(movieDb.getId());
-        movie.setPosterUrl(movieDb.getPosterUrl());
-        movie.setReleaseDate(movieDb.getReleaseDate());
-
-        if (Integer.compare(getYear(movie.getReleaseDate()), getYear(getDate())) == 1) {
-            movie.setVoteAverageStr(seeSoon);
-        } else {
-            movie.setVoteAverageStr(TMDb + String.valueOf(movieDb.getVoteAverage()));
-        }
-
-        movie.setVoteAverage(movieDb.getVoteAverage());
-        movie.setTitle(movieDb.getTitle());
-        movie.setOverview(movieDb.getOverview());
-        movie.setVoteAverageStr(movieDb.getVoteAverageStr());
-        movie.setAdult(movieDb.getAdult());
-        movie.setRuntime(movieDb.getRuntime());
 
         return movie;
     }
@@ -191,9 +179,9 @@ public class MoviesMapper {
             movies.add(applyForMovies(movieModels.get(i)));
         }
 
-        Collections.sort(movies, (first, second) -> Integer.compare(getYear(first), getYear(second)));
+        //  Collections.sort(movies, (first, second) -> Integer.compare(getYear(first), getYear(second)));
 
-        Collections.reverse(movies);
+        //  Collections.reverse(movies);
 
         int size = movies.size();
         int f = size;
@@ -215,17 +203,6 @@ public class MoviesMapper {
         return moviesDb;
     }
 
-
-//    public List<Movie> mapMoviesListFromDb(List<MovieDb> moviesDb) {
-////        List<Movie> movies = new ArrayList<>();
-////
-////        for (MovieDb movieDb : moviesDb) {
-////            movies.add(applyFromDb(movieDb));
-////        }
-////
-////        return movies;
-////    }
-
     public List<RelatedOfMovie> createRoMList(long movieId, List<MovieModel> related) {
         List<RelatedOfMovie> relatedOfMovie = new ArrayList<>();
 
@@ -238,11 +215,11 @@ public class MoviesMapper {
 
     }
 
-    public List<MovieWithCategory> createMovieWithCategoryList(String type, List<MovieModel> movies){
+    public List<MovieWithCategory> createMovieWithCategoryList(String type, List<MovieModel> movies) {
 
         List<MovieWithCategory> moviesWithCategory = new ArrayList<>();
 
-        for (MovieModel movie: movies) {
+        for (MovieModel movie : movies) {
             moviesWithCategory.add(new MovieWithCategory(type, movie.getId()));
         }
 
@@ -251,13 +228,13 @@ public class MoviesMapper {
     }
 
     private String getDate() {
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            return dateFormat.format(new Date());
-        }
-
-        private int getYear(String releaseDate) {
-            return Integer.parseInt(releaseDate.split("-")[0]);
-        }
-
-
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        return dateFormat.format(new Date());
     }
+
+    private int getYear(String releaseDate) {
+        return Integer.parseInt(releaseDate.split("-")[0]);
+    }
+
+
+}

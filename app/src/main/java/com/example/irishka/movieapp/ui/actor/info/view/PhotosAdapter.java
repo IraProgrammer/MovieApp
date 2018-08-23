@@ -83,7 +83,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
 
             itemView.setOnClickListener(view -> onItemClickListener.onItemClick(photos, getAdapterPosition()));
 
-            glideHelper.downloadPictureWithCacheWithoutPlaceholder(photo.getFileUrl(), image);
+            glideHelper.downloadPictureWithCache(photo.getFileUrl(), image);
         }
     }
 }

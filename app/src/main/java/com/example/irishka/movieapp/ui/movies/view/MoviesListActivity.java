@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.example.irishka.movieapp.R;
@@ -38,6 +40,12 @@ public class MoviesListActivity extends DaggerAppCompatActivity{
     @BindView(R.id.btn_filters)
     ImageButton btnFilters;
 
+    @BindView(R.id.btn_menu)
+    ImageButton btnMenu;
+
+    @BindView(R.id.bottom_sheet)
+    LinearLayout bottomSheet;
+
     @Inject
     ViewPagerAdapter adapter;
 
@@ -51,20 +59,18 @@ public class MoviesListActivity extends DaggerAppCompatActivity{
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MoviesListActivity.this, SearchActivity.class);
-                startActivity(intent);
-            }
+        btnSearch.setOnClickListener(view -> {
+            Intent intent = new Intent(MoviesListActivity.this, SearchActivity.class);
+            startActivity(intent);
         });
 
-        btnFilters.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MoviesListActivity.this, FiltersActivity.class);
-                startActivity(intent);
-            }
+        btnFilters.setOnClickListener(view -> {
+            Intent intent = new Intent(MoviesListActivity.this, FiltersActivity.class);
+            startActivity(intent);
         });
+
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+
+        btnMenu.setOnClickListener(view -> bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED));
     }
 }

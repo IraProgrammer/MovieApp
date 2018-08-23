@@ -95,7 +95,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
             itemView.setOnClickListener(view -> onItemClickListener.onItemClick(getAdapterPosition(), itemView, image));
 
-            glideHelper.downloadPictureWithCacheWithoutPlaceholder(backdrop.getFileUrl(), image);
+            glideHelper.downloadPictureWithCache(backdrop.getFileUrl(), image);
         }
     }
 }

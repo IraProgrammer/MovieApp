@@ -15,7 +15,7 @@ public class FilmsPresenter extends BasePresenter<FilmsView> {
 
     private IActorFilmsInteractor actorFilmsInteractor;
 
-    private final long id;
+    private long id;
 
     @Inject
     public FilmsPresenter(IActorFilmsInteractor actorFilmsInteractor, long id) {

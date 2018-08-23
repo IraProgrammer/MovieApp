@@ -18,7 +18,7 @@ import io.reactivex.Single;
 public abstract class CastOfMovieDao {
 
     @Insert
-    public abstract void insertCastOfMovie(List<CastOfMovie> relatedOfMovie);
+    public abstract void insertCastOfMovie(List<CastOfMovie> castOfMovie);
 
     @Query("SELECT * " +
             "FROM CastOfMovie " +
@@ -26,10 +26,12 @@ public abstract class CastOfMovieDao {
     public abstract List<CastOfMovie> getCoMifExist(long movieId);
 
     @Transaction
-    public void trans( List<CastOfMovie> relatedOfMovie) {
-        List<CastOfMovie> cOm = getCoMifExist(relatedOfMovie.get(0).getMovieId());
+    public void trans(List<CastOfMovie> castOfMovie) {
+        List<CastOfMovie> cOm = getCoMifExist(castOfMovie.get(0).getMovieId());
 
-        if (cOm.size() == 0) insertCastOfMovie(relatedOfMovie);
+        if (cOm.size() == 0) {
+            insertCastOfMovie(castOfMovie);
+        }
     }
 
     @Query("SELECT * FROM CastOfMovie WHERE movieId = :movieId")

@@ -2,6 +2,7 @@ package com.example.irishka.movieapp.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
@@ -39,20 +40,20 @@ public class GlideHelper {
                 .into(image);
     }
 
-    public void downloadPictureWithCacheWithoutPlaceholder(String url, ImageView image) {
-        Glide.with(image.getContext())
-                .load(url)
-                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                        .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                )
-                .into(image);
-    }
+//    public void downloadPictureWithCacheWithoutPlaceholder(String url, ImageView image) {
+//        Glide.with(image.getContext())
+//                .load(url)
+//                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+//                        .placeholder(R.color.background_holo_dark)
+//                        .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+//                )
+//                .into(image);
+//    }
 
-    public void downloadPicture(String url, ImageView image, Activity activity) {
+    public void downloadPictureWithoutPlaceholder(String url, ImageView image, Activity activity) {
         Glide.with(image.getContext())
                 .load(url)
                 .apply(new RequestOptions()
-                .placeholder(R.drawable.no_image)
                 .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                 )
                 .listener(new RequestListener<Drawable>() {
