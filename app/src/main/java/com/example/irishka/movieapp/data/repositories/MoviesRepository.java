@@ -5,7 +5,7 @@ import com.example.irishka.movieapp.data.database.MoviesDbSource;
 import com.example.irishka.movieapp.data.mappers.GenreMapper;
 import com.example.irishka.movieapp.data.mappers.MoviesMapper;
 import com.example.irishka.movieapp.data.network.MoviesNetworkSource;
-import com.example.irishka.movieapp.domain.Tabs;
+import com.example.irishka.movieapp.domain.MainType;
 import com.example.irishka.movieapp.domain.entity.Genre;
 import com.example.irishka.movieapp.domain.entity.MovieWithError;
 import com.example.irishka.movieapp.domain.entity.MoviesListWithError;
@@ -81,6 +81,11 @@ public class MoviesRepository implements IMoviesRepository {
                 });
     }
 
+    @Override
+    public Single<MoviesListWithError> downloadMovies(int page, String type) {
+        return null;
+    }
+
     private Single<MovieWithError> getMovieFromInternet(long movieId) {
         return moviesNetworkSource
                 .getDescription(movieId)
@@ -113,7 +118,7 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<MoviesListWithError> getNowPlayingFromInternet(int page) {
         return moviesNetworkSource
                 .getNowPlaying(page)
-                .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(Tabs.NOW_PLAYING.getTitle(), movies)))
+                .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(MainType.NOW_PLAYING, movies)))
                 .map(movieModels -> moviesMapper.mapMovies(movieModels))
                 .doOnSuccess(movies -> moviesDbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)))
                 .map(movies -> new MoviesListWithError(movies, false));
@@ -123,7 +128,7 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<MoviesListWithError> getPopularFromInternet(int page) {
         return moviesNetworkSource
                 .getPopular(page)
-                .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(Tabs.POPULAR.getTitle(), movies)))
+                .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(MainType.POPULAR, movies)))
                 .map(movieModels -> moviesMapper.mapMovies(movieModels))
                 .doOnSuccess(movies -> moviesDbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)))
                 .map(movies -> new MoviesListWithError(movies, false));
@@ -133,7 +138,7 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<MoviesListWithError> getTopRatedFromInternet(int page) {
         return moviesNetworkSource
                 .getTopRated(page)
-                .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(Tabs.TOP_RATED.getTitle(), movies)))
+                .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(MainType.TOP_RATED, movies)))
                 .map(movieModels -> moviesMapper.mapMovies(movieModels))
                 .doOnSuccess(movies -> moviesDbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)))
                 .map(movies -> new MoviesListWithError(movies, false));
@@ -143,14 +148,14 @@ public class MoviesRepository implements IMoviesRepository {
     private Single<MoviesListWithError> getUpcomingFromInternet(int page) {
         return moviesNetworkSource
                 .getUpcoming(page)
-                .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(Tabs.UPCOMING.getTitle(), movies)))
+                .doOnSuccess(movies -> moviesDbSource.insertMoviesWithCategory(moviesMapper.createMovieWithCategoryList(MainType.UPCOMING, movies)))
                 .map(movieModels -> moviesMapper.mapMovies(movieModels))
                 .doOnSuccess(movies -> moviesDbSource.insertAllMovies(moviesMapper.mapMoviesListToDb(movies)))
                 .map(movies -> new MoviesListWithError(movies, false));
 
     }
 
-    private Single<MoviesListWithError> getMainScreenFromDatabase(String type, int page) {
+    private Single<MoviesListWithError> getMainScreenFromDatabase(MainType type, int page) {
         return moviesDbSource.getMovieWithCategory(type)
                 .flattenAsObservable(list -> list)
                 .flatMapSingle(movieWithCategory -> getMovieFromDatabase(movieWithCategory.getMovieId()))
@@ -166,17 +171,18 @@ public class MoviesRepository implements IMoviesRepository {
     }
 
     @Override
-    public Single<MoviesListWithError> downloadMovies(int page, String type) {
-        if (type.equals(Tabs.NOW_PLAYING.getTitle())) {
+    public Single<MoviesListWithError> downloadMovies(int page, MainType type) {
+
+        if (type.equals(MainType.NOW_PLAYING)) {
             return getNowPlayingFromInternet(page)
                     .onErrorResumeNext(getMainScreenFromDatabase(type, page));
-        } else if (type.equals(Tabs.POPULAR.getTitle())) {
+        } else if (type.equals(MainType.POPULAR)) {
             return getPopularFromInternet(page)
                     .onErrorResumeNext(getMainScreenFromDatabase(type, page));
-        } else if (type.equals(Tabs.TOP_RATED.getTitle())) {
+        } else if (type.equals(MainType.TOP_RATED)) {
             return getTopRatedFromInternet(page)
                     .onErrorResumeNext(getMainScreenFromDatabase(type, page));
-        } else if (type.equals(Tabs.UPCOMING.getTitle())) {
+        } else if (type.equals(MainType.UPCOMING)) {
             return getUpcomingFromInternet(page)
                     .onErrorResumeNext(getMainScreenFromDatabase(type, page));
         } else return null;
@@ -188,7 +194,12 @@ public class MoviesRepository implements IMoviesRepository {
                 .getWithFilters(page, sort, genres)
                 .map(movieModels -> moviesMapper.mapMovies(movieModels))
                 .map(movies -> new MoviesListWithError(movies, false))
-                .onErrorResumeNext(getEmptyListWithError());
+                .onErrorResumeNext(throwable -> new Single<MoviesListWithError>() {
+                    @Override
+                    protected void subscribeActual(SingleObserver<? super MoviesListWithError> observer) {
+                        observer.onSuccess(new MoviesListWithError(new ArrayList<Movie>(), true));
+                    }
+                });
 
     }
 
@@ -197,16 +208,12 @@ public class MoviesRepository implements IMoviesRepository {
         return moviesNetworkSource.getMoviesFromSearch(query, page)
                 .map(movieModels -> moviesMapper.mapMovies(movieModels))
                 .map(movies -> new MoviesListWithError(movies, false))
-                .onErrorResumeNext(getEmptyListWithError());
-    }
-
-    private Single<MoviesListWithError> getEmptyListWithError(){
-        return new Single<MoviesListWithError>() {
-            @Override
-            protected void subscribeActual(SingleObserver<? super MoviesListWithError> observer) {
-                observer.onSuccess(new MoviesListWithError(new ArrayList<Movie>(), true));
-            }
-        };
+                .onErrorResumeNext(throwable -> new Single<MoviesListWithError>() {
+                    @Override
+                    protected void subscribeActual(SingleObserver<? super MoviesListWithError> observer) {
+                        observer.onSuccess(new MoviesListWithError(new ArrayList<Movie>(), true));
+                    }
+                });
     }
 
     @Override

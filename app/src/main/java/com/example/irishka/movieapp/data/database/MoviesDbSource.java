@@ -1,22 +1,12 @@
 package com.example.irishka.movieapp.data.database;
 
-import com.example.irishka.movieapp.data.database.dao.CastDao;
-import com.example.irishka.movieapp.data.database.dao.CastOfMovieDao;
-import com.example.irishka.movieapp.data.database.dao.GenreDao;
-import com.example.irishka.movieapp.data.database.dao.GenreOfMovieDao;
-import com.example.irishka.movieapp.data.database.dao.KeywordsDao;
 import com.example.irishka.movieapp.data.database.dao.MovieDao;
 import com.example.irishka.movieapp.data.database.dao.MovieWithCategoryDao;
 import com.example.irishka.movieapp.data.database.dao.RelatedOfMovieDao;
-import com.example.irishka.movieapp.data.database.entity.CastDb;
-import com.example.irishka.movieapp.data.database.entity.CastOfMovie;
-import com.example.irishka.movieapp.data.database.entity.GenreDb;
-import com.example.irishka.movieapp.data.database.entity.GenreOfMovie;
-import com.example.irishka.movieapp.data.database.entity.KeywordDb;
 import com.example.irishka.movieapp.data.database.entity.MovieDb;
 import com.example.irishka.movieapp.data.database.entity.MovieWithCategory;
 import com.example.irishka.movieapp.data.database.entity.RelatedOfMovie;
-import com.example.irishka.movieapp.domain.entity.Keyword;
+import com.example.irishka.movieapp.domain.MainType;
 
 import java.util.List;
 
@@ -64,7 +54,7 @@ public class MoviesDbSource {
         relatedOfMovieDao.trans(relatedOfMovies);
     }
 
-    public Single<List<MovieWithCategory>> getMovieWithCategory(String type){
+    public Single<List<MovieWithCategory>> getMovieWithCategory(MainType type){
         return movieWithCategoryDao.getMoviesWithCategory(type);
     }
 

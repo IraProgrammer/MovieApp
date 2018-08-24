@@ -1,6 +1,6 @@
 package com.example.irishka.movieapp.domain.repositories;
 
-import com.example.irishka.movieapp.domain.entity.Cast;
+import com.example.irishka.movieapp.domain.MainType;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.domain.entity.MovieWithError;
 import com.example.irishka.movieapp.domain.entity.MoviesListWithError;
@@ -18,6 +18,8 @@ public interface IMoviesRepository {
     Single<List<Movie>> downloadRelatedMovies(long movieId, int page);
 
     Single<MoviesListWithError> downloadMovies(int page, String type);
+
+    Single<MoviesListWithError> downloadMovies(int page, MainType type);
 
     Single<MoviesListWithError> getWithFilters(int page, String sort, String genres);
 

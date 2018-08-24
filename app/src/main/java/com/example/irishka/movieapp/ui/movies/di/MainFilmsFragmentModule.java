@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.example.irishka.movieapp.di.scopes.PerFragment;
+import com.example.irishka.movieapp.domain.MainType;
 import com.example.irishka.movieapp.domain.repositories.IMoviesRepository;
 import com.example.irishka.movieapp.ui.GlideHelper;
 import com.example.irishka.movieapp.ui.movies.fragment.view.MainFilmsAdapter;
@@ -20,14 +21,14 @@ public class MainFilmsFragmentModule {
 
     @Provides
     @PerFragment
-    static String provideType(MainFilmsFragment mainFilmsFragment) {
+    static MainType provideType(MainFilmsFragment mainFilmsFragment) {
 
-        return mainFilmsFragment.getArguments().getString(TYPE);
+        return MainType.values()[mainFilmsFragment.getArguments().getInt(TYPE)];
     }
 
     @Provides
     @PerFragment
-    static MainFilmsPresenter providesMainFilmsPresenter(IMoviesRepository moviesRepository, String type) {
+    static MainFilmsPresenter providesMainFilmsPresenter(IMoviesRepository moviesRepository, MainType type) {
         return new MainFilmsPresenter(moviesRepository, type);
     }
 

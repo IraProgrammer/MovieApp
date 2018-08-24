@@ -5,11 +5,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 
 import com.example.irishka.movieapp.R;
-import com.example.irishka.movieapp.domain.Tabs;
+import com.example.irishka.movieapp.domain.MainType;
 import com.example.irishka.movieapp.ui.movies.fragment.view.MainFilmsFragment;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -30,22 +27,22 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
                 if (map.get(0) == null) {
-                    map.put(0, MainFilmsFragment.newInstance(Tabs.NOW_PLAYING));
+                    map.put(0, MainFilmsFragment.newInstance(MainType.NOW_PLAYING));
                 }
                 return map.get(0);
             case 1:
                 if (map.get(1) == null) {
-                    map.put(1, MainFilmsFragment.newInstance(Tabs.POPULAR));
+                    map.put(1, MainFilmsFragment.newInstance(MainType.POPULAR));
                 }
                 return map.get(1);
             case 2:
                 if (map.get(2) == null) {
-                    map.put(2, MainFilmsFragment.newInstance(Tabs.TOP_RATED));
+                    map.put(2, MainFilmsFragment.newInstance(MainType.TOP_RATED));
                 }
                 return map.get(2);
             case 3:
                 if (map.get(3) == null) {
-                    map.put(3, MainFilmsFragment.newInstance(Tabs.UPCOMING));
+                    map.put(3, MainFilmsFragment.newInstance(MainType.UPCOMING));
                 }
                 return map.get(3);
             default:

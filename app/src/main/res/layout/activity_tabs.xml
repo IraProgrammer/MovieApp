@@ -2,9 +2,9 @@
 
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_alignParentTop="true">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"
@@ -14,7 +14,6 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            app:layout_scrollFlags="scroll|enterAlways"
             app:contentInsetStart="8dp"
             android:elevation="0dp"
             android:layout_width="match_parent"
@@ -46,6 +45,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
+        android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="4dp"
@@ -56,7 +56,7 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="@color/background_holo_dark"
             android:minHeight="?attr/actionBarSize"
             app:tabGravity="fill"
             app:tabMode="fixed"

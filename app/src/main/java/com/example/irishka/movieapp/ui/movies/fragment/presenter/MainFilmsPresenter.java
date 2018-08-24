@@ -1,6 +1,7 @@
 package com.example.irishka.movieapp.ui.movies.fragment.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.example.irishka.movieapp.domain.MainType;
 import com.example.irishka.movieapp.domain.repositories.IMoviesRepository;
 import com.example.irishka.movieapp.ui.BasePresenter;
 import com.example.irishka.movieapp.ui.movies.fragment.view.MainFilmsView;
@@ -16,10 +17,10 @@ public class MainFilmsPresenter extends BasePresenter<MainFilmsView> {
 
     private int page = 1;
 
-    private String type;
+    private MainType type;
 
     @Inject
-    public MainFilmsPresenter(IMoviesRepository repository, String type) {
+    public MainFilmsPresenter(IMoviesRepository repository, MainType type) {
         this.moviesRepository = repository;
         this.type = type;
     }

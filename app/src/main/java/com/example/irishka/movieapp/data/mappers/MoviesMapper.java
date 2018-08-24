@@ -10,6 +10,7 @@ import com.example.irishka.movieapp.data.models.BackdropModel;
 import com.example.irishka.movieapp.data.models.DescriptionModel;
 import com.example.irishka.movieapp.data.models.MovieModel;
 import com.example.irishka.movieapp.data.models.TrailerModel;
+import com.example.irishka.movieapp.domain.MainType;
 import com.example.irishka.movieapp.domain.entity.Genre;
 import com.example.irishka.movieapp.domain.entity.Movie;
 
@@ -216,7 +217,7 @@ public class MoviesMapper {
 
     }
 
-    public List<MovieWithCategory> createMovieWithCategoryList(String type, List<MovieModel> movies) {
+    public List<MovieWithCategory> createMovieWithCategoryList(MainType type, List<MovieModel> movies) {
 
         List<MovieWithCategory> moviesWithCategory = new ArrayList<>();
 

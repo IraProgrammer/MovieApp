@@ -1,9 +1,6 @@
 package com.example.irishka.movieapp.ui.movies.fragment.view;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -13,18 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
-import com.example.irishka.movieapp.domain.Tabs;
+import com.example.irishka.movieapp.domain.MainType;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 import com.example.irishka.movieapp.ui.movies.fragment.presenter.MainFilmsPresenter;
-import com.example.irishka.movieapp.ui.movies.view.ViewPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -78,10 +73,10 @@ public class MainFilmsFragment extends MvpAppCompatFragment
 
     private boolean isLoading;
 
-    public static MainFilmsFragment newInstance(Tabs tab) {
+    public static MainFilmsFragment newInstance(MainType tab) {
 
         Bundle bundle = new Bundle();
-        bundle.putString(TYPE, tab.getTitle());
+        bundle.putInt(TYPE, tab.ordinal());
 
         MainFilmsFragment mainFilmsFragment = new MainFilmsFragment();
         mainFilmsFragment.setArguments(bundle);

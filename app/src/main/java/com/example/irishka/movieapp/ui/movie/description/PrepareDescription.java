@@ -3,12 +3,21 @@ package com.example.irishka.movieapp.ui.movie.description;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Point;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -17,6 +26,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.example.irishka.movieapp.FullScreenHelper;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Genre;
 import com.example.irishka.movieapp.domain.entity.Movie;
@@ -27,7 +37,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerFullScreenListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.playerUtils.FullScreenHelper;
 
 import java.util.List;
 
@@ -40,16 +49,16 @@ import static java.lang.String.format;
 
 public class PrepareDescription {
 
-    GlideHelper glideHelper;
+    private GlideHelper glideHelper;
 
     private Fragment fragment;
 
     private YouTubePlayerView youTubePlayerView;
 
-    private FullScreenHelper fullScreenHelper = new FullScreenHelper();
+    private FullScreenHelper fullScreenHelper;
 
     @Inject
-    public PrepareDescription(Fragment fragment, GlideHelper glideHelper){
+    public PrepareDescription(Fragment fragment, GlideHelper glideHelper) {
         this.fragment = fragment;
         this.glideHelper = glideHelper;
     }
@@ -64,7 +73,7 @@ public class PrepareDescription {
         List<Genre> genres = movie.getGenres();
 
         for (int i = 0; i < genres.size(); i++) {
-            if (i == genres.size() - 1){
+            if (i == genres.size() - 1) {
                 genresStr.append(genres.get(genres.size() - 1).getName());
                 return genresStr.toString();
             }
@@ -83,7 +92,8 @@ public class PrepareDescription {
         int hours = movie.getRuntime() / 60;
         int minutes = movie.getRuntime() % 60;
 
-        if (minutes < 10 && minutes > 0) return format(fragment.getString(R.string.durationWithNull), hours, minutes);
+        if (minutes < 10 && minutes > 0)
+            return format(fragment.getString(R.string.durationWithNull), hours, minutes);
 
         return String.format(fragment.getString(R.string.duration), hours, minutes);
     }
@@ -100,7 +110,7 @@ public class PrepareDescription {
         List<ProductionCountry> productionCountries = movie.getCountries();
 
         for (int i = 0; i < productionCountries.size(); i++) {
-            if (i == productionCountries.size() - 1){
+            if (i == productionCountries.size() - 1) {
                 countriesStr.append(productionCountries.get(productionCountries.size() - 1).getName());
                 return countriesStr.toString();
             }
@@ -110,40 +120,43 @@ public class PrepareDescription {
         return countriesStr.toString();
     }
 
-    public void initializeYouTubePlayer(Movie movie, YouTubePlayerView youTubePlayerView) {
+    public void initializeYouTubePlayer(Movie movie, YouTubePlayerView youTubePlayerView, View[] views, LinearLayout linearWithTabs) {
 
-            this.youTubePlayerView = youTubePlayerView;
-            fragment.getLifecycle().addObserver(youTubePlayerView);
+        this.youTubePlayerView = youTubePlayerView;
+        fragment.getLifecycle().addObserver(youTubePlayerView);
 
-            youTubePlayerView.initialize(new YouTubePlayerInitListener() {
-                @Override
-                public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
-                    initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
-                        @Override
-                        public void onReady() {
-                            initializedYouTubePlayer.cueVideo(movie.getTrailer().getKey(), 0);
-                        }
-                    });
-                    addFullScreenListenerToPlayer(initializedYouTubePlayer);
-                }
-            }, true);
+        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
+            @Override
+            public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
+                initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady() {
+                        initializedYouTubePlayer.cueVideo(movie.getTrailer().getKey(), 0);
+                    }
+                });
+                addFullScreenListenerToPlayer(initializedYouTubePlayer, views, linearWithTabs);
+            }
+        }, true);
     }
 
-    private void addFullScreenListenerToPlayer(final YouTubePlayer youTubePlayer) {
+    private void addFullScreenListenerToPlayer(final YouTubePlayer youTubePlayer, View[] views, LinearLayout linearWithTabs) {
         youTubePlayerView.addFullScreenListener(new YouTubePlayerFullScreenListener() {
             @Override
             public void onYouTubePlayerEnterFullScreen() {
                 fragment.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//                fragment.getActivity().getActionBar().hide();
-                youTubePlayerView.enterFullScreen();
-          //
+
+                fullScreenHelper = new FullScreenHelper(fragment.getActivity(), linearWithTabs, youTubePlayerView, views);
+
+                fullScreenHelper.enterFullScreen();
             }
 
             @Override
             public void onYouTubePlayerExitFullScreen() {
                 fragment.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
- //              fragment.getActivity().getActionBar().show();
-                fullScreenHelper.exitFullScreen(youTubePlayerView.getRootView());
+
+                if (fullScreenHelper != null) {
+                    fullScreenHelper.exitFullScreen();
+                }
             }
         });
     }

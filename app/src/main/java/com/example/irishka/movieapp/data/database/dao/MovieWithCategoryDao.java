@@ -4,9 +4,11 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
+import android.arch.persistence.room.TypeConverters;
 
-import com.example.irishka.movieapp.data.database.entity.GenreOfMovie;
+import com.example.irishka.movieapp.data.database.converters.EnumConverter;
 import com.example.irishka.movieapp.data.database.entity.MovieWithCategory;
+import com.example.irishka.movieapp.domain.MainType;
 
 import java.util.List;
 
@@ -18,11 +20,12 @@ public abstract class MovieWithCategoryDao {
     @Insert
     abstract void insertMoviesWithCategory(List<MovieWithCategory> moviesWithCategory);
 
+    @TypeConverters(EnumConverter.class)
     @Query("SELECT * " +
             "FROM MovieWithCategory " +
             "WHERE type = :type " +
             "AND movieId = :movieId")
-    abstract List<MovieWithCategory> getMwCifExist(String type, long movieId);
+    abstract List<MovieWithCategory> getMwCifExist(MainType type, long movieId);
 
     @Transaction
     public void trans(List<MovieWithCategory> moviesWithCategory) {
@@ -31,7 +34,8 @@ public abstract class MovieWithCategoryDao {
         if (mWc.size() == 0) insertMoviesWithCategory(moviesWithCategory);
     }
 
+    @TypeConverters(EnumConverter.class)
     @Query("SELECT * FROM MovieWithCategory WHERE type = :type")
-    public abstract Single<List<MovieWithCategory>> getMoviesWithCategory(String type);
+    public abstract Single<List<MovieWithCategory>> getMoviesWithCategory(MainType type);
 
 }

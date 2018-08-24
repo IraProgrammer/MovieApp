@@ -1,24 +1,13 @@
 package com.example.irishka.movieapp.data.repositories;
 
-import android.util.Pair;
-
 import com.example.irishka.movieapp.data.database.CastsDbSource;
-import com.example.irishka.movieapp.data.database.GenresDbSource;
-import com.example.irishka.movieapp.data.database.MoviesDbSource;
 import com.example.irishka.movieapp.data.database.entity.CastOfMovie;
 import com.example.irishka.movieapp.data.mappers.CastMapper;
-import com.example.irishka.movieapp.data.mappers.GenreMapper;
-import com.example.irishka.movieapp.data.mappers.MoviesMapper;
 import com.example.irishka.movieapp.data.network.CastsNetworkSource;
-import com.example.irishka.movieapp.data.network.MoviesNetworkSource;
-import com.example.irishka.movieapp.domain.Tabs;
-import com.example.irishka.movieapp.domain.entity.Cast;
 import com.example.irishka.movieapp.domain.entity.CastListWithError;
 import com.example.irishka.movieapp.domain.entity.CastWithError;
-import com.example.irishka.movieapp.domain.entity.Genre;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.domain.repositories.ICastsRepository;
-import com.example.irishka.movieapp.domain.repositories.IMoviesRepository;
 
 import java.util.List;
 

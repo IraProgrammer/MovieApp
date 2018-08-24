@@ -8,10 +8,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
-import android.support.v7.widget.CardView;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,7 +21,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -127,8 +126,8 @@ public class DescriptionFragment extends MvpAppCompatFragment
     @BindView(R.id.progressBar)
     MaterialProgressBar progress;
 
-    @BindView(R.id.video_card)
-    CardView videoCard;
+//    @BindView(R.id.video_card)
+//    CardView videoCard;
 
     @BindView(R.id.tv_sorry)
     TextView sorryTv;
@@ -138,6 +137,11 @@ public class DescriptionFragment extends MvpAppCompatFragment
 
     @BindView(R.id.error_btn)
     Button errorBtn;
+
+    @BindView(R.id.desc_lilLayout)
+    LinearLayout descLinLay;
+
+    LinearLayout linrearWithTabs;
 
     @Inject
     @Related
@@ -156,6 +160,8 @@ public class DescriptionFragment extends MvpAppCompatFragment
 //    private View[] sharedViews;
 
     private boolean isLoading;
+
+    TabLayout tabLayout;
 
     private int currentPosition = 0;
 
@@ -247,7 +253,7 @@ public class DescriptionFragment extends MvpAppCompatFragment
     public void onDownloadError() {
         ratingBar.setVisibility(View.GONE);
         galleryTextView.setVisibility(View.GONE);
-        videoCard.setVisibility(View.GONE);
+        youTubePlayerView.setVisibility(View.GONE);
         seeAlso.setVisibility(View.GONE);
         sorryTv.setVisibility(View.VISIBLE);
         progress.setVisibility(View.GONE);
@@ -280,11 +286,14 @@ public class DescriptionFragment extends MvpAppCompatFragment
             galleryTextView.setVisibility(View.VISIBLE);
         }
 
+        tabLayout = getActivity().findViewById(R.id.tabs);
+        linrearWithTabs = getActivity().findViewById(R.id.linear);
+
         if (movie.getTrailer() != null && isOnline()) {
-            prepareDescription.initializeYouTubePlayer(movie, youTubePlayerView);
-            videoCard.setVisibility(View.VISIBLE);
+            prepareDescription.initializeYouTubePlayer(movie, youTubePlayerView, new View[]{relatedMovies, seeAlso, galleryTextView, gallery, overview, descLinLay, tabLayout}, linrearWithTabs);
+            youTubePlayerView.setVisibility(View.VISIBLE);
         } else {
-            videoCard.setVisibility(View.GONE);
+            youTubePlayerView.setVisibility(View.GONE);
         }
 
     }
