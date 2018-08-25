@@ -12,6 +12,7 @@ import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 
 import static com.example.irishka.movieapp.ui.movies.fragment.view.MainFilmsFragment.MOVIE_ID;
+import static com.example.irishka.movieapp.ui.search.view.SearchActivity.IS_SEARCH;
 
 @Module
 public abstract class MovieActivityModule {
@@ -20,6 +21,12 @@ public abstract class MovieActivityModule {
     @PerActivity
     static long provideId(MovieActivity movieActivity) {
         return movieActivity.getIntent().getLongExtra(MOVIE_ID, 0);
+    }
+
+    @Provides
+    @PerActivity
+    static boolean provideIsSearch(MovieActivity movieActivity) {
+        return movieActivity.getIntent().getBooleanExtra(IS_SEARCH, false);
     }
 
     @PerFragment

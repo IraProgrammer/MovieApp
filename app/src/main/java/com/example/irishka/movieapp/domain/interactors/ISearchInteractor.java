@@ -15,4 +15,5 @@ public interface ISearchInteractor {
 
     Single<MoviesListWithError> getMoviesFromSearchFromInternet(String query, int page);
 
+    Single<List<Movie>> getMoviesForSearchFromDatabase();
 }

@@ -27,6 +27,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         downloadKeywordsFromDb();
+        downloadMoviesFromDatabase();
     }
 
     public void downloadMoviesFromSearch(String query, Boolean isNext) {
@@ -65,6 +66,14 @@ public class SearchPresenter extends BasePresenter<SearchView> {
                 })
                 .doOnSuccess(movies -> getViewState().hideProgress())
                 .subscribe(moviesListWithError -> getViewState().showMovies(moviesListWithError.getMovies()), throwable -> {
+                }));
+    }
+
+    private void downloadMoviesFromDatabase() {
+
+        addDisposables(searchInteractor.getMoviesForSearchFromDatabase()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(movies -> getViewState().showMovies(movies), throwable -> {
                 }));
     }
 

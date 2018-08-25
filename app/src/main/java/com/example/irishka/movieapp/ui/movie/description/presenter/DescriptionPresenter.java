@@ -16,12 +16,15 @@ public class DescriptionPresenter extends BasePresenter<DescriptionView> {
 
     private final long movieId;
 
+    private final boolean isSearch;
+
     private int page = 1;
 
     @Inject
-    public DescriptionPresenter(IMoviesRepository repository, long movieId) {
+    public DescriptionPresenter(IMoviesRepository repository, long movieId, boolean isSearch) {
         this.moviesRepository = repository;
         this.movieId = movieId;
+        this.isSearch = isSearch;
     }
 
     @Override
@@ -35,7 +38,7 @@ public class DescriptionPresenter extends BasePresenter<DescriptionView> {
 
         getViewState().showProgress();
 
-        addDisposables(moviesRepository.downloadMovie(movieId)
+        addDisposables(moviesRepository.downloadMovie(movieId, isSearch)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(movies -> getViewState().onDownloadError())
                 .doOnSuccess(movieWithError -> {

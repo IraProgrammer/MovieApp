@@ -10,6 +10,7 @@ import com.example.irishka.movieapp.data.database.dao.GenreDao;
 import com.example.irishka.movieapp.data.database.dao.GenreOfMovieDao;
 import com.example.irishka.movieapp.data.database.dao.KeywordsDao;
 import com.example.irishka.movieapp.data.database.dao.MovieDao;
+import com.example.irishka.movieapp.data.database.dao.MovieIdsFromSearchDao;
 import com.example.irishka.movieapp.data.database.dao.MovieWithCategoryDao;
 import com.example.irishka.movieapp.data.database.dao.RelatedOfMovieDao;
 
@@ -76,5 +77,11 @@ public abstract class DatabaseModule {
     @Provides
     static MovieWithCategoryDao provideMovieWithCategoryDao(AppDatabase database){
         return database.getMovieWithCategoryDao();
+    }
+
+    @Singleton
+    @Provides
+    static MovieIdsFromSearchDao provideMovieIdsFromSearchDao(AppDatabase database){
+        return database.getMovieIdsFromSearchDao();
     }
 }

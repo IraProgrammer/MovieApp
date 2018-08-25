@@ -48,4 +48,9 @@ public class SearchInteractor implements ISearchInteractor {
         return moviesRepository.getMoviesFromSearchFromInternet(query, page)
                 .doOnSuccess(movies -> keywordsRepository.insertKeyword(query));
     }
+
+    @Override
+    public Single<List<Movie>> getMoviesForSearchFromDatabase() {
+        return moviesRepository.getMoviesForSearchFromDatabase();
+    }
 }

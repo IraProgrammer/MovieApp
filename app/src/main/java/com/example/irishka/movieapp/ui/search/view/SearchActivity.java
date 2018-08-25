@@ -44,6 +44,8 @@ import static com.example.irishka.movieapp.ui.movies.fragment.view.MainFilmsFrag
 public class SearchActivity extends MvpAppCompatActivity implements com.example.irishka.movieapp.ui.search.view.SearchView,
         com.example.irishka.movieapp.ui.search.view.SearchAdapter.OnItemClickListener {
 
+    public static final String IS_SEARCH = "is_search";
+
     @BindView(R.id.root)
     RelativeLayout root;
 
@@ -88,7 +90,7 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
     @Inject
     LinearLayoutManager linearLayoutManager;
 
-    private boolean isLoading;
+    private boolean isLoading = true;
 
     String query = "";
 
@@ -103,7 +105,7 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
 
-        searchView.setIconified(false);
+      //  searchView.setIconified(true);
 
         btnHome.setOnClickListener(view -> finish());
 
@@ -121,6 +123,15 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
 
         errorBtn.setOnClickListener(view -> searchPresenter.downloadMoviesFromSearch(query, false));
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(searchView.getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     @Override
@@ -183,6 +194,7 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
     public void onItemClick(Movie movie) {
         Intent intent = new Intent(this, MovieActivity.class);
         intent.putExtra(MOVIE_ID, movie.getId());
+        intent.putExtra(IS_SEARCH, true);
         intent.putExtra(TITLE, movie.getTitle());
         startActivity(intent);
 

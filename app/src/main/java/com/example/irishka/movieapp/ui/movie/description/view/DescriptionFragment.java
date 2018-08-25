@@ -11,7 +11,6 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -141,7 +140,7 @@ public class DescriptionFragment extends MvpAppCompatFragment
     @BindView(R.id.desc_lilLayout)
     LinearLayout descLinLay;
 
-    LinearLayout linrearWithTabs;
+    LinearLayout linearWithTabs;
 
     @Inject
     @Related
@@ -151,21 +150,11 @@ public class DescriptionFragment extends MvpAppCompatFragment
     @Gallery
     LinearLayoutManager linearLayoutManagerGallery;
 
-    //НЕ ОБРАЩАЙ ВНИМАНИЯ
-
-  //  RecyclerView.LayoutManager layoutManager;
-
-//    View viewAtPosition;
-//
-//    private View[] sharedViews;
-
     private boolean isLoading;
 
     TabLayout tabLayout;
 
     private int currentPosition = 0;
-
-    // ImageView galleryItem;
 
     public static DescriptionFragment newInstance() {
         return new DescriptionFragment();
@@ -183,8 +172,6 @@ public class DescriptionFragment extends MvpAppCompatFragment
 
         View v = inflater.inflate(R.layout.fragment_description, container, false);
         ButterKnife.bind(this, v);
-
-        //   galleryItem = v.findViewById(R.id.backdrop_image);
 
         relatedMovies.setLayoutManager(linearLayoutManagerRelated);
 
@@ -287,10 +274,10 @@ public class DescriptionFragment extends MvpAppCompatFragment
         }
 
         tabLayout = getActivity().findViewById(R.id.tabs);
-        linrearWithTabs = getActivity().findViewById(R.id.linear);
+        linearWithTabs = getActivity().findViewById(R.id.linear);
 
         if (movie.getTrailer() != null && isOnline()) {
-            prepareDescription.initializeYouTubePlayer(movie, youTubePlayerView, new View[]{relatedMovies, seeAlso, galleryTextView, gallery, overview, descLinLay, tabLayout}, linrearWithTabs);
+            prepareDescription.initializeYouTubePlayer(movie, youTubePlayerView, new View[]{relatedMovies, seeAlso, galleryTextView, gallery, overview, descLinLay, tabLayout}, linearWithTabs);
             youTubePlayerView.setVisibility(View.VISIBLE);
         } else {
             youTubePlayerView.setVisibility(View.GONE);
@@ -323,45 +310,23 @@ public class DescriptionFragment extends MvpAppCompatFragment
         intent.putExtra(ARRAY_LIST, (ArrayList<Image>) galleryAdapter.getGalleryList());
         intent.putExtra(POSITION, position);
 
-        image.setTransitionName(getString(R.string.transition_name).concat(String.valueOf(position)));
+        String a = image.getTransitionName();
 
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                getActivity(),
-                new Pair<View, String>(image, image.getTransitionName())
-        );
+     //   ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), new Pair(image, a));
 
-        startActivityForResult(intent, 1, options.toBundle());
-
-        //НЕ СМОТРИ))))))
-
-        //  postponeEnterTransition();
-
-        //      startActivity(intent, options.toBundle());
+        startActivityForResult(intent, 1);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        //И ЭТО НЕ СМОТРИ))))))
-
-        //    super.onActivityResult(requestCode, resultCode, data);
-        //if (requestCode != Activity.RESULT_OK) {
-        //  return;
-        //}
         if (data != null) {
             currentPosition = data.getIntExtra("CUR", 7);
+
+            int a = currentPosition;
         }
 
-       // layoutManager = gallery.getLayoutManager();
-
-         //И ЭТО НЕ СМОТРИ))))))
-
-//        viewAtPosition = layoutManager.findViewByPosition(currentPosition);
-//
-//        if (viewAtPosition == null || layoutManager.isViewPartiallyVisible(viewAtPosition, false, true))
-//            gallery.scrollToPosition(currentPosition);
-//         //   startPostponedEnterTransition();
-//        }
+        gallery.scrollToPosition(currentPosition + 1);
     }
 
     protected boolean isOnline() {

@@ -1,9 +1,11 @@
 package com.example.irishka.movieapp.data.database;
 
 import com.example.irishka.movieapp.data.database.dao.MovieDao;
+import com.example.irishka.movieapp.data.database.dao.MovieIdsFromSearchDao;
 import com.example.irishka.movieapp.data.database.dao.MovieWithCategoryDao;
 import com.example.irishka.movieapp.data.database.dao.RelatedOfMovieDao;
 import com.example.irishka.movieapp.data.database.entity.MovieDb;
+import com.example.irishka.movieapp.data.database.entity.MovieIdsFromSearch;
 import com.example.irishka.movieapp.data.database.entity.MovieWithCategory;
 import com.example.irishka.movieapp.data.database.entity.RelatedOfMovie;
 import com.example.irishka.movieapp.domain.MainType;
@@ -22,12 +24,15 @@ public class MoviesDbSource {
 
     private MovieWithCategoryDao movieWithCategoryDao;
 
+    private MovieIdsFromSearchDao movieIdsFromSearchDao;
+
     @Inject
     public MoviesDbSource(MovieDao movieDao, RelatedOfMovieDao relatedOfMovieDao,
-                          MovieWithCategoryDao movieWithCategoryDao) {
+                          MovieWithCategoryDao movieWithCategoryDao, MovieIdsFromSearchDao movieIdsFromSearchDao) {
         this.movieDao = movieDao;
         this.relatedOfMovieDao = relatedOfMovieDao;
         this.movieWithCategoryDao = movieWithCategoryDao;
+        this.movieIdsFromSearchDao = movieIdsFromSearchDao;
     }
 
     public void insertAllMovies(List<MovieDb> moviesDb) {
@@ -60,5 +65,13 @@ public class MoviesDbSource {
 
     public void insertMoviesWithCategory(List<MovieWithCategory> moviesWithCategoriy){
         movieWithCategoryDao.trans(moviesWithCategoriy);
+    }
+
+    public void insertMovieIdFromSearch(long movieId, boolean isSearch){
+        movieIdsFromSearchDao.trans(movieId, isSearch);
+    }
+
+    public Single<List<MovieIdsFromSearch>> getMovieIdsFromSearch(){
+        return movieIdsFromSearchDao.getMovieIds();
     }
 }

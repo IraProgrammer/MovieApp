@@ -60,7 +60,9 @@ public class SlideGalleryAdapter extends PagerAdapter {
 
         ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image_in_viewpager);
 
-        imageView.setTransitionName(imagePagerActivity.getString(R.string.transition_name).concat(String.valueOf(position)));
+        String a = String.valueOf(position);
+
+        imageView.setTransitionName(a);
 
         glideHelper.downloadPictureWithoutPlaceholder(backdrops.get(position).getFileUrl(), imageView, imagePagerActivity);
 

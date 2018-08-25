@@ -4,12 +4,17 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.irishka.movieapp.R;
+import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
+
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -20,8 +25,6 @@ import dagger.android.support.DaggerAppCompatActivity;
 import static com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment.POSITION;
 
 public class ImagePagerActivity extends DaggerAppCompatActivity {
-
-    public static final int RES = 1;
 
     @BindView(R.id.main_pager)
     ViewPager pager;
@@ -44,8 +47,6 @@ public class ImagePagerActivity extends DaggerAppCompatActivity {
         setContentView(R.layout.activity_image_pager);
         ButterKnife.bind(this);
 
-        postponeEnterTransition();
-
         currentPosition = getIntent().getIntExtra(POSITION, 0);
 
         init();
@@ -59,23 +60,15 @@ public class ImagePagerActivity extends DaggerAppCompatActivity {
 
         pager.setCurrentItem(currentPosition);
 
-        count.setText((currentPosition +1) + "/" + slideGalleryAdapter.getCount());
+        count.setText((currentPosition + 1) + "/" + slideGalleryAdapter.getCount());
 
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onPageSelected(int position) {
-                sendResult(RESULT_OK, position+1);
-                count.setText((position+1) + "/" + slideGalleryAdapter.getCount());
-            }
-
-            @Override
-            public void onPageScrolled(int pos, float arg1, int arg2) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int pos) {
+                sendResult(RESULT_OK, position);
+                count.setText((position + 1) + "/" + slideGalleryAdapter.getCount());
             }
         });
     }
