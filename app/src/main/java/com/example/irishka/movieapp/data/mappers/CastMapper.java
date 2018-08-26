@@ -87,7 +87,9 @@ public class CastMapper {
         List<Cast> casts = new ArrayList<>();
 
         for (int i = 0; i < castModels.size(); i++) {
-            casts.add(apply(castModels.get(i)));
+            if (castModels.get(i).getProfilePath() != null) {
+                casts.add(apply(castModels.get(i)));
+            }
         }
 
         return casts;

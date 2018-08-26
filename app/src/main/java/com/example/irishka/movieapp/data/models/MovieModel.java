@@ -4,8 +4,11 @@ package com.example.irishka.movieapp.data.models;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.example.irishka.movieapp.domain.entity.Genre;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
 
 public class MovieModel {
 
@@ -35,6 +38,18 @@ public class MovieModel {
     @SerializedName("release_date")
     @Expose
     private String releaseDate;
+
+    public ArrayList<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(ArrayList<Genre> genres) {
+        this.genres = genres;
+    }
+
+    @SerializedName("genres")
+    @Expose
+    private ArrayList<Genre> genres;
 
     public String getOverview() {
         return overview;

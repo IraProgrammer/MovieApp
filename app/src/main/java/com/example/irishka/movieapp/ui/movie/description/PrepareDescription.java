@@ -1,32 +1,12 @@
 package com.example.irishka.movieapp.ui.movie.description;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Point;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
-import com.example.irishka.movieapp.FullScreenHelper;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.entity.Genre;
 import com.example.irishka.movieapp.domain.entity.Movie;
@@ -41,9 +21,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubeP
 import java.util.List;
 
 import javax.inject.Inject;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static java.lang.String.format;
 
@@ -84,8 +61,10 @@ public class PrepareDescription {
     }
 
     public String getYear(Movie movie) {
-        String releaseDate = movie.getReleaseDate();
-        return releaseDate.substring(0, 4);
+        if (!movie.getReleaseDate().equals("")) {
+            String releaseDate = movie.getReleaseDate();
+            return releaseDate.substring(0, 4);
+        } else return "";
     }
 
     public String getDuration(Movie movie) {

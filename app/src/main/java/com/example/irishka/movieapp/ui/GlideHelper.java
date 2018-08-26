@@ -57,17 +57,17 @@ public class GlideHelper {
                 .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                         .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                 )
-//                .listener(new RequestListener<Drawable>() {
-//                    @Override
-//                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-//                        return false;
-//                    }
-//                    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-//                    @Override
-//                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-//                        scheduleStartPostponedTransition(image, activity);
-//                        return false;
-//                    }})
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+                    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        scheduleStartPostponedTransition(image, activity);
+                        return false;
+                    }})
                 .into(image);
     }
 

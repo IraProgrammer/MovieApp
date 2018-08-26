@@ -82,11 +82,6 @@ public class MoviesRepository implements IMoviesRepository {
                 });
     }
 
-    @Override
-    public Single<MoviesListWithError> downloadMovies(int page, String type) {
-        return null;
-    }
-
     private Single<MovieWithError> getMovieFromInternet(long movieId, boolean isSearch) {
         return moviesNetworkSource
                 .getDescription(movieId)

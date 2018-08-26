@@ -1,5 +1,6 @@
 package com.example.irishka.movieapp.ui.movie.description.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -10,12 +11,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,6 +42,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -49,9 +54,12 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 import static com.example.irishka.movieapp.ui.movie.view.MovieActivity.TITLE;
 import static com.example.irishka.movieapp.ui.movies.fragment.view.MainFilmsFragment.MOVIE_ID;
+import static com.example.irishka.movieapp.ui.slideGallery.ImagePagerActivity.CURRENT;
 
 public class DescriptionFragment extends MvpAppCompatFragment
         implements DescriptionView, RelatedMoviesAdapter.OnItemClickListener, GalleryAdapter.OnItemClickListener {
+
+    public static int curpos = 0;
 
     public static final String ARRAY_LIST = "ARRAYLIST";
 
@@ -153,6 +161,8 @@ public class DescriptionFragment extends MvpAppCompatFragment
     private boolean isLoading;
 
     TabLayout tabLayout;
+
+    ImageView v;
 
     private int currentPosition = 0;
 
@@ -305,28 +315,80 @@ public class DescriptionFragment extends MvpAppCompatFragment
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void onItemClick(int position, View item, ImageView image) {
+    public void onItemClick(int position, View item, ImageView image, Map<Integer, ImageView> map) {
         Intent intent = new Intent(getContext(), ImagePagerActivity.class);
         intent.putExtra(ARRAY_LIST, (ArrayList<Image>) galleryAdapter.getGalleryList());
         intent.putExtra(POSITION, position);
 
         String a = image.getTransitionName();
 
-     //   ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), new Pair(image, a));
+        //int p = map.size();
 
-        startActivityForResult(intent, 1);
+        curpos = position;
+
+        v = image;
+        getActivity().setExitSharedElementCallback(new SharedElementCallback() {
+            @Override
+            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+
+                ImageView viewAtPosition = image;
+
+                if (curpos != position) {
+
+                    viewAtPosition = (ImageView) gallery.getLayoutManager().findViewByPosition(curpos);
+                    final RecyclerView.LayoutManager layoutManager =
+                            gallery.getLayoutManager();
+
+                    if (viewAtPosition == null
+                            || layoutManager.isViewPartiallyVisible(viewAtPosition, false, true)) {
+                        postponeEnterTransition();
+                        gallery.scrollToPosition(curpos);
+                    }
+                }
+
+                RecyclerView.ViewHolder selectedViewHolder = gallery.findViewHolderForAdapterPosition(curpos);
+                if (selectedViewHolder == null || selectedViewHolder.itemView == null) {
+                    return;
+                }
+                sharedElements.put(String.valueOf(curpos), selectedViewHolder.itemView.findViewById(R.id.backdrop_image));
+
+                gallery.post(() -> {
+
+//                    selectedViewHolder2.itemView.findViewById(R.id.backdrop_image).getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+//                        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//                        @Override
+//                        public boolean onPreDraw() {
+//                            selectedViewHolder2.itemView.findViewById(R.id.backdrop_image).getViewTreeObserver().removeOnPreDrawListener(this);
+                            startPostponedEnterTransition();
+//                            return true;
+//                        }
+//                    });
+
+                    RecyclerView.ViewHolder selectedViewHolder2 = gallery.findViewHolderForAdapterPosition(curpos);
+                    if (selectedViewHolder2 == null || selectedViewHolder2.itemView == null) {
+                        return;
+                    }
+                    names.clear();
+                    sharedElements.clear();
+                    names.add(String.valueOf(curpos));
+                    sharedElements.put(String.valueOf(curpos), selectedViewHolder2.itemView.findViewById(R.id.backdrop_image));
+
+                });
+            }
+        });
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), new Pair(image, image.getTransitionName()));
+
+        startActivityForResult(intent, 1, options.toBundle());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (data != null) {
-            currentPosition = data.getIntExtra("CUR", 7);
-
-            int a = currentPosition;
+            currentPosition = data.getIntExtra(CURRENT, 0);
         }
-
-        gallery.scrollToPosition(currentPosition + 1);
     }
 
     protected boolean isOnline() {

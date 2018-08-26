@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.irishka.movieapp.R;
+import com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 
 import java.util.List;
@@ -25,6 +27,8 @@ import dagger.android.support.DaggerAppCompatActivity;
 import static com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment.POSITION;
 
 public class ImagePagerActivity extends DaggerAppCompatActivity {
+
+    public static final String CURRENT = "current";
 
     @BindView(R.id.main_pager)
     ViewPager pager;
@@ -49,6 +53,8 @@ public class ImagePagerActivity extends DaggerAppCompatActivity {
 
         currentPosition = getIntent().getIntExtra(POSITION, 0);
 
+        postponeEnterTransition();
+
         init();
 
         btnHome.setOnClickListener(view -> finish());
@@ -60,24 +66,37 @@ public class ImagePagerActivity extends DaggerAppCompatActivity {
 
         pager.setCurrentItem(currentPosition);
 
-        count.setText((currentPosition + 1) + "/" + slideGalleryAdapter.getCount());
+        count.setText(new StringBuilder().append(String.valueOf(currentPosition + 1)).append("/").append(slideGalleryAdapter.getCount()).toString());
 
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onPageSelected(int position) {
-                sendResult(RESULT_OK, position);
-                count.setText((position + 1) + "/" + slideGalleryAdapter.getCount());
+                DescriptionFragment.curpos = position;
+                slideGalleryAdapter.call(position);
+                sendResult(position);
+                count.setText(new StringBuilder().append(position + 1).append("/").append(slideGalleryAdapter.getCount()).toString());
             }
         });
     }
 
-    private void sendResult(int resultCode, int position) {
+//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//    @Override
+//    public void supportFinishAfterTransition() {
+//            /**
+//             * if orientation changed, finishing activity with shared element
+//             * transition may cause NPE if the original element is not visible in the returned
+//             * activity due to new orientation, we just finish without transition here
+//             */
+//            finish();
+//        }
+
+    private void sendResult(int position) {
 
         Intent intent = new Intent();
-        intent.putExtra("CUR", position);
+        intent.putExtra(CURRENT, position);
 
-        setResult(resultCode, intent);
+        setResult(RESULT_OK, intent);
     }
 }

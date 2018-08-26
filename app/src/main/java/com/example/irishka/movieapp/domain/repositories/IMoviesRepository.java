@@ -14,8 +14,6 @@ public interface IMoviesRepository {
 
     Single<List<Movie>> downloadRelatedMovies(long movieId, int page);
 
-    Single<MoviesListWithError> downloadMovies(int page, String type);
-
     Single<MovieWithError> getMovieFromDatabase(long movieId);
 
     Single<MovieWithError> downloadMovie(long movieId, boolean isSearch);

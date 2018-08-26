@@ -24,9 +24,12 @@ public abstract class GenreOfMovieDao {
 
     @Transaction
     public void trans(List<GenreOfMovie> genreOfMovies) {
-        List<GenreOfMovie> gOm = getGoTifExist(genreOfMovies.get(0).getMovieId());
 
-        if (gOm.size() == 0) insertGenreOfMovie(genreOfMovies);
+        if (genreOfMovies.size() != 0) {
+            List<GenreOfMovie> gOm = getGoTifExist(genreOfMovies.get(0).getMovieId());
+
+            if (gOm.size() == 0) insertGenreOfMovie(genreOfMovies);
+        }
     }
 
     @Query("SELECT * FROM GenreOfMovie WHERE movieId = :movieId")

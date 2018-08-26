@@ -1,4 +1,4 @@
-package com.example.irishka.movieapp;
+package com.example.irishka.movieapp.ui.movie.description;
 
 import android.app.Activity;
 import android.graphics.Point;

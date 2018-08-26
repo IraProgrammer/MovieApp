@@ -40,12 +40,6 @@ public class MoviesListActivity extends DaggerAppCompatActivity{
     @BindView(R.id.btn_filters)
     ImageButton btnFilters;
 
-    @BindView(R.id.btn_menu)
-    ImageButton btnMenu;
-
-    @BindView(R.id.bottom_sheet)
-    LinearLayout bottomSheet;
-
     @Inject
     ViewPagerAdapter adapter;
 
@@ -68,9 +62,5 @@ public class MoviesListActivity extends DaggerAppCompatActivity{
             Intent intent = new Intent(MoviesListActivity.this, FiltersActivity.class);
             startActivity(intent);
         });
-
-        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-
-        btnMenu.setOnClickListener(view -> bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED));
     }
 }

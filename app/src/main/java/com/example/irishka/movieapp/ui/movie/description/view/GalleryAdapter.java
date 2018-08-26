@@ -1,5 +1,6 @@
 package com.example.irishka.movieapp.ui.movie.description.view;
 
+import android.annotation.TargetApi;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -18,7 +19,9 @@ import com.example.irishka.movieapp.domain.entity.Image;
 import com.example.irishka.movieapp.ui.GlideHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -33,6 +36,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
     private GlideHelper glideHelper;
 
+    private Map<Integer, ImageView> map = new HashMap<>();
+
     @Inject
     public GalleryAdapter(OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
         this.onItemClickListener = onItemClickListener;
@@ -40,7 +45,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     }
 
     public interface OnItemClickListener {
-        void onItemClick(int position, View v, ImageView image);
+        void onItemClick(int position, View v, ImageView image, Map<Integer, ImageView> map);
     }
 
     public void setGalleryList(List<Image> backdrops) {
@@ -76,7 +81,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
         return backdrops.size();
     }
 
-    static class GalleryViewHolder extends RecyclerView.ViewHolder {
+    class GalleryViewHolder extends RecyclerView.ViewHolder {
 
         private GlideHelper glideHelper;
 
@@ -92,15 +97,17 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
             this.glideHelper = glideHelper;
         }
 
+        @TargetApi(Build.VERSION_CODES.N)
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         void bind(Image backdrop) {
 
-
             String a = String.valueOf(backdrop.getPosition());
-            //  itemView.setTransitionName(itemView.getContext().getString(R.string.transition_name).concat(String.valueOf(position)));
+
             image.setTransitionName(a);
 
-            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(getAdapterPosition(), itemView, image));
+            map.putIfAbsent(getAdapterPosition(), image);
+
+            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(getAdapterPosition(), itemView, image, map));
 
             glideHelper.downloadPictureWithCache(backdrop.getFileUrl(), image);
         }

@@ -15,7 +15,7 @@ public class DescriptionModel {
     private String backdropPath;
     @SerializedName("genres")
     @Expose
-    private List<GenreModel> genres = null;
+    private List<GenreModel> genres;
     @SerializedName("id")
     @Expose
     private long id;
@@ -67,14 +67,6 @@ public class DescriptionModel {
         this.adult = adult;
     }
 
-    public String getBackdropPath() {
-        return backdropPath;
-    }
-
-    public void setBackdropPath(String backdropPath) {
-        this.backdropPath = backdropPath;
-    }
-
     public List<GenreModel> getGenres() {
         return genres;
     }
@@ -91,44 +83,12 @@ public class DescriptionModel {
         this.id = id;
     }
 
-    public String getImdbId() {
-        return imdbId;
-    }
-
-    public void setImdbId(String imdbId) {
-        this.imdbId = imdbId;
-    }
-
-    public String getOriginalLanguage() {
-        return originalLanguage;
-    }
-
-    public void setOriginalLanguage(String originalLanguage) {
-        this.originalLanguage = originalLanguage;
-    }
-
-    public String getOriginalTitle() {
-        return originalTitle;
-    }
-
-    public void setOriginalTitle(String originalTitle) {
-        this.originalTitle = originalTitle;
-    }
-
     public String getOverview() {
         return overview;
     }
 
     public void setOverview(String overview) {
         this.overview = overview;
-    }
-
-    public double getPopularity() {
-        return popularity;
-    }
-
-    public void setPopularity(double popularity) {
-        this.popularity = popularity;
     }
 
     public String getPosterPath() {
@@ -171,28 +131,12 @@ public class DescriptionModel {
         this.title = title;
     }
 
-    public boolean getVideo() {
-        return video;
-    }
-
-    public void setVideo(boolean video) {
-        this.video = video;
-    }
-
     public double getVoteAverage() {
         return voteAverage;
     }
 
     public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
-    }
-
-    public int getVoteCount() {
-        return voteCount;
-    }
-
-    public void setVoteCount(int voteCount) {
-        this.voteCount = voteCount;
     }
 
 }

@@ -12,9 +12,13 @@
 
         <item name="android:windowActivityTransitions">true</item>
 
+        <item name="android:windowContentTransitions">true</item>
 
         <item name="android:windowSharedElementEnterTransition">@transition/image_shared_element_transition</item>
-
+        <item name="android:fragmentSharedElementReturnTransition">@transition/image_shared_element_transition</item>
+        <item name="android:fragmentSharedElementEnterTransition">@transition/image_shared_element_transition</item>
+        <item name="android:windowSharedElementExitTransition">@transition/image_shared_element_transition</item>
+        <item name="android:fragmentExitTransition">@transition/image_shared_element_transition</item>
 
 
     </style>

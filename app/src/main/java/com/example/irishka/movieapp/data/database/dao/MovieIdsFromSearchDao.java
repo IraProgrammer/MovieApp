@@ -21,8 +21,6 @@ import io.reactivex.Single;
 @Dao
 public abstract class MovieIdsFromSearchDao {
 
-    List<Long> movieIds = new ArrayList<>();
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void insertMovieId(MovieIdsFromSearch movieIdsFromSearch);
 
@@ -31,23 +29,21 @@ public abstract class MovieIdsFromSearchDao {
 
         if (isSearch) {
 
-            if (getMovieIdsForCount().size() > 10) {
-                deleteTheFirst(getMovie(movieIds.get(0)).get(0));
+            if (getMovieIdsForCount().size() > 4) {
+                delete();
             }
 
             if (getMovie(movieId).size() == 0) {
-
-                movieIds.add(movieId);
                 insertMovieId(new MovieIdsFromSearch(movieId));
             }
         }
     }
 
-    @Delete
-    abstract void deleteTheFirst(MovieIdsFromSearch movieIdsFromSearch);
-
     @Query("SELECT * FROM MovieIdsFromSearch WHERE movieId = :movieId")
     abstract List<MovieIdsFromSearch> getMovie(long movieId);
+
+    @Query("DELETE FROM MovieIdsFromSearch WHERE id = (SELECT MIN(id) FROM MovieIdsFromSearch)")
+    abstract void delete();
 
     @Query("SELECT * FROM MovieIdsFromSearch")
     abstract List<MovieIdsFromSearch> getMovieIdsForCount();

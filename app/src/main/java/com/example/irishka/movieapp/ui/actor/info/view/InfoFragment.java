@@ -40,6 +40,10 @@ import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
+import static com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment.ARRAY_LIST;
+import static com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment.POSITION;
+import static com.example.irishka.movieapp.ui.slideGallery.ImagePagerActivity.CURRENT;
+
 public class InfoFragment extends MvpAppCompatFragment implements InfoView, PhotosAdapter.OnItemClickListener {
 
     @Inject
@@ -97,6 +101,8 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
 
     @BindView(R.id.error_btn)
     Button errorBtn;
+
+    private int currentPosition = 0;
 
     public static InfoFragment newInstance() {
         return new InfoFragment();
@@ -190,8 +196,19 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
     @Override
     public void onItemClick(List<Image> photos, int position) {
         Intent intent = new Intent(getContext(), ImagePagerActivity.class);
-        intent.putExtra("ARRAYLIST", (ArrayList<Image>) photos);
-        intent.putExtra("POSITION", position);
-        startActivity(intent);
+        intent.putExtra(ARRAY_LIST, (ArrayList<Image>) photos);
+        intent.putExtra(POSITION, position);
+
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (data != null) {
+            currentPosition = data.getIntExtra(CURRENT, 0);
+        }
+
+        photosRecyclerView.scrollToPosition(currentPosition + 1);
     }
 }

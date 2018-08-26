@@ -170,7 +170,9 @@ public class MoviesMapper {
         List<Movie> movies = new ArrayList<>();
 
         for (int i = 0; i < movieModels.size(); i++) {
-            movies.add(applyForMovies(movieModels.get(i)));
+            if (!movieModels.get(i).getReleaseDate().equals("") && movieModels.get(i).getPosterPath() != null && movieModels.get(i).getOverview() != null) {
+                movies.add(applyForMovies(movieModels.get(i)));
+            }
         }
 
         return movies;
@@ -181,18 +183,22 @@ public class MoviesMapper {
         List<Movie> movies = new ArrayList<>();
 
         for (int i = 0; i < movieModels.size(); i++) {
-            movies.add(applyForMovies(movieModels.get(i)));
+            if (!movieModels.get(i).getReleaseDate().equals("") && movieModels.get(i).getPosterPath() != null && movieModels.get(i).getOverview() != null) {
+                movies.add(applyForMovies(movieModels.get(i)));
+            }
         }
 
-     //   Collections.sort(movies, (first, second) -> Integer.compare(getYear(first), getYear(second)));
+        Collections.sort(movies, (first, second) -> Integer.compare(getYear(first), getYear(second)));
 
-     //   Collections.reverse(movies);
+        Collections.reverse(movies);
 
         return movies;
     }
 
     private int getYear(Movie movie) {
-        return Integer.parseInt(movie.getReleaseDate().split("-")[0]);
+        if (!movie.getReleaseDate().equals("")){
+        return Integer.parseInt(movie.getReleaseDate().split("-")[0]);}
+        else return 1;
     }
 
     public List<MovieDb> mapMoviesListToDb(List<Movie> movies) {

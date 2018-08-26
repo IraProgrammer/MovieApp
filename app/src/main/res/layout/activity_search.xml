@@ -52,7 +52,7 @@
         android:id="@+id/tv_sorry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
         android:layout_margin="8dp"
         android:layout_below="@id/appBar"
         android:text="@string/sorry_search"

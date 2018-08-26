@@ -1,6 +1,7 @@
 package com.example.irishka.movieapp.ui.search.view;
 
 import android.app.SearchManager;
+import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.database.MatrixCursor;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +30,8 @@ import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 import com.example.irishka.movieapp.ui.search.presenter.SearchPresenter;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -105,7 +109,7 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
 
-      //  searchView.setIconified(true);
+        searchView.setIconified(false);
 
         btnHome.setOnClickListener(view -> finish());
 
@@ -123,15 +127,6 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
 
         errorBtn.setOnClickListener(view -> searchPresenter.downloadMoviesFromSearch(query, false));
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(searchView.getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     @Override
@@ -197,10 +192,6 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
         intent.putExtra(IS_SEARCH, true);
         intent.putExtra(TITLE, movie.getTitle());
         startActivity(intent);
-
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(searchView.getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     private RecyclerView.OnScrollListener getOnScrollListener() {
@@ -212,12 +203,12 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
                 int totalItemCount = recyclerView.getLayoutManager().getItemCount();
                 int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
 
-                    if (isLoading) return;
-                    if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
-                            && lastVisibleItemPosition >= 0) {
-                        isLoading = true;
-                        searchPresenter.downloadMoviesFromSearch(query, true);
-                    }
+                if (isLoading) return;
+                if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
+                        && lastVisibleItemPosition >= 0) {
+                    isLoading = true;
+                    searchPresenter.downloadMoviesFromSearch(query, true);
+                }
             }
         };
     }
@@ -228,13 +219,17 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
             @Override
             public boolean onQueryTextSubmit(String s) {
 
-                query = s;
-                searchAdapter.clearList();
-                searchPresenter.downloadMoviesFromSearch(s, false);
+                if (!query.equals(s)) {
+                    query = s;
+                    searchAdapter.clearList();
+                    searchPresenter.downloadMoviesFromSearch(s, false);
 
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(searchView.getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(searchView.getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+
+                    searchView.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+                }
 
                 return true;
             }
