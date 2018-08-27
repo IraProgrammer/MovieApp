@@ -35,9 +35,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     private OnItemClickListener onItemClickListener;
 
     private GlideHelper glideHelper;
-
-    private Map<Integer, ImageView> map = new HashMap<>();
-
     @Inject
     public GalleryAdapter(OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
         this.onItemClickListener = onItemClickListener;
@@ -45,7 +42,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     }
 
     public interface OnItemClickListener {
-        void onItemClick(int position, View v, ImageView image, Map<Integer, ImageView> map);
+        void onItemClick(int position, ImageView image);
     }
 
     public void setGalleryList(List<Image> backdrops) {
@@ -98,9 +95,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
             image.setTransitionName(String.valueOf(getAdapterPosition()));
 
-            map.putIfAbsent(getAdapterPosition(), image);
-
-            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(getAdapterPosition(), itemView, image, map));
+            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(getAdapterPosition(), image));
 
             glideHelper.downloadPictureWithCache(backdrop.getFileUrl(), image);
         }

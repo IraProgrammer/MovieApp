@@ -31,6 +31,12 @@
                 android:paddingEnd="8dp"
                 android:src="@drawable/ic_home" />
 
+            <TextView
+                android:id="@+id/margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="250dp"/>
+
             <android.support.v7.widget.SearchView
                 android:id="@+id/search_view"
                 android:layout_width="wrap_content"

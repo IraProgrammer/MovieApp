@@ -76,6 +76,9 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
     @BindView(R.id.tv_sorry)
     TextView sorryTv;
 
+    @BindView(R.id.margin)
+    TextView margin;
+
     @Inject
     SearchManager manager;
 
@@ -111,31 +114,40 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
 
-        searchView.setIconified(false);
+//        searchView.setIconified(false);
+//        searchView.setFocusable(false);
+//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.hideSoftInputFromWindow(searchView.getWindowToken(),
+//                InputMethodManager.HIDE_NOT_ALWAYS);
 
-//        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-//            @Override
-//            public boolean onClose() {
-//                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//                layoutParams.setMarginEnd(20);
-//                btnHome.setLayoutParams(layoutParams);
-//                return false;
-//            }
-//        });
+        searchView.setOnQueryTextFocusChangeListener((view, b) -> {
+            if (b) margin.setVisibility(View.GONE);
+            else margin.setVisibility(View.VISIBLE);
+        });
 
-        btnHome.setOnClickListener(view -> finish());
+        btnHome.setOnClickListener(view ->
+
+                finish());
 
         searchRecyclerView.setLayoutManager(linearLayoutManager);
 
-        searchRecyclerView.addOnScrollListener(getOnScrollListener());
+        searchRecyclerView.addOnScrollListener(
+
+                getOnScrollListener());
 
         searchRecyclerView.setAdapter(searchAdapter);
 
-        searchView.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+        searchView.setSearchableInfo(manager.getSearchableInfo(
 
-        searchView.setOnQueryTextListener(getOnQueryTextListener());
+                getComponentName()));
 
-        searchView.setOnSuggestionListener(getOnSuggestionListener());
+        searchView.setOnQueryTextListener(
+
+                getOnQueryTextListener());
+
+        searchView.setOnSuggestionListener(
+
+                getOnSuggestionListener());
 
         errorBtn.setOnClickListener(view -> searchPresenter.downloadMoviesFromSearch(query, false));
 
@@ -150,9 +162,9 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
         MatrixCursor cursor = new MatrixCursor(columns);
 
         for (int i = 0; i < items.size(); i++) {
-            temp[0] = i;
-            temp[1] = items.get(i);
-            cursor.addRow(temp);
+                temp[0] = i;
+                temp[1] = items.get(i);
+                cursor.addRow(temp);
         }
 
         this.items = new ArrayList<>();
@@ -235,6 +247,8 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
                     query = s;
                     searchAdapter.clearList();
                     searchPresenter.downloadMoviesFromSearch(s, false);
+
+                    searchView.setFocusable(false);
 
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(searchView.getWindowToken(),

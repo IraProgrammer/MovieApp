@@ -22,6 +22,7 @@ import com.example.irishka.movieapp.domain.MainType;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 import com.example.irishka.movieapp.ui.movies.fragment.presenter.MainFilmsPresenter;
+import com.example.irishka.movieapp.ui.movies.view.MoviesListActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +39,7 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import static com.example.irishka.movieapp.ui.movie.view.MovieActivity.TITLE;
 
 public class MainFilmsFragment extends MvpAppCompatFragment
-        implements MainFilmsView, MainFilmsAdapter.OnItemClickListener {
+        implements MainFilmsView, MainFilmsAdapter.OnItemClickListener, MoviesListActivity.OnClickListener {
 
     public static final String MOVIE_ID = "movie_id";
 
@@ -73,7 +74,7 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     @BindView(R.id.root)
     RelativeLayout root;
 
-    Snackbar snackbar;
+  //  Snackbar snackbar;
 
     @Inject
     StaggeredGridLayoutManager staggeredGridLayoutManager;
@@ -135,8 +136,6 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     @Override
     public void noInternetAndEmptyDb() {
         error.setVisibility(View.VISIBLE);
-        if (snackbar != null)
-            snackbar.dismiss();
     }
 
     @Override
@@ -154,14 +153,6 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        if (snackbar != null)
-            snackbar.dismiss();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
 
@@ -171,18 +162,8 @@ public class MainFilmsFragment extends MvpAppCompatFragment
 
     @Override
     public void showSnack() {
-
-        if (this.isVisible()) {
-            snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_INDEFINITE);
-            snackbar.setAction(getString(R.string.error_button), view -> presenter.downloadMovies(true));
-            snackbar.show();
-        }
-    }
-
-    @Override
-    public void hideSnack() {
-        if (snackbar != null)
-            snackbar.dismiss();
+        MoviesListActivity activity = (MoviesListActivity) getActivity();
+        activity.showSnack(this);
     }
 
     @Override
@@ -210,5 +191,10 @@ public class MainFilmsFragment extends MvpAppCompatFragment
                 }
             }
         };
+    }
+
+    @Override
+    public void onClick() {
+        presenter.downloadMovies(true);
     }
 }

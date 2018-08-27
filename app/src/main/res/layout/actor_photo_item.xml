@@ -9,4 +9,4 @@
     android:scaleType="centerCrop"
     android:layout_marginStart="8dp"
     android:layout_marginBottom="4dp"
-    app:siRadius="10dp"/>
+    app:siRadius="4dp"/>

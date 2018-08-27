@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.irishka.movieapp.R;
+import com.example.irishka.movieapp.ui.actor.info.view.InfoFragment;
 import com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 
@@ -57,7 +58,7 @@ public class ImagePagerActivity extends DaggerAppCompatActivity {
 
         init();
 
-        btnHome.setOnClickListener(view -> finish());
+        btnHome.setOnClickListener(view -> onBackPressed());
     }
 
     private void init() {
@@ -74,29 +75,16 @@ public class ImagePagerActivity extends DaggerAppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 DescriptionFragment.curpos = position;
+                InfoFragment.curpos = position;
                 slideGalleryAdapter.call(position);
-                sendResult(position);
                 count.setText(new StringBuilder().append(position + 1).append("/").append(slideGalleryAdapter.getCount()).toString());
             }
         });
     }
 
-//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-//    @Override
-//    public void supportFinishAfterTransition() {
-//            /**
-//             * if orientation changed, finishing activity with shared element
-//             * transition may cause NPE if the original element is not visible in the returned
-//             * activity due to new orientation, we just finish without transition here
-//             */
-//            finish();
-//        }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void supportFinishAfterTransition() {
 
-    private void sendResult(int position) {
-
-        Intent intent = new Intent();
-        intent.putExtra(CURRENT, position);
-
-        setResult(RESULT_OK, intent);
-    }
+        }
 }

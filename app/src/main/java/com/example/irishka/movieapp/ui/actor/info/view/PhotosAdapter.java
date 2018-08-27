@@ -1,6 +1,8 @@
 package com.example.irishka.movieapp.ui.actor.info.view;
 
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +36,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
     }
 
     public interface OnItemClickListener {
-        void onItemClick(List<Image> photos, int position);
+        void onItemClick(int position, ImageView imageView);
     }
 
     public void setPhotosList(List<Image> photos) {
@@ -42,12 +44,17 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
         notifyDataSetChanged();
     }
 
+    public List<Image> getPhotosList() {
+        return photos;
+    }
+
     @NonNull
     @Override
     public PhotosViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new PhotosViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.actor_photo_item, parent, false), onItemClickListener, glideHelper, photos);
+        return new PhotosViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.actor_photo_item, parent, false), onItemClickListener, glideHelper);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NonNull PhotosViewHolder holder, int position) {
 
@@ -69,19 +76,19 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
         @BindView(R.id.actor_image)
         ImageView image;
 
-        private List<Image> photos;
-
-        PhotosViewHolder(View itemView, OnItemClickListener onItemClickListener, GlideHelper glideHelper, List<Image> photos) {
+        PhotosViewHolder(View itemView, OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.onItemClickListener = onItemClickListener;
             this.glideHelper = glideHelper;
-            this.photos = photos;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         void bind(Image photo) {
 
-            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(photos, getAdapterPosition()));
+            image.setTransitionName(String.valueOf(getAdapterPosition()));
+
+            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(getAdapterPosition(), image));
 
             glideHelper.downloadPictureWithCache(photo.getFileUrl(), image);
         }

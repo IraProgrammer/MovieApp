@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -163,8 +164,6 @@ public class DescriptionFragment extends MvpAppCompatFragment
     TabLayout tabLayout;
 
     ImageView v;
-
-    private int currentPosition = 0;
 
     public static DescriptionFragment newInstance() {
         return new DescriptionFragment();
@@ -316,27 +315,20 @@ public class DescriptionFragment extends MvpAppCompatFragment
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void onItemClick(int position, View item, ImageView image, Map<Integer, ImageView> map) {
+    public void onItemClick(int position, ImageView image) {
         Intent intent = new Intent(getContext(), ImagePagerActivity.class);
         intent.putExtra(ARRAY_LIST, (ArrayList<Image>) galleryAdapter.getGalleryList());
         intent.putExtra(POSITION, position);
 
-        String a = image.getTransitionName();
-
-        //int p = map.size();
-
         curpos = position;
 
-        v = image;
         getActivity().setExitSharedElementCallback(new SharedElementCallback() {
             @Override
             public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
 
-                ImageView viewAtPosition = image;
-
                 if (curpos != position) {
 
-                    viewAtPosition = (ImageView) gallery.getLayoutManager().findViewByPosition(curpos);
+                    ImageView viewAtPosition = (ImageView) gallery.getLayoutManager().findViewByPosition(curpos);
                     final RecyclerView.LayoutManager layoutManager =
                             gallery.getLayoutManager();
 
@@ -354,16 +346,7 @@ public class DescriptionFragment extends MvpAppCompatFragment
                 sharedElements.put(String.valueOf(curpos), selectedViewHolder.itemView.findViewById(R.id.backdrop_image));
 
                 gallery.post(() -> {
-
-//                    selectedViewHolder2.itemView.findViewById(R.id.backdrop_image).getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-//                        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-//                        @Override
-//                        public boolean onPreDraw() {
-//                            selectedViewHolder2.itemView.findViewById(R.id.backdrop_image).getViewTreeObserver().removeOnPreDrawListener(this);
-                            startPostponedEnterTransition();
-//                            return true;
-//                        }
-//                    });
+                    startPostponedEnterTransition();
 
                     RecyclerView.ViewHolder selectedViewHolder2 = gallery.findViewHolderForAdapterPosition(curpos);
                     if (selectedViewHolder2 == null || selectedViewHolder2.itemView == null) {
@@ -378,18 +361,9 @@ public class DescriptionFragment extends MvpAppCompatFragment
             }
         });
 
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), new Pair(image, image.getTransitionName()));
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), image, image.getTransitionName());
 
-        startActivityForResult(intent, 1, options.toBundle());
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (data != null) {
-            currentPosition = data.getIntExtra(CURRENT, 0);
-        }
+        startActivity(intent, options.toBundle());
     }
 
     protected boolean isOnline() {

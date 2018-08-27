@@ -18,6 +18,4 @@ public interface MainFilmsView extends MvpView{
     void finishLoading();
 
     void showSnack();
-
-    void hideSnack();
 }

@@ -4,7 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -102,7 +107,7 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
     @BindView(R.id.error_btn)
     Button errorBtn;
 
-    private int currentPosition = 0;
+    public static int curpos = 0;
 
     public static InfoFragment newInstance() {
         return new InfoFragment();
@@ -193,22 +198,56 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
         return result + System.lineSeparator();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void onItemClick(List<Image> photos, int position) {
+    public void onItemClick(int position, ImageView imageView) {
         Intent intent = new Intent(getContext(), ImagePagerActivity.class);
-        intent.putExtra(ARRAY_LIST, (ArrayList<Image>) photos);
+        intent.putExtra(ARRAY_LIST, (ArrayList<Image>) photosAdapter.getPhotosList());
         intent.putExtra(POSITION, position);
 
-        startActivityForResult(intent, 1);
-    }
+        curpos = position;
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        getActivity().setExitSharedElementCallback(new SharedElementCallback() {
+            @Override
+            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
 
-        if (data != null) {
-            currentPosition = data.getIntExtra(CURRENT, 0);
-        }
+                if (curpos != position) {
 
-        photosRecyclerView.scrollToPosition(currentPosition + 1);
+                    ImageView viewAtPosition = (ImageView) photosRecyclerView.getLayoutManager().findViewByPosition(curpos);
+                    final RecyclerView.LayoutManager layoutManager =
+                            photosRecyclerView.getLayoutManager();
+
+                    if (viewAtPosition == null
+                            || layoutManager.isViewPartiallyVisible(viewAtPosition, false, true)) {
+                        postponeEnterTransition();
+                        photosRecyclerView.scrollToPosition(curpos);
+                    }
+                }
+
+                RecyclerView.ViewHolder selectedViewHolder = photosRecyclerView.findViewHolderForAdapterPosition(curpos);
+                if (selectedViewHolder == null || selectedViewHolder.itemView == null) {
+                    return;
+                }
+                sharedElements.put(String.valueOf(curpos), selectedViewHolder.itemView.findViewById(R.id.actor_image));
+
+                photosRecyclerView.post(() -> {
+                    startPostponedEnterTransition();
+
+                    RecyclerView.ViewHolder selectedViewHolder2 = photosRecyclerView.findViewHolderForAdapterPosition(curpos);
+                    if (selectedViewHolder2 == null || selectedViewHolder2.itemView == null) {
+                        return;
+                    }
+                    names.clear();
+                    sharedElements.clear();
+                    names.add(String.valueOf(curpos));
+                    sharedElements.put(String.valueOf(curpos), selectedViewHolder2.itemView.findViewById(R.id.actor_image));
+
+                });
+            }
+        });
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), imageView, imageView.getTransitionName());
+
+        startActivity(intent, options.toBundle());
     }
 }

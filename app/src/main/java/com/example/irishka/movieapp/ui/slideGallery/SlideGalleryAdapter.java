@@ -30,10 +30,6 @@ public class SlideGalleryAdapter extends PagerAdapter {
 
     private ImagePagerActivity imagePagerActivity;
 
-    private ImageView imageV;
-
-    //  private List<ImageView> list = new ArrayList<>();
-
     private Map<Integer, ImageView> map = new HashMap<>();
 
     //TODO ButterKnife
@@ -70,15 +66,9 @@ public class SlideGalleryAdapter extends PagerAdapter {
 
         ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image_in_viewpager);
 
-        imageV = imageView;
-
-        //  list.add(imageView);
-
         map.putIfAbsent(position, imageView);
 
-        String a = String.valueOf(position);
-
-        imageView.setTransitionName(a);
+        imageView.setTransitionName(String.valueOf(position));
 
         glideHelper.downloadPictureWithoutPlaceholder(backdrops.get(position).getFileUrl(), imageView, imagePagerActivity);
 
@@ -106,14 +96,10 @@ public class SlideGalleryAdapter extends PagerAdapter {
             @Override
             public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
                 names.clear();
-                int s = sharedElements.size();
-                int k = position;
-               sharedElements.clear();
+                sharedElements.clear();
                 names.add(String.valueOf(position));
                 sharedElements.put(String.valueOf(position), map.get(position));
             }
         });
     }
-
-
 }
