@@ -14,9 +14,11 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -110,6 +112,16 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
         ButterKnife.bind(this);
 
         searchView.setIconified(false);
+
+//        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+//            @Override
+//            public boolean onClose() {
+//                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                layoutParams.setMarginEnd(20);
+//                btnHome.setLayoutParams(layoutParams);
+//                return false;
+//            }
+//        });
 
         btnHome.setOnClickListener(view -> finish());
 

@@ -3,6 +3,7 @@ package com.example.irishka.movieapp.ui.movies.fragment.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -62,11 +64,16 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     @BindView(R.id.progress)
     MaterialProgressBar progressBar;
 
+    @BindView(R.id.error)
+    LinearLayout error;
+
     @BindView(R.id.error_btn2)
     Button errorBtn;
 
     @BindView(R.id.root)
     RelativeLayout root;
+
+    Snackbar snackbar;
 
     @Inject
     StaggeredGridLayoutManager staggeredGridLayoutManager;
@@ -104,12 +111,7 @@ public class MainFilmsFragment extends MvpAppCompatFragment
 
         moviesRecyclerView.setAdapter(filmsAdapter);
 
-        errorBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.downloadMovies(false);
-            }
-        });
+        errorBtn.setOnClickListener(view -> presenter.downloadMovies(false));
 
         return v;
     }
@@ -117,6 +119,7 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
+        error.setVisibility(View.GONE);
     }
 
     @Override
@@ -127,6 +130,13 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     @Override
     public void showMovies(List<Movie> movies) {
         filmsAdapter.addMoviesList(movies);
+    }
+
+    @Override
+    public void noInternetAndEmptyDb() {
+        error.setVisibility(View.VISIBLE);
+        if (snackbar != null)
+            snackbar.dismiss();
     }
 
     @Override
@@ -144,10 +154,35 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (snackbar != null)
+            snackbar.dismiss();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (filmsAdapter.getItemCount() == 0)
+            presenter.downloadMovies(false);
+    }
+
+    @Override
     public void showSnack() {
-        Snackbar snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_INDEFINITE);
-        snackbar.setAction(getString(R.string.error_button), view -> presenter.downloadMovies(true));
-        snackbar.show();
+
+        if (this.isVisible()) {
+            snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_INDEFINITE);
+            snackbar.setAction(getString(R.string.error_button), view -> presenter.downloadMovies(true));
+            snackbar.show();
+        }
+    }
+
+    @Override
+    public void hideSnack() {
+        if (snackbar != null)
+            snackbar.dismiss();
     }
 
     @Override
@@ -158,7 +193,7 @@ public class MainFilmsFragment extends MvpAppCompatFragment
         startActivity(intent);
     }
 
-    private RecyclerView.OnScrollListener getOnScrollListener(){
+    private RecyclerView.OnScrollListener getOnScrollListener() {
         return new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -167,12 +202,12 @@ public class MainFilmsFragment extends MvpAppCompatFragment
                 int totalItemCount = recyclerView.getLayoutManager().getItemCount();
                 int lastVisibleItemPosition = getLastVisibleItemPosition();
 
-                    if (isLoading) return;
-                    if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
-                            && lastVisibleItemPosition >= 0) {
-                        isLoading = true;
-                        presenter.downloadMovies(true);
-                    }
+                if (isLoading) return;
+                if ((totalItemCount - visibleItemCount) <= (lastVisibleItemPosition + 20)
+                        && lastVisibleItemPosition >= 0) {
+                    isLoading = true;
+                    presenter.downloadMovies(true);
+                }
             }
         };
     }

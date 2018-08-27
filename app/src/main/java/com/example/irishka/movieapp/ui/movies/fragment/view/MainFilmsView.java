@@ -13,7 +13,11 @@ public interface MainFilmsView extends MvpView{
 
     void showMovies(List<Movie> movie);
 
+    void noInternetAndEmptyDb();
+
     void finishLoading();
 
     void showSnack();
+
+    void hideSnack();
 }

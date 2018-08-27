@@ -235,10 +235,11 @@ public class DescriptionFragment extends MvpAppCompatFragment
     public void hideProgress() {
         progress.setVisibility(View.GONE);
 
-        relatedMovies.setVisibility(View.VISIBLE);
-        if (relatedMovies.getAdapter().getItemCount() != 0) {
+        if (relatedMoviesAdapter.getItemCount() != 0) {
             seeAlso.setVisibility(View.VISIBLE);
         }
+
+        relatedMovies.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -292,12 +293,12 @@ public class DescriptionFragment extends MvpAppCompatFragment
         } else {
             youTubePlayerView.setVisibility(View.GONE);
         }
-
     }
 
     @Override
     public void showRelatedMovies(List<Movie> movies) {
 
+        //TODO
         if (!isOnline() && movies.size() != 0) {
             seeAlso.setVisibility(View.VISIBLE);
         }

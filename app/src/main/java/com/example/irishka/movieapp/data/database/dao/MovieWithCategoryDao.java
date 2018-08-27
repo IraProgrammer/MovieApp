@@ -29,9 +29,11 @@ public abstract class MovieWithCategoryDao {
 
     @Transaction
     public void trans(List<MovieWithCategory> moviesWithCategory) {
-        List<MovieWithCategory> mWc = getMwCifExist(moviesWithCategory.get(0).getType(), moviesWithCategory.get(0).getMovieId());
+        if (moviesWithCategory.size() != 0) {
+            List<MovieWithCategory> mWc = getMwCifExist(moviesWithCategory.get(0).getType(), moviesWithCategory.get(0).getMovieId());
 
-        if (mWc.size() == 0) insertMoviesWithCategory(moviesWithCategory);
+            if (mWc.size() == 0) insertMoviesWithCategory(moviesWithCategory);
+        }
     }
 
     @TypeConverters(EnumConverter.class)

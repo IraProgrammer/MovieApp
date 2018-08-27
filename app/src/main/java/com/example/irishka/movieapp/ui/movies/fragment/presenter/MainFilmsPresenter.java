@@ -46,13 +46,24 @@ public class MainFilmsPresenter extends BasePresenter<MainFilmsView> {
                     }
                 })
                 .doOnSuccess(moviesListWithError -> {
-                    if (moviesListWithError.getMovies().size() == 0 && moviesListWithError.isError()) {
+                    if (moviesListWithError.getMovies().size() == 0 && moviesListWithError.isError() && page != 1) {
                         getViewState().showSnack();
                     }
                 })
                 .doOnSuccess(moviesListWithError -> {
+                    if (moviesListWithError.getMovies().size() == 0 && moviesListWithError.isError() && page == 1) {
+                        getViewState().noInternetAndEmptyDb();
+                    }
+                })
+//                .doOnSuccess(moviesListWithError -> {
+//                    if (moviesListWithError.getMovies().size() != 0 && moviesListWithError.isError() && page == 1) {
+//                        getViewState().showSnack();
+//                    }
+//                })
+                .doOnSuccess(moviesListWithError -> {
                     if (!moviesListWithError.isError()) {
                         page++;
+                        getViewState().hideSnack();
                     }
                 })
                 .doOnSuccess(movies -> getViewState().hideProgress())

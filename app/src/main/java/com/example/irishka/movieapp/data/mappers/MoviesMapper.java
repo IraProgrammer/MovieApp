@@ -170,9 +170,9 @@ public class MoviesMapper {
         List<Movie> movies = new ArrayList<>();
 
         for (int i = 0; i < movieModels.size(); i++) {
-            if (!movieModels.get(i).getReleaseDate().equals("") && movieModels.get(i).getPosterPath() != null && movieModels.get(i).getOverview() != null) {
+      //      if (!movieModels.get(i).getReleaseDate().equals("") && movieModels.get(i).getPosterPath() != null && movieModels.get(i).getOverview() != null) {
                 movies.add(applyForMovies(movieModels.get(i)));
-            }
+      //      }
         }
 
         return movies;
@@ -183,9 +183,9 @@ public class MoviesMapper {
         List<Movie> movies = new ArrayList<>();
 
         for (int i = 0; i < movieModels.size(); i++) {
-            if (!movieModels.get(i).getReleaseDate().equals("") && movieModels.get(i).getPosterPath() != null && movieModels.get(i).getOverview() != null) {
+       //     if (!movieModels.get(i).getReleaseDate().equals("") && movieModels.get(i).getPosterPath() != null && movieModels.get(i).getOverview() != null) {
                 movies.add(applyForMovies(movieModels.get(i)));
-            }
+       //     }
         }
 
         Collections.sort(movies, (first, second) -> Integer.compare(getYear(first), getYear(second)));

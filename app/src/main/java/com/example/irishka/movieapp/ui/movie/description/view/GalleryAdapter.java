@@ -67,11 +67,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     @Override
     public void onBindViewHolder(@NonNull GalleryViewHolder holder, int position) {
 
-        int i = 0;
-        for (Image b: backdrops) {
-            b.setPosition(i);
-            i++;
-        }
         holder.bind(backdrops.get(position));
 
     }
@@ -101,9 +96,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         void bind(Image backdrop) {
 
-            String a = String.valueOf(backdrop.getPosition());
-
-            image.setTransitionName(a);
+            image.setTransitionName(String.valueOf(getAdapterPosition()));
 
             map.putIfAbsent(getAdapterPosition(), image);
 

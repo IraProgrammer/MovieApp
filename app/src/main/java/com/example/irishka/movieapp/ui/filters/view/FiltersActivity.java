@@ -143,7 +143,8 @@ public class FiltersActivity extends MvpAppCompatActivity implements FiltersView
     @Override
     public void showProgress() {
         sorryTv.setVisibility(View.GONE);
-        progress.setVisibility(View.VISIBLE);
+
+            progress.setVisibility(View.VISIBLE);
     }
 
     @Override

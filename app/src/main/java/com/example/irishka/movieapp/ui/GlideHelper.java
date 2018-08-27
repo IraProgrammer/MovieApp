@@ -54,7 +54,8 @@ public class GlideHelper {
     public void downloadPictureWithoutPlaceholder(String url, ImageView image, Activity activity) {
         Glide.with(image.getContext())
                 .load(url)
-                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .apply(new RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                         .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                 )
                 .listener(new RequestListener<Drawable>() {

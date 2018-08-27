@@ -169,8 +169,8 @@ public class MoviesRepository implements IMoviesRepository {
                 .map(movies -> {
                     if (page > 1) {
                         return new MoviesListWithError(new ArrayList<Movie>(), true);
-                    }
-                    return new MoviesListWithError(movies, true);
+                    } else
+                        return new MoviesListWithError(movies, true);
                 })
                 .subscribeOn(Schedulers.io());
     }

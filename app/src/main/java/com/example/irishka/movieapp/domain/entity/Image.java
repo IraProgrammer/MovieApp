@@ -9,16 +9,6 @@ import javax.inject.Inject;
 
 public class Image implements Parcelable {
 
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
-    private int position;
-
     private String fileUrl;
 
     public String getFileUrl() {
