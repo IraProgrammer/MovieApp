@@ -20,6 +20,7 @@
             android:elevation="4dp"
             android:minHeight="?attr/actionBarSize"
             app:tabGravity="fill"
+            app:tabIconTintMode="multiply"
             app:tabMode="scrollable"
             app:tabSelectedTextColor="@color/white"
             app:tabTextColor="@color/light_gray" />

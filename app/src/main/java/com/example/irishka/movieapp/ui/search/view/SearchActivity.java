@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.MatrixCursor;
 import android.os.Bundle;
 
@@ -120,9 +121,11 @@ public class SearchActivity extends MvpAppCompatActivity implements com.example.
 //        imm.hideSoftInputFromWindow(searchView.getWindowToken(),
 //                InputMethodManager.HIDE_NOT_ALWAYS);
 
-        searchView.setOnQueryTextFocusChangeListener((view, b) -> {
-            if (b) margin.setVisibility(View.GONE);
-            else margin.setVisibility(View.VISIBLE);
+        searchView.setOnSearchClickListener(view -> margin.setVisibility(View.GONE));
+
+        searchView.setOnCloseListener(() -> {
+            margin.setVisibility(View.VISIBLE);
+            return false;
         });
 
         btnHome.setOnClickListener(view ->

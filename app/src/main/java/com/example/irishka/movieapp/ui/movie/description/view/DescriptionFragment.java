@@ -3,6 +3,7 @@ package com.example.irishka.movieapp.ui.movie.description.view;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -14,6 +15,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.util.Pair;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -58,7 +60,7 @@ import static com.example.irishka.movieapp.ui.movies.fragment.view.MainFilmsFrag
 import static com.example.irishka.movieapp.ui.slideGallery.ImagePagerActivity.CURRENT;
 
 public class DescriptionFragment extends MvpAppCompatFragment
-        implements DescriptionView, RelatedMoviesAdapter.OnItemClickListener, GalleryAdapter.OnItemClickListener {
+        implements DescriptionView, RelatedMoviesAdapter.OnItemClickListener, GalleryAdapter.OnItemClickListener, MovieActivity.OnBackPressedListener {
 
     public static int curpos = 0;
 
@@ -149,6 +151,9 @@ public class DescriptionFragment extends MvpAppCompatFragment
     @BindView(R.id.desc_lilLayout)
     LinearLayout descLinLay;
 
+    @BindView(R.id.nested_scroll)
+    NestedScrollView nestedScrollView;
+
     LinearLayout linearWithTabs;
 
     @Inject
@@ -213,6 +218,11 @@ public class DescriptionFragment extends MvpAppCompatFragment
         });
 
         return v;
+    }
+
+    public void setOnBackPressListener(MovieActivity.OnBackPressedListener onBackPressListener) {
+        MovieActivity movieActivity = (MovieActivity) getActivity();
+        movieActivity.setOnBackPressedListener(onBackPressListener);
     }
 
     @Override
@@ -287,7 +297,7 @@ public class DescriptionFragment extends MvpAppCompatFragment
         linearWithTabs = getActivity().findViewById(R.id.linear);
 
         if (movie.getTrailer() != null && isOnline()) {
-            prepareDescription.initializeYouTubePlayer(movie, youTubePlayerView, new View[]{relatedMovies, seeAlso, galleryTextView, gallery, overview, descLinLay, tabLayout}, linearWithTabs);
+            prepareDescription.initializeYouTubePlayer(movie, youTubePlayerView, new View[]{relatedMovies, seeAlso, galleryTextView, gallery, overview, descLinLay, tabLayout}, linearWithTabs, nestedScrollView);
             youTubePlayerView.setVisibility(View.VISIBLE);
         } else {
             youTubePlayerView.setVisibility(View.GONE);
@@ -299,6 +309,8 @@ public class DescriptionFragment extends MvpAppCompatFragment
 
         //TODO
         if (!isOnline() && movies.size() != 0) {
+            seeAlso.setVisibility(View.VISIBLE);
+        } else if (isOnline() && progress.getVisibility() == View.GONE && movies.size() != 0) {
             seeAlso.setVisibility(View.VISIBLE);
         }
 
@@ -373,6 +385,13 @@ public class DescriptionFragment extends MvpAppCompatFragment
             return true;
         } else {
             return false;
+        }
+    }
+
+    @Override
+    public void onBackPress() {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && overview.getVisibility() == View.GONE) {
+            prepareDescription.exitFullscreen();
         }
     }
 }

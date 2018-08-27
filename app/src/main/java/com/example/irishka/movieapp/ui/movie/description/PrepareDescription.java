@@ -3,6 +3,7 @@ package com.example.irishka.movieapp.ui.movie.description;
 import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,6 +13,7 @@ import com.example.irishka.movieapp.domain.entity.Genre;
 import com.example.irishka.movieapp.domain.entity.Movie;
 import com.example.irishka.movieapp.domain.entity.ProductionCountry;
 import com.example.irishka.movieapp.ui.GlideHelper;
+import com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
@@ -28,14 +30,14 @@ public class PrepareDescription {
 
     private GlideHelper glideHelper;
 
-    private Fragment fragment;
+    private DescriptionFragment fragment;
 
     private YouTubePlayerView youTubePlayerView;
 
     private FullScreenHelper fullScreenHelper;
 
     @Inject
-    public PrepareDescription(Fragment fragment, GlideHelper glideHelper) {
+    public PrepareDescription(DescriptionFragment fragment, GlideHelper glideHelper) {
         this.fragment = fragment;
         this.glideHelper = glideHelper;
     }
@@ -99,7 +101,7 @@ public class PrepareDescription {
         return countriesStr.toString();
     }
 
-    public void initializeYouTubePlayer(Movie movie, YouTubePlayerView youTubePlayerView, View[] views, LinearLayout linearWithTabs) {
+    public void initializeYouTubePlayer(Movie movie, YouTubePlayerView youTubePlayerView, View[] views, LinearLayout linearWithTabs, NestedScrollView nestedScrollView) {
 
         this.youTubePlayerView = youTubePlayerView;
         fragment.getLifecycle().addObserver(youTubePlayerView);
@@ -113,31 +115,40 @@ public class PrepareDescription {
                         initializedYouTubePlayer.cueVideo(movie.getTrailer().getKey(), 0);
                     }
                 });
-                addFullScreenListenerToPlayer(initializedYouTubePlayer, views, linearWithTabs);
+                addFullScreenListenerToPlayer(initializedYouTubePlayer, views, linearWithTabs, nestedScrollView);
             }
         }, true);
     }
 
-    private void addFullScreenListenerToPlayer(final YouTubePlayer youTubePlayer, View[] views, LinearLayout linearWithTabs) {
+    private void addFullScreenListenerToPlayer(final YouTubePlayer youTubePlayer, View[] views, LinearLayout linearWithTabs, NestedScrollView nestedScrollView) {
         youTubePlayerView.addFullScreenListener(new YouTubePlayerFullScreenListener() {
             @Override
             public void onYouTubePlayerEnterFullScreen() {
                 fragment.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-                fullScreenHelper = new FullScreenHelper(fragment.getActivity(), linearWithTabs, youTubePlayerView, views);
+                fullScreenHelper = new FullScreenHelper(fragment.getActivity(), linearWithTabs, youTubePlayerView, nestedScrollView, views);
 
                 fullScreenHelper.enterFullScreen();
+
+                fragment.setOnBackPressListener(fragment);
             }
 
             @Override
             public void onYouTubePlayerExitFullScreen() {
-                fragment.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-                if (fullScreenHelper != null) {
-                    fullScreenHelper.exitFullScreen();
-                }
+                exitFullscreen();
             }
         });
+    }
+
+    public void exitFullscreen() {
+        fragment.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        if (fullScreenHelper != null) {
+            fullScreenHelper.exitFullScreen();
+        }
+
+        fragment.setOnBackPressListener(null);
+
     }
 
 }

@@ -34,6 +34,16 @@ public class MovieActivity extends DaggerAppCompatActivity {
     @Inject
     MovieViewPagerAdapter adapter;
 
+    public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {
+        this.onBackPressedListener = onBackPressedListener;
+    }
+
+    public OnBackPressedListener onBackPressedListener;
+
+    public interface OnBackPressedListener {
+        void onBackPress();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +53,6 @@ public class MovieActivity extends DaggerAppCompatActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        //TODO title?
         toolbarTitle.setText(getIntent().getStringExtra(TITLE));
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,5 +60,11 @@ public class MovieActivity extends DaggerAppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (onBackPressedListener != null) onBackPressedListener.onBackPress();
+        else super.onBackPressed();
     }
 }

@@ -93,7 +93,8 @@
                 android:id="@+id/expandableLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:ael_duration="250"
+                app:ael_duration="270"
+                android:background="#303030"
                 app:ael_expanded="true"
                 app:ael_interpolator="linear"
                 app:ael_orientation="vertical">

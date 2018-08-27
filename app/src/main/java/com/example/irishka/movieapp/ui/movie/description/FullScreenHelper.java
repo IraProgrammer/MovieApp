@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Point;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -15,11 +16,14 @@ public class FullScreenHelper {
     private View youTubeView;
     private View[] views;
 
-    public FullScreenHelper(Activity context, LinearLayout linearWithTabs, View youTubeView, View... views) {
+    private NestedScrollView nestedScrollView;
+
+    public FullScreenHelper(Activity context, LinearLayout linearWithTabs, View youTubeView, NestedScrollView nestedScrollView, View... views) {
         this.context = context;
         this.linearWithTabs = linearWithTabs;
         this.youTubeView = youTubeView;
         this.views = views;
+        this.nestedScrollView = nestedScrollView;
     }
 
     public void enterFullScreen() {
@@ -47,13 +51,6 @@ public class FullScreenHelper {
     public void exitFullScreen() {
         View decorView = context.getWindow().getDecorView();
 
-        showSystemUI(decorView);
-
-        for (int i = views.length - 1; i >= 0; i--) {
-            views[i].setVisibility(View.VISIBLE);
-            views[i].invalidate();
-        }
-
         CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) linearWithTabs.getLayoutParams();
         p.setBehavior(new AppBarLayout.ScrollingViewBehavior());
         linearWithTabs.setLayoutParams(p);
@@ -61,6 +58,24 @@ public class FullScreenHelper {
         ViewGroup.LayoutParams viewParams = youTubeView.getLayoutParams();
         viewParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         youTubeView.setLayoutParams(viewParams);
+
+        showSystemUI(decorView);
+
+        for (int i = views.length - 1; i >= 0; i--) {
+            views[i].setVisibility(View.VISIBLE);
+            views[i].invalidate();
+        }
+
+        showSystemUI(decorView);
+//        CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) linearWithTabs.getLayoutParams();
+//        p.setBehavior(new AppBarLayout.ScrollingViewBehavior());
+//        linearWithTabs.setLayoutParams(p);
+//
+//        ViewGroup.LayoutParams viewParams = youTubeView.getLayoutParams();
+//        viewParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+//        youTubeView.setLayoutParams(viewParams);
+
+        nestedScrollView.fullScroll(View.FOCUS_UP);
     }
 
     private void hideSystemUI(View mDecorView) {
