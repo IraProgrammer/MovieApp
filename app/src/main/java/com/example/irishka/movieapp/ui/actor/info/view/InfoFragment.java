@@ -198,7 +198,6 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
         return result + System.lineSeparator();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onItemClick(int position, ImageView imageView) {
         Intent intent = new Intent(getContext(), ImagePagerActivity.class);
@@ -246,7 +245,10 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
             }
         });
 
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), imageView, imageView.getTransitionName());
+        ActivityOptionsCompat options = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), imageView, imageView.getTransitionName());
+        }
 
         startActivity(intent, options.toBundle());
     }

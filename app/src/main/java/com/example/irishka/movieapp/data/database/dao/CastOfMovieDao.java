@@ -27,10 +27,14 @@ public abstract class CastOfMovieDao {
 
     @Transaction
     public void trans(List<CastOfMovie> castOfMovie) {
-        List<CastOfMovie> cOm = getCoMifExist(castOfMovie.get(0).getMovieId());
 
-        if (cOm.size() == 0) {
-            insertCastOfMovie(castOfMovie);
+        if (castOfMovie.size() != 0) {
+
+            List<CastOfMovie> cOm = getCoMifExist(castOfMovie.get(0).getMovieId());
+
+            if (cOm.size() == 0) {
+                insertCastOfMovie(castOfMovie);
+            }
         }
     }
 

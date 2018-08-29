@@ -1,35 +1,29 @@
 package com.example.irishka.movieapp.ui.movies.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.example.irishka.movieapp.R;
+import com.example.irishka.movieapp.domain.MainType;
 import com.example.irishka.movieapp.ui.filters.view.FiltersActivity;
+import com.example.irishka.movieapp.ui.movies.fragment.view.MainFilmsFragment;
 import com.example.irishka.movieapp.ui.search.view.SearchActivity;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.android.AndroidInjection;
-import dagger.android.support.AndroidSupportInjection;
 import dagger.android.support.DaggerAppCompatActivity;
 
 public class MoviesListActivity extends DaggerAppCompatActivity {
@@ -54,8 +48,24 @@ public class MoviesListActivity extends DaggerAppCompatActivity {
 
     Snackbar snackbar;
 
-    public interface OnClickListener{
+    private Map<Integer, Snackbar> snackMap = new HashMap<>();
+
+    private OnClickListener onClickListener;
+
+    private MainType type;
+
+    private int currentPosition;
+
+    private int lastPosition;
+
+    public interface OnClickListener {
         void onClick();
+        void notifyPage();
+    }
+
+    public void setOnClickListener(OnClickListener onClickListener, MainType type) {
+        this.onClickListener = onClickListener;
+        this.type = type;
     }
 
     @Override
@@ -66,17 +76,30 @@ public class MoviesListActivity extends DaggerAppCompatActivity {
         ButterKnife.bind(this);
 
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(1);
         tabLayout.setupWithViewPager(viewPager);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
-                if (snackbar != null) snackbar.dismiss();
             }
 
             @Override
             public void onPageSelected(int i) {
 
+                if (onClickListener != null){
+                    onClickListener.notifyPage();
+                }
+
+                if (snackMap.get(lastPosition) != null) {
+                    snackMap.get(lastPosition).dismiss();
+                }
+                lastPosition = currentPosition;
+                currentPosition = i;
+
+                if (!isOnline() && snackMap.get(currentPosition) != null) {
+                    snackMap.get(currentPosition).show();
+                }
             }
 
             @Override
@@ -96,14 +119,19 @@ public class MoviesListActivity extends DaggerAppCompatActivity {
         });
     }
 
-    public void showSnack(OnClickListener onClickListener) {
+    public void showSnack() {
 
-        if (!isOnline()) {
-            snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_INDEFINITE);
-            snackbar.setAction(getString(R.string.error_button), view -> onClickListener.onClick());
+        if (snackMap.get(currentPosition) == null) {
+            if (!isOnline()) {
+                snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction(getString(R.string.error_button), view -> onClickListener.onClick());
 
-            if (!snackbar.isShown())
-                snackbar.show();
+                snackMap.put(currentPosition, snackbar);
+            }
+
+            if (type.equals(MainType.values()[currentPosition]))
+                snackMap.get(currentPosition).show();
+
         }
     }
 

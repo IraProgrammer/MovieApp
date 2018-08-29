@@ -35,6 +35,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     private OnItemClickListener onItemClickListener;
 
     private GlideHelper glideHelper;
+
     @Inject
     public GalleryAdapter(OnItemClickListener onItemClickListener, GlideHelper glideHelper) {
         this.onItemClickListener = onItemClickListener;
@@ -60,7 +61,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
         return new GalleryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.gallery_item, parent, false), onItemClickListener, glideHelper);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NonNull GalleryViewHolder holder, int position) {
 
@@ -89,11 +89,12 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
             this.glideHelper = glideHelper;
         }
 
-        @TargetApi(Build.VERSION_CODES.N)
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
         void bind(Image backdrop) {
 
-            image.setTransitionName(String.valueOf(getAdapterPosition()));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                image.setTransitionName(String.valueOf(getAdapterPosition()));
+            }
 
             itemView.setOnClickListener(view -> onItemClickListener.onItemClick(getAdapterPosition(), image));
 

@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.util.Pair;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -168,7 +169,7 @@ public class DescriptionFragment extends MvpAppCompatFragment
 
     TabLayout tabLayout;
 
-    ImageView v;
+    private int pos;
 
     public static DescriptionFragment newInstance() {
         return new DescriptionFragment();
@@ -325,57 +326,88 @@ public class DescriptionFragment extends MvpAppCompatFragment
         startActivity(intent);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onItemClick(int position, ImageView image) {
         Intent intent = new Intent(getContext(), ImagePagerActivity.class);
         intent.putExtra(ARRAY_LIST, (ArrayList<Image>) galleryAdapter.getGalleryList());
         intent.putExtra(POSITION, position);
 
-        curpos = position;
+        pos = position;
 
-        getActivity().setExitSharedElementCallback(new SharedElementCallback() {
-            @Override
-            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+        // curpos = position;
 
-                if (curpos != position) {
+//        getActivity().setExitSharedElementCallback(new SharedElementCallback() {
+//            @Override
+//            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+//
+//                if (curpos != position) {
+//
+//                    ImageView viewAtPosition = (ImageView) gallery.getLayoutManager().findViewByPosition(curpos);
+//                    final RecyclerView.LayoutManager layoutManager =
+//                            gallery.getLayoutManager();
+//
+//                    if (viewAtPosition == null
+//                            || layoutManager.isViewPartiallyVisible(viewAtPosition, false, true)) {
+////                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+////                            postponeEnterTransition();
+////                        }
+//                        gallery.scrollToPosition(curpos);
+//                    }
+//                }
+//
+//                RecyclerView.ViewHolder selectedViewHolder = gallery.findViewHolderForAdapterPosition(curpos);
+//                if (selectedViewHolder != null && selectedViewHolder.itemView != null) {
+//                    sharedElements.put(String.valueOf(curpos), selectedViewHolder.itemView.findViewById(R.id.backdrop_image));
+//                }
+//                // sharedElements.put(String.valueOf(curpos), selectedViewHolder.itemView.findViewById(R.id.backdrop_image));
+//
+////                gallery.post(() -> {
+////
+////                    RecyclerView.ViewHolder selectedViewHolder2 = gallery.findViewHolderForAdapterPosition(curpos);
+////                    if (selectedViewHolder2 == null || selectedViewHolder2.itemView == null) {
+////                        return;
+////                    }
+////                    names.clear();
+////                    sharedElements.clear();
+////                    names.add(String.valueOf(curpos));
+////                    sharedElements.put(String.valueOf(curpos), selectedViewHolder2.itemView.findViewById(R.id.backdrop_image));
+////
+////                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+////                        ((AppCompatActivity) getActivity()).supportStartPostponedEnterTransition();
+////                    }
+////
+////                });
+//            }
+//        });
+//
+//
+//        ActivityOptionsCompat options = null;
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+//            options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), image, image.getTransitionName());
+//        }
 
-                    ImageView viewAtPosition = (ImageView) gallery.getLayoutManager().findViewByPosition(curpos);
-                    final RecyclerView.LayoutManager layoutManager =
-                            gallery.getLayoutManager();
+        startActivity(intent);
+    }
 
-                    if (viewAtPosition == null
-                            || layoutManager.isViewPartiallyVisible(viewAtPosition, false, true)) {
-                        postponeEnterTransition();
-                        gallery.scrollToPosition(curpos);
-                    }
-                }
+    @Override
+    public void onResume() {
+        super.onResume();
 
-                RecyclerView.ViewHolder selectedViewHolder = gallery.findViewHolderForAdapterPosition(curpos);
-                if (selectedViewHolder == null || selectedViewHolder.itemView == null) {
-                    return;
-                }
-                sharedElements.put(String.valueOf(curpos), selectedViewHolder.itemView.findViewById(R.id.backdrop_image));
+        int c = curpos;
 
-                gallery.post(() -> {
-                    startPostponedEnterTransition();
 
-                    RecyclerView.ViewHolder selectedViewHolder2 = gallery.findViewHolderForAdapterPosition(curpos);
-                    if (selectedViewHolder2 == null || selectedViewHolder2.itemView == null) {
-                        return;
-                    }
-                    names.clear();
-                    sharedElements.clear();
-                    names.add(String.valueOf(curpos));
-                    sharedElements.put(String.valueOf(curpos), selectedViewHolder2.itemView.findViewById(R.id.backdrop_image));
+        //TODO
+        if (curpos > pos && curpos < galleryAdapter.getItemCount() - 1) {
+            gallery.scrollToPosition(curpos + 1);
+        }  if (curpos < pos && curpos > 0) {
+            gallery.scrollToPosition(curpos - 1);
+        }  if (curpos == 0) {
+            gallery.scrollToPosition(1);
+        }  if (curpos == galleryAdapter.getItemCount() - 1) {
+            gallery.scrollToPosition(curpos);
+        }
 
-                });
-            }
-        });
-
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), image, image.getTransitionName());
-
-        startActivity(intent, options.toBundle());
+        curpos = pos;
     }
 
     protected boolean isOnline() {

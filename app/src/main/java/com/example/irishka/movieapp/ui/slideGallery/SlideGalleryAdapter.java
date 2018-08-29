@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -55,20 +56,19 @@ public class SlideGalleryAdapter extends PagerAdapter {
         return backdrops.size();
     }
 
-    @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup view, int position) {
 
         View imageLayout = LayoutInflater.from(view.getContext()).inflate(R.layout.viewpager_item, view, false);
 
-        //  ButterKnife.bind(imageLayout, imagePagerActivity);
-
         ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image_in_viewpager);
 
-        map.putIfAbsent(position, imageView);
+        map.put(position, imageView);
 
-        imageView.setTransitionName(String.valueOf(position));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            imageView.setTransitionName(String.valueOf(position));
+        }
 
         glideHelper.downloadPictureWithoutPlaceholder(backdrops.get(position).getFileUrl(), imageView, imagePagerActivity);
 

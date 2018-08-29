@@ -63,7 +63,6 @@ public class GlideHelper {
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                         return false;
                     }
-                    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                         scheduleStartPostponedTransition(image, activity);
@@ -75,11 +74,12 @@ public class GlideHelper {
 
     private void scheduleStartPostponedTransition(final ImageView sharedElement, Activity activity) {
         sharedElement.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public boolean onPreDraw() {
                 sharedElement.getViewTreeObserver().removeOnPreDrawListener(this);
-                activity.startPostponedEnterTransition();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    activity.startPostponedEnterTransition();
+                }
                 return true;
             }
         });

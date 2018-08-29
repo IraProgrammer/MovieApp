@@ -54,7 +54,6 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
         return new PhotosViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.actor_photo_item, parent, false), onItemClickListener, glideHelper);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NonNull PhotosViewHolder holder, int position) {
 
@@ -83,10 +82,11 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
             this.glideHelper = glideHelper;
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         void bind(Image photo) {
 
-            image.setTransitionName(String.valueOf(getAdapterPosition()));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                image.setTransitionName(String.valueOf(getAdapterPosition()));
+            }
 
             itemView.setOnClickListener(view -> onItemClickListener.onItemClick(getAdapterPosition(), image));
 

@@ -16,6 +16,8 @@ public interface CreatorsView extends MvpView {
 
     void showError();
 
+    void showSorry();
+
     void showCasts(List<Cast> casts);
 
 }

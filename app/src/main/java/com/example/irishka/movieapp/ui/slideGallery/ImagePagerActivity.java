@@ -45,20 +45,21 @@ public class ImagePagerActivity extends DaggerAppCompatActivity {
 
     private int currentPosition;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_pager);
         ButterKnife.bind(this);
 
+        btnHome.setOnClickListener(view -> onBackPressed());
+
         currentPosition = getIntent().getIntExtra(POSITION, 0);
 
-        postponeEnterTransition();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            postponeEnterTransition();
+        }
 
         init();
-
-        btnHome.setOnClickListener(view -> onBackPressed());
     }
 
     private void init() {
@@ -71,7 +72,6 @@ public class ImagePagerActivity extends DaggerAppCompatActivity {
 
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onPageSelected(int position) {
                 DescriptionFragment.curpos = position;
@@ -82,9 +82,15 @@ public class ImagePagerActivity extends DaggerAppCompatActivity {
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public void supportFinishAfterTransition() {
-
-        }
+//    @Override
+//    public void supportFinishAfterTransition() {
+//        finish();
+//    }
+//
+//    @Override
+//    public void onBackPressed() {
+//        if (Math.abs(currentPosition - DescriptionFragment.curpos) > 3)
+//            supportFinishAfterTransition();
+//        else super.onBackPressed();
+//    }
 }

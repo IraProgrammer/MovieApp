@@ -39,6 +39,11 @@ public class CreatorsPresenter extends BasePresenter<CreatorsView> {
                         getViewState().showError();
                     }
                 })
+                .doOnSuccess(castListWithError -> {
+                    if (castListWithError.getCasts().size() == 0 && !castListWithError.isError()) {
+                        getViewState().showSorry();
+                    }
+                })
                 .doOnSuccess(castListWithError -> getViewState().hideProgress())
                 .doOnSuccess(castListWithError -> {
                     if (!castListWithError.isError()){

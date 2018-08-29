@@ -16,6 +16,15 @@
         app:mpb_determinateCircularProgressStyle="dynamic"
         app:mpb_progressTint="@color/accent_material_dark_1" />
 
+    <TextView
+        android:id="@+id/tv_sorry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="8dp"
+        android:text="@string/no_found_actors" />
+
     <LinearLayout
         android:id="@+id/error"
         android:layout_width="match_parent"

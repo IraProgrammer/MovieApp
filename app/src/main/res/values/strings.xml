@@ -45,6 +45,8 @@
 
     <string name="error_description">Please check the Internet connection and try again to see more.</string>
 
+    <string name="no_found_actors">Sorry, the cast is not available for this movie.</string>
+
     <string name="error_button">Try again</string>
 
     <string name="snack">Please, check the Internet connection.</string>

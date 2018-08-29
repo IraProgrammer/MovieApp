@@ -74,12 +74,12 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     @BindView(R.id.root)
     RelativeLayout root;
 
-  //  Snackbar snackbar;
-
     @Inject
     StaggeredGridLayoutManager staggeredGridLayoutManager;
 
     private boolean isLoading;
+
+    MoviesListActivity moviesListActivity;
 
     public static MainFilmsFragment newInstance(MainType tab) {
 
@@ -113,6 +113,9 @@ public class MainFilmsFragment extends MvpAppCompatFragment
         moviesRecyclerView.setAdapter(filmsAdapter);
 
         errorBtn.setOnClickListener(view -> presenter.downloadMovies(false));
+
+        moviesListActivity = (MoviesListActivity) getActivity();
+        moviesListActivity.setOnClickListener(this, MainType.values()[getArguments().getInt(TYPE)]);
 
         return v;
     }
@@ -153,17 +156,17 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        if (filmsAdapter.getItemCount() == 0)
-            presenter.downloadMovies(false);
+    public void showSnack() {
+        moviesListActivity.showSnack();
     }
 
     @Override
-    public void showSnack() {
-        MoviesListActivity activity = (MoviesListActivity) getActivity();
-        activity.showSnack(this);
+    public void notifyPage() {
+        if (filmsAdapter.getItemCount() == 0)
+            presenter.downloadMovies(false);
+        else {
+            isLoading = false;
+        }
     }
 
     @Override

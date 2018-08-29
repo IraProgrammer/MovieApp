@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -65,6 +66,9 @@ public class CreatorsFragment extends MvpAppCompatFragment implements CreatorsVi
     @BindView(R.id.error_btn)
     Button errorBtn;
 
+    @BindView(R.id.tv_sorry)
+    TextView sorryTv;
+
     public static CreatorsFragment newInstance() {
         return new CreatorsFragment();
     }
@@ -110,6 +114,11 @@ public class CreatorsFragment extends MvpAppCompatFragment implements CreatorsVi
     @Override
     public void showError() {
         error.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showSorry() {
+        sorryTv.setVisibility(View.VISIBLE);
     }
 
     @Override
