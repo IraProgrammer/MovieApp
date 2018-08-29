@@ -69,7 +69,6 @@ public class MoviesRepository implements IMoviesRepository {
                 .flatMapSingle(relatedOfMovie -> getMovieFromDatabase(relatedOfMovie.getRelatedId()))
                 .map(MovieWithError::getMovie)
                 .toList()
-                //  .map(movies -> moviesMapper.mapMoviesListFromDb(moviesDb))
                 .subscribeOn(Schedulers.io());
     }
 
