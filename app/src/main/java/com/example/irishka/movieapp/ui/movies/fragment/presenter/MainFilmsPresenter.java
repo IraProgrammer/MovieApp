@@ -38,36 +38,23 @@ public class MainFilmsPresenter extends BasePresenter<MainFilmsView> {
             getViewState().showProgress();
         }
 
+        int a = page;
+
         addDisposables(moviesRepository.downloadMovies(page, type)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(moviesListWithError -> {
                     if (!moviesListWithError.isError()) {
                         getViewState().finishLoading();
-                    }
-                })
-                .doOnSuccess(moviesListWithError -> {
-                    if (moviesListWithError.getMovies().size() == 0 && moviesListWithError.isError() && page != 1) {
-                        getViewState().showSnack();
-                    }
-                })
-                .doOnSuccess(moviesListWithError -> {
-                    if (moviesListWithError.getMovies().size() == 0 && moviesListWithError.isError() && page == 1) {
-                        getViewState().noInternetAndEmptyDb();
-                    }
-                })
-                .doOnSuccess(moviesListWithError -> {
-                    if (moviesListWithError.getMovies().size() != 0 && moviesListWithError.isError() && page == 1) {
-                        getViewState().showSnack();
-                        page = (moviesListWithError.getMovies().size()/2)+1;
-                    }
-                })
-                .doOnSuccess(moviesListWithError -> {
-                    if (!moviesListWithError.isError()) {
                         page++;
                     }
                 })
-                .doOnSuccess(movies -> getViewState().hideProgress())
-                .subscribe(moviesListWithError -> getViewState().showMovies(moviesListWithError.getMovies()), throwable -> {
+//                .doOnSuccess(moviesListWithError -> {
+//                    if (moviesListWithError.getMovies().size() == 0 && moviesListWithError.isError() && page == 1) {
+//                        getViewState().noInternetAndEmptyDb();
+//                    }
+//                })
+                .doOnSuccess(moviesListWithError -> getViewState().hideProgress())
+                .subscribe(moviesListWithError -> getViewState().showMovies(moviesListWithError), throwable -> {
                 }));
     }
 }

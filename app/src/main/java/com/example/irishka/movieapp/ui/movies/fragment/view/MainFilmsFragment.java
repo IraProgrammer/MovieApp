@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -20,6 +21,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.irishka.movieapp.R;
 import com.example.irishka.movieapp.domain.MainType;
 import com.example.irishka.movieapp.domain.entity.Movie;
+import com.example.irishka.movieapp.domain.entity.MoviesListWithError;
 import com.example.irishka.movieapp.ui.movie.view.MovieActivity;
 import com.example.irishka.movieapp.ui.movies.fragment.presenter.MainFilmsPresenter;
 import com.example.irishka.movieapp.ui.movies.view.MoviesListActivity;
@@ -39,7 +41,7 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import static com.example.irishka.movieapp.ui.movie.view.MovieActivity.TITLE;
 
 public class MainFilmsFragment extends MvpAppCompatFragment
-        implements MainFilmsView, MainFilmsAdapter.OnItemClickListener, MoviesListActivity.OnClickListener {
+        implements MainFilmsView, MainFilmsAdapter.OnItemClickListener {
 
     public static final String MOVIE_ID = "movie_id";
 
@@ -115,7 +117,7 @@ public class MainFilmsFragment extends MvpAppCompatFragment
         errorBtn.setOnClickListener(view -> presenter.downloadMovies(false));
 
         moviesListActivity = (MoviesListActivity) getActivity();
-        moviesListActivity.setOnClickListener(this, MainType.values()[getArguments().getInt(TYPE)]);
+     //   moviesListActivity.setOnClickListener(this, MainType.values()[getArguments().getInt(TYPE)]);
 
         return v;
     }
@@ -132,8 +134,8 @@ public class MainFilmsFragment extends MvpAppCompatFragment
     }
 
     @Override
-    public void showMovies(List<Movie> movies) {
-        filmsAdapter.addMoviesList(movies);
+    public void showMovies(MoviesListWithError moviesListWithError) {
+        filmsAdapter.addMoviesList(moviesListWithError);
     }
 
     @Override
@@ -155,19 +157,19 @@ public class MainFilmsFragment extends MvpAppCompatFragment
         return Collections.max(intoList);
     }
 
-    @Override
-    public void showSnack() {
-        moviesListActivity.showSnack();
-    }
-
-    @Override
-    public void notifyPage() {
-        if (filmsAdapter.getItemCount() == 0)
-            presenter.downloadMovies(false);
-        else {
-            isLoading = false;
-        }
-    }
+//    @Override
+//    public void showSnack() {
+//        moviesListActivity.showSnack();
+//    }
+//
+//    @Override
+//    public void notifyPage() {
+//        if (filmsAdapter.getItemCount() == 0)
+//            presenter.downloadMovies(false);
+//        else {
+//            isLoading = false;
+//        }
+//    }
 
     @Override
     public void onItemClick(Movie movie) {
@@ -175,6 +177,12 @@ public class MainFilmsFragment extends MvpAppCompatFragment
         intent.putExtra(MOVIE_ID, movie.getId());
         intent.putExtra(TITLE, movie.getTitle());
         startActivity(intent);
+    }
+
+    @Override
+    public void onErrorClick(ImageButton errorBtn) {
+        errorBtn.setVisibility(View.INVISIBLE);
+        presenter.downloadMovies(true);
     }
 
     private RecyclerView.OnScrollListener getOnScrollListener() {
@@ -196,8 +204,8 @@ public class MainFilmsFragment extends MvpAppCompatFragment
         };
     }
 
-    @Override
-    public void onClick() {
-        presenter.downloadMovies(true);
-    }
+//    @Override
+//    public void onClick() {
+//        presenter.downloadMovies(true);
+//    }
 }
