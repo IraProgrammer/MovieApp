@@ -61,19 +61,14 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundLayerName" value="ic_launcher_background" />
-                                      <entry key="foregroundAssetType" value="CLIP_ART" />
-                                      <entry key="foregroundLayerName" value="home_icon" />
-                                      <entry key="outputName" value="home" />
+                                      <entry key="foregroundImage" value="C:\Users\Irishka\Desktop\launcher\hdpi-launcher-240dpi.png" />
+                                      <entry key="foregroundLayerName" value="ic_findtastic" />
+                                      <entry key="outputName" value="icon_findtastic" />
                                     </map>
                                   </option>
                                 </PersistentState>
                               </value>
                             </entry>
-                          </map>
-                        </option>
-                        <option name="values">
-                          <map>
-                            <entry key="outputIconType" value="ACTIONBAR" />
                           </map>
                         </option>
                       </PersistentState>
