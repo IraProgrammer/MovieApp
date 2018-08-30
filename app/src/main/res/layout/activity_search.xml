@@ -31,12 +31,6 @@
                 android:paddingEnd="8dp"
                 android:src="@drawable/ic_home" />
 
-            <TextView
-                android:id="@+id/margin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="250dp"/>
-
             <android.support.v7.widget.SearchView
                 android:id="@+id/search_view"
                 android:layout_width="wrap_content"
@@ -48,7 +42,7 @@
                 app:closeIcon="@drawable/ic_close"
                 app:queryHint="Search"
                 app:searchHintIcon="@null"
-                app:searchIcon="@drawable/ic_search" />
+                app:searchIcon="@null" />
 
         </android.support.v7.widget.Toolbar>
 
@@ -58,9 +52,9 @@
         android:id="@+id/tv_sorry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/appBar"
         android:layout_centerHorizontal="true"
         android:layout_margin="8dp"
-        android:layout_below="@id/appBar"
         android:text="@string/sorry_search"
         android:visibility="gone" />
 
@@ -69,6 +63,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tv_sorry" />
+
+    <LinearLayout
+        android:layout_width="310dp"
+        android:layout_marginTop="53dp"
+        android:layout_height="270dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginEnd="7dp">
+
+        <ListView
+            android:id="@+id/list_suggestions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:background="@color/background_holo_dark"
+            android:nestedScrollingEnabled="true">
+        </ListView>
+
+    </LinearLayout>
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
         android:id="@+id/progress"

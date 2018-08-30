@@ -72,6 +72,14 @@ dependencies {
     implementation 'com.github.aakira:expandable-layout:1.6.0@aar'
     //MaterialProgressBar
     implementation 'me.zhanghai.android.materialprogressbar:library:1.4.2'
+
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.1.1'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-design:2.1.1'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.1.1'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-leanback-v17:2.1.1'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.1.1'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

@@ -36,53 +36,19 @@ public class GlideHelper {
                 .load(url)
                 .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                         .placeholder(R.drawable.no_image)
-                        .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                        .override(Target.SIZE_ORIGINAL)
                 )
                 .into(image);
     }
 
-//    public void downloadPictureWithCacheWithoutPlaceholder(String url, ImageView image) {
-//        Glide.with(image.getContext())
-//                .load(url)
-//                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-//                        .placeholder(R.color.background_holo_dark)
-//                        .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-//                )
-//                .into(image);
-//    }
-
-    public void downloadPictureWithoutPlaceholder(String url, ImageView image, Activity activity) {
+    public void downloadPictureWithoutPlaceholder(String url, ImageView image) {
         Glide.with(image.getContext())
                 .load(url)
                 .apply(new RequestOptions()
-                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                        .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                        .override(Target.SIZE_ORIGINAL)
                 )
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        return false;
-                    }
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        scheduleStartPostponedTransition(image, activity);
-                        return false;
-                    }})
                 .into(image);
-    }
-
-
-    private void scheduleStartPostponedTransition(final ImageView sharedElement, Activity activity) {
-        sharedElement.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                sharedElement.getViewTreeObserver().removeOnPreDrawListener(this);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    activity.startPostponedEnterTransition();
-                }
-                return true;
-            }
-        });
     }
 
 }

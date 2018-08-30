@@ -56,6 +56,7 @@ import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
+import static android.app.Activity.RESULT_OK;
 import static com.example.irishka.movieapp.ui.movie.view.MovieActivity.TITLE;
 import static com.example.irishka.movieapp.ui.movies.fragment.view.MainFilmsFragment.MOVIE_ID;
 import static com.example.irishka.movieapp.ui.slideGallery.ImagePagerActivity.CURRENT;
@@ -63,11 +64,11 @@ import static com.example.irishka.movieapp.ui.slideGallery.ImagePagerActivity.CU
 public class DescriptionFragment extends MvpAppCompatFragment
         implements DescriptionView, RelatedMoviesAdapter.OnItemClickListener, GalleryAdapter.OnItemClickListener, MovieActivity.OnBackPressedListener {
 
-    public static int curpos = 0;
-
     public static final String ARRAY_LIST = "ARRAYLIST";
 
     public static final String POSITION = "POSITION";
+
+    private static final int REQUEST_IMAGEPAGER = 1;
 
     @Inject
     RelatedMoviesAdapter relatedMoviesAdapter;
@@ -136,9 +137,6 @@ public class DescriptionFragment extends MvpAppCompatFragment
 
     @BindView(R.id.progressBar)
     MaterialProgressBar progress;
-
-//    @BindView(R.id.video_card)
-//    CardView videoCard;
 
     @BindView(R.id.tv_sorry)
     TextView sorryTv;
@@ -334,80 +332,31 @@ public class DescriptionFragment extends MvpAppCompatFragment
 
         pos = position;
 
-        // curpos = position;
-
-//        getActivity().setExitSharedElementCallback(new SharedElementCallback() {
-//            @Override
-//            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-//
-//                if (curpos != position) {
-//
-//                    ImageView viewAtPosition = (ImageView) gallery.getLayoutManager().findViewByPosition(curpos);
-//                    final RecyclerView.LayoutManager layoutManager =
-//                            gallery.getLayoutManager();
-//
-//                    if (viewAtPosition == null
-//                            || layoutManager.isViewPartiallyVisible(viewAtPosition, false, true)) {
-////                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-////                            postponeEnterTransition();
-////                        }
-//                        gallery.scrollToPosition(curpos);
-//                    }
-//                }
-//
-//                RecyclerView.ViewHolder selectedViewHolder = gallery.findViewHolderForAdapterPosition(curpos);
-//                if (selectedViewHolder != null && selectedViewHolder.itemView != null) {
-//                    sharedElements.put(String.valueOf(curpos), selectedViewHolder.itemView.findViewById(R.id.backdrop_image));
-//                }
-//                // sharedElements.put(String.valueOf(curpos), selectedViewHolder.itemView.findViewById(R.id.backdrop_image));
-//
-////                gallery.post(() -> {
-////
-////                    RecyclerView.ViewHolder selectedViewHolder2 = gallery.findViewHolderForAdapterPosition(curpos);
-////                    if (selectedViewHolder2 == null || selectedViewHolder2.itemView == null) {
-////                        return;
-////                    }
-////                    names.clear();
-////                    sharedElements.clear();
-////                    names.add(String.valueOf(curpos));
-////                    sharedElements.put(String.valueOf(curpos), selectedViewHolder2.itemView.findViewById(R.id.backdrop_image));
-////
-////                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-////                        ((AppCompatActivity) getActivity()).supportStartPostponedEnterTransition();
-////                    }
-////
-////                });
-//            }
-//        });
-//
-//
-//        ActivityOptionsCompat options = null;
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-//            options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), image, image.getTransitionName());
-//        }
-
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_IMAGEPAGER);
     }
 
+
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        int c = curpos;
-
-
-        //TODO
-        if (curpos > pos && curpos < galleryAdapter.getItemCount() - 1) {
-            gallery.scrollToPosition(curpos + 1);
-        }  if (curpos < pos && curpos > 0) {
-            gallery.scrollToPosition(curpos - 1);
-        }  if (curpos == 0) {
-            gallery.scrollToPosition(1);
-        }  if (curpos == galleryAdapter.getItemCount() - 1) {
-            gallery.scrollToPosition(curpos);
+        if (resultCode != RESULT_OK) {
+            return;
         }
 
-        curpos = pos;
+        if (requestCode == REQUEST_IMAGEPAGER) {
+            int curpos = data.getIntExtra(CURRENT, pos);
+
+            if (curpos > pos && curpos < galleryAdapter.getItemCount() - 1) {
+                gallery.scrollToPosition(curpos + 1);
+            } else if (curpos < pos && curpos > 0) {
+                gallery.scrollToPosition(curpos - 1);
+            } else if (curpos == 0) {
+                gallery.scrollToPosition(curpos);
+            } else if (curpos == galleryAdapter.getItemCount() - 1) {
+                gallery.scrollToPosition(curpos);
+            }
+        }
     }
 
     protected boolean isOnline() {

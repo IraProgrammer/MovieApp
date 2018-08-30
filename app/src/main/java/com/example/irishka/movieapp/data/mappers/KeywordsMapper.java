@@ -8,6 +8,7 @@ import com.example.irishka.movieapp.domain.entity.Trailer;
 
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,7 +28,6 @@ public class KeywordsMapper {
             keywords.add(keywordModel.getName());
         }
 
-        if (keywords.size() > 15) return keywords.subList(0, 14);
         return keywords;
 
     }
@@ -38,9 +38,10 @@ public class KeywordsMapper {
         List<String> keywords = new ArrayList<>();
 
         for (int i = 0; i < keywordsDb.size(); i++) {
-            if (i == 15) break;
             keywords.add(keywordsDb.get(i).getName());
         }
+
+        Collections.reverse(keywords);
 
         return keywords;
 

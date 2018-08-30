@@ -1,14 +1,7 @@
 package com.example.irishka.movieapp.ui.actor.info.view;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.SharedElementCallback;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,9 +26,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -45,11 +36,14 @@ import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
+import static android.app.Activity.RESULT_OK;
 import static com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment.ARRAY_LIST;
 import static com.example.irishka.movieapp.ui.movie.description.view.DescriptionFragment.POSITION;
 import static com.example.irishka.movieapp.ui.slideGallery.ImagePagerActivity.CURRENT;
 
 public class InfoFragment extends MvpAppCompatFragment implements InfoView, PhotosAdapter.OnItemClickListener {
+
+    private static final int REQUEST_IMAGEPAGER = 1;
 
     @Inject
     Provider<InfoPresenter> presenterProvider;
@@ -107,7 +101,7 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
     @BindView(R.id.error_btn)
     Button errorBtn;
 
-    public static int curpos = 0;
+    private int pos;
 
     public static InfoFragment newInstance() {
         return new InfoFragment();
@@ -204,52 +198,31 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
         intent.putExtra(ARRAY_LIST, (ArrayList<Image>) photosAdapter.getPhotosList());
         intent.putExtra(POSITION, position);
 
-        curpos = position;
+        pos = position;
 
-        getActivity().setExitSharedElementCallback(new SharedElementCallback() {
-            @Override
-            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+        startActivityForResult(intent, REQUEST_IMAGEPAGER);
+    }
 
-                if (curpos != position) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-                    ImageView viewAtPosition = (ImageView) photosRecyclerView.getLayoutManager().findViewByPosition(curpos);
-                    final RecyclerView.LayoutManager layoutManager =
-                            photosRecyclerView.getLayoutManager();
-
-                    if (viewAtPosition == null
-                            || layoutManager.isViewPartiallyVisible(viewAtPosition, false, true)) {
-                        postponeEnterTransition();
-                        photosRecyclerView.scrollToPosition(curpos);
-                    }
-                }
-
-                RecyclerView.ViewHolder selectedViewHolder = photosRecyclerView.findViewHolderForAdapterPosition(curpos);
-                if (selectedViewHolder == null || selectedViewHolder.itemView == null) {
-                    return;
-                }
-                sharedElements.put(String.valueOf(curpos), selectedViewHolder.itemView.findViewById(R.id.actor_image));
-
-                photosRecyclerView.post(() -> {
-                    startPostponedEnterTransition();
-
-                    RecyclerView.ViewHolder selectedViewHolder2 = photosRecyclerView.findViewHolderForAdapterPosition(curpos);
-                    if (selectedViewHolder2 == null || selectedViewHolder2.itemView == null) {
-                        return;
-                    }
-                    names.clear();
-                    sharedElements.clear();
-                    names.add(String.valueOf(curpos));
-                    sharedElements.put(String.valueOf(curpos), selectedViewHolder2.itemView.findViewById(R.id.actor_image));
-
-                });
-            }
-        });
-
-        ActivityOptionsCompat options = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), imageView, imageView.getTransitionName());
+        if (resultCode != RESULT_OK) {
+            return;
         }
 
-        startActivity(intent, options.toBundle());
+        if (requestCode == REQUEST_IMAGEPAGER) {
+            int curpos = data.getIntExtra(CURRENT, pos);
+
+            if (curpos > pos && curpos < photosAdapter.getItemCount() - 1) {
+                photosRecyclerView.scrollToPosition(curpos + 1);
+            } else if (curpos < pos && curpos > 0) {
+                photosRecyclerView.scrollToPosition(curpos - 1);
+            } else if (curpos == 0) {
+                photosRecyclerView.scrollToPosition(curpos);
+            } else if (curpos == photosAdapter.getItemCount() - 1) {
+                photosRecyclerView.scrollToPosition(curpos);
+            }
+        }
     }
 }

@@ -29,8 +29,6 @@ public class SlideGalleryAdapter extends PagerAdapter {
 
     private GlideHelper glideHelper;
 
-    private ImagePagerActivity imagePagerActivity;
-
     private Map<Integer, ImageView> map = new HashMap<>();
 
     //TODO ButterKnife
@@ -38,12 +36,9 @@ public class SlideGalleryAdapter extends PagerAdapter {
 //    ImageView imageView;
 
     @Inject
-    public SlideGalleryAdapter(List<Image> backdrops, GlideHelper glideHelper,
-                               ImagePagerActivity i
-    ) {
+    public SlideGalleryAdapter(List<Image> backdrops, GlideHelper glideHelper) {
         this.backdrops = backdrops;
         this.glideHelper = glideHelper;
-        this.imagePagerActivity = i;
     }
 
     @Override
@@ -70,7 +65,7 @@ public class SlideGalleryAdapter extends PagerAdapter {
             imageView.setTransitionName(String.valueOf(position));
         }
 
-        glideHelper.downloadPictureWithoutPlaceholder(backdrops.get(position).getFileUrl(), imageView, imagePagerActivity);
+        glideHelper.downloadPictureWithoutPlaceholder(backdrops.get(position).getFileUrl(), imageView);
 
         view.addView(imageLayout, 0);
 
@@ -89,17 +84,5 @@ public class SlideGalleryAdapter extends PagerAdapter {
     @Override
     public Parcelable saveState() {
         return null;
-    }
-
-    public void call(int position) {
-        imagePagerActivity.setEnterSharedElementCallback(new SharedElementCallback() {
-            @Override
-            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                names.clear();
-                sharedElements.clear();
-                names.add(String.valueOf(position));
-                sharedElements.put(String.valueOf(position), map.get(position));
-            }
-        });
     }
 }

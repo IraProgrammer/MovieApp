@@ -67,13 +67,6 @@ public class FullScreenHelper {
         }
 
         showSystemUI(decorView);
-//        CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) linearWithTabs.getLayoutParams();
-//        p.setBehavior(new AppBarLayout.ScrollingViewBehavior());
-//        linearWithTabs.setLayoutParams(p);
-//
-//        ViewGroup.LayoutParams viewParams = youTubeView.getLayoutParams();
-//        viewParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-//        youTubeView.setLayoutParams(viewParams);
 
         nestedScrollView.fullScroll(View.FOCUS_UP);
     }

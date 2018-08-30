@@ -10,8 +10,9 @@ import com.google.gson.annotations.SerializedName;
 @Entity
 public class KeywordDb {
 
-    @PrimaryKey
-    @NonNull
+    @PrimaryKey(autoGenerate = true)
+    public int id;
+
     private String name;
 
     public KeywordDb(String name){

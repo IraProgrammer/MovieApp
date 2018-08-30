@@ -48,6 +48,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
                 .doOnSuccess(moviesListWithError -> {
                     if (!moviesListWithError.isError()) {
                         getViewState().finishLoading();
+                        getViewState().hideSnack();
                     }
                 })
                 .doOnSuccess(moviesListWithError -> {

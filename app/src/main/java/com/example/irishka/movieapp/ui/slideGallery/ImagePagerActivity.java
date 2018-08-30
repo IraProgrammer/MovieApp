@@ -71,26 +71,22 @@ public class ImagePagerActivity extends DaggerAppCompatActivity {
         count.setText(new StringBuilder().append(String.valueOf(currentPosition + 1)).append("/").append(slideGalleryAdapter.getCount()).toString());
 
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-
             @Override
             public void onPageSelected(int position) {
-                DescriptionFragment.curpos = position;
-                InfoFragment.curpos = position;
-                slideGalleryAdapter.call(position);
+                currentPosition = position;
                 count.setText(new StringBuilder().append(position + 1).append("/").append(slideGalleryAdapter.getCount()).toString());
             }
         });
     }
 
-//    @Override
-//    public void supportFinishAfterTransition() {
-//        finish();
-//    }
-//
-//    @Override
-//    public void onBackPressed() {
-//        if (Math.abs(currentPosition - DescriptionFragment.curpos) > 3)
-//            supportFinishAfterTransition();
-//        else super.onBackPressed();
-//    }
+    @Override
+    public void onBackPressed() {
+
+        Intent data = new Intent();
+        data.putExtra(CURRENT, currentPosition);
+
+        setResult(RESULT_OK, data);
+
+        super.onBackPressed();
+    }
 }

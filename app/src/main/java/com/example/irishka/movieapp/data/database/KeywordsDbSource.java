@@ -22,7 +22,7 @@ public class KeywordsDbSource {
     }
 
     public void insertKeyword(KeywordDb keywordDb) {
-        keywordsDao.insert(keywordDb);
+        keywordsDao.trans(keywordDb);
     }
 
     public Single<List<KeywordDb>> getKeywords() {
