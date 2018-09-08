@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.util.Pair;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -141,17 +142,14 @@ public class DescriptionFragment extends MvpAppCompatFragment
     @BindView(R.id.tv_sorry)
     TextView sorryTv;
 
-    @BindView(R.id.error)
-    LinearLayout error;
-
-    @BindView(R.id.error_btn)
-    Button errorBtn;
-
     @BindView(R.id.desc_lilLayout)
     LinearLayout descLinLay;
 
     @BindView(R.id.nested_scroll)
     NestedScrollView nestedScrollView;
+
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     LinearLayout linearWithTabs;
 
@@ -211,10 +209,20 @@ public class DescriptionFragment extends MvpAppCompatFragment
         gallery.setLayoutManager(linearLayoutManagerGallery);
         gallery.setAdapter(galleryAdapter);
 
-        errorBtn.setOnClickListener(view -> {
+        swipeRefreshLayout.setOnRefreshListener(() -> {
             presenter.downloadDescription();
             presenter.downloadRelatedMovies(false);
         });
+
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.accent_material_dark_1));
+
+        swipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
+
+        swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.background_holo_dark));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            swipeRefreshLayout.setElevation(4);
+        }
 
         return v;
     }
@@ -222,21 +230,19 @@ public class DescriptionFragment extends MvpAppCompatFragment
     public void setOnBackPressListener(MovieActivity.OnBackPressedListener onBackPressListener) {
         MovieActivity movieActivity = (MovieActivity) getActivity();
         movieActivity.setOnBackPressedListener(onBackPressListener);
-    }
 
-    @Override
-    public void showProgress() {
-        progress.setVisibility(View.VISIBLE);
+
     }
 
     @Override
     public void showError() {
-        error.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setRefreshing(false);
+        Toast.makeText(this.getContext(), getResources().getString(R.string.error_description), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void hideError() {
-        error.setVisibility(View.GONE);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

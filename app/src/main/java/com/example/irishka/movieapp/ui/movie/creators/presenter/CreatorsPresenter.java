@@ -30,8 +30,6 @@ public class CreatorsPresenter extends BasePresenter<CreatorsView> {
 
     public void downloadCasts() {
 
-        getViewState().showProgress();
-
         addDisposables(castsRepository.downloadCasts(movieId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess(castListWithError -> {

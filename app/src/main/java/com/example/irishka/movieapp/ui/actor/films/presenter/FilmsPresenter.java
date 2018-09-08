@@ -29,11 +29,22 @@ public class FilmsPresenter extends BasePresenter<FilmsView> {
         downloadFilms();
     }
 
-    private void downloadFilms() {
+    public void downloadFilms() {
 
         addDisposables(actorFilmsInteractor.downloadActorFilms(id)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movies -> getViewState().showMovies(movies), throwable -> {}));
+                .doOnSuccess(movies -> {
+                    if (movies.size() == 1) {
+                        getViewState().showError();
+                    }
+                })
+                .doOnSuccess(movies -> {
+                    if (movies.size() > 1) {
+                        getViewState().hideError();
+                    }
+                })
+                .subscribe(movies -> getViewState().showMovies(movies), throwable -> {
+                }));
     }
 }
 

@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface DescriptionView extends MvpView{
 
-    void showProgress();
-
     void showError();
 
     void hideError();

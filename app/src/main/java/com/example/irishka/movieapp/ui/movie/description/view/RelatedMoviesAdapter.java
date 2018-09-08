@@ -101,8 +101,6 @@ public class RelatedMoviesAdapter extends RecyclerView.Adapter<RelatedMoviesAdap
                     .load(movie.getPosterUrl())
                     .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                             .placeholder(R.drawable.no_image)
-                            //  .dontTransform()
-                            //   .sizeMultiplier((float) 1)
                             .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL))
                     .into(image);
         }

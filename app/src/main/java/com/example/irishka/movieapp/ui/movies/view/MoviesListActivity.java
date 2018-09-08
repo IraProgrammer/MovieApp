@@ -46,28 +46,6 @@ public class MoviesListActivity extends DaggerAppCompatActivity {
     @Inject
     ViewPagerAdapter adapter;
 
-//    Snackbar snackbar;
-//
-//    private Map<Integer, Snackbar> snackMap = new HashMap<>();
-//
-//    private OnClickListener onClickListener;
-//
-//    private MainType type;
-//
-//    private int currentPosition;
-//
-//    private int lastPosition;
-//
-//    public interface OnClickListener {
-//        void onClick();
-//        void notifyPage();
-//    }
-//
-//    public void setOnClickListener(OnClickListener onClickListener, MainType type) {
-//        this.onClickListener = onClickListener;
-//        this.type = type;
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppCompatDarkNoActionBar);
@@ -77,35 +55,6 @@ public class MoviesListActivity extends DaggerAppCompatActivity {
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
-
-//        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int i, float v, int i1) {
-//            }
-//
-//            @Override
-//            public void onPageSelected(int i) {
-//
-//                if (onClickListener != null){
-//                    onClickListener.notifyPage();
-//                }
-//
-//                if (snackMap.get(lastPosition) != null) {
-//                    snackMap.get(lastPosition).dismiss();
-//                }
-//                lastPosition = currentPosition;
-//                currentPosition = i;
-//
-//                if (!isOnline() && snackMap.get(currentPosition) != null) {
-//                    snackMap.get(currentPosition).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int i) {
-//
-//            }
-//        });
 
         btnSearch.setOnClickListener(view -> {
             Intent intent = new Intent(MoviesListActivity.this, SearchActivity.class);
@@ -117,30 +66,4 @@ public class MoviesListActivity extends DaggerAppCompatActivity {
             startActivity(intent);
         });
     }
-
-//    public void showSnack() {
-//
-//        if (snackMap.get(currentPosition) == null) {
-//            if (!isOnline()) {
-//                snackbar = Snackbar.make(root, getResources().getString(R.string.snack), Snackbar.LENGTH_INDEFINITE);
-//                snackbar.setAction(getString(R.string.error_button), view -> onClickListener.onClick());
-//
-//                snackMap.put(currentPosition, snackbar);
-//            }
-//
-//            if (type.equals(MainType.values()[currentPosition]))
-//                snackMap.get(currentPosition).show();
-//
-//        }
-//    }
-//
-//    protected boolean isOnline() {
-//        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-//        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-//        if (netInfo != null && netInfo.isConnected()) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
 }

@@ -1,7 +1,9 @@
 package com.example.irishka.movieapp.ui.actor.info.view;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -101,6 +104,9 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
     @BindView(R.id.error_btn)
     Button errorBtn;
 
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     private int pos;
 
     public static InfoFragment newInstance() {
@@ -127,22 +133,35 @@ public class InfoFragment extends MvpAppCompatFragment implements InfoView, Phot
             presenter.downloadInfo();
         });
 
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.downloadInfo());
+
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.accent_material_dark_1));
+
+        swipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
+
+        swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.background_holo_dark));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            swipeRefreshLayout.setElevation(4);
+        }
+
         return v;
     }
 
     @Override
     public void showProgress() {
-        progress.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showError() {
-        error.setVisibility(View.VISIBLE);
+
+        swipeRefreshLayout.setRefreshing(false);
+        Toast.makeText(this.getContext(), getResources().getString(R.string.error_description), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void hideError() {
-        error.setVisibility(View.GONE);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

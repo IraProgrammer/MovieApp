@@ -8,6 +8,10 @@ import java.util.List;
 
 public interface FilmsView extends MvpView {
 
+    void showError();
+
+    void hideError();
+
     void showMovies(List<Movie> movie);
 
 }

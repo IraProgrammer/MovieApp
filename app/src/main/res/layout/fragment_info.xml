@@ -15,6 +15,11 @@
         app:mpb_determinateCircularProgressStyle="dynamic"
         app:mpb_progressTint="@color/accent_material_dark_1" />
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -157,5 +162,7 @@
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

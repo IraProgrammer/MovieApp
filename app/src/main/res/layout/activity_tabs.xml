@@ -59,6 +59,7 @@
             android:layout_height="wrap_content"
             android:background="@color/background_holo_dark"
             android:minHeight="?attr/actionBarSize"
+            android:elevation="4dp"
             app:tabGravity="fill"
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/white"

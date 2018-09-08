@@ -117,7 +117,6 @@ public class MainFilmsFragment extends MvpAppCompatFragment
         errorBtn.setOnClickListener(view -> presenter.downloadMovies(false));
 
         moviesListActivity = (MoviesListActivity) getActivity();
-     //   moviesListActivity.setOnClickListener(this, MainType.values()[getArguments().getInt(TYPE)]);
 
         return v;
     }
@@ -157,20 +156,6 @@ public class MainFilmsFragment extends MvpAppCompatFragment
         return Collections.max(intoList);
     }
 
-//    @Override
-//    public void showSnack() {
-//        moviesListActivity.showSnack();
-//    }
-//
-//    @Override
-//    public void notifyPage() {
-//        if (filmsAdapter.getItemCount() == 0)
-//            presenter.downloadMovies(false);
-//        else {
-//            isLoading = false;
-//        }
-//    }
-
     @Override
     public void onItemClick(Movie movie) {
         Intent intent = new Intent(getActivity(), MovieActivity.class);
@@ -203,9 +188,4 @@ public class MainFilmsFragment extends MvpAppCompatFragment
             }
         };
     }
-
-//    @Override
-//    public void onClick() {
-//        presenter.downloadMovies(true);
-//    }
 }

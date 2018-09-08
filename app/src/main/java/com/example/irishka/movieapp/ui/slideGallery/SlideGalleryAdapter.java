@@ -29,12 +29,6 @@ public class SlideGalleryAdapter extends PagerAdapter {
 
     private GlideHelper glideHelper;
 
-    private Map<Integer, ImageView> map = new HashMap<>();
-
-    //TODO ButterKnife
-//    @BindView(R.id.image_in_viewpager)
-//    ImageView imageView;
-
     @Inject
     public SlideGalleryAdapter(List<Image> backdrops, GlideHelper glideHelper) {
         this.backdrops = backdrops;
@@ -57,9 +51,7 @@ public class SlideGalleryAdapter extends PagerAdapter {
 
         View imageLayout = LayoutInflater.from(view.getContext()).inflate(R.layout.viewpager_item, view, false);
 
-        ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image_in_viewpager);
-
-        map.put(position, imageView);
+        ImageView imageView = imageLayout.findViewById(R.id.image_in_viewpager);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             imageView.setTransitionName(String.valueOf(position));

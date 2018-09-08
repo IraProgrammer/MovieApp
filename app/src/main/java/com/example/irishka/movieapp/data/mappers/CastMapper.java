@@ -73,16 +73,6 @@ public class CastMapper {
         return cast;
     }
 
-//    public List<Cast> mapCastsList(List<ActorInfoModel> actorInfos, List<ActorPhotosModel> actorPhotosModels) {
-//        List<Cast> casts = new ArrayList<>();
-//
-//        for (int i = 0; i < actorInfos.size(); i++) {
-//            casts.add(apply(actorInfos.get(i), actorPhotosModels.get(i)));
-//        }
-//
-//        return casts;
-//    }
-
     public List<Cast> mapCastsList(List<CastModel> castModels) {
         List<Cast> casts = new ArrayList<>();
 
@@ -114,14 +104,6 @@ public class CastMapper {
 
         return casts;
     }
-
-//    private List<String> getPhotosUrl(ActorPhotosModel actorPhotosModel) {
-//        List<String> photosUrl = new ArrayList<>();
-//        for (ActorProfileModel profileModel : actorPhotosModel.getProfiles()) {
-//            photosUrl.add(BASE_IMAGE_URL + profileModel.getFilePath());
-//        }
-//        return photosUrl;
-//    }
 
     public List<CastOfMovie> createCoMList(long movieId, List<Cast> casts) {
         List<CastOfMovie> castsOfMovie = new ArrayList<>();

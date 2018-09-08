@@ -1,12 +1,15 @@
 package com.example.irishka.movieapp.ui.actor.films.view;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -54,6 +57,11 @@ public class FilmsFragment extends MvpAppCompatFragment implements FilmsView, Fi
     @Inject
     StaggeredGridLayoutManager staggeredGridLayoutManager;
 
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    int i = 1;
+
     public static FilmsFragment newInstance(){
         return new FilmsFragment();
     }
@@ -74,7 +82,35 @@ public class FilmsFragment extends MvpAppCompatFragment implements FilmsView, Fi
 
         filmsRecyclerView.setAdapter(filmsAdapter);
 
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            presenter.downloadFilms();
+        });
+
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.accent_material_dark_1));
+
+        swipeRefreshLayout.setSize(SwipeRefreshLayout.LARGE);
+
+        swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.background_holo_dark));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            swipeRefreshLayout.setElevation(4);
+        }
+
         return v;
+    }
+
+    @Override
+    public void showError() {
+        swipeRefreshLayout.setRefreshing(false);
+
+        if (i > 1)
+        Toast.makeText(this.getContext(), getResources().getString(R.string.error_description), Toast.LENGTH_SHORT).show();
+        i++;
+    }
+
+    @Override
+    public void hideError() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

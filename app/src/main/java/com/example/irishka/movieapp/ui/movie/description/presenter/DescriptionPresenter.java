@@ -36,8 +36,6 @@ public class DescriptionPresenter extends BasePresenter<DescriptionView> {
 
     public void downloadDescription() {
 
-        getViewState().showProgress();
-
         addDisposables(moviesRepository.downloadMovie(movieId, isSearch)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(movies -> getViewState().onDownloadError())
