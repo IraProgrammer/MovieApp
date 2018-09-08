@@ -8,4 +8,21 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppCompatDark" parent="Theme.AppCompat.DayNight.DarkActionBar" >
+        <item name="colorPrimary">@color/primary_material_dark_1</item>
+        <item name="android:textColorPrimary">@color/text_color_primary</item>
+        <item name="android:colorBackground">@color/background_material_light</item>
+    </style>
+
+
+    <style name="AppCompatDarkNoActionBar" parent="Theme.AppCompat.NoActionBar" >
+        <item name="colorAccent">@color/accent_material_dark_1</item>
+    </style>
+
+    <style name="AppCompatDarkNoActionBar.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <!-- для Android 5+ вы можете поменять цвет colorPrimaryDark, чтобы соответствовать цвету windowBackground -->
+        <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
+    </style>
+
 </resources>

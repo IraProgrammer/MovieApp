@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="DarkTheme" parent="android:Theme.Holo.Dialog">
+        <item name="android:colorBackground">@color/background_holo_dark</item>
+        <item name="android:colorPrimaryDark">@color/holo_primary_dark</item>
+        <item name="android:colorPrimary">@color/holo_primary</item>
+    </style>
+
+    <style name="AppCompatDarkNoActionBar" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorAccent">@color/accent_material_dark_1</item>
+
+        <item name="android:windowActivityTransitions">true</item>
+
+        <item name="android:windowContentTransitions">true</item>
+
+        <item name="android:windowSharedElementEnterTransition">@transition/image_shared_element_transition</item>
+        <item name="android:fragmentSharedElementReturnTransition">@transition/image_shared_element_transition</item>
+        <item name="android:fragmentSharedElementEnterTransition">@transition/image_shared_element_transition</item>
+        <item name="android:windowSharedElementExitTransition">@transition/image_shared_element_transition</item>
+        <item name="android:fragmentExitTransition">@transition/image_shared_element_transition</item>
+
+
+    </style>
+</resources>

@@ -1,3 +1,117 @@
 <resources>
-    <string name="app_name">MovieApp</string>
+    <string name="app_name">Findtastic</string>
+
+    <string name="gallery">GALLERY</string>
+    <string name="see_also">SEE ALSO</string>
+
+    <string name="description_fragment">Info</string>
+    <string name="creators_fragment">Cast</string>
+    <string name="rewiew_fragment">Review</string>
+
+    <string name="adult">18+</string>
+    <string name="duration">%1$dh %2$dmin</string>
+    <string name="durationWithNull">%1$dh 0%2$dmin</string>
+    <string name="vote_average">TMDb %1$.01f</string>
+
+    <string name="info_fragment">Info</string>
+    <string name="films_fragment">Films</string>
+
+    <string name="photos">PHOTOS</string>
+    <string name="birth">Date of birth:</string>
+    <string name="place">Place of birth:</string>
+
+    <string name="see_soon">See soon</string>
+
+    <string name="transition_name">image</string>
+
+    <string name="transition_movie">movie</string>
+
+    <string name="app_label">MovieApp</string>
+    <string name="search_hint">Hint</string>
+
+    <string name="latest_fragment">Latest</string>
+    <string name="now_playing_fragment">Now playing</string>
+    <string name="popular_fragment">Popular</string>
+    <string name="top_rated_fragment">Top Rated</string>
+    <string name="upcoming_fragment">Upcoming</string>
+
+    <string name="sorry">Sorry, no information about this movie.</string>
+
+    <string name="sorry_actor">Sorry, no information about this person.</string>
+
+    <string name="sorry_search">Sorry, no results were found.</string>
+
+    <string name="error_main_screen">An error has occurred. Check your Internet connection and try again.</string>
+
+    <string name="error_description">Please check the Internet connection and try again to see more.</string>
+
+    <string name="no_found_actors">Sorry, the cast is not available for this movie.</string>
+
+    <string name="error_button">Try again</string>
+
+    <string name="snack">Please, check the Internet connection.</string>
+
+    <string name="TMDb">"TMDb "</string>
+
+    <string-array name="genresNames">
+        <item>Action</item>
+        <item>Adventure</item>
+        <item>Animation</item>
+        <item>Comedy</item>
+        <item>Crime</item>
+        <item>Documentary</item>
+        <item>Drama</item>
+        <item>Family</item>
+        <item>Fantasy</item>
+        <item>History</item>
+        <item>Horror</item>
+        <item>Music</item>
+        <item>Mystery</item>
+        <item>Romance</item>
+        <item>Science Fiction</item>
+        <item>TV Movie</item>
+        <item>Thriller</item>
+        <item>War</item>
+        <item>Western</item>
+    </string-array>
+
+    <integer-array name="genreIds">
+        <item>28</item>
+        <item>12</item>
+        <item>16</item>
+        <item>35</item>
+        <item>80</item>
+        <item>99</item>
+        <item>18</item>
+        <item>10751</item>
+        <item>14</item>
+        <item>36</item>
+        <item>27</item>
+        <item>10402</item>
+        <item>9648</item>
+        <item>10749</item>
+        <item>878</item>
+        <item>10770</item>
+        <item>53</item>
+        <item>10752</item>
+        <item>37</item>
+    </integer-array>
+
+    private static int[] genreIds = new int[]{28, 12, 16, 35, 80, 99, 18, 10751, 14, 36, 27, 10402, 9648, 10749, 878, 10770,
+    //            53, 10752, 37};
+
+    <string-array name="sortTypes">
+        <item>Popularity</item>
+        <item>Release date</item>
+        <item>Revenue</item>
+        <item>Vote average</item>
+    </string-array>
+
+    <string-array name="sortQueries">
+        <item>popularity.desc</item>
+        <item>release_date.desc</item>
+        <item>revenue.desc</item>
+        <item>vote_average.desc</item>
+    </string-array>
+
 </resources>

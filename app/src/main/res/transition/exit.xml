@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:transitionOrdering="together"
+    android:duration="10">
+    <changeClipBounds/>
+    <changeTransform/>
+    <changeBounds/>
+    <fade android:fadingMode="fade_out">
+        <targets>
+            <target android:targetId="@id/backdrop_image"/>
+        </targets>
+    </fade>
+</transitionSet>
